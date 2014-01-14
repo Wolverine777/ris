@@ -25,10 +25,10 @@ public class GroupNode extends Node {
 	}
 
 	@Override
-	public void display() {
+	public void display(Matrix m) {
 		for (Edge e : edges) {
 			if (e.isStart(this)) {
-				e.getOtherNode(this).display();
+				e.getOtherNode(this).display(m.mult(getWorldTransform()));
 			}
 		}
 	}
