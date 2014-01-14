@@ -95,9 +95,14 @@ public class WorldState extends UntypedActor{
 					entry.setValue(false);
 				}
 
+				System.out.println("Initializing App");
+
+				initialize();
+
+				System.out.println("App initialized");
 				System.out.printf("Initialization finished in %.3fs",
 						time.elapsed());
-
+				
 				loop();
 			}
 		} else if (message == Message.INIT) {
@@ -131,17 +136,19 @@ public class WorldState extends UntypedActor{
 			renderer.tell(new RendererInitialization(0), self());
 			simulator.tell(Message.INIT, self());
 			physic.tell(new PhysicInitialization(simulator), self());
+			input.tell(Message.INIT, self());
 		} else if (message instanceof RendererInitialized) {
 			shader = ((RendererInitialized) message).shader;
 			
-			System.out.println("Initializing App");
-
-			initialize();
-
-			System.out.println("App initialized");
+			//reinpacken nach alle INIZILIZED gesendet haben
+//			System.out.println("Initializing App");
+//
+//			initialize();
+//
+//			System.out.println("App initialized");
 			
-			
-			input.tell(Message.INIT, self());
+			//rein nach allen INITs
+//			input.tell(Message.INIT, self());
 		} else if (message instanceof NodeCreation) {
 			
 			announce(message);
@@ -161,6 +168,7 @@ public class WorldState extends UntypedActor{
 	}
 
 	public <T> void announce(T event) {
+		System.out.println("self............................"+self());
 		if (event instanceof NodeCreation || event instanceof CameraCreation) {
 			for (ActorRef observer : observers.get(Events.NODE_CREATION)) {
 				observer.tell(event, self());
