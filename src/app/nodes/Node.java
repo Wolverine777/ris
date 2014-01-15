@@ -24,6 +24,8 @@ public abstract class Node {
 
     protected Node(String id) {
     	this.id = id;
+    	setLocalTransform(FactoryDefault.vecmath.identityMatrix());
+    	updateWorldTransform();
     	   }
 
     protected Node(String id, Matrix modelMatrix) {
@@ -53,6 +55,7 @@ public abstract class Node {
 
     public void updateWorldTransform(Matrix previousTrafo) {
 //        worldTrafo = previousTrafo.mult(getWorldTransform());
+    	System.out.println("world tranform: " + getWorldTransform());
         worldTrafo = getWorldTransform().mult(previousTrafo);
     }
 
@@ -101,5 +104,5 @@ public abstract class Node {
 		this.velocity = velocity;
 	}
 
-	public abstract void display();
+	public abstract void display(Matrix m);
 }

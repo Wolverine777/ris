@@ -95,7 +95,8 @@ public class Renderer extends UntypedActor {
 		Shader.setProjectionMatrix(projectionMatrix);
 
 		camera.activate();
-		start.display();
+		System.out.println("hier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!2222222: " + start.toString());
+		start.display(start.getWorldTransform());
 
 		Display.setTitle("App");
 		Display.update();

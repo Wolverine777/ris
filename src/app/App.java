@@ -58,6 +58,15 @@ public class App extends WorldState {
 		transform(c1, vecmath.translationMatrix(-1.5f, -1, 0));
 //		addPhysic(c1, new VectorImp(6,6,6));
 
+		GroupNode g1 = createGroup("group");
+		append(g1,head);
+		transform(g1, vecmath.translationMatrix(0, -1, 0));
+		
+		Cube c2 = createCube("Cube2", shader, 1.5f, 1.5f, 1.5f);
+//		transform(c2, vecmath.translationMatrix(0.1f, 0, 0));
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_R)), SimulateType.ROTATE, Mode.TOGGLE, new VectorImp(1, 0, 0) ,Types.CUBE);
+//		transform(c2, vecmath.translationMatrix(1, 0, 0));
+		append(c2, g1);
 
 		Pipe c3 = createPipe("Pipe!", shader, 0, 1, 30);
 //		transform(c3, vecmath.translationMatrix(-1.5f, -1, 0));
@@ -67,16 +76,6 @@ public class App extends WorldState {
 		transform(c4, vecmath.translationMatrix(-1f, 1f, 0));
 		
 		append(c4, head);
-		
-		GroupNode g1 = createGroup("Group");
-		append(g1, head);
-		transform(g1, vecmath.translationMatrix(0, 1, 0));
-		
-		Cube c2 = createCube("Cube2", shader, 1.5f, 1.5f, 1.5f);
-//		transform(c2, vecmath.translationMatrix(0.1f, 0, 0));
-		transform(c2, vecmath.translationMatrix(1, 2, -5));
-		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_R)), SimulateType.ROTATE, Mode.TOGGLE, new VectorImp(1, 0, 0) ,Types.CUBE);
-		append(c2, g1);
 		
 		Plane floor = createPlane("Floor", shader, 20, 20);
 		transform(floor, vecmath.translationMatrix(0, -2f, 0));

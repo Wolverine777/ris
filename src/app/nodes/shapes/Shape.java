@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL13;
 import app.nodes.Node;
 import app.nodes.shapes.Vertex;
 import app.shader.Shader;
+import app.vecmath.Matrix;
 import app.vecmathimp.FactoryDefault;
 
 public abstract class Shape extends Node {
@@ -29,7 +30,7 @@ public abstract class Shape extends Node {
 		this.shader = shader;
 	}
 
-	public void display() {
+	public void display(Matrix m) {
 
 		System.out.println("Displaying " + id);
 
@@ -38,7 +39,7 @@ public abstract class Shape extends Node {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			tex.display();
 		}
-		shader.setModelMatrix(getWorldTransform());
+		shader.setModelMatrix(m.mult(getWorldTransform()));
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
 		// position and a vertex color.
 		glVertexAttribPointer(Shader.vertexAttribIdx, 3, false, 0, positionData);
