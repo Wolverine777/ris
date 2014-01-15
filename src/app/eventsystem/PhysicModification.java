@@ -4,6 +4,7 @@ import app.vecmath.Vector;
 
 public class PhysicModification {
 	
-	public Vector velocity;
+	public String id;
+	public Vector force;
 
 }

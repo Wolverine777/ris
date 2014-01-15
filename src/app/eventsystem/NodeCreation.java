@@ -11,7 +11,7 @@ public class NodeCreation {
 	
 	public Matrix modelmatrix;
 	
-	public Vector velocity;
+	public Vector impulse;
 	
 	public float w, h, d, r;
 	

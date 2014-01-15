@@ -17,6 +17,9 @@ public abstract class Node {
     protected List<Edge> edges = new ArrayList<Edge>();
     public String id;
     public Vector velocity;
+    public Vector acceleration;
+    public Vector force;
+	public Vector impulse;
 
     public Matrix getWorldTransform() {
         return worldTrafo;
@@ -102,6 +105,13 @@ public abstract class Node {
 
 	public void setVelocity(Vector velocity) {
 		this.velocity = velocity;
+	}
+	public Vector getForce() {
+		return force;
+	}
+
+	public void setForce(Vector force) {
+		this.force = force;
 	}
 
 	public abstract void display(Matrix m);

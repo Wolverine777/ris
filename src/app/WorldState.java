@@ -321,7 +321,7 @@ public class WorldState extends UntypedActor{
 			
 	}
 	
-	protected void addPhysic(Cube cube, Vector velocity){
+	protected void addPhysic(Cube cube, Vector impulse){
 		
 				
 		NodeCreation n = new NodeCreation();
@@ -329,7 +329,7 @@ public class WorldState extends UntypedActor{
 		n.id = cube.id;
 		n.type = Types.CUBE;
 		n.shader = cube.getShader();
-		n.velocity = velocity;
+		n.impulse = impulse;
 		
 		physic.tell(n, self());
 //		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?
