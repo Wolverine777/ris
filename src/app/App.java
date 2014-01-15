@@ -56,7 +56,7 @@ public class App extends WorldState {
 		Cube c1 = createCube("Cube1", shader, 0.3f, 0.3f, 0.3f);
 		append(c1, head);
 		transform(c1, vecmath.translationMatrix(-1.5f, -1, 0));
-//		addPhysic(c1, new VectorImp(6,6,6));
+//		addPhysic(c1, new VectorImp(0.00001f,0,0));
 
 		GroupNode g1 = createGroup("group");
 		append(g1,head);
@@ -76,6 +76,7 @@ public class App extends WorldState {
 		
 		Sphere c4 = createSphere("Shpere!", shader);
 		transform(c4, vecmath.translationMatrix(-1f, 1f, 0));
+		addPhysic(c4, new VectorImp(0,-0.001f,0));
 		
 		append(c4, head);
 		

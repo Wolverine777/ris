@@ -24,7 +24,7 @@ public class Physic extends UntypedActor {
 	private Map<String, Node> nodes = new HashMap<String, Node>();
 	ActorRef simulator;
 	private StopWatch zeit = new StopWatch();
-	private Vector ground = new VectorImp(0f, -0.01f, 0f);
+	private Vector ground = new VectorImp(0f, -0.1f, 0f);
 
 	private void initialize() {
 		getSender().tell(Message.INITIALIZED, self());
