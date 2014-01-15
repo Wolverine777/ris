@@ -85,7 +85,6 @@ public final class MatrixImp implements Matrix {
     set(0, 2, b2.x());
     set(1, 2, b2.y());
     set(2, 2, b2.z());
-    //System.out.print(this);
   }
 
   /**

@@ -95,7 +95,6 @@ public class Renderer extends UntypedActor {
 		Shader.setProjectionMatrix(projectionMatrix);
 
 		camera.activate();
-		System.out.println("hier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!2222222: " + start.toString());
 		start.display(start.getWorldTransform());
 
 		Display.setTitle("App");
@@ -117,16 +116,11 @@ public class Renderer extends UntypedActor {
 		} else if (message instanceof RendererInitialization) {
 			initialize();
 		} else if (message instanceof NodeCreation) {
-			System.out.println("NodeCreation");
-
 			if (((NodeCreation) message).type == Types.GROUP) {
 				Node newNode = nodeFactory
 						.groupNode(((NodeCreation) message).id);
 				nodes.put(newNode.id, newNode);
 			} else if (((NodeCreation) message).type == Types.CUBE) {
-
-				System.out.println("Shadering cube with "
-						+ ((NodeCreation) message).shader);
 
 				Node newNode = nodeFactory.cube(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
@@ -152,17 +146,9 @@ public class Renderer extends UntypedActor {
 			}
 
 		} else if (message instanceof CameraCreation) {
-			System.out.println("CameraCreation");
-
 			camera = nodeFactory.camera(((CameraCreation) message).id);
 			nodes.put(((CameraCreation) message).id, camera);
-
 		} else if (message instanceof NodeModification) {
-			System.out.println("NodeModification");
-
-			System.out.println("Nodes " + nodes);
-			System.out.println("Accesing " + ((NodeModification) message).id);
-
 			Node modify = nodes.get(((NodeModification) message).id);
 
 			if (((NodeModification) message).localMod != null) {
@@ -172,18 +158,10 @@ public class Renderer extends UntypedActor {
 				// modify.setLocalTransform(modify.getWorldTransform());
 			}
 			if (((NodeModification) message).appendTo != null) {
-
-				System.out.println("Appending "
-						+ ((NodeModification) message).id + " to "
-						+ ((NodeModification) message).appendTo);
-
 				modify.appendTo(nodes
 						.get(((NodeModification) message).appendTo));
 			}
-
 		} else if (message instanceof StartNodeModification) {
-			System.out.println("StartNodeModification");
-
 			start = nodes.get(((StartNodeModification) message).id);
 
 		}

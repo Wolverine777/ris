@@ -45,7 +45,6 @@ public class Simulator extends UntypedActor {
 
     private void simulate() throws Exception {
     	for(Map.Entry<Node, KeyDef> entry:simulations.entries()){
-//    	for(Map.Entry<Node, KeyDef> entry:simulations.entrySet()){
     		Set<Integer> keys=entry.getValue().getKeys();
     		if(keys==null||keys.isEmpty()){
     			doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
@@ -74,12 +73,10 @@ public class Simulator extends UntypedActor {
 //    		angle= 0.5f;
     		node.updateWorldTransform(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle));
 			angle = 0;
-//			System.out.println(("angle nachher!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: " + angle));
 			getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());
     	}
     	else if(type==SimulateType.TRANSLATE){
     		node.updateWorldTransform(MatrixImp.translate(vec));
-//    		System.out.println("roiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiggggggggggggghhhhhhhhhht"+node.getWorldTransform());
     		getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());
     	}
     	
@@ -105,31 +102,20 @@ public class Simulator extends UntypedActor {
         }
         
 //        else if (message instanceof NodeCreation) {
-//        	System.out.println("NodeCreation");
 //        	
 //        	if (((NodeCreation) message).type == Types.GROUP) {
 //        		Node newNode = nodeFactory.groupNode(((NodeCreation) message).id);
 //        		nodes.put(newNode.id, newNode);
 //        	} else if (((NodeCreation) message).type == Types.CUBE) {
-//        		
-//        		System.out.println("Shadering cube with " + ((NodeCreation) message).shader);
-//        		
-//        		
 //        		Node newNode = nodeFactory.cube(((NodeCreation) message).id, ((NodeCreation) message).shader);
 //        		nodes.put(newNode.id, newNode);
 //        	}
-//        	
-//        	
 //        } else if (message instanceof CameraCreation) {
-//        	System.out.println("CameraCreation");
-//        	
 //        	Camera camera = nodeFactory.camera(((CameraCreation) message).id);
 //        	nodes.put(((CameraCreation) message).id, camera);
 //        	
 //        } 
         	else if (message instanceof NodeModification) {
-//        	System.out.println("NodeModification");
-        	
         	System.out.println("Nodes " + nodes);
         	System.out.println("Accesing " + ((NodeModification) message).id);
         	if(nodes.containsKey(((NodeModification) message).id)){
@@ -141,17 +127,11 @@ public class Simulator extends UntypedActor {
         			System.out.println("haaaooooooooooooooooooooooooooooooooooooooooo\n"+modify.id+"\n"+"local\n"+modify.getLocalTransform()+"world\n"+modify.getWorldTransform());
         		}
 //        		if (((NodeModification) message).appendTo != null) {
-//        			
-//        			System.out.println("Appending " + ((NodeModification) message).id + " to " + ((NodeModification) message).appendTo);
-//        			
-//        			
 //        			modify.appendTo(nodes.get(((NodeModification) message).appendTo));
 //        		}//cause error on run, delets simulations
         	}
         } 
 //        else if (message instanceof StartNodeModification) {
-//        	System.out.println("StartNodeModification");
-//        	
 //        	Node start = nodes.get(((StartNodeModification) message).id);
 //        }
         else if(message instanceof SimulateCreation){
@@ -160,12 +140,8 @@ public class Simulator extends UntypedActor {
         	if(!nodes.containsKey(sc.id)){
         		if (((NodeCreation) message).type == Types.GROUP) {
         			newNode = nodeFactory.groupNode(((NodeCreation) message).id);
-        			//TODO: Problem bei physik und simulation auf einem objekt?
         			nodes.put(newNode.id, newNode);
         		} else if (((NodeCreation) message).type == Types.CUBE) {
-//        			System.out.println("Shadering cube with " + ((NodeCreation) message).shader);
-        			
-        			
         			newNode = nodeFactory.cube(((NodeCreation) message).id, ((NodeCreation) message).shader);
         			nodes.put(newNode.id, newNode);
         		}else if(((NodeCreation) message).type == Types.CAMERA){

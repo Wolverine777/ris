@@ -251,9 +251,6 @@ public class Sphere extends Shape {
 			nL[i] = nL[i].add(normal);
 			nL[i + 1] = nL[i + 1].add(normal);
 			nL[i + 2] = nL[i + 2].add(normal);
-
-			System.out.println(normal);
-
 		}
 		Vector[] tempNL = nL;
 		ArrayList<Vector> temp = new ArrayList<Vector>();
@@ -274,16 +271,11 @@ public class Sphere extends Shape {
 				}
 			}
 			for (int k = 0; k < temp.size(); k++) {
-				System.out.println("k" + k + " " + temp.get(k));
-
 				finalNormal = finalNormal.add(temp.get(k));
-				System.out.println("finalN" + temp.get(k));
 			}
 			finalNormal = finalNormal.normalize();
 			for (int in : index) {
-				// System.out.println(in);
 				nL[in] = finalNormal;
-				System.out.println("final" + finalNormal);
 			}
 		}
 	}
