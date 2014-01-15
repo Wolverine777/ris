@@ -9,6 +9,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
+
+import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
@@ -29,7 +33,7 @@ import app.vecmathimp.MatrixImp;
 public class Simulator extends UntypedActor {
     
     private Map<String, Node> nodes = new HashMap<String, Node>();
-    private Map<Node, KeyDef> simulations=new HashMap<Node, KeyDef>();
+    private SetMultimap<Node, KeyDef> simulations=HashMultimap.create();
     private Set<Integer> pressedKeys = new HashSet<Integer>();
     private Set<Integer> releasedKeys = new HashSet<Integer>();
     private Set<Integer> toggeled=new HashSet<Integer>();
@@ -40,7 +44,8 @@ public class Simulator extends UntypedActor {
     }
 
     private void simulate() throws Exception {
-    	for(Map.Entry<Node, KeyDef> entry:simulations.entrySet()){
+    	for(Map.Entry<Node, KeyDef> entry:simulations.entries()){
+//    	for(Map.Entry<Node, KeyDef> entry:simulations.entrySet()){
     		Set<Integer> keys=entry.getValue().getKeys();
     		if(keys==null||keys.isEmpty()){
     			doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
@@ -64,24 +69,17 @@ public class Simulator extends UntypedActor {
     
     private void doSimulation(Node node, SimulateType type, Vector vec){
     	StopWatch sw=new StopWatch();
-    	System.out.println("in?");
     	if(type==SimulateType.ROTATE){
-    		//TODO: Rotate simulation
-//    		angle += 10 * sw.elapsed();
-    		angle= 0.5f;
-//    		System.out.println("maaaaaaaaaaatttttttttttttrrrrrrrrrrrriiiiiiiixxxxxx\n"+MatrixImp.rotate(vec, angle));
-    		System.out.println("sdaföhekfhnwaknefökanovjwejnlfnaöjvbiew\n"+node.getWorldTransform());
-//    		angle = 0;
+    		angle += 1000f * sw.elapsed()* (vec.length()*1000);
+//    		angle= 0.5f;
     		node.updateWorldTransform(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle));
-    		System.out.println("simualtor"+node.getWorldTransform());
-    		System.out.println("angle vorher: " + angle);
 			angle = 0;
-			System.out.println(("angle nachher!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: " + angle));
+//			System.out.println(("angle nachher!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: " + angle));
 			getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());
     	}
     	else if(type==SimulateType.TRANSLATE){
     		node.updateWorldTransform(MatrixImp.translate(vec));
-    		System.out.println("roiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiggggggggggggghhhhhhhhhht"+node.getWorldTransform());
+//    		System.out.println("roiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiggggggggggggghhhhhhhhhht"+node.getWorldTransform());
     		getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());
     	}
     	
@@ -159,32 +157,40 @@ public class Simulator extends UntypedActor {
         else if(message instanceof SimulateCreation){
         	SimulateCreation sc=(SimulateCreation)message;
         	Node newNode=null;
-        	if (((NodeCreation) message).type == Types.GROUP) {
-        		newNode = nodeFactory.groupNode(((NodeCreation) message).id);
-        		nodes.put(newNode.id, newNode);
-        	} else if (((NodeCreation) message).type == Types.CUBE) {
-        		
-        		System.out.println("Shadering cube with " + ((NodeCreation) message).shader);
-        		
-        		
-        		newNode = nodeFactory.cube(((NodeCreation) message).id, ((NodeCreation) message).shader);
-        		nodes.put(newNode.id, newNode);
-        	}else if(((NodeCreation) message).type == Types.CAMERA){
-        		newNode = nodeFactory.camera(((CameraCreation) message).id);
-        		nodes.put(((CameraCreation) message).id, newNode);
+        	if(!nodes.containsKey(sc.id)){
+        		if (((NodeCreation) message).type == Types.GROUP) {
+        			newNode = nodeFactory.groupNode(((NodeCreation) message).id);
+        			//TODO: Problem bei physik und simulation auf einem objekt?
+        			nodes.put(newNode.id, newNode);
+        		} else if (((NodeCreation) message).type == Types.CUBE) {
+//        			System.out.println("Shadering cube with " + ((NodeCreation) message).shader);
+        			
+        			
+        			newNode = nodeFactory.cube(((NodeCreation) message).id, ((NodeCreation) message).shader);
+        			nodes.put(newNode.id, newNode);
+        		}else if(((NodeCreation) message).type == Types.CAMERA){
+        			newNode = nodeFactory.camera(((CameraCreation) message).id);
+        			nodes.put(((CameraCreation) message).id, newNode);
+        		}
+        		else{
+        			throw new Exception("Please implement Type");
+        		}
         	}
-        	else{
-        		throw new Exception("Please implement Type");
-        	}
+        	newNode=nodes.get(sc.id);
         	if(sc.getSimulation()!=SimulateType.NONE){
-        		System.out.println("haaaaaaaaaaaaaaaaaaaaaaaaaaaaaalllllllllllllllllllooooooooo\n"+newNode.id+sc.getSimulation()+"\n"+"local\n"+newNode.getLocalTransform()+"world\n"+newNode.getWorldTransform()+"keys"+sc.getKeys());
+//        		System.out.println("haaaaaaaaaaaaaaaaaaaaaaaaaaaaaalllllllllllllllllllooooooooo\n"+newNode.id+sc.getSimulation()+"\n"+"local\n"+newNode.getLocalTransform()+"world\n"+newNode.getWorldTransform()+"keys"+sc.getKeys());
         		simulations.put(newNode, new KeyDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));
         		newNode.setLocalTransform(sc.modelmatrix);
         		newNode.updateWorldTransform(); //TODO: Node klasse fixen.... was geht denn hier
 //        		System.out.println("simulations\n"+simulations.get(newNode).getVector()+"\n"+simulations.isEmpty()+sc.getSimulation());
         		
         	}else{
-        		simulations.remove(newNode);
+//        		simulations.remove(newNode);
+        		for(KeyDef kd:simulations.get(newNode)){
+        			if(kd.getKeys().containsAll(sc.getKeys())&&kd.getMode()==sc.getMode()){
+        				simulations.remove(newNode, kd);
+        			}
+        		}
         	}
         }
         else if (message instanceof PhysicModification) {

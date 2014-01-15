@@ -46,7 +46,7 @@ public class App extends WorldState {
 		 * Note: After Creation add keys and physic before transform.
 		 */
 		setCamera(nodeFactory.camera("Cam"));
-		transform(camera, FactoryDefault.vecmath.translationMatrix(0, 0, 3));
+		transform(camera, FactoryDefault.vecmath.translationMatrix(0, 0, 6));
 
 		GroupNode head = createGroup("head");
 		setStart(head);
@@ -64,7 +64,9 @@ public class App extends WorldState {
 		
 		Cube c2 = createCube("Cube2", shader, 1.5f, 1.5f, 1.5f);
 //		transform(c2, vecmath.translationMatrix(0.1f, 0, 0));
-		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_R)), SimulateType.ROTATE, Mode.TOGGLE, new VectorImp(1, 0, 0) ,Types.CUBE);
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_R)), SimulateType.TRANSLATE, Mode.TOGGLE, new VectorImp(0.05f, 0, 0) ,Types.CUBE);
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_E)), SimulateType.TRANSLATE, Mode.DOWN, new VectorImp(-0.05f, 0, 0) ,Types.CUBE);
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(1f, 0, 0) ,Types.CUBE);
 //		transform(c2, vecmath.translationMatrix(1, 0, 0));
 		append(c2, g1);
 
