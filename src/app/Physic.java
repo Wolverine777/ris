@@ -16,6 +16,7 @@ import app.messages.PhysicInitialization;
 import app.messages.RendererInitialization;
 import app.nodes.Node;
 import app.toolkit.StopWatch;
+import app.vecmath.Vector;
 import app.vecmathimp.VectorImp;
 
 public class Physic extends UntypedActor {
@@ -23,6 +24,7 @@ public class Physic extends UntypedActor {
 	private Map<String, Node> nodes = new HashMap<String, Node>();
 	ActorRef simulator;
 	private StopWatch zeit = new StopWatch();
+	private Vector ground = new VectorImp(0f, -0.1f, 0f);
 
 	private void initialize() {
 		getSender().tell(Message.INITIALIZED, self());
@@ -36,10 +38,13 @@ public class Physic extends UntypedActor {
 //				System.out.println("Matrix NodePhysic: " + n.getWorldTransform().toString());
 //				System.out.println("funkt das???" + n.id);
 //				System.out.println("alte velo:" + n.getVelocity());
-				n.setVelocity(n.getVelocity().sub(new VectorImp(0, 2*zeit.elapsed(), 0)));
+				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()*zeit.elapsed(), 0))));
+			
 //				System.out.println("neue velo:" + n.getVelocity());
+				
 				PhysicModification p = new PhysicModification();
-				p.velocity = n.getVelocity();
+				p.id = n.id;
+				p.force = n.getForce();
 				simulator.tell(p, self());
 
 			} else if (collisionGround(n) == true
@@ -86,8 +91,8 @@ public class Physic extends UntypedActor {
 						((NodeCreation) message).shader,
 						((NodeCreation) message).w, ((NodeCreation) message).h,
 						((NodeCreation) message).d);
-				if ((((NodeCreation) message).velocity != null)) {
-					newNode.setVelocity(((NodeCreation) message).velocity);
+				if ((((NodeCreation) message).impulse != null)) {
+					newNode.setVelocity(((NodeCreation) message).impulse);
 				}
 				if ((((NodeCreation) message).modelmatrix != null)) {
 					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);

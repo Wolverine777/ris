@@ -79,7 +79,12 @@ public class Simulator extends UntypedActor {
     		node.updateWorldTransform(MatrixImp.translate(vec));
     		getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());
     	}
-    	
+    	else if(type==SimulateType.PHYSIC){
+    		if(vec != null){
+    		node.updateWorldTransform(MatrixImp.translate(vec));
+    		getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());    		
+    	    }
+    	}
     	//st end nodemodification
     }
     
@@ -120,11 +125,11 @@ public class Simulator extends UntypedActor {
         	System.out.println("Accesing " + ((NodeModification) message).id);
         	if(nodes.containsKey(((NodeModification) message).id)){
         		Node modify = nodes.get(((NodeModification) message).id);
-        		System.out.println("haaaooooooooooooooooooooooooooooooooooooooooo\n"+modify.id+"\n"+"local\n"+modify.getLocalTransform()+"world\n"+modify.getWorldTransform());
+//        		System.out.println("haaaooooooooooooooooooooooooooooooooooooooooo\n"+modify.id+"\n"+"local\n"+modify.getLocalTransform()+"world\n"+modify.getWorldTransform());
         		if (((NodeModification) message).localMod != null) {
         			 modify.setLocalTransform(((NodeModification) message).localMod);
     				 modify.updateWorldTransform();
-        			System.out.println("haaaooooooooooooooooooooooooooooooooooooooooo\n"+modify.id+"\n"+"local\n"+modify.getLocalTransform()+"world\n"+modify.getWorldTransform());
+//        			System.out.println("haaaooooooooooooooooooooooooooooooooooooooooo\n"+modify.id+"\n"+"local\n"+modify.getLocalTransform()+"world\n"+modify.getWorldTransform());
         		}
 //        		if (((NodeModification) message).appendTo != null) {
 //        			modify.appendTo(nodes.get(((NodeModification) message).appendTo));
@@ -138,6 +143,7 @@ public class Simulator extends UntypedActor {
         	SimulateCreation sc=(SimulateCreation)message;
         	Node newNode=null;
         	if(!nodes.containsKey(sc.id)){
+        		System.out.println("jashdlhwidaljhdlahs"+sc.id);
         		if (((NodeCreation) message).type == Types.GROUP) {
         			newNode = nodeFactory.groupNode(((NodeCreation) message).id);
         			nodes.put(newNode.id, newNode);
@@ -154,8 +160,10 @@ public class Simulator extends UntypedActor {
         	}
         	newNode=nodes.get(sc.id);
         	if(sc.getSimulation()!=SimulateType.NONE){
+        		System.out.println("next simulation" + simulations.toString());
 //        		System.out.println("haaaaaaaaaaaaaaaaaaaaaaaaaaaaaalllllllllllllllllllooooooooo\n"+newNode.id+sc.getSimulation()+"\n"+"local\n"+newNode.getLocalTransform()+"world\n"+newNode.getWorldTransform()+"keys"+sc.getKeys());
         		simulations.put(newNode, new KeyDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));
+        		System.out.println("last simulation" + simulations.toString());
         		newNode.setLocalTransform(sc.modelmatrix);
         		newNode.updateWorldTransform(); //TODO: Node klasse fixen.... was geht denn hier
 //        		System.out.println("simulations\n"+simulations.get(newNode).getVector()+"\n"+simulations.isEmpty()+sc.getSimulation());
@@ -170,8 +178,19 @@ public class Simulator extends UntypedActor {
         	}
         }
         else if (message instanceof PhysicModification) {
-//        	System.out.println("Physic data received!!!!!!!!!!!!!" + (((PhysicModification) message)).velocity);
-        	
+        	System.out.println("Physic data received!!!!!!!!!!!!!" + (((PhysicModification) message)).force);
+        	if (nodes.containsKey(((PhysicModification) message).id)){
+        		System.out.println("IN?????????????????????????????? YES?");
+        		Node modify = nodes.get(((PhysicModification) message).id);
+        		modify.setForce((((PhysicModification) message)).force);
+        		for(KeyDef k :simulations.get(modify)){
+        		  if(k.getType().equals(SimulateType.PHYSIC)){
+        			  System.out.println("PhysicTYPE?????????????");
+        			  k.setVector(modify.getForce());
+        		  }
+        		}
+        		
+        	}
         	
         }
         
