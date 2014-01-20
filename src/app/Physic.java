@@ -24,7 +24,7 @@ public class Physic extends UntypedActor {
 	private Map<String, Node> nodes = new HashMap<String, Node>();
 	ActorRef simulator;
 	private StopWatch zeit = new StopWatch();
-	private Vector ground = new VectorImp(0f, -0.1f, 0f);
+	private Vector ground = new VectorImp(0f, -0.001f, 0f);
 
 	private void initialize() {
 		getSender().tell(Message.INITIALIZED, self());
@@ -39,13 +39,14 @@ public class Physic extends UntypedActor {
 //				System.out.println("funkt das???" + n.id);
 //				System.out.println("alte velo:" + n.getVelocity());
 				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()*zeit.elapsed(), 0))));
-			
+				n.setVelocity(n.getForce());
 //				System.out.println("neue velo:" + n.getVelocity());
 				
 				PhysicModification p = new PhysicModification();
 				p.id = n.id;
 				p.force = n.getForce();
 				simulator.tell(p, self());
+				
 
 			} else if (collisionGround(n) == true
 					|| collisionObjects(n) == false) {
