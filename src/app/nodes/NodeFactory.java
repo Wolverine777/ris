@@ -48,11 +48,13 @@ public class NodeFactory {
 	
 	public Cube cube(String id, Shader shader) {
 		Cube n = new Cube(id, shader);
+		System.out.println("cubes: "+ n.id + n.getCenter() + n.getRadius());;
 		return n;
 	}
 
 	public Cube cube(String id, Shader shader, float w, float h, float d) {
 		Cube n = new Cube(id, shader, w, h, d);
+		System.out.println("cubes: "+ n.id + n.getCenter() + n.getRadius());;
 		return n;
 	}
 	

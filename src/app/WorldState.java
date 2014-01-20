@@ -316,6 +316,9 @@ public class WorldState extends UntypedActor{
 		n.id = cube.id;
 		n.type = Types.CUBE;
 		n.shader = cube.getShader();
+		n.d = cube.getD2()*2;
+		n.w = cube.getW2()*2;
+	    n.h = cube.getH2()*2;
 		
 		physic.tell(n, self());
 			
@@ -330,6 +333,9 @@ public class WorldState extends UntypedActor{
 		n.type = Types.CUBE;
 		n.shader = cube.getShader();
 		n.impulse = impulse;
+		n.d = cube.getD2()*2;
+		n.w = cube.getW2()*2;
+	    n.h = cube.getH2()*2;
 		
 		physic.tell(n, self());
 //		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?
@@ -362,10 +368,15 @@ public class WorldState extends UntypedActor{
 	}
 	
 	protected void simulateOnKey(Node object, Set<Integer> keys, SimulateType simulation, Mode mode, Vector vec, Types type){ //TODO:better solution for type
+		if (object instanceof Cube){
 		SimulateCreation sc=new SimulateCreation(object.id, keys, simulation, mode, vec);
+		sc.w =((Cube)object).getW2()*2;
+		sc.h = ((Cube)object).getH2()*2;
+		sc.d =((Cube)object).getD2()*2;
 		sc.type=type;
 		sc.modelmatrix=object.getWorldTransform();
 		simulator.tell(sc, getSelf());
+		}
 		if(!(keys==null||keys.isEmpty())){
 			if(simulation!=SimulateType.NONE) input.tell(new RegisterKeys(keys, true), simulator);
 			else input.tell(new RegisterKeys(keys, false), simulator);

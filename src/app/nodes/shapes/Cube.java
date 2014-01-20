@@ -1,11 +1,15 @@
 package app.nodes.shapes;
 
 import java.io.File;
+
 import app.nodes.shapes.Texture;
+
 import org.lwjgl.BufferUtils;
+
 import app.shader.Shader;
 import app.vecmath.Color;
 import app.vecmath.Vector;
+import app.vecmathimp.VectorImp;
 import static app.nodes.shapes.Vertex.*;
 import static app.vecmathimp.FactoryDefault.vecmath;
 
@@ -27,6 +31,8 @@ public class Cube extends Shape {
 	private float w2;
 	private float h2;
 	private float d2;
+	private Vector center;
+	private float radius;
 
 	public Cube(String id, Shader shader) {
 		this(id, shader, 1f, 1f, 1f);
@@ -42,6 +48,20 @@ public class Cube extends Shape {
 		w2 = w / 2;
 		h2 = h / 2;
 		d2 = d / 2;
+		
+		this.center = new VectorImp(w2, h2, d2);
+		
+		// TODO noch eine sinnvolle Zahl drauf addieren um rechtzeitig kollision zu erkennen
+		if(center.x() >= center.y() && center.x() >=center.z()){
+			radius = center.x();			
+		}
+		else if (center.y() >= center.x() && center.y() >=center.z()){
+			radius = center.y();			
+		}
+		else if (center.z() >= center.x() && center.z() >=center.y()){
+			radius = center.z();			
+		}
+		System.out.println("Hat das jetzt nen mittelpunkt und nen radius?????? " + id + center.toString() + radius);
 
 		if (sourceTex != null) {
 			tex = new Texture(new File(sourceTex));
@@ -144,4 +164,34 @@ public class Cube extends Shape {
 		colorData.rewind();
 		normalData.rewind();
 	}
+
+	public Vector getCenter() {
+		return center;
+	}
+
+	public void setCenter(Vector center) {
+		this.center = center;
+	}
+
+	public float getRadius() {
+		return radius;
+	}
+
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
+
+	public float getW2() {
+		return w2;
+	}
+
+	public float getH2() {
+		return h2;
+	}
+
+	public float getD2() {
+		return d2;
+	}
+	
+	
 }

@@ -148,7 +148,8 @@ public class Simulator extends UntypedActor {
         			newNode = nodeFactory.groupNode(((NodeCreation) message).id);
         			nodes.put(newNode.id, newNode);
         		} else if (((NodeCreation) message).type == Types.CUBE) {
-        			newNode = nodeFactory.cube(((NodeCreation) message).id, ((NodeCreation) message).shader);
+        			newNode = nodeFactory.cube(((NodeCreation) message).id, ((NodeCreation) message).shader, ((NodeCreation) message).w, ((NodeCreation) message).h,
+    						((NodeCreation) message).d);
         			nodes.put(newNode.id, newNode);
         		}else if(((NodeCreation) message).type == Types.CAMERA){
         			newNode = nodeFactory.camera(((CameraCreation) message).id);
