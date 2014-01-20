@@ -16,11 +16,16 @@ import app.vecmath.Matrix;
 import app.vecmathimp.FactoryDefault;
 
 public abstract class Shape extends Node {
-	protected Vertex[] vertices;
+	protected Vertex[] vertices={};
+	protected Vertex[] vertices3={};
 	protected FloatBuffer positionData;
 	protected FloatBuffer colorData;
 	protected FloatBuffer normalData;
 	protected FloatBuffer textureData;
+	protected FloatBuffer positionData3;
+	protected FloatBuffer colorData3;
+	protected FloatBuffer normalData3;
+	protected FloatBuffer textureData3;
 	protected Texture tex;
 	protected Shader shader;
 	protected int mode = GL11.GL_QUADS;
@@ -40,6 +45,24 @@ public abstract class Shape extends Node {
 		shader.setModelMatrix(m.mult(getWorldTransform()));
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
 		// position and a vertex color.
+		if(vertices3!=null&&vertices3.length!=0){
+			glVertexAttribPointer(Shader.vertexAttribIdx, 3, false, 0, positionData3);
+			glEnableVertexAttribArray(Shader.vertexAttribIdx);
+			glVertexAttribPointer(Shader.colorAttribIdx, 3, false, 0, colorData3);
+			glEnableVertexAttribArray(Shader.colorAttribIdx);
+			if (normalData != null) {
+				glVertexAttribPointer(Shader.normalAttribIdx, 3, false, 0,
+						normalData3);
+				glEnableVertexAttribArray(Shader.normalAttribIdx);
+			}
+			if (tex != null) {
+				GL11.glTexCoordPointer(3, 0, textureData3);
+				GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+			}
+			
+			glDrawArrays(GL11.GL_TRIANGLES, 0, vertices3.length);
+		}
+		
 		glVertexAttribPointer(Shader.vertexAttribIdx, 3, false, 0, positionData);
 		glEnableVertexAttribArray(Shader.vertexAttribIdx);
 		glVertexAttribPointer(Shader.colorAttribIdx, 3, false, 0, colorData);
@@ -60,6 +83,5 @@ public abstract class Shape extends Node {
 
 	public Shader getShader() {
 		return shader;
-	}
-	
+	}	
 }

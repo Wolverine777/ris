@@ -7,9 +7,7 @@ import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glViewport;
 
-import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.LWJGLException;
@@ -142,6 +140,10 @@ public class Renderer extends UntypedActor {
 				Node newNode = nodeFactory.plane(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
 						((NodeCreation) message).w, ((NodeCreation) message).d);
+				nodes.put(newNode.id, newNode);
+			}else if(((NodeCreation) message).type == Types.OBJECT){
+				NodeCreation nc=(NodeCreation) message;
+				Node newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex);
 				nodes.put(newNode.id, newNode);
 			}
 

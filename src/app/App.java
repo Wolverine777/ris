@@ -3,6 +3,7 @@ package app;
 import static app.vecmathimp.FactoryDefault.vecmath;
 import static app.nodes.NodeFactory.nodeFactory;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -17,6 +18,7 @@ import app.messages.Mode;
 import app.messages.SimulateType;
 import app.nodes.GroupNode;
 import app.nodes.shapes.Cube;
+import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Pipe;
 import app.nodes.shapes.Plane;
 import app.nodes.shapes.Sphere;
@@ -62,7 +64,8 @@ public class App extends WorldState {
 		transform(g1, vecmath.translationMatrix(0, -1, 0));
 		
 		Cube c2 = createCube("Cube2", shader, 1.5f, 1.5f, 1.5f);
-//		transform(c2, vecmath.translationMatrix(0.1f, 0, 0));
+		transform(c2, vecmath.scaleMatrix(2f, 1f, 0.5f));
+		transform(c2, vecmath.translationMatrix(0f, 2, 0));
 		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_R)), SimulateType.TRANSLATE, Mode.TOGGLE, new VectorImp(0.01f, 0, 0) ,Types.CUBE);
 		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_E)), SimulateType.TRANSLATE, Mode.DOWN, new VectorImp(-0.01f, 0, 0) ,Types.CUBE);
 		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(1f, 0, 0) ,Types.CUBE);
@@ -82,6 +85,13 @@ public class App extends WorldState {
 		Plane floor = createPlane("Floor", shader, 20, 20);
 		transform(floor, vecmath.translationMatrix(0, -2f, 0));
 		append(floor, g1);
+		
+		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Tree.obj"), null);
+		transform(testObj, vecmath.scaleMatrix(0.01f, 0.01f, 0.01f));
+		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));
+//		transform(testObj, vecmath.translationMatrix(-8f, 0f, 0f));
+		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(6f, 0, 0) ,Types.OBJECT);
+		append(testObj, head);
 
 	}
 

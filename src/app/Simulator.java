@@ -12,7 +12,6 @@ import java.util.Set;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
-import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
@@ -71,16 +70,22 @@ public class Simulator extends UntypedActor {
     	if(type==SimulateType.ROTATE){
     		angle += 1000f * sw.elapsed()* (vec.length()*1000);
 //    		angle= 0.5f;
+//    		node.setLocalTransform(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle));
+//    		node.updateWorldTransform();
     		node.updateWorldTransform(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle));
 			angle = 0;
 			getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());
     	}
     	else if(type==SimulateType.TRANSLATE){
+//    		node.setLocalTransform(MatrixImp.translate(vec));
+//    		node.updateWorldTransform();
     		node.updateWorldTransform(MatrixImp.translate(vec));
     		getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());
     	}
     	else if(type==SimulateType.PHYSIC){
     		if(vec != null){
+//    			node.setLocalTransform(MatrixImp.translate(vec));
+//    			node.updateWorldTransform();
     		node.updateWorldTransform(MatrixImp.translate(vec));
     		getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());    		
     	    }
@@ -153,7 +158,12 @@ public class Simulator extends UntypedActor {
         		}else if(((NodeCreation) message).type == Types.CAMERA){
         			newNode = nodeFactory.camera(((CameraCreation) message).id);
         			nodes.put(((CameraCreation) message).id, newNode);
+        		}else if(((NodeCreation) message).type == Types.OBJECT){
+    				NodeCreation nc=(NodeCreation) message;
+    				newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex);
+    				nodes.put(newNode.id, newNode);
         		}
+        		
         		else{
         			throw new Exception("Please implement Type");
         		}

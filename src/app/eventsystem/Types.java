@@ -6,5 +6,6 @@ public enum Types {
 	PIPE,
 	SPHERE,
 	PLANE,
+	OBJECT,
 	CAMERA
 }

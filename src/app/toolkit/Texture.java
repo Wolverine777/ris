@@ -42,7 +42,7 @@ public final class Texture {
    *          The file containing the image.
    */
   public Texture(File t) {
-    // Read the image from file (PNG, JPEG, BMP, GIF)
+    // Read the image from file (PNG, JPEG, BMP, "no" GIF)
     BufferedImage bi = null;
     try {
       bi = ImageIO.read(t);
@@ -77,26 +77,29 @@ public final class Texture {
     IntBuffer objs = BufferUtils.createIntBuffer(1);
     glGenTextures(objs);
     obj = objs.get(0);
+    System.out.println("TextureID"+obj);
+  }
+  
+  public void display(){
+	    // Bind the texture object
+	    bind();
 
-    // Bind the texture object
-    bind();
+	    // Set parameters
+	    glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+	    glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 
-    // Set parameters
-    glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-    glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+	    glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER,
+	      GL11.GL_NEAREST);
+	    // GL2ES2.GL_LINEAR);
+	    glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER,
+	      GL11.GL_NEAREST);
+	    // GL2ES2.GL_LINEAR_MIPMAP_LINEAR);
 
-    glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER,
-      GL11.GL_NEAREST);
-    // GL2ES2.GL_LINEAR);
-    glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER,
-      GL11.GL_NEAREST);
-    // GL2ES2.GL_LINEAR_MIPMAP_LINEAR);
+	    // Load the texture image
+	    glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, w, h, 0, GL11.GL_RGBA,
+	      GL11.GL_UNSIGNED_BYTE, data);
 
-    // Load the texture image
-    glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, w, h, 0, GL11.GL_RGBA,
-      GL11.GL_UNSIGNED_BYTE, data);
-
-    // gl.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+	    // gl.glGenerateMipmap(GL11.GL_TEXTURE_2D);
   }
 
   /**

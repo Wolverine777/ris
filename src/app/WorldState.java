@@ -2,6 +2,7 @@ package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -31,6 +32,7 @@ import app.nodes.GroupNode;
 import app.nodes.Node;
 import app.nodes.camera.Camera;
 import app.nodes.shapes.Cube;
+import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Pipe;
 import app.nodes.shapes.Plane;
 import app.nodes.shapes.Sphere;
@@ -209,7 +211,7 @@ public class WorldState extends UntypedActor{
 		
 		NodeModification nm = new NodeModification();
 		nm.id = n.id;
-		nm.localMod = m;
+		nm.localMod = n.getWorldTransform();
 		announce(nm);
 	}
 	
@@ -308,6 +310,22 @@ public class WorldState extends UntypedActor{
         announce(n);
         
         return plane;
+	}
+	
+	protected ObjLoader createObject(String id, Shader shader, File sourceFile, File sourceTex) {
+		ObjLoader obj = nodeFactory.obj(id, shader, sourceFile, sourceTex);
+		nodes.put(id, obj);
+		
+		NodeCreation n = new NodeCreation();
+        n.id = id;
+        n.type = Types.OBJECT;
+        n.shader = shader;
+        n.sourceFile=sourceFile;
+        n.sourceTex=sourceTex;
+        
+        announce(n);
+        
+        return obj;
 	}
 
 	protected void addPhysic(Cube cube){

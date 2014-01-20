@@ -1,10 +1,11 @@
 package app.nodes;
 
-import java.util.HashMap;
+import java.io.File;
 import java.util.Map;
 
 import app.nodes.camera.Camera;
 import app.nodes.shapes.Cube;
+import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Pipe;
 import app.nodes.shapes.Plane;
 import app.nodes.shapes.Sphere;
@@ -69,5 +70,9 @@ public class NodeFactory {
 	public Plane plane(String id, Shader shader, float width, float depth) {
 		Plane p = new Plane(id, shader, width, depth);
 		return p;
+	}
+	
+	public ObjLoader obj(String id, Shader shader, File sourceFile, File sourceTex){
+		return new ObjLoader(id, shader, sourceFile, sourceTex);
 	}
 }
