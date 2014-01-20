@@ -56,6 +56,7 @@ public class App extends WorldState {
 		Cube c1 = createCube("Cube1", shader, 0.5f, 0.3f, 0.3f);
 		append(c1, head);
 		transform(c1, vecmath.translationMatrix(-1.5f, -1, 0));
+//		transform(c1, vecmath.scaleMatrix(2f, 1f, 1f));
 		simulateOnKey(c1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(1f, 0, 0) ,Types.CUBE);
 //		addPhysic(c1, new VectorImp(0.00001f,0,0));
 

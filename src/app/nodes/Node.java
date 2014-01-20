@@ -10,7 +10,6 @@ import app.edges.Edge;
 import app.vecmath.Matrix;
 import app.vecmath.Vector;
 import app.vecmathimp.FactoryDefault;
-import app.vecmathimp.VectorImp;
 
 public abstract class Node {
     private Matrix modelMatrix, worldTrafo;
@@ -57,9 +56,9 @@ public abstract class Node {
     }
 
     public void updateWorldTransform(Matrix previousTrafo) {
-//        worldTrafo = previousTrafo.mult(getWorldTransform());
+        worldTrafo = previousTrafo.mult(getWorldTransform());
 //    	System.out.println("world tranform: " + getWorldTransform());
-        worldTrafo = getWorldTransform().mult(previousTrafo);
+//        worldTrafo = getWorldTransform().mult(previousTrafo);
     }
 
     public void updateWorldTransform() {

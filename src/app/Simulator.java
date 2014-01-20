@@ -37,6 +37,7 @@ public class Simulator extends UntypedActor {
     private Set<Integer> releasedKeys = new HashSet<Integer>();
     private Set<Integer> toggeled=new HashSet<Integer>();
 	private float angle = 0;
+	StopWatch sw=new StopWatch();
     
     private void initialize() {
         getSender().tell(Message.INITIALIZED, self());
@@ -66,13 +67,16 @@ public class Simulator extends UntypedActor {
     }
     
     private void doSimulation(Node node, SimulateType type, Vector vec){
-    	StopWatch sw=new StopWatch();
+//    	StopWatch sw=new StopWatch();
     	if(type==SimulateType.ROTATE){
-    		angle += 1000f * sw.elapsed()* (vec.length()*1000);
+    		angle += 100f * sw.elapsed()* (vec.length()*100);
 //    		angle= 0.5f;
 //    		node.setLocalTransform(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle));
 //    		node.updateWorldTransform();
+    		Vector v=node.getWorldTransform().getPosition();
+    		node.updateWorldTransform(MatrixImp.translate(-v.x(),-v.y(),-v.z()));
     		node.updateWorldTransform(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle));
+    		node.updateWorldTransform(MatrixImp.translate(v.x(),v.y(),v.z()));
 			angle = 0;
 			getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());
     	}
