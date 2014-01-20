@@ -371,7 +371,7 @@ public class WorldState extends UntypedActor{
 		NodeCreation n = new NodeCreation();
 		n.modelmatrix = (nodes.get(sphere.id).getWorldTransform());
 		n.id = sphere.id;
-		n.type = Types.CUBE;
+		n.type = Types.SPHERE;
 		n.shader = sphere.getShader();
 		n.impulse = impulse;
 		

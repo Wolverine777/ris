@@ -55,8 +55,10 @@ public class App extends WorldState {
 
 		Cube c1 = createCube("Cube1", shader, 0.5f, 0.3f, 0.3f);
 		append(c1, head);
-		transform(c1, vecmath.translationMatrix(-1.5f, -1, 0));
-//		transform(c1, vecmath.scaleMatrix(2f, 1f, 1f));
+		transform(c1, vecmath.scaleMatrix(2, 2, 2));
+		transform(c1, vecmath.translationMatrix(-1.5f, 2, 0));
+//		transform(c1, vecmath.scaleMatrix(2, 2, 2));
+//		transform(c1, vecmath.translationMatrix(1.5f, -1, 0));
 		simulateOnKey(c1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(1f, 0, 0) ,Types.CUBE);
 //		addPhysic(c1, new VectorImp(0.00001f,0,0));
 
@@ -65,8 +67,8 @@ public class App extends WorldState {
 		transform(g1, vecmath.translationMatrix(0, -1, 0));
 		
 		Cube c2 = createCube("Cube2", shader, 1.5f, 1.5f, 1.5f);
-		transform(c2, vecmath.scaleMatrix(2f, 1f, 0.5f));
-		transform(c2, vecmath.translationMatrix(0f, 2, 0));
+//		transform(c2, vecmath.scaleMatrix(2f, 2f, 0));
+//		transform(c2, vecmath.translationMatrix(-2f, 2, 0));
 		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_R)), SimulateType.TRANSLATE, Mode.TOGGLE, new VectorImp(0.01f, 0, 0) ,Types.CUBE);
 		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_E)), SimulateType.TRANSLATE, Mode.DOWN, new VectorImp(-0.01f, 0, 0) ,Types.CUBE);
 		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(1f, 0, 0) ,Types.CUBE);
@@ -87,12 +89,13 @@ public class App extends WorldState {
 		transform(floor, vecmath.translationMatrix(0, -2f, 0));
 		append(floor, g1);
 		
-		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Tree.obj"), null);
-		transform(testObj, vecmath.scaleMatrix(0.01f, 0.01f, 0.01f));
-		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));
+//		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Tree.obj"), null);
+//		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));
+//		transform(testObj, vecmath.scaleMatrix(0.01f, 0.01f, 0.01f));
+//		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));
 //		transform(testObj, vecmath.translationMatrix(-8f, 0f, 0f));
-		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(6f, 0, 0) ,Types.OBJECT);
-		append(testObj, head);
+//		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(6f, 0, 0) ,Types.OBJECT);
+//		append(testObj, head);
 
 	}
 

@@ -13,7 +13,10 @@ import app.nodes.Node;
 import app.nodes.shapes.Vertex;
 import app.shader.Shader;
 import app.vecmath.Matrix;
+import app.vecmath.Vector;
 import app.vecmathimp.FactoryDefault;
+import app.vecmathimp.MatrixImp;
+import app.vecmathimp.VectorImp;
 
 public abstract class Shape extends Node {
 	protected Vertex[] vertices={};
@@ -29,10 +32,15 @@ public abstract class Shape extends Node {
 	protected Texture tex;
 	protected Shader shader;
 	protected int mode = GL11.GL_QUADS;
+	private Vector center = new VectorImp(0,0,0);
+	private float radius;
 
 	public Shape(String id, Shader shader) {
 		super(id, FactoryDefault.vecmath.identityMatrix());
 		this.shader = shader;
+		findCenter();
+		
+		
 	}
 
 	public void display(Matrix m) {
@@ -84,4 +92,61 @@ public abstract class Shape extends Node {
 	public Shader getShader() {
 		return shader;
 	}	
+	
+	protected void findCenter(){
+		float xKlein = 0;
+		float xGroﬂ = 0;
+		float yKlein = 0;
+		float yGroﬂ = 0;
+		float zKlein = 0;
+		float zGroﬂ = 0;
+		
+		for(Vertex v: vertices){
+			if(v.position.x() < xKlein){
+				xKlein = v.position.x();
+			}
+			if(v.position.x() > xGroﬂ){
+				xGroﬂ = v.position.x();
+			}
+			if(v.position.y() < yKlein){
+				yKlein = v.position.y();
+			}
+			if(v.position.y() > yGroﬂ){
+				yGroﬂ = v.position.y();
+			}
+			if(v.position.z() < zKlein){
+				zKlein = v.position.z();
+			}
+			if(v.position.z() > zGroﬂ){
+				zGroﬂ = v.position.z();
+			}
+		}
+		center = new VectorImp((xGroﬂ + xKlein)/2, (yGroﬂ + yKlein)/2, (zGroﬂ + zKlein)/2);
+		
+		if(center.x() >= center.y() && center.x() >=center.z()){
+			radius = center.x();			
+		}
+		else if (center.y() >= center.x() && center.y() >=center.z()){
+			radius = center.y();			
+		}
+		else if (center.z() >= center.x() && center.z() >=center.y()){
+			radius = center.z();			
+		}
+		System.out.println("Neues center f¸r Cubezuerst: " + super.id + center.toString());
+	}
+	 
+	@Override
+	public void updateWorldTransform(Matrix previousTrafo){
+		super.updateWorldTransform(previousTrafo);
+	    center = getWorldTransform().mult(MatrixImp.translate(center)).getPosition();
+	    System.out.println("Neues center f¸r Cube: " + super.id + center.toString());
+	}
+	
+	@Override
+	public void updateWorldTransform() {
+		super.updateWorldTransform();
+//		center = getWorldTransform().mult(MatrixImp.translate(center)).getPosition();
+//		System.out.println("Neues center f¸r Cube: " + super.id + center.toString());
+	}
+    
 }

@@ -99,7 +99,20 @@ public class Physic extends UntypedActor {
 					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
 				}
 				nodes.put(newNode.id, newNode);
-			} else if (message instanceof NodeModification) {
+			} else if (((NodeCreation) message).type == Types.SPHERE) {
+
+				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
+						((NodeCreation) message).shader);
+				
+						
+				if ((((NodeCreation) message).impulse != null)) {
+					newNode.setVelocity(((NodeCreation) message).impulse);
+				}
+				if ((((NodeCreation) message).modelmatrix != null)) {
+					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
+				}
+				nodes.put(newNode.id, newNode);
+			}else if (message instanceof NodeModification) {
 				if (nodes.containsKey(((NodeModification) message).id)) {
 //					System.out.println("NodeModification");
 
