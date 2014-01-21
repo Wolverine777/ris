@@ -39,6 +39,7 @@ public class Physic extends UntypedActor {
 //				System.out.println("funkt das???" + n.id);
 //				System.out.println("alte velo:" + n.getVelocity());
 				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()*zeit.elapsed(), 0))));
+//				TODO Masse einabauen, dann impuls setzen und dann velocity
 				n.setVelocity(n.getForce());
 //				System.out.println("neue velo:" + n.getVelocity());
 				
@@ -106,6 +107,7 @@ public class Physic extends UntypedActor {
 				
 						
 				if ((((NodeCreation) message).impulse != null)) {
+//					TODO Masse einbauen
 					newNode.setVelocity(((NodeCreation) message).impulse);
 				}
 				if ((((NodeCreation) message).modelmatrix != null)) {
