@@ -29,21 +29,22 @@ public class Input extends UntypedActor {
     private void run() {
     	Set<Integer> pressedKeys = new HashSet<Integer>();
     	Set<Integer> releasedKeys = new HashSet<Integer>();
-		while (Keyboard.next()) {
+		while(Keyboard.next()) {
 			int k = Keyboard.getEventKey();
-			System.out.println("haaaaaaaaaaaaaaaaaaaaallllloooo ");
+//			System.out.println("haaaaaaaaaaaaaaaaaaaaallllloooo ");
+//			System.out.flush();
 			if (Keyboard.getEventKeyState()) {
 				pressedKeys.add(k);
-				System.out.println("p: "+k);
+//				System.out.println("p: "+k);
 			} 
 			else {
 				releasedKeys.add(k);
-				System.out.println("r:"+k);
+//				System.out.println("r:"+k);
 			}
 		}
-		System.out.println("pressed..................");
-		for(Integer i:pressedKeys)System.out.print(i+" ");
-		System.out.println("released.................."+releasedKeys.toString());
+//		System.out.println("pressed..................");
+//		for(Integer i:pressedKeys)System.out.print(i+" ");
+//		System.out.println("released.................."+releasedKeys.toString());
 		
 		SetMultimap<ActorRef, Integer> pushPr = HashMultimap.create();
 		SetMultimap<ActorRef, Integer> pushRe = HashMultimap.create();

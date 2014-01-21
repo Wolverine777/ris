@@ -25,6 +25,7 @@ public class ObjLoader extends Shape{
 		private Vector[] n = {};
 //		private Color[] c = {};
 		private Vector[] t = {};
+		private File sourceFile, sourceTex;
 
 		private final Color defaultCol = Vertex.col(0.5f, 0.5f, 0.5f);
 
@@ -219,4 +220,11 @@ public class ObjLoader extends Shape{
 		}
 	}
 
+	public File getSourceFile() {
+		return sourceFile;
+	}
+
+	public File getSourceTex() {
+		return sourceTex;
+	}
 }

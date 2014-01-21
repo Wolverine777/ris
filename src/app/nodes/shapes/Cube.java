@@ -166,15 +166,15 @@ public class Cube extends Shape {
 
 
 	public float getW2() {
-		return w2;
+		return w2*2;
 	}
 
 	public float getH2() {
-		return h2;
+		return h2*2;
 	}
 
 	public float getD2() {
-		return d2;
+		return d2*2;
 	}
 	
 	

@@ -37,13 +37,15 @@ public class Simulator extends UntypedActor {
     private Set<Integer> releasedKeys = new HashSet<Integer>();
     private Set<Integer> toggeled=new HashSet<Integer>();
 	private float angle = 0;
-	StopWatch sw=new StopWatch();
+	private StopWatch sw=new StopWatch();
+	private float elapsed=0;
     
     private void initialize() {
         getSender().tell(Message.INITIALIZED, self());
     }
 
     private void simulate() throws Exception {
+    	elapsed=sw.elapsed();
     	for(Map.Entry<Node, KeyDef> entry:simulations.entries()){
     		Set<Integer> keys=entry.getValue().getKeys();
     		if(keys==null||keys.isEmpty()){
@@ -69,7 +71,7 @@ public class Simulator extends UntypedActor {
     private void doSimulation(Node node, SimulateType type, Vector vec){
 //    	StopWatch sw=new StopWatch();
     	if(type==SimulateType.ROTATE){
-    		angle += 100f * sw.elapsed()* (vec.length()*100);
+    		angle += elapsed *(vec.length()*90);
 //    		angle= 0.5f;
 //    		node.setLocalTransform(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle));
 //    		node.updateWorldTransform();

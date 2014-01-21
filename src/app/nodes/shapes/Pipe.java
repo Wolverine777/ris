@@ -20,9 +20,9 @@ import app.vecmath.Vector;
  */
 public class Pipe extends Shape {
 
-	float r;
-	int lats;
-	int longs;
+	public float r;
+	public int lats;
+	public int longs;
 
 	private List<Vertex> vL = new ArrayList<Vertex>();
 

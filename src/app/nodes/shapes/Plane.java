@@ -12,8 +12,8 @@ import static app.vecmathimp.FactoryDefault.vecmath;
 public class Plane extends Shape {
 
 	// Width and depth of the plane divided by 2.
-	private float w2;
-	private float d2;
+	public float w2;
+	public float d2;
 
 	public Plane(String id, Shader shader) {
 		this(id, shader, 10f, 10f);
@@ -76,5 +76,12 @@ public class Plane extends Shape {
 		positionData.rewind();
 		colorData.rewind();
 		normalData.rewind();
+	}
+	public float getW2() {
+		return w2*2;
+	}
+
+	public float getD2() {
+		return d2*2;
 	}
 }

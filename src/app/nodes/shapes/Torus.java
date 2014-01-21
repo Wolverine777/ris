@@ -27,6 +27,7 @@ public class Torus extends Shape {
 	// Smoothness
 	float uStep;
 	float vStep;
+	float uS, vS;
 
 	private Vertex[] vertices;
 
@@ -129,5 +130,13 @@ public class Torus extends Shape {
 				nL[in] = finalNormal;
 			}
 		}
+	}
+	
+	public float getuS() {
+		return uS;
+	}
+
+	public float getvS() {
+		return vS;
 	}
 }

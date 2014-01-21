@@ -35,7 +35,9 @@ import app.nodes.shapes.Cube;
 import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Pipe;
 import app.nodes.shapes.Plane;
+import app.nodes.shapes.Shape;
 import app.nodes.shapes.Sphere;
+import app.nodes.shapes.Torus;
 import app.shader.Shader;
 import app.toolkit.StopWatch;
 import app.vecmath.Matrix;
@@ -334,9 +336,9 @@ public class WorldState extends UntypedActor{
 		n.id = cube.id;
 		n.type = Types.CUBE;
 		n.shader = cube.getShader();
-		n.d = cube.getD2()*2;
-		n.w = cube.getW2()*2;
-	    n.h = cube.getH2()*2;
+		n.d = cube.getD2();
+		n.w = cube.getW2();
+	    n.h = cube.getH2();
 		
 		physic.tell(n, self());
 			
@@ -351,9 +353,9 @@ public class WorldState extends UntypedActor{
 		n.type = Types.CUBE;
 		n.shader = cube.getShader();
 		n.impulse = impulse;
-		n.d = cube.getD2()*2;
-		n.w = cube.getW2()*2;
-	    n.h = cube.getH2()*2;
+		n.d = cube.getD2();
+		n.w = cube.getW2();
+	    n.h = cube.getH2();
 		
 		physic.tell(n, self());
 //		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?
@@ -389,12 +391,33 @@ public class WorldState extends UntypedActor{
 		SimulateCreation sc=new SimulateCreation(object.id, keys, simulation, mode, vec);
 		sc.type=type;
 		sc.modelmatrix=object.getWorldTransform();
-		simulator.tell(sc, getSelf());
-		if (object instanceof Cube){
-			sc.w =((Cube)object).getW2()*2;
-			sc.h = ((Cube)object).getH2()*2;
-			sc.d =((Cube)object).getD2()*2;
+		if(object instanceof Shape){
+			Shape s=(Shape)object;
+			sc.shader=s.getShader();
 		}
+		if (object instanceof Cube){
+			sc.w =((Cube)object).getW2();
+			sc.h = ((Cube)object).getH2();
+			sc.d =((Cube)object).getD2();
+		} else if(object instanceof Pipe){
+			Pipe p=(Pipe)object;
+			sc.r = p.r;
+		    sc.lats = p.lats;
+		    sc.longs = p.longs;
+		}else if(object instanceof Plane){
+			Plane p=(Plane)object;
+			sc.w = p.getW2();
+	        sc.d = p.getD2();
+		}/*else if(object instanceof Torus){
+			Torus t=(Torus) object;
+			
+		}*/
+		else if(object instanceof ObjLoader){
+			ObjLoader obj=(ObjLoader)object;
+			sc.sourceFile=obj.getSourceFile();
+	        sc.sourceTex=obj.getSourceTex();
+		}
+		simulator.tell(sc, getSelf());
 		if(!(keys==null||keys.isEmpty())){
 			if(simulation!=SimulateType.NONE) input.tell(new RegisterKeys(keys, true), simulator);
 			else input.tell(new RegisterKeys(keys, false), simulator);
