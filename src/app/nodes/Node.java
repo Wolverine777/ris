@@ -10,6 +10,7 @@ import app.edges.Edge;
 import app.vecmath.Matrix;
 import app.vecmath.Vector;
 import app.vecmathimp.FactoryDefault;
+import app.vecmathimp.VectorImp;
 
 public abstract class Node {
     private Matrix modelMatrix, worldTrafo;
@@ -19,6 +20,7 @@ public abstract class Node {
     public Vector acceleration;
     public Vector force;
 	public Vector impulse;
+//	protected Vector center = new VectorImp(0,0,0);
 
     public Matrix getWorldTransform() {
         return worldTrafo;
