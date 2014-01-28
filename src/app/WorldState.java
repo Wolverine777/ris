@@ -46,7 +46,7 @@ import app.vecmath.Vector;
 /**
  * Technical base
  * 
- * @author Constantin
+ * @author Constantin, Benjamin, Fabian
  * 
  */
 public class WorldState extends UntypedActor{
@@ -86,6 +86,7 @@ public class WorldState extends UntypedActor{
 					entry.setValue(false);
 				}
 				System.out.printf("Took %.2fms at %.1ffps.%n", time.elapsed()*1000, time.fps);
+//				renderer.tell(time.elapsed()*1000, self());  //TODO: nullpointer
 				loop();
 			}
 		} else if (message == Message.INITIALIZED) {

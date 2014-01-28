@@ -1,11 +1,15 @@
 package app.nodes.shapes;
 
+import static app.nodes.shapes.Vertex.col;
 import static app.vecmathimp.FactoryDefault.vecmath;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.lwjgl.BufferUtils;
+
 import app.toolkit.BasicFunctions;
 import app.toolkit.Texture;
 import app.nodes.shapes.Vertex;
@@ -27,7 +31,10 @@ public class ObjLoader extends Shape{
 		private Vector[] t = {};
 		private File sourceFile, sourceTex;
 
-		private final Color defaultCol = Vertex.col(0.5f, 0.5f, 0.5f);
+//		private final Color defaultCol = Vertex.col(0.8f, 0.5f, 0.1f);
+		private final Color[] defaultCol ={ Vertex.col(0.4f, 0.7f, 0.8f), Vertex.col(1, 0, 0), Vertex.col(1, 1, 0),
+				Vertex.col(0, 1, 0), Vertex.col(1, 0, 1), Vertex.col(0, 0, 1), Vertex.col(0, 1, 1),
+				Vertex.col(1, 1, 1) };
 
 		private Texture tex;
 
@@ -203,15 +210,15 @@ public class ObjLoader extends Shape{
 		int lastNum = lineSplitted[pos].split("\\D").length;
 		String[] nums = lineSplitted[pos].split("\\D");
 		if (lastNum == 1) {
-			return new Vertex(p[Integer.parseInt(nums[0]) - 1], defaultCol);
+			return new Vertex(p[Integer.parseInt(nums[0]) - 1], defaultCol[(int)(Math.random()*7)]);
 		} else if (lastNum == 2) {
-			return new Vertex(p[Integer.parseInt(nums[0]) - 1], defaultCol, null, t[Integer.parseInt(nums[1]) - 1]);
+			return new Vertex(p[Integer.parseInt(nums[0]) - 1], defaultCol[(int)(Math.random()*7)], null, t[Integer.parseInt(nums[1]) - 1]);
 		} else if (lastNum == 3) {
 			if (lineSplitted[pos].split("\\D")[1].equalsIgnoreCase("") || t.length == 0) {
-				return new Vertex(p[Integer.parseInt(nums[0]) - 1], defaultCol,
+				return new Vertex(p[Integer.parseInt(nums[0]) - 1], defaultCol[(int)(Math.random()*7)],
 						n[Integer.parseInt(nums[lastNum - 1]) - 1]);
 			} else {
-				return new Vertex(p[Integer.parseInt(nums[0]) - 1], defaultCol,
+				return new Vertex(p[Integer.parseInt(nums[0]) - 1], defaultCol[(int)(Math.random()*7)],
 						n[Integer.parseInt(nums[lastNum - 1]) - 1], t[Integer.parseInt(nums[1]) - 1]);
 			}
 		} else {

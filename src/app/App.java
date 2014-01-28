@@ -28,7 +28,7 @@ import app.vecmathimp.VectorImp;
 /**
  * Put your stuff here
  * 
- * @author Constantin
+ * @author Constantin, Benjamin, Fabian
  * 
  */
 public class App extends WorldState {
@@ -93,13 +93,20 @@ public class App extends WorldState {
 		transform(floor, vecmath.translationMatrix(0, -2f, 0));
 		append(floor, g1);
 		
-		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Kanona.obj"), null);
+		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Cannon2.obj"), null);
 //		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));
-		transform(testObj, vecmath.scaleMatrix(0.03f, 0.03f, 0.03f));
-//		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));
+//		transform(testObj, vecmath.scaleMatrix(0.01f, 0.01f, 0.01f));
+		transform(testObj, vecmath.translationMatrix(-3f, -2f, 5f));
 //		transform(testObj, vecmath.translationMatrix(-8f, 0f, 0f));
 		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(0f, 0f, 1f) ,Types.OBJECT);
+		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(0f, 1f, 0f) ,Types.OBJECT);
 		append(testObj, head);
+		
+		ObjLoader sphere=createObject("objSphere", shader, new File("obj/Sphere.obj"), null);
+		transform(sphere, vecmath.translationMatrix(4f, 0f, 0f));
+		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_DOWN)), SimulateType.TRANSLATE, Mode.DOWN, new VectorImp(0.0f, 0.0f, 0.1f) ,Types.CUBE);
+		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_P)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(1f, 0, 0) ,Types.CUBE);
+		append(sphere, head);
 
 	}
 

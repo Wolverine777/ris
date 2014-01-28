@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.HashMultimap;
@@ -26,6 +27,12 @@ public class Input extends UntypedActor {
 	private SetMultimap<Integer, ActorRef> keyObservers = HashMultimap.create();
 	
     private void initialize() {
+//    	try {
+//    		Keyboard.create();
+//		} catch (LWJGLException e) {
+//			System.out.println(e.getMessage());
+//			e.printStackTrace();
+//		}
         getSender().tell(Message.INITIALIZED, self());
     }
 

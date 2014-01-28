@@ -41,6 +41,7 @@ public class Renderer extends UntypedActor {
 	private Shader shader;
 	private Node start;
 	private Camera camera;
+//	private Float medTime=0f;
 
 	private void initialize() {
 		try {
@@ -101,7 +102,9 @@ public class Renderer extends UntypedActor {
 		getSender().tell(Message.DONE, self());
 
 		if (Display.isCloseRequested()) {
+//			System.out.println("Average ms took:"+medTime); //TODO: nullpointer
 			Display.destroy();
+			context().system().stop(getSender());
 			context().system().shutdown();
 		}
 
@@ -167,6 +170,10 @@ public class Renderer extends UntypedActor {
 		} else if (message instanceof StartNodeModification) {
 			start = nodes.get(((StartNodeModification) message).id);
 
-		}
+		} 
+//		else if(message instanceof Float){
+//			if(medTime==0)medTime=(Float)message;
+//			else medTime=(medTime+(Float)message)/2;
+//		}
 	}
 }
