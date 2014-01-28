@@ -38,6 +38,7 @@ public class Physic extends UntypedActor {
 //				System.out.println("Matrix NodePhysic: " + n.getWorldTransform().toString());
 //				System.out.println("funkt das???" + n.id);
 //				System.out.println("alte velo:" + n.getVelocity());
+//				TODO Erdanziehungskraft m*g?  
 				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()*zeit.elapsed(), 0))));
 //				TODO Masse einabauen, dann impuls setzen und dann velocity
 				n.setVelocity(n.getForce());
