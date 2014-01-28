@@ -20,6 +20,8 @@ public abstract class Node {
     public Vector acceleration;
     public Vector force;
 	public Vector impulse;
+	protected Vector center = new VectorImp(0,0,0);
+	protected float radius;
 //	protected Vector center = new VectorImp(0,0,0);
 
     public Matrix getWorldTransform() {
@@ -113,6 +115,22 @@ public abstract class Node {
 
 	public void setForce(Vector force) {
 		this.force = force;
+	}
+	
+	public Vector getCenter() {
+		return center;
+	}
+
+	public float getRadius() {
+		return radius;
+	}
+
+	public void setCenter(Vector center) {
+		this.center = center;
+	}
+
+	public void setRadius(float radius) {
+		this.radius = radius;
 	}
 
 	public abstract void display(Matrix m);

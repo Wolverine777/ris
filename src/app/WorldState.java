@@ -357,6 +357,8 @@ public class WorldState extends UntypedActor{
 		n.d = cube.getD2();
 		n.w = cube.getW2();
 	    n.h = cube.getH2();
+		n.center = cube.getCenter();
+		n.radius = cube.getRadius();
 		
 		physic.tell(n, self());
 //		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?
@@ -377,6 +379,9 @@ public class WorldState extends UntypedActor{
 		n.type = Types.SPHERE;
 		n.shader = sphere.getShader();
 		n.impulse = impulse;
+		n.center = sphere.getCenter();
+		n.radius = sphere.getRadius();
+		
 		
 		physic.tell(n, self());
 //		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?

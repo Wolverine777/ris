@@ -25,6 +25,8 @@ public class Physic extends UntypedActor {
 	ActorRef simulator;
 	private StopWatch zeit = new StopWatch();
 	private Vector ground = new VectorImp(0f, -0.001f, 0f);
+	private float elapsed = 0;
+	
 
 	private void initialize() {
 		getSender().tell(Message.INITIALIZED, self());
@@ -32,17 +34,19 @@ public class Physic extends UntypedActor {
 	}
 
 	public void physic() {
+		elapsed=zeit.elapsed();
 		for (Node n : nodes.values()) {
-			if (collisionGround(n) == false || collisionObjects(n) == false) {
+			System.out.println("Radius n oben: " + n.getRadius());
+			if (collisionGround(n) == false && collisionObjects(n) == false) {
 				// for(Node n: nodes.values()){
 //				System.out.println("Matrix NodePhysic: " + n.getWorldTransform().toString());
 //				System.out.println("funkt das???" + n.id);
-//				System.out.println("alte velo:" + n.getVelocity());
+//				System.out.println("alte velo:" + n.id + n.getVelocity());
 //				TODO Erdanziehungskraft m*g?  
-				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()*zeit.elapsed(), 0))));
+				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()*elapsed, 0))));
 //				TODO Masse einabauen, dann impuls setzen und dann velocity
 				n.setVelocity(n.getForce());
-//				System.out.println("neue velo:" + n.getVelocity());
+//				System.out.println("neue velo:" + n.id + n.getVelocity());
 				
 				PhysicModification p = new PhysicModification();
 				p.id = n.id;
@@ -51,10 +55,11 @@ public class Physic extends UntypedActor {
 				
 
 			} else if (collisionGround(n) == true
-					|| collisionObjects(n) == false) {
+					&& collisionObjects(n) == false) {
 
 			} else if (collisionGround(n) == false
-					|| collisionObjects(n) == true) {
+					&& collisionObjects(n) == true) {
+				System.out.println("richtige schleife!!!!!!!!!!!");
 
 			}
 		}
@@ -63,7 +68,22 @@ public class Physic extends UntypedActor {
 	}
 
 	private boolean collisionObjects(Node n) {
-		// TODO Auto-generated method stub
+		float distance = 0;
+		float radiuses = 0;
+		System.out.println("geht das hier überhaupt rein??????????");
+		for (Node node : nodes.values()) {
+			if(!node.equals(n)){
+				System.out.println("HUUUUUUUUUUUUUUUHHHHHHHHHUUUUUUUUUUUUUUUUUUU");
+				System.out.println("Center n: " + n.getCenter());
+				distance = (float) Math.pow((double)n.getCenter().sub(node.getCenter()).length(),2);
+				radiuses = (n.getRadius() + node.getRadius()) * (n.getRadius() + node.getRadius());
+				System.out.println("Radius n: " + n.getRadius() + "Radius node: " + node.getRadius() + "distance1: " + distance + "radiuses1: " + radiuses);
+				if(distance < radiuses){
+					System.out.println("distance2: " + distance + "radiuses2: " + radiuses);
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
@@ -100,6 +120,12 @@ public class Physic extends UntypedActor {
 				if ((((NodeCreation) message).modelmatrix != null)) {
 					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
 				}
+				if ((((NodeCreation) message).center != null)) {
+					newNode.setCenter(((NodeCreation) message).center);
+				}
+				if ((((NodeCreation) message).radius != 0)) {
+					newNode.setRadius(((NodeCreation) message).radius);
+				}
 				nodes.put(newNode.id, newNode);
 			} else if (((NodeCreation) message).type == Types.SPHERE) {
 
@@ -113,6 +139,12 @@ public class Physic extends UntypedActor {
 				}
 				if ((((NodeCreation) message).modelmatrix != null)) {
 					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
+				}
+				if ((((NodeCreation) message).center != null)) {
+					newNode.setCenter(((NodeCreation) message).center);
+				}
+				if ((((NodeCreation) message).radius != 0)) {
+					newNode.setRadius(((NodeCreation) message).radius);
 				}
 				nodes.put(newNode.id, newNode);
 			}else if (message instanceof NodeModification) {
