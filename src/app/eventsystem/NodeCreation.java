@@ -20,6 +20,10 @@ public class NodeCreation {
 	public int lats, longs;
 	
 	public File sourceFile, sourceTex;
+	
+	public Vector center;
+	
+	public float radius;
 
 	public Matrix getModelmatrix() {
 		return modelmatrix;

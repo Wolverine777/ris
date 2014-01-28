@@ -32,8 +32,8 @@ public abstract class Shape extends Node {
 	protected Texture tex;
 	protected Shader shader;
 	protected int mode = GL11.GL_QUADS;
-	private Vector center = new VectorImp(0,0,0);
-	private float radius;
+//	private Vector center = new VectorImp(0,0,0);
+//	private float radius;
 
 	public Shape(String id, Shader shader) {
 		super(id, FactoryDefault.vecmath.identityMatrix());
@@ -121,18 +121,18 @@ public abstract class Shape extends Node {
 				zGroß = v.position.z();
 			}
 		}
-		center = new VectorImp((xGroß + xKlein)/2, (yGroß + yKlein)/2, (zGroß + zKlein)/2);
+		setCenter(new VectorImp((xGroß + xKlein)/2, (yGroß + yKlein)/2, (zGroß + zKlein)/2));
 		
 		if(center.x() >= center.y() && center.x() >=center.z()){
-			radius = center.x();			
+			setRadius(center.x());			
 		}
 		else if (center.y() >= center.x() && center.y() >=center.z()){
-			radius = center.y();			
+			setRadius(center.y());			
 		}
 		else if (center.z() >= center.x() && center.z() >=center.y()){
-			radius = center.z();			
+			setRadius(center.z());			
 		}
-		System.out.println("Neues center für Cubezuerst: " + super.id + center.toString());
+//		System.out.println("Neues center für Cubezuerst: " + super.id + center.toString());
 	}
 	 
 	@Override
@@ -140,11 +140,13 @@ public abstract class Shape extends Node {
 		super.updateWorldTransform(previousTrafo);
 	    center = previousTrafo.mult(MatrixImp.translate(center)).getPosition();
 	    System.out.println("Neues center für Cube: " + super.id + center.toString());
+	    System.out.println("Radius für Cube: " + super.id + radius);
 	}
 	
 	@Override
 	public void updateWorldTransform() {
 		super.updateWorldTransform();
+//		System.out.println("Neues center für Cube: " + super.id + center.toString());
 	}
 	
 }
