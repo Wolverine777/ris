@@ -126,8 +126,9 @@ public class Physic extends UntypedActor {
 					Node modify = nodes.get(((NodeModification) message).id);
 
 					if (((NodeModification) message).localMod != null) {
-						 modify.setLocalTransform(((NodeModification) message).localMod);
-						 modify.updateWorldTransform();
+//						 modify.setLocalTransform(((NodeModification) message).localMod);
+//						 modify.updateWorldTransform();
+						modify.updateWorldTransform(((NodeModification) message).localMod);
 					}
 					if (((NodeModification) message).appendTo != null) {
 

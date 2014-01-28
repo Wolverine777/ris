@@ -26,6 +26,7 @@ import app.messages.Mode;
 import app.messages.SimulateType;
 import app.nodes.Node;
 import app.toolkit.StopWatch;
+import app.vecmath.Matrix;
 import app.vecmath.Vector;
 import app.vecmathimp.MatrixImp;
 
@@ -34,7 +35,6 @@ public class Simulator extends UntypedActor {
     private Map<String, Node> nodes = new HashMap<String, Node>();
     private SetMultimap<Node, KeyDef> simulations=HashMultimap.create();
     private Set<Integer> pressedKeys = new HashSet<Integer>();
-    private Set<Integer> releasedKeys = new HashSet<Integer>();
     private Set<Integer> toggeled=new HashSet<Integer>();
 	private float angle = 0;
 	private StopWatch sw=new StopWatch();
@@ -64,37 +64,38 @@ public class Simulator extends UntypedActor {
     			}
     		}
     	}
-                //TODO: hier alle modifizierten schicken
+                // möglich: hier alle modifizierten schicken, nicht mehr nötig da modify matrix getellt
         getSender().tell(Message.DONE, self());
     }
     
     private void doSimulation(Node node, SimulateType type, Vector vec){
-//    	StopWatch sw=new StopWatch();
     	if(type==SimulateType.ROTATE){
     		angle += elapsed *(vec.length()*90);
 //    		angle= 0.5f;
 //    		node.setLocalTransform(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle));
 //    		node.updateWorldTransform();
     		Vector v=node.getWorldTransform().getPosition();
-    		node.updateWorldTransform(MatrixImp.translate(-v.x(),-v.y(),-v.z()));
-    		node.updateWorldTransform(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle));
-    		node.updateWorldTransform(MatrixImp.translate(v.x(),v.y(),v.z()));
+    		
+    		Matrix modify=MatrixImp.translate(v.x(),v.y(),v.z()).mult(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle).mult(MatrixImp.translate(-v.x(),-v.y(),-v.z())));
+    		node.updateWorldTransform(modify);
 			angle = 0;
-			getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());
-			//TODO: alle matritzen für einen object aufmultiplizeiren und dann schicken. 
+			getSender().tell(new NodeModification(node.id,modify), self());
+			//möglich: alle matritzen für einen object aufmultiplizeiren und dann schicken. 
     	}
     	else if(type==SimulateType.TRANSLATE){
 //    		node.setLocalTransform(MatrixImp.translate(vec));
 //    		node.updateWorldTransform();
-    		node.updateWorldTransform(MatrixImp.translate(vec));
-    		getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());
+    		Matrix modify=MatrixImp.translate(vec);
+    		node.updateWorldTransform(modify);
+    		getSender().tell(new NodeModification(node.id,/*node.getWorldTransform()*/modify), self());
     	}
     	else if(type==SimulateType.PHYSIC){
     		if(vec != null){
 //    			node.setLocalTransform(MatrixImp.translate(vec));
 //    			node.updateWorldTransform();
-    		node.updateWorldTransform(MatrixImp.translate(vec));
-    		getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());    		
+    		Matrix modify=MatrixImp.translate(vec);
+    		node.updateWorldTransform(modify);
+    		getSender().tell(new NodeModification(node.id,modify), self());    		
     	    }
     	}
     	//st end nodemodification
@@ -109,39 +110,20 @@ public class Simulator extends UntypedActor {
             initialize();
         } else if(message instanceof KeyState){
         	pressedKeys.clear();
-        	releasedKeys.clear();
+        	toggeled.clear();
         	pressedKeys.addAll(((KeyState)message).getPressedKeys());
-        	releasedKeys.addAll(((KeyState)message).getReleasedKeys());
-        	for(Integer ik:releasedKeys){
-        		if(toggeled.contains(ik))toggeled.remove(ik);
-        		else toggeled.add(ik);
-        	}
+        	toggeled.addAll(((KeyState)message).getToggled());
         }
-        
-//        else if (message instanceof NodeCreation) {
-//        	
-//        	if (((NodeCreation) message).type == Types.GROUP) {
-//        		Node newNode = nodeFactory.groupNode(((NodeCreation) message).id);
-//        		nodes.put(newNode.id, newNode);
-//        	} else if (((NodeCreation) message).type == Types.CUBE) {
-//        		Node newNode = nodeFactory.cube(((NodeCreation) message).id, ((NodeCreation) message).shader);
-//        		nodes.put(newNode.id, newNode);
-//        	}
-//        } else if (message instanceof CameraCreation) {
-//        	Camera camera = nodeFactory.camera(((CameraCreation) message).id);
-//        	nodes.put(((CameraCreation) message).id, camera);
-//        	
-//        } 
+         
         	else if (message instanceof NodeModification) {
         	System.out.println("Nodes " + nodes);
         	System.out.println("Accesing " + ((NodeModification) message).id);
         	if(nodes.containsKey(((NodeModification) message).id)){
         		Node modify = nodes.get(((NodeModification) message).id);
-//        		System.out.println("haaaooooooooooooooooooooooooooooooooooooooooo\n"+modify.id+"\n"+"local\n"+modify.getLocalTransform()+"world\n"+modify.getWorldTransform());
         		if (((NodeModification) message).localMod != null) {
-        			 modify.setLocalTransform(((NodeModification) message).localMod);
-    				 modify.updateWorldTransform();
-//        			System.out.println("haaaooooooooooooooooooooooooooooooooooooooooo\n"+modify.id+"\n"+"local\n"+modify.getLocalTransform()+"world\n"+modify.getWorldTransform());
+//        			 modify.setLocalTransform(((NodeModification) message).localMod);
+//    				 modify.updateWorldTransform();
+    				 modify.updateWorldTransform(((NodeModification) message).localMod);
         		}
 //        		if (((NodeModification) message).appendTo != null) {
 //        			modify.appendTo(nodes.get(((NodeModification) message).appendTo));
@@ -209,13 +191,7 @@ public class Simulator extends UntypedActor {
         			  k.setVector(modify.getForce());
         		  }
         		}
-        		
         	}
-        	
         }
-        
-        
     }
-
-	
 }

@@ -213,7 +213,8 @@ public class WorldState extends UntypedActor{
 		
 		NodeModification nm = new NodeModification();
 		nm.id = n.id;
-		nm.localMod = n.getWorldTransform();
+//		nm.localMod = n.getWorldTransform();
+		nm.localMod = m;
 		announce(nm);
 	}
 	

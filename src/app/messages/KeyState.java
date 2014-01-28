@@ -12,39 +12,39 @@ import java.util.Set;
  */
 public class KeyState implements State {
 	private Set<Integer> pressedKeys;
-	private Set<Integer> releasedKeys;
+	private Set<Integer> toggled;
 
 	public KeyState() {
 		pressedKeys = new HashSet<Integer>();
-		releasedKeys = new HashSet<Integer>();
+		toggled = new HashSet<Integer>();
 	}
 
-	public KeyState(Set<Integer> pressedKeys, Set<Integer> releasedKeys) {
+	public KeyState(Set<Integer> pressedKeys, Set<Integer> toggled) {
 		this.pressedKeys = pressedKeys;
-		this.releasedKeys = releasedKeys;
+		this.toggled = toggled;
 	}
 
 	public Set<Integer> getPressedKeys() {
 		return pressedKeys;
 	}
 
-	public Set<Integer> getReleasedKeys() {
-		return releasedKeys;
+	public Set<Integer> getToggled() {
+		return toggled;
 	}
 	
 	public void addPressedKeys(Set<Integer> pressedKeys){
 		this.pressedKeys.addAll(pressedKeys);
 	}
 	
-	public void addReleasedKeys(Set<Integer> releasedKeys){
-		this.releasedKeys.addAll(releasedKeys);
+	public void addToggled(Set<Integer> toggled){
+		this.toggled.addAll(toggled);
 	}
 	
 	public void addPressedKey(Integer pressedKey){
 		this.pressedKeys.add(pressedKey);
 	}
 	
-	public void addReleasedKey(Integer releasedKey){
-		this.releasedKeys.add(releasedKey);
+	public void addToggl(Integer toggl){
+		this.toggled.add(toggl);
 	}
 }

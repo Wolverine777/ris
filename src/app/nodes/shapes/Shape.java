@@ -145,8 +145,6 @@ public abstract class Shape extends Node {
 	@Override
 	public void updateWorldTransform() {
 		super.updateWorldTransform();
-		System.out.println("Neues center für Cube: " + super.id + center.toString());
 	}
-    
 	
 }

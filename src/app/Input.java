@@ -29,68 +29,34 @@ public class Input extends UntypedActor {
         getSender().tell(Message.INITIALIZED, self());
     }
 
+    Set<Integer> pressedKeys = new HashSet<Integer>();
+    Set<Integer> toggled = new HashSet<Integer>();
     private void run() {
-    	Set<Integer> pressedKeys = new HashSet<Integer>();
-    	Set<Integer> releasedKeys = new HashSet<Integer>();
 		while(Keyboard.next()) {
 			int k = Keyboard.getEventKey();
-//			System.out.println("haaaaaaaaaaaaaaaaaaaaallllloooo ");
-//			System.out.flush();
 			if (Keyboard.getEventKeyState()) {
 				pressedKeys.add(k);
-//				System.out.println("p: "+k);
-			} 
-			else {
-				releasedKeys.add(k);
-//				System.out.println("r:"+k);
+				if(toggled.contains(k))toggled.remove(k);
+				else toggled.add(k);
+			}else {
+				pressedKeys.remove(k);
 			}
 		}
 		
 		Map<ActorRef, KeyState> outcome = new HashMap<ActorRef, KeyState>();
 		for(Integer obsKey:keyObservers.keySet()){
-			if(pressedKeys.contains(obsKey)||releasedKeys.contains(obsKey)){
+			if(pressedKeys.contains(obsKey)||toggled.contains(obsKey)){
 				for(ActorRef actor:keyObservers.get(obsKey)){
 					KeyState ks=new KeyState();
-					if(outcome.containsKey(actor)){
-						ks=outcome.get(actor);
-					}
+					if(outcome.containsKey(actor))ks=outcome.get(actor);
 					if(pressedKeys.contains(obsKey))ks.addPressedKey(obsKey);
-					if(releasedKeys.contains(obsKey))ks.addReleasedKey(obsKey);
+					if(toggled.contains(obsKey))ks.addToggl(obsKey);
 					outcome.put(actor, ks);
 				}
 			}
 		}
+		
 		for(Entry<ActorRef, KeyState> out:outcome.entrySet())out.getKey().tell(out.getValue(), self());
-		
-//		System.out.println("pressed..................");
-//		for(Integer i:pressedKeys)System.out.print(i+" ");
-//		System.out.println("released.................."+releasedKeys.toString());
-		
-//		SetMultimap<ActorRef, Integer> pushPr = HashMultimap.create();
-//		SetMultimap<ActorRef, Integer> pushRe = HashMultimap.create();
-//		for(Integer i:pressedKeys){
-//			if(keyObservers.containsKey(i)){
-//				for(ActorRef ar:keyObservers.get(i)){
-//					pushPr.put(ar, i);
-//				}
-//			}
-//		}
-//		for(Integer i:releasedKeys){
-//			if(keyObservers.containsKey(i)){
-//				for(ActorRef ar:keyObservers.get(i)){
-//					pushRe.put(ar, i);
-//				}
-//			}
-//		}
-//		for(ActorRef send:pushPr.keySet()){
-//			KeyState ks=new KeyState(pushPr.get(send), pushRe.get(send));
-//			send.tell(ks, self());
-//			pushRe.remove(send, pushRe.get(send));
-//		}
-//		for(ActorRef send:pushRe.keySet()){
-//			KeyState ks=new KeyState(pushPr.get(send), pushRe.get(send));
-//			send.tell(ks, self());
-//		}
 		
         getSender().tell(Message.DONE, self());
     }
