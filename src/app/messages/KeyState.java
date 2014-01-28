@@ -31,8 +31,20 @@ public class KeyState implements State {
 	public Set<Integer> getReleasedKeys() {
 		return releasedKeys;
 	}
-
-	public void setReleasedKeys(Set<Integer> releasedKeys) {
-		this.releasedKeys = releasedKeys;
+	
+	public void addPressedKeys(Set<Integer> pressedKeys){
+		this.pressedKeys.addAll(pressedKeys);
+	}
+	
+	public void addReleasedKeys(Set<Integer> releasedKeys){
+		this.releasedKeys.addAll(releasedKeys);
+	}
+	
+	public void addPressedKey(Integer pressedKey){
+		this.pressedKeys.add(pressedKey);
+	}
+	
+	public void addReleasedKey(Integer releasedKey){
+		this.releasedKeys.add(releasedKey);
 	}
 }

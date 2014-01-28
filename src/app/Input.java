@@ -1,6 +1,9 @@
 package app;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.lwjgl.input.Keyboard;
@@ -15,7 +18,7 @@ import app.messages.Message;
 import app.messages.RegisterKeys;
 
 /**
- * @author Constantin, Benjamin Reemts
+ * @author Benjamin Reemts
  *
  */
 public class Input extends UntypedActor {
@@ -42,35 +45,52 @@ public class Input extends UntypedActor {
 //				System.out.println("r:"+k);
 			}
 		}
+		
+		Map<ActorRef, KeyState> outcome = new HashMap<ActorRef, KeyState>();
+		for(Integer obsKey:keyObservers.keySet()){
+			if(pressedKeys.contains(obsKey)||releasedKeys.contains(obsKey)){
+				for(ActorRef actor:keyObservers.get(obsKey)){
+					KeyState ks=new KeyState();
+					if(outcome.containsKey(actor)){
+						ks=outcome.get(actor);
+					}
+					if(pressedKeys.contains(obsKey))ks.addPressedKey(obsKey);
+					if(releasedKeys.contains(obsKey))ks.addReleasedKey(obsKey);
+					outcome.put(actor, ks);
+				}
+			}
+		}
+		for(Entry<ActorRef, KeyState> out:outcome.entrySet())out.getKey().tell(out.getValue(), self());
+		
 //		System.out.println("pressed..................");
 //		for(Integer i:pressedKeys)System.out.print(i+" ");
 //		System.out.println("released.................."+releasedKeys.toString());
 		
-		SetMultimap<ActorRef, Integer> pushPr = HashMultimap.create();
-		SetMultimap<ActorRef, Integer> pushRe = HashMultimap.create();
-		for(Integer i:pressedKeys){
-			if(keyObservers.containsKey(i)){
-				for(ActorRef ar:keyObservers.get(i)){
-					pushPr.put(ar, i);
-				}
-			}
-		}
-		for(Integer i:releasedKeys){
-			if(keyObservers.containsKey(i)){
-				for(ActorRef ar:keyObservers.get(i)){
-					pushRe.put(ar, i);
-				}
-			}
-		}
-		for(ActorRef send:pushPr.keySet()){
-			KeyState ks=new KeyState(pushPr.get(send), pushRe.get(send));
-			send.tell(ks, self());
-			pushRe.remove(send, pushRe.get(send));
-		}
-		for(ActorRef send:pushRe.keySet()){
-			KeyState ks=new KeyState(pushPr.get(send), pushRe.get(send));
-			send.tell(ks, self());
-		}
+//		SetMultimap<ActorRef, Integer> pushPr = HashMultimap.create();
+//		SetMultimap<ActorRef, Integer> pushRe = HashMultimap.create();
+//		for(Integer i:pressedKeys){
+//			if(keyObservers.containsKey(i)){
+//				for(ActorRef ar:keyObservers.get(i)){
+//					pushPr.put(ar, i);
+//				}
+//			}
+//		}
+//		for(Integer i:releasedKeys){
+//			if(keyObservers.containsKey(i)){
+//				for(ActorRef ar:keyObservers.get(i)){
+//					pushRe.put(ar, i);
+//				}
+//			}
+//		}
+//		for(ActorRef send:pushPr.keySet()){
+//			KeyState ks=new KeyState(pushPr.get(send), pushRe.get(send));
+//			send.tell(ks, self());
+//			pushRe.remove(send, pushRe.get(send));
+//		}
+//		for(ActorRef send:pushRe.keySet()){
+//			KeyState ks=new KeyState(pushPr.get(send), pushRe.get(send));
+//			send.tell(ks, self());
+//		}
 		
         getSender().tell(Message.DONE, self());
     }

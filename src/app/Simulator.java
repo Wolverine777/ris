@@ -64,7 +64,7 @@ public class Simulator extends UntypedActor {
     			}
     		}
     	}
-                
+                //TODO: hier alle modifizierten schicken
         getSender().tell(Message.DONE, self());
     }
     
@@ -81,6 +81,7 @@ public class Simulator extends UntypedActor {
     		node.updateWorldTransform(MatrixImp.translate(v.x(),v.y(),v.z()));
 			angle = 0;
 			getSender().tell(new NodeModification(node.id,node.getWorldTransform()), self());
+			//TODO: alle matritzen für einen object aufmultiplizeiren und dann schicken. 
     	}
     	else if(type==SimulateType.TRANSLATE){
 //    		node.setLocalTransform(MatrixImp.translate(vec));
@@ -155,6 +156,8 @@ public class Simulator extends UntypedActor {
         	Node newNode=null;
         	if(!nodes.containsKey(sc.id)){
         		System.out.println("jashdlhwidaljhdlahs"+sc.id);
+        		//TODO: ein Type reicht nur ein Shape, von den objekten wird nur id und woldtrafo benoetigt.
+        		//TODO: Generics?
         		if (((NodeCreation) message).type == Types.GROUP) {
         			newNode = nodeFactory.groupNode(((NodeCreation) message).id);
         			nodes.put(newNode.id, newNode);
