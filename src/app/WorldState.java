@@ -182,6 +182,7 @@ public class WorldState extends UntypedActor{
 			for (ActorRef observer : observers.get(Events.NODE_MODIFICATION)) { 
 //				System.out.println("announce:"+getSender()+"message"+event.toString());
 				if(!observer.equals(getSender())){
+					if(observer.equals(physic))System.out.println("PHYYYYYYYYYYYYYYSIC NODEMF");
 					observer.tell(event, self()); 
 				}
 				else if(observer.equals(getSender()) && getSender().equals(renderer)){
@@ -341,6 +342,9 @@ public class WorldState extends UntypedActor{
 		n.d = cube.getD2();
 		n.w = cube.getW2();
 	    n.h = cube.getH2();
+	    n.center = cube.getCenter();
+		n.radius = cube.getRadius();
+	    
 		
 		physic.tell(n, self());
 			

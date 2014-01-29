@@ -31,8 +31,8 @@ public abstract class Shape extends Node {
 	protected Texture tex;
 	protected Shader shader;
 	protected int mode = GL11.GL_QUADS;
-//	private Vector center = new VectorImp(0,0,0);
-//	private float radius;
+	private Vector center = new VectorImp(0,0,0);
+	private float radius;
 
 	public Shape(String id, Shader shader) {
 		super(id, FactoryDefault.vecmath.identityMatrix());
@@ -119,18 +119,17 @@ public abstract class Shape extends Node {
 			if(v.position.z() > zGroß){
 				zGroß = v.position.z();
 			}
+			
 		}
 		setCenter(new VectorImp((xGroß + xKlein)/2, (yGroß + yKlein)/2, (zGroß + zKlein)/2));
 		
-		if(center.x() >= center.y() && center.x() >=center.z()){
-			setRadius(center.x());			
+		for(Vertex v: vertices){
+			radius = Math.max(v.position.sub(center).length(),radius);
 		}
-		else if (center.y() >= center.x() && center.y() >=center.z()){
-			setRadius(center.y());			
-		}
-		else if (center.z() >= center.x() && center.z() >=center.y()){
-			setRadius(center.z());			
-		}
+		
+//		setRadius(Math.max(Math.max((Math.abs(xGroß - xKlein)),Math.abs(yGroß - yKlein)), Math.abs(zGroß - zKlein)));
+		 System.out.println("Radius für: " + super.id + " " + radius);
+		
 //		System.out.println("Neues center für Cubezuerst: " + super.id + center.toString());
 	}
 	 
@@ -139,7 +138,7 @@ public abstract class Shape extends Node {
 		super.updateWorldTransform(previousTrafo);
 	    center = previousTrafo.mult(MatrixImp.translate(center)).getPosition();
 	    System.out.println("Neues center für Cube: " + super.id + center.toString());
-	    System.out.println("Radius für Cube: " + super.id + radius);
+//	    System.out.println("Radius für Cube: " + super.id + radius);
 	}
 	
 	@Override
@@ -148,4 +147,19 @@ public abstract class Shape extends Node {
 //		System.out.println("Neues center für Cube: " + super.id + center.toString());
 	}
 	
+	public Vector getCenter() {
+		return center;
+	}
+
+	public float getRadius() {
+		return radius;
+	}
+
+	public void setCenter(Vector center) {
+		this.center = center;
+	}
+
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
 }
