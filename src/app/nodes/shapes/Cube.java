@@ -9,7 +9,6 @@ import org.lwjgl.BufferUtils;
 import app.shader.Shader;
 import app.vecmath.Color;
 import app.vecmath.Vector;
-import app.vecmathimp.VectorImp;
 import static app.nodes.shapes.Vertex.*;
 import static app.vecmathimp.FactoryDefault.vecmath;
 

@@ -111,7 +111,6 @@ public class App extends WorldState {
 		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_DOWN)), SimulateType.TRANSLATE, Mode.DOWN, new VectorImp(0.0f, 0.0f, 0.1f) ,Types.CUBE);
 		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_P)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(1f, 0, 0) ,Types.CUBE);
 		append(sphere, head);
-
 	}
 
 	public static void main(String[] args) {
