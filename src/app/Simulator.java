@@ -93,7 +93,7 @@ public class Simulator extends UntypedActor {
     		if(vec != null){
 //    			node.setLocalTransform(MatrixImp.translate(vec));
 //    			node.updateWorldTransform();
-    		Matrix modify=MatrixImp.translate(vec);
+    		Matrix modify=MatrixImp.translate(vec.mult((elapsed*60)));
     		node.updateWorldTransform(modify);
     		getSender().tell(new NodeModification(node.id,modify), self());    		
     	    }
