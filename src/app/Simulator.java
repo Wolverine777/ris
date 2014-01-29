@@ -49,6 +49,7 @@ public class Simulator extends UntypedActor {
     	for(Map.Entry<Node, KeyDef> entry:simulations.entries()){
     		Set<Integer> keys=entry.getValue().getKeys();
     		if(keys==null||keys.isEmpty()){
+    			System.out.println("kommt was an? " + entry.getKey().id + entry.getValue().getVector());
     			doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
     		}else{
     			if(entry.getValue().getMode()==Mode.DOWN){

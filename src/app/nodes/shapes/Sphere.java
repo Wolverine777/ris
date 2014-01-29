@@ -132,6 +132,7 @@ public class Sphere extends Shape {
 		positionData.rewind();
 		colorData.rewind();
 		normalData.rewind();
+		findCenter();
 	}
 
 	// Make construction of normals easy on the eyes.
