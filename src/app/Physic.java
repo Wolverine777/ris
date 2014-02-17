@@ -18,7 +18,9 @@ import app.messages.RendererInitialization;
 import app.nodes.Node;
 import app.nodes.shapes.Shape;
 import app.toolkit.StopWatch;
+import app.vecmath.Matrix;
 import app.vecmath.Vector;
+import app.vecmathimp.MatrixImp;
 import app.vecmathimp.VectorImp;
 
 public class Physic extends UntypedActor {
@@ -69,7 +71,11 @@ public class Physic extends UntypedActor {
 				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
 				// TODO Masse einabauen, dann impuls setzen und dann velocity
 				n.setVelocity(n.getForce());
-					
+				
+				VectorImp vec = new VectorImp(0, 0.1f, 0);
+				Matrix modify=MatrixImp.translate(vec);
+	    		n.updateWorldTransform(modify);
+	    		getSender().tell(new NodeModification(n.id,modify), self());
 			
 				PhysicModification p1 = new PhysicModification();
 				p1.id = n.id;
