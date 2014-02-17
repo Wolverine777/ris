@@ -95,6 +95,7 @@ public class App extends WorldState {
 		
 		Plane floor = createPlane("Floor", shader, 20, 20);
 		transform(floor, vecmath.translationMatrix(0, -2f, 0));
+		addPhysicFloor(floor);
 		append(floor, g1);
 		
 		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Cannon2.obj"), null);

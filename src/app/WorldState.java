@@ -16,6 +16,7 @@ import akka.actor.Props;
 import akka.actor.UntypedActor;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.Events;
+import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
@@ -42,6 +43,7 @@ import app.shader.Shader;
 import app.toolkit.StopWatch;
 import app.vecmath.Matrix;
 import app.vecmath.Vector;
+import app.vecmathimp.VectorImp;
 
 /**
  * Technical base
@@ -396,6 +398,17 @@ public class WorldState extends UntypedActor{
 		sc.type = Types.CUBE;
 		simulator.tell(sc,self());
 			
+	}
+	
+	protected void addPhysicFloor(Plane plane){
+		
+		Vector pos = plane.getWorldTransform().getPosition();
+		
+		FloorCreation f = new FloorCreation();
+		f.position = pos;
+		
+		physic.tell(f, self());
+		
 	}
 	
 	protected void simulateOnKey(Node object, Set<Integer> keys, SimulateType simulation, Mode mode, Vector vec, Types type){ //TODO:better solution for type

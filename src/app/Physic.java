@@ -7,6 +7,7 @@ import java.util.Map;
 
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
+import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeModification;
 import app.eventsystem.PhysicModification;
@@ -27,6 +28,7 @@ public class Physic extends UntypedActor {
 	private StopWatch zeit = new StopWatch();
 	private Vector ground = new VectorImp(0f, -0.001f, 0f);
 	private float elapsed = 0;
+	private Vector floor;
 
 	private void initialize() {
 		getSender().tell(Message.INITIALIZED, self());
@@ -58,10 +60,15 @@ public class Physic extends UntypedActor {
 
 			} else if (collisionGround(n) == true
 					&& collisionObjects(n) == null) {
+				
+//				oppositeDirection(n);
+				System.out.println("hier sollte erstma nix sein");
+				
+				
 
 			} else if (collisionGround(n) == false
 					&& collisionObjects(n) != null) {
-				 System.out.println("richtige schleife!!!!!!!!!!!");
+//				 System.out.println("richtige schleife!!!!!!!!!!!");
 				 
 				 Node collision = collisionObjects(n);
 				 
@@ -77,6 +84,8 @@ public class Physic extends UntypedActor {
 				p1.id = n.id;
 				p1.force = n.getForce();
 				
+//				simulator.tell(p1, self());	
+				
 				// TODO Erdanziehungskraft m*g?
 				collision.setForce((collision.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
 				// TODO Masse einabauen, dann impuls setzen und dann velocity
@@ -85,7 +94,7 @@ public class Physic extends UntypedActor {
 				PhysicModification p2 = new PhysicModification();
 				p2.id = collision.id;
 				p2.force = collision.getForce();
-//				simulator.tell(p1, self());		 
+						 
 				simulator.tell(p2, self());
 
 			}
@@ -117,7 +126,18 @@ public class Physic extends UntypedActor {
 	}
 
 	private boolean collisionGround(Node n) {
-		// TODO Auto-generated method stub
+		float distance = 0;
+		float radiuses = 0;
+		for (Node node : nodes.values()) {
+			if (!node.equals(n)) {
+				distance = ((Shape) n).getCenter().y() - floor.y();
+				radiuses = ((Shape) n).getRadius();
+			}
+			if(distance < radiuses){
+				return true;
+				
+			}
+		}
 		return false;
 	}
 	
@@ -220,5 +240,10 @@ public class Physic extends UntypedActor {
 
 			}
 		}
+		else if( message instanceof FloorCreation){
+			floor = ((FloorCreation) message).position;			
+			
+		}
+		
 	}
 }
