@@ -61,9 +61,21 @@ public class Physic extends UntypedActor {
 			} else if (collisionGround(n) == true
 					&& collisionObjects(n) == null) {
 				
-//				oppositeDirection(n);
-				System.out.println("hier sollte erstma nix sein");
 				
+				System.out.println("komm ich hier rein? Ich hoffe ja");
+				
+				oppositeDirectionGround(n);
+				// TODO Erdanziehungskraft m*g?
+				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
+				// TODO Masse einabauen, dann impuls setzen und dann velocity
+				n.setVelocity(n.getForce());
+					
+			
+				PhysicModification p1 = new PhysicModification();
+				p1.id = n.id;
+				p1.force = n.getForce();
+				
+				simulator.tell(p1, self());				
 				
 
 			} else if (collisionGround(n) == false
@@ -106,18 +118,18 @@ public class Physic extends UntypedActor {
 	private Node collisionObjects(Node n) {
 		float distance = 0;
 		float radiuses = 0;
-		System.out.println("geht das hier überhaupt rein??????????");
+//		System.out.println("geht das hier überhaupt rein??????????");
 		for (Node node : nodes.values()) {
 			if (!node.equals(n)) {
-				System.out.println("Center n: " + ((Shape) n).getCenter());
+//				System.out.println("Center n: " + ((Shape) n).getCenter());
 				distance = ((Shape) n).getCenter().sub(((Shape) node).getCenter()).length();
 				radiuses = (((Shape) n).getRadius() + ((Shape) node).getRadius());
-				System.out.println("Radius n: " + ((Shape) n).getRadius()
-						+ "Radius node: " + ((Shape) node).getRadius()
-						+ "distance1: " + distance + "radiuses1: " + radiuses);
+//				System.out.println("Radius n: " + ((Shape) n).getRadius()
+//						+ "Radius node: " + ((Shape) node).getRadius()
+//						+ "distance1: " + distance + "radiuses1: " + radiuses);
 				if (distance < radiuses) {
-					System.out.println("distance2: " + distance + "radiuses2: "
-							+ radiuses);
+//					System.out.println("distance2: " + distance + "radiuses2: "
+//							+ radiuses);
 					return node;
 				}
 			}
@@ -128,15 +140,18 @@ public class Physic extends UntypedActor {
 	private boolean collisionGround(Node n) {
 		float distance = 0;
 		float radiuses = 0;
-		for (Node node : nodes.values()) {
-			if (!node.equals(n)) {
-				distance = ((Shape) n).getCenter().y() - floor.y();
-				radiuses = ((Shape) n).getRadius();
-			}
-			if(distance < radiuses){
+		System.out.println("komm ich hier rein GROUND!!!");
+		
+		System.out.println("hier auch noch GROUND");
+		System.out.println("und wie schauts hier aus? GROUND");
+		distance = (float) Math.sqrt((float) Math.pow(((Shape) n).getCenter().y() - floor.y(),2));
+		radiuses = ((Shape) n).getRadius();
+		System.out.println("distance ground: " + distance + " radiuses ground: " + radiuses);
+			
+		if(distance < radiuses){
 				return true;
 				
-			}
+		
 		}
 		return false;
 	}
@@ -152,6 +167,19 @@ public class Physic extends UntypedActor {
 		
 		n.setVelocity(newVelo);
 		
+		
+	}
+	
+	private void oppositeDirectionGround(Node n){
+		float x = n.getVelocity().x();
+		float y = n.getVelocity().y();
+		float z = n.getVelocity().z();
+		
+		y = -1* y;
+		
+		VectorImp newVelo = new VectorImp(x, y, z);
+		
+		n.setVelocity(newVelo);
 		
 	}
 
