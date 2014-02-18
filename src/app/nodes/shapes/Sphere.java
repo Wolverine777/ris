@@ -52,8 +52,8 @@ public class Sphere extends Shape {
 	 *            Name
 	 *            Shader to use
 	 */
-	public Sphere(String id, Shader shader) {
-		super(id, shader);
+	public Sphere(String id, Shader shader, float mass) {
+		super(id, shader, mass);
 		mode = GL11.GL_TRIANGLES;
 
 //		// Spitze 0

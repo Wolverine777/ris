@@ -15,16 +15,16 @@ public class Plane extends Shape {
 	public float w2;
 	public float d2;
 
-	public Plane(String id, Shader shader) {
-		this(id, shader, 10f, 10f);
+	public Plane(String id, Shader shader, float mass) {
+		this(id, shader, 10f, 10f, mass);
 	}
 
-	public Plane(String id, Shader shader, float w, float d) {
-		this(id, shader, w, d, null);
+	public Plane(String id, Shader shader, float w, float d, float mass) {
+		this(id, shader, w, d, null, mass);
 	}
 
-	public Plane(String id, Shader shader, float w, float d, String sourceTex) {
-		super(id, shader);
+	public Plane(String id, Shader shader, float w, float d, String sourceTex, float mass) {
+		super(id, shader,mass);
 		w2 = w / 2;
 		d2 = d / 2;
 

@@ -213,7 +213,7 @@ public class Physic extends UntypedActor {
 				Node newNode = nodeFactory.cube(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
 						((NodeCreation) message).w, ((NodeCreation) message).h,
-						((NodeCreation) message).d);
+						((NodeCreation) message).d, ((NodeCreation) message).mass);
 				if ((((NodeCreation) message).impulse != null)) {
 					newNode.setVelocity(((NodeCreation) message).impulse);
 				}
@@ -232,7 +232,7 @@ public class Physic extends UntypedActor {
 			} else if (((NodeCreation) message).type == Types.SPHERE) {
 
 				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
-						((NodeCreation) message).shader);
+						((NodeCreation) message).shader, ((NodeCreation) message).mass);
 
 				if ((((NodeCreation) message).impulse != null)) {
 					// TODO Masse einbauen

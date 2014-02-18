@@ -52,7 +52,7 @@ public class App extends WorldState {
 
 		GroupNode head = createGroup("head");
 		setStart(head);
-		Cube c1 = createCube("Cube1", shader);
+		Cube c1 = createCube("Cube1", shader, 1f);
 //		Cube c1 = createCube("Cube1", shader, 0.5f, 0.3f, 0.3f);
 		append(c1, head);
 //		transform(c1, vecmath.scaleMatrix(2, 2, 2));
@@ -68,7 +68,7 @@ public class App extends WorldState {
 		append(g1,head);
 //		transform(g1, vecmath.translationMatrix(0, -1, 0));
 		
-		Cube c2 = createCube("Cube2", shader, 1.5f, 1.5f, 1.5f);
+		Cube c2 = createCube("Cube2", shader, 1.5f, 1.5f, 1.5f, 1f);
 //		transform(c2, vecmath.translationMatrix(-1.5f, 2, 0));
 //		transform(c2, vecmath.scaleMatrix(2f, 2f, 0));
 //		transform(c2, vecmath.translationMatrix(-2f, 2, 0));
@@ -79,7 +79,7 @@ public class App extends WorldState {
 //		transform(c2, vecmath.translationMatrix(1, 0, 0));
 		append(c2, g1);
 
-		Pipe c3 = createPipe("Pipe!", shader, 0, 1, 30);
+		Pipe c3 = createPipe("Pipe!", shader, 0, 1, 30, 1f);
 //		transform(c3, vecmath.translationMatrix(-1.5f, -1, 0));
 		append(c3, head);
 		
@@ -88,17 +88,17 @@ public class App extends WorldState {
 //		addPhysic(c4, new VectorImp(0.01f,0.01f,0));
 //		append(c4, head);
 		
-		Sphere c5 = createSphere("Shpere2", shader);
+		Sphere c5 = createSphere("Shpere2", shader, 1f);
 		transform(c5, vecmath.translationMatrix(5f, 1f, 0));
 		addPhysic(c5, new VectorImp(0,-0.01f,0));
 		append(c5, head);
 		
-		Plane floor = createPlane("Floor", shader, 20, 20);
+		Plane floor = createPlane("Floor", shader, 20, 20, 1f);
 		transform(floor, vecmath.translationMatrix(0, -2f, 0));
 		addPhysicFloor(floor);
 		append(floor, g1);
 		
-		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Cannon2.obj"), null);
+		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Cannon2.obj"), null, 1f);
 //		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));
 //		transform(testObj, vecmath.scaleMatrix(0.01f, 0.01f, 0.01f));
 		transform(testObj, vecmath.translationMatrix(-3f, -2f, 5f));
@@ -107,7 +107,7 @@ public class App extends WorldState {
 		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(0f, 1f, 0f) ,Types.OBJECT);
 		append(testObj, head);
 		
-		ObjLoader sphere=createObject("objSphere", shader, new File("obj/Sphere.obj"), null);
+		ObjLoader sphere=createObject("objSphere", shader, new File("obj/Sphere.obj"), null, 1f);
 		transform(sphere, vecmath.translationMatrix(4f, 0f, 0f));
 		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_DOWN)), SimulateType.TRANSLATE, Mode.DOWN, new VectorImp(0.0f, 0.0f, 0.1f) ,Types.CUBE);
 		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_P)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(1f, 0, 0) ,Types.CUBE);

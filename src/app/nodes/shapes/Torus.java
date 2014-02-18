@@ -35,17 +35,17 @@ public class Torus extends Shape {
 	private List<Vertex> vL = new ArrayList<Vertex>();
 	private Vector[] nL;
 
-	public Torus(String id, Shader shader) {
-		this(id, shader, 2f, 1f, 12, 12, true);
+	public Torus(String id, Shader shader, float mass) {
+		this(id, shader, 2f, 1f, 12, 12, true, mass);
 	}
 
-	public Torus(String id, Shader shader, float rCenter, float rTube) {
-		this(id, shader, rCenter, rTube, 12, 12, true);
+	public Torus(String id, Shader shader, float rCenter, float rTube, float mass) {
+		this(id, shader, rCenter, rTube, 12, 12, true, mass);
 	}
 
 	public Torus(String id, Shader shader, float rCenter, float rTube,
-			float uS, float vS, boolean useNormals) {
-		super(id, shader);
+			float uS, float vS, boolean useNormals, float mass) {
+		super(id, shader, mass);
 		
 		mode = GL11.GL_QUAD_STRIP;
 		

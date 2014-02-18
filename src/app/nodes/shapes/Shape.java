@@ -31,17 +31,21 @@ public abstract class Shape extends Node {
 	protected FloatBuffer textureData3;
 	protected Texture tex;
 	protected Shader shader;
+	protected float mass;
 	protected int mode = GL11.GL_QUADS;
 	private Vector center = new VectorImp(0,0,0);
 	private float radius;
 
-	public Shape(String id, Shader shader) {
+	public Shape(String id, Shader shader, float mass) {
 		super(id, FactoryDefault.vecmath.identityMatrix());
 		this.shader = shader;
+		this.mass = mass;
 		findCenter();
-		
-		
+				
 	}
+	
+	
+	
 
 	public void display(Matrix m) {
 

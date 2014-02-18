@@ -32,17 +32,17 @@ public class Cube extends Shape {
 	private float d2;
 	
 
-	public Cube(String id, Shader shader) {
-		this(id, shader, 1f, 1f, 1f);
+	public Cube(String id, Shader shader, float mass) {
+		this(id, shader, 1f, 1f, 1f, mass);
 	}
 
-	public Cube(String id, Shader shader, float w, float h, float d) {
-		this(id, shader, w, h, d, null);
+	public Cube(String id, Shader shader, float w, float h, float d, float mass) {
+		this(id, shader, w, h, d, null, mass);
 	}
 
 	public Cube(String id, Shader shader, float w, float h, float d,
-			String sourceTex) {
-		super(id, shader);
+			String sourceTex, float mass) {
+		super(id, shader, mass);
 		w2 = w / 2;
 		h2 = h / 2;
 		d2 = d / 2;

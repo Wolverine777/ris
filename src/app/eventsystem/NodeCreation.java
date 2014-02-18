@@ -24,6 +24,8 @@ public class NodeCreation {
 	public Vector center;
 	
 	public float radius;
+	
+	public float mass;
 
 	public Matrix getModelmatrix() {
 		return modelmatrix;

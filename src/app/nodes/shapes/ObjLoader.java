@@ -38,16 +38,16 @@ public class ObjLoader extends Shape {
 
 	private Texture tex;
 
-	public ObjLoader(String id, Shader shader) {
-		this(id, shader, new File("obj/cube.obj"));
+	public ObjLoader(String id, Shader shader, float mass) {
+		this(id, shader, new File("obj/cube.obj"), mass);
 	}
 
-	public ObjLoader(String id, Shader shader, File sourcePath) {
-		this(id, shader, sourcePath, null);
+	public ObjLoader(String id, Shader shader, File sourcePath, float mass) {
+		this(id, shader, sourcePath, null, mass);
 	}
 
-	public ObjLoader(String id, Shader shader, File sourceFile, File sourceTex) {
-		super(id, shader);
+	public ObjLoader(String id, Shader shader, File sourceFile, File sourceTex, float mass) {
+		super(id, shader, mass);
 		if (sourceTex != null)
 			tex = new Texture(sourceTex);
 
