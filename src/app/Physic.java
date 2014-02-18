@@ -67,12 +67,13 @@ public class Physic extends UntypedActor {
 				System.out.println("komm ich hier rein? Ich hoffe ja");
 				
 				oppositeDirectionGround(n);
+				halfVelocityGround(n);
 				// TODO Erdanziehungskraft m*g?
 				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
 				// TODO Masse einabauen, dann impuls setzen und dann velocity
 				n.setVelocity(n.getForce());
 				
-				VectorImp vec = new VectorImp(0, 0.1f, 0);
+				VectorImp vec = new VectorImp(0, 0.05f, 0);
 				Matrix modify=MatrixImp.translate(vec);
 	    		n.updateWorldTransform(modify);
 	    		getSender().tell(new NodeModification(n.id,modify), self());
@@ -187,6 +188,19 @@ public class Physic extends UntypedActor {
 		
 		n.setVelocity(newVelo);
 		
+	}
+	
+	private void halfVelocityGround(Node n){
+		
+		float x = n.getVelocity().x();
+		float y = n.getVelocity().y();
+		float z = n.getVelocity().z();
+		
+		y = 0.5f *y;
+		
+		VectorImp newVelo = new VectorImp(x, y, z);
+		
+		n.setVelocity(newVelo);
 	}
 
 	public void onReceive(Object message) throws Exception {
