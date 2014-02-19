@@ -126,27 +126,27 @@ public class Renderer extends UntypedActor {
 				Node newNode = nodeFactory.cube(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
 						((NodeCreation) message).w, ((NodeCreation) message).h,
-						((NodeCreation) message).d);
+						((NodeCreation) message).d, ((NodeCreation) message).mass);
 				nodes.put(newNode.id, newNode);
 			} else if (((NodeCreation) message).type == Types.PIPE) {
 				Node newNode = nodeFactory.pipe(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
 						((NodeCreation) message).r,
 						((NodeCreation) message).lats,
-						((NodeCreation) message).longs);
+						((NodeCreation) message).longs,((NodeCreation) message).mass);
 				nodes.put(newNode.id, newNode);
 			} else if (((NodeCreation) message).type == Types.SPHERE) {
 				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
-						((NodeCreation) message).shader);
+						((NodeCreation) message).shader, ((NodeCreation) message).mass);
 				nodes.put(newNode.id, newNode);
 			} else if (((NodeCreation) message).type == Types.PLANE) {
 				Node newNode = nodeFactory.plane(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
-						((NodeCreation) message).w, ((NodeCreation) message).d);
+						((NodeCreation) message).w, ((NodeCreation) message).d, ((NodeCreation) message).mass);
 				nodes.put(newNode.id, newNode);
 			}else if(((NodeCreation) message).type == Types.OBJECT){
 				NodeCreation nc=(NodeCreation) message;
-				Node newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex);
+				Node newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
 				nodes.put(newNode.id, newNode);
 			}
 

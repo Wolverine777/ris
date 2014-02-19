@@ -26,12 +26,12 @@ public class Pipe extends Shape {
 
 	private List<Vertex> vL = new ArrayList<Vertex>();
 
-	public Pipe(String id, Shader shader) {
-		this(id, shader, 1.5f, 10, 10);
+	public Pipe(String id, Shader shader, float mass) {
+		this(id, shader, 1.5f, 10, 10, mass);
 	}
 
-	public Pipe(String id, Shader shader, float r, int lats, int longs) {
-		super(id, shader);
+	public Pipe(String id, Shader shader, float r, int lats, int longs, float mass) {
+		super(id, shader, mass);
 		this.r = r;
 		this.lats = lats;
 		this.longs = longs;

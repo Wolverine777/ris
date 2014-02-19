@@ -16,6 +16,7 @@ import akka.actor.Props;
 import akka.actor.UntypedActor;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.Events;
+import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
@@ -42,6 +43,7 @@ import app.shader.Shader;
 import app.toolkit.StopWatch;
 import app.vecmath.Matrix;
 import app.vecmath.Vector;
+import app.vecmathimp.VectorImp;
 
 /**
  * Technical base
@@ -248,18 +250,19 @@ public class WorldState extends UntypedActor{
         return group;
 	}
 	
-	protected Cube createCube(String id, Shader shader) {
-		return createCube(id, shader, 1, 1, 1);
+	protected Cube createCube(String id, Shader shader, float mass) {
+		return createCube(id, shader, 1, 1, 1, mass);
 	}
 	
-	protected Cube createCube(String id, Shader shader, float w, float h, float d) {
-		Cube cube = nodeFactory.cube(id, shader, w, h, d);
+	protected Cube createCube(String id, Shader shader, float w, float h, float d, float mass) {
+		Cube cube = nodeFactory.cube(id, shader, w, h, d, mass);
 		nodes.put(id, cube);
 		
 		NodeCreation n = new NodeCreation();
-        n.id = id;
+		n.id = id;
         n.type = Types.CUBE;
         n.shader = shader;
+        n.mass = mass;
         
         n.d = d;
         n.w = w;
@@ -270,14 +273,15 @@ public class WorldState extends UntypedActor{
         return cube;
 	}
 	
-	protected Pipe createPipe(String id, Shader shader, float r, int lats, int longs) {
-		Pipe pipe = nodeFactory.pipe(id, shader, r, lats, longs);
+	protected Pipe createPipe(String id, Shader shader, float r, int lats, int longs, float mass) {
+		Pipe pipe = nodeFactory.pipe(id, shader, r, lats, longs, mass);
 		nodes.put(id, pipe);
 		
 		NodeCreation n = new NodeCreation();
         n.id = id;
         n.type = Types.PIPE;
         n.shader = shader;
+        n.mass = mass;
         
         n.r = r;
         n.lats = lats;
@@ -288,28 +292,30 @@ public class WorldState extends UntypedActor{
         return pipe;
 	}
 	
-	protected Sphere createSphere(String id, Shader shader) {
-		Sphere sphere = nodeFactory.sphere(id, shader);
+	protected Sphere createSphere(String id, Shader shader, float mass) {
+		Sphere sphere = nodeFactory.sphere(id, shader, mass);
 		nodes.put(id, sphere);
 		
 		NodeCreation n = new NodeCreation();
-        n.id = id;
+		n.id = id;
         n.type = Types.SPHERE;
         n.shader = shader;
+        n.mass = mass;
         
         announce(n);
         
         return sphere;
 	}
 	
-	protected Plane createPlane(String id, Shader shader, float width, float depth) {
-		Plane plane = nodeFactory.plane(id, shader, width, depth);
+	protected Plane createPlane(String id, Shader shader, float width, float depth, float mass) {
+		Plane plane = nodeFactory.plane(id, shader, width, depth, mass);
 		nodes.put(id, plane);
 		
 		NodeCreation n = new NodeCreation();
         n.id = id;
         n.type = Types.PLANE;
         n.shader = shader;
+        n.mass = mass;
         
         n.w = width;
         n.d = depth;
@@ -319,8 +325,8 @@ public class WorldState extends UntypedActor{
         return plane;
 	}
 	
-	protected ObjLoader createObject(String id, Shader shader, File sourceFile, File sourceTex) {
-		ObjLoader obj = nodeFactory.obj(id, shader, sourceFile, sourceTex);
+	protected ObjLoader createObject(String id, Shader shader, File sourceFile, File sourceTex, float mass) {
+		ObjLoader obj = nodeFactory.obj(id, shader, sourceFile, sourceTex, mass);
 		nodes.put(id, obj);
 		
 		NodeCreation n = new NodeCreation();
@@ -329,6 +335,7 @@ public class WorldState extends UntypedActor{
         n.shader = shader;
         n.sourceFile=sourceFile;
         n.sourceTex=sourceTex;
+        n.mass = mass;
         
         announce(n);
         
@@ -398,6 +405,17 @@ public class WorldState extends UntypedActor{
 		sc.type = Types.CUBE;
 		simulator.tell(sc,self());
 			
+	}
+	
+	protected void addPhysicFloor(Plane plane){
+		
+		Vector pos = plane.getWorldTransform().getPosition();
+		
+		FloorCreation f = new FloorCreation();
+		f.position = pos;
+		
+		physic.tell(f, self());
+		
 	}
 	
 	protected void simulateOnKey(Node object, Set<Integer> keys, SimulateType simulation, Mode mode, Vector vec, Types type){ //TODO:better solution for type
