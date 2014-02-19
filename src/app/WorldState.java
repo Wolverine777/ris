@@ -72,10 +72,10 @@ public class WorldState extends UntypedActor{
 
 		System.out.println("\nStarting new loop");
 
-		simulator.tell(Message.LOOP, self());
-		input.tell(Message.LOOP, self());
-		renderer.tell(Message.DISPLAY, self());
 		physic.tell(Message.LOOP, self());
+		input.tell(Message.LOOP, self());
+		simulator.tell(Message.LOOP, self());
+		renderer.tell(Message.DISPLAY, self());
 	}
 
 	@Override

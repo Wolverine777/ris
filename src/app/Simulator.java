@@ -48,22 +48,23 @@ public class Simulator extends UntypedActor {
     	elapsed=sw.elapsed();
     	for(Map.Entry<Node, KeyDef> entry:simulations.entries()){
     		Set<Integer> keys=entry.getValue().getKeys();
-    		if(keys==null||keys.isEmpty()){
-    			System.out.println("kommt was an? " + entry.getKey().id + entry.getValue().getVector());
-    			doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
-    		}else{
-    			if(entry.getValue().getMode()==Mode.DOWN){
-    				boolean contains=false;
-    				for(Integer i:keys)if(pressedKeys.contains(i))contains=true;
-    				if(contains)doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
-    			}else if(entry.getValue().getMode()==Mode.TOGGLE){
-    				boolean contains=false;
-    				for(Integer i:keys)if(toggeled.contains(i))contains=true;
-    				if(contains)doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
+//    		if(entry.getValue().getType()!=SimulateType.PHYSIC){
+    			if(keys==null||keys.isEmpty()){
+    				doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
     			}else{
-    				throw new Exception("Add Key Mode!");
+    				if(entry.getValue().getMode()==Mode.DOWN){
+    					boolean contains=false;
+    					for(Integer i:keys)if(pressedKeys.contains(i))contains=true;
+    					if(contains)doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
+    				}else if(entry.getValue().getMode()==Mode.TOGGLE){
+    					boolean contains=false;
+    					for(Integer i:keys)if(toggeled.contains(i))contains=true;
+    					if(contains)doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
+    				}else{
+    					throw new Exception("Add Key Mode!");
+    				}
     			}
-    		}
+//    		}
     	}
                 // möglich: hier alle modifizierten schicken, nicht mehr nötig da modify matrix getellt
         getSender().tell(Message.DONE, self());
@@ -91,12 +92,13 @@ public class Simulator extends UntypedActor {
     		getSender().tell(new NodeModification(node.id,/*node.getWorldTransform()*/modify), self());
     	}
     	else if(type==SimulateType.PHYSIC){
-    		if(vec != null){
+    		if(node.force != null){
 //    			node.setLocalTransform(MatrixImp.translate(vec));
 //    			node.updateWorldTransform();
-    		Matrix modify=MatrixImp.translate(vec.mult((elapsed*60)));
+    		Matrix modify=MatrixImp.translate(node.force.mult((elapsed*60)));
     		node.updateWorldTransform(modify);
-    		getSender().tell(new NodeModification(node.id,modify), self());    		
+    		getSender().tell(new NodeModification(node.id,modify), self());
+    		node.force=null;
     	    }
     	}
     	//st end nodemodification
@@ -181,15 +183,13 @@ public class Simulator extends UntypedActor {
         	}
         }
         else if (message instanceof PhysicModification) {
-//        	System.out.println("Physic data received!!!!!!!!!!!!!" + (((PhysicModification) message)).force);
         	if (nodes.containsKey(((PhysicModification) message).id)){
-//        		System.out.println("IN?????????????????????????????? YES?");
         		Node modify = nodes.get(((PhysicModification) message).id);
         		modify.setForce((((PhysicModification) message)).force);
         		for(KeyDef k :simulations.get(modify)){
         		  if(k.getType().equals(SimulateType.PHYSIC)){
-//        			  System.out.println("PhysicTYPE?????????????");
         			  k.setVector(modify.getForce());
+//        			  doSimulation(modify, k.getType(), k.getVector());
         		  }
         		}
         	}
