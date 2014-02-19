@@ -5,6 +5,8 @@ import static app.nodes.NodeFactory.nodeFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.Sets.SetView;
+
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import app.eventsystem.FloorCreation;
@@ -66,17 +68,19 @@ public class Physic extends UntypedActor {
 				
 				System.out.println("komm ich hier rein? Ich hoffe ja");
 				
-				oppositeDirectionGround(n);
-				halfVelocityGround(n);
+				VectorImp opposite = oppositeDirectionGround(n);
+				n.setVelocity(opposite);
+				VectorImp reduce = halfVelocityGround(n);
+				n.setVelocity(reduce);
 				// TODO Erdanziehungskraft m*g?
 				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
 				// TODO Masse einabauen, dann impuls setzen und dann velocity
 				n.setVelocity(n.getForce());
-				
-				VectorImp vec = new VectorImp(0, 0.05f, 0);
-				Matrix modify=MatrixImp.translate(vec);
-	    		n.updateWorldTransform(modify);
-	    		getSender().tell(new NodeModification(n.id,modify), self());
+//				
+//				VectorImp vec = new VectorImp(0, 0.05f, 0);
+//				Matrix modify=MatrixImp.translate(vec);
+//	    		n.updateWorldTransform(modify);
+//	    		getSender().tell(new NodeModification(n.id,modify), self());
 			
 				PhysicModification p1 = new PhysicModification();
 				p1.id = n.id;
@@ -104,12 +108,15 @@ public class Physic extends UntypedActor {
 //		    		getSender().tell(new NodeModification(n.id,modify), self());
 //				}
 				 
-				 oppositeDirection(n);
+				VectorImp opposite = oppositeDirection(n);
+				
+				n.setVelocity(opposite);
 				 
 				// TODO Erdanziehungskraft m*g?
 				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
 				// TODO Masse einabauen, dann impuls setzen und dann velocity
 				n.setVelocity(n.getForce());
+				
 				
 			
 				PhysicModification p1 = new PhysicModification();
@@ -163,7 +170,7 @@ public class Physic extends UntypedActor {
 		return false;
 	}
 	
-	private void oppositeDirection(Node n){
+	private VectorImp oppositeDirection(Node n){
 		float x = n.getVelocity().x();
 		float y = n.getVelocity().y();
 		float z = n.getVelocity().z();
@@ -172,12 +179,12 @@ public class Physic extends UntypedActor {
 		
 		VectorImp newVelo = new VectorImp(x, y, z);
 		
-		n.setVelocity(newVelo);
+		return newVelo;
 		
 		
 	}
 	
-	private void oppositeDirectionGround(Node n){
+	private VectorImp oppositeDirectionGround(Node n){
 		float x = n.getVelocity().x();
 		float y = n.getVelocity().y();
 		float z = n.getVelocity().z();
@@ -186,11 +193,11 @@ public class Physic extends UntypedActor {
 		
 		VectorImp newVelo = new VectorImp(x, y, z);
 		
-		n.setVelocity(newVelo);
+		return newVelo;
 		
 	}
 	
-	private void halfVelocityGround(Node n){
+	private VectorImp halfVelocityGround(Node n){
 		
 		float x = n.getVelocity().x();
 		float y = n.getVelocity().y();
@@ -200,7 +207,7 @@ public class Physic extends UntypedActor {
 		
 		VectorImp newVelo = new VectorImp(x, y, z);
 		
-		n.setVelocity(newVelo);
+		return newVelo;
 	}
 
 	public void onReceive(Object message) throws Exception {
