@@ -89,32 +89,35 @@ public class Physic extends UntypedActor {
 					&& collisionObjects(n) != null) {
 //				 System.out.println("richtige schleife!!!!!!!!!!!");
 				 
-				 Node collision = collisionObjects(n);
+//				 Node collision = collisionObjects(n);
+//				
+//				if(n.getVelocity().x() > 0){
+//					VectorImp vec = new VectorImp(-0.5f, 0, 0);
+//					Matrix modify=MatrixImp.translate(vec);
+//		    		n.updateWorldTransform(modify);
+//		    		getSender().tell(new NodeModification(n.id,modify), self());
+//				}
+//				else if(n.getVelocity().x() <0){
+//					VectorImp vec = new VectorImp(0.5f, 0, 0);
+//					Matrix modify=MatrixImp.translate(vec);
+//		    		n.updateWorldTransform(modify);
+//		    		getSender().tell(new NodeModification(n.id,modify), self());
+//				}
 				 
-				 oppositeDirection(collision);
 				 oppositeDirection(n);
 				 
 				// TODO Erdanziehungskraft m*g?
 				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
 				// TODO Masse einabauen, dann impuls setzen und dann velocity
 				n.setVelocity(n.getForce());
+				
 			
 				PhysicModification p1 = new PhysicModification();
 				p1.id = n.id;
 				p1.force = n.getForce();
 				
-//				simulator.tell(p1, self());	
+				simulator.tell(p1, self());	
 				
-				// TODO Erdanziehungskraft m*g?
-				collision.setForce((collision.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
-				// TODO Masse einabauen, dann impuls setzen und dann velocity
-				collision.setVelocity(collision.getForce());
-			
-				PhysicModification p2 = new PhysicModification();
-				p2.id = collision.id;
-				p2.force = collision.getForce();
-						 
-				simulator.tell(p2, self());
 
 			}
 		}
@@ -147,10 +150,7 @@ public class Physic extends UntypedActor {
 	private boolean collisionGround(Node n) {
 		float distance = 0;
 		float radiuses = 0;
-		System.out.println("komm ich hier rein GROUND!!!");
 		
-		System.out.println("hier auch noch GROUND");
-		System.out.println("und wie schauts hier aus? GROUND");
 		distance = (float) Math.sqrt((float) Math.pow(((Shape) n).getCenter().y() - floor.y(),2));
 		radiuses = ((Shape) n).getRadius();
 		System.out.println("distance ground: " + distance + " radiuses ground: " + radiuses);
@@ -204,25 +204,19 @@ public class Physic extends UntypedActor {
 	}
 
 	public void onReceive(Object message) throws Exception {
-		System.out.println("STH STILL WORKING?" + nodes);
 		if (message == Message.LOOP) {
-			System.out.println("gibt es hier Nodes? " + nodes);
 			physic();
 			System.out.println("gibt es hier auch noch Nodes? " + nodes);
 		} else if (message instanceof PhysicInitialization) {
 			this.simulator = (((PhysicInitialization) message).simulator);
 			initialize();
 		} else if (message instanceof NodeCreation) {
-			// System.out.println("PHHHHHYYYYYYYYYYYYYYYYYYYSSSSSSSSIIIIIICCC");
-
+			
 			if (((NodeCreation) message).type == Types.GROUP) {
 				Node newNode = nodeFactory
 						.groupNode(((NodeCreation) message).id);
 				nodes.put(newNode.id, newNode);
 			} else if (((NodeCreation) message).type == Types.CUBE) {
-
-				// System.out.println("Shadering cube with "
-				// + ((NodeCreation) message).shader);
 
 				Node newNode = nodeFactory.cube(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
@@ -263,9 +257,7 @@ public class Physic extends UntypedActor {
 					((Shape) newNode)
 							.setRadius(((NodeCreation) message).radius);
 				}
-				System.out.println("kommen wir noch bis hierher");
 				nodes.put(newNode.id, newNode);
-				System.out.println("Nodes leer? " + nodes.size());
 			}
 		} else if (message instanceof NodeModification) {
 			// System.out.println("NODEMODIFICATION!!!!!");
@@ -278,7 +270,6 @@ public class Physic extends UntypedActor {
 
 				Node modify = nodes.get(((NodeModification) message).id);
 
-				System.out.println("get node" + modify.id);
 				if (((NodeModification) message).localMod != null) {
 					// modify.setLocalTransform(((NodeModification)
 					// message).localMod);
