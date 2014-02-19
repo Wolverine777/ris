@@ -85,7 +85,9 @@ public class WorldState extends UntypedActor{
 				for (Map.Entry<ActorRef, Boolean> entry : unitState.entrySet()) {
 					entry.setValue(false);
 				}
-				System.out.printf("Took %.2fms at %.1ffps.%n", time.elapsed()*1000, time.fps);
+//				System.out.printf("Took %.2fms at %.1ffps.%n", time.elapsed()*1000, time.fps);
+				float elapsed=time.elapsed();
+				System.out.printf("Took %.2fms(possible %.3ffps) at %.1ffps.%n", elapsed*1000, time.fps, (1/elapsed));
 //				renderer.tell(time.elapsed()*1000, self());  //TODO: nullpointer
 				loop();
 			}

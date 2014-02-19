@@ -13,6 +13,7 @@ import app.nodes.Node;
 import app.nodes.shapes.Vertex;
 import app.shader.Shader;
 import app.vecmath.Matrix;
+import app.vecmath.Vector;
 import app.vecmathimp.FactoryDefault;
 import app.vecmathimp.MatrixImp;
 import app.vecmathimp.VectorImp;
