@@ -83,21 +83,21 @@ public class App extends WorldState {
 //		transform(c3, vecmath.translationMatrix(-1.5f, -1, 0));
 		append(c3, head);
 		
-		Sphere c4 = createSphere("Shpere!", shader, 1f);
-		transform(c4, vecmath.translationMatrix(-5f, 1f, 0));
-		addPhysic(c4, new VectorImp(0.01f,0.01f,0));
-		append(c4, head);
+//		Sphere c4 = createSphere("Shpere!", shader, 1f);
+//		transform(c4, vecmath.translationMatrix(-5f, 1f, 0));
+//		addPhysic(c4, new VectorImp(0.01f,0.01f,0));
+//		append(c4, head);
 		
-		Sphere c6 = createSphere("Shpere3", shader, 1f);
-		transform(c6, vecmath.translationMatrix(5f, 1f, 0));
-		addPhysic(c6, new VectorImp(-0.01f,0.01f,0));
-		append(c6, head);
+//		Sphere c6 = createSphere("Shpere3", shader, 1f);
+//		transform(c6, vecmath.translationMatrix(5f, 1f, 0));
+//		addPhysic(c6, new VectorImp(-0.01f,0.01f,0));
+//		append(c6, head);
 		
 		
-//		Sphere c5 = createSphere("Shpere2", shader, 1f);
-//		transform(c5, vecmath.translationMatrix(5f, 4f, 0));
-//		addPhysic(c5, new VectorImp(0,-0.01f,0));
-//		append(c5, head);
+		Sphere c5 = createSphere("Shpere2", shader, 1f);
+		transform(c5, vecmath.translationMatrix(5f, 4f, 0));
+		addPhysic(c5, new VectorImp(0,-0.01f,0));
+		append(c5, head);
 		
 		Plane floor = createPlane("Floor", shader, 20, 20, 1f);
 		transform(floor, vecmath.translationMatrix(0, -2f, 0));
