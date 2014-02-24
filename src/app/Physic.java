@@ -60,6 +60,8 @@ public class Physic extends UntypedActor {
 				PhysicModification p = new PhysicModification();
 				p.id = n.id;
 				p.force = n.getForce();
+				
+				System.out.println("Noch keine Collision: Vektor: " + p.force);
 				simulator.tell(p, self());
 
 			} else if (collisionGround(n) == true
@@ -73,18 +75,21 @@ public class Physic extends UntypedActor {
 				VectorImp reduce = halfVelocityGround(n);
 				n.setVelocity(reduce);
 				// TODO Erdanziehungskraft m*g?
-				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
+//				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
 				// TODO Masse einabauen, dann impuls setzen und dann velocity
+				n.setForce(n.getVelocity());
 				n.setVelocity(n.getForce());
 //				
-//				VectorImp vec = new VectorImp(0, 0.05f, 0);
-//				Matrix modify=MatrixImp.translate(vec);
-//	    		n.updateWorldTransform(modify);
-//	    		getSender().tell(new NodeModification(n.id,modify), self());
+				VectorImp vec = new VectorImp(0, 0.05f, 0);
+				Matrix modify=MatrixImp.translate(vec);
+	    		n.updateWorldTransform(modify);
+	    		getSender().tell(new NodeModification(n.id,modify), self());
 			
 				PhysicModification p1 = new PhysicModification();
 				p1.id = n.id;
 				p1.force = n.getForce();
+				
+				System.out.println("Ich stecke fest: rescue me!!! " + "Vektor: " + p1.force );
 				
 				simulator.tell(p1, self());				
 				
@@ -123,6 +128,7 @@ public class Physic extends UntypedActor {
 				p1.id = n.id;
 				p1.force = n.getForce();
 				
+								
 				simulator.tell(p1, self());	
 				
 
@@ -203,7 +209,7 @@ public class Physic extends UntypedActor {
 		float y = n.getVelocity().y();
 		float z = n.getVelocity().z();
 		
-		y = 0.5f *y;
+		y = 0.8f *y;
 		
 		VectorImp newVelo = new VectorImp(x, y, z);
 		

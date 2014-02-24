@@ -96,7 +96,7 @@ public class App extends WorldState {
 		
 		Sphere c5 = createSphere("Shpere2", shader, 1f);
 		transform(c5, vecmath.translationMatrix(5f, 4f, 0));
-		addPhysic(c5, new VectorImp(0,-0.01f,0));
+		addPhysic(c5, new VectorImp(0,-0.03f,0));
 		append(c5, head);
 		
 		Plane floor = createPlane("Floor", shader, 20, 20, 1f);
