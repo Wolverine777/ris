@@ -12,6 +12,7 @@ import java.util.Map;
 public class LevelNode {
 	private static final int BASEVAL = 1;
 	private final Vector POS;
+	private int val=1;
 	// private int ident=0;
 	private Map<LevelNode, Integer> edges = new HashMap<LevelNode, Integer>();
 
@@ -39,11 +40,16 @@ public class LevelNode {
 
 	public void multEdgesVal(int val) {
 		for(LevelNode node:edges.keySet())edges.put(node, edges.get(node)*val);
+		this.val=this.val*val;
 	}
 
 	public float getDepth() {
 
 		return 0;
+	}
+
+	public int getVal() {
+		return val;
 	}
 	
 }

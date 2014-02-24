@@ -103,10 +103,11 @@ public class App extends WorldState {
 		append(c5, head);
 		
 		Plane floor = createPlane("Floor", shader, 20, 20, 1f);
-		transform(floor, vecmath.translationMatrix(0, -2f, 0));
+//		transform(floor, vecmath.translationMatrix(0, -2f, 0));
 		addPhysicFloor(floor);
 		append(floor, g1);
 		Level level=new Level(floor.getWorldTransform().getPosition(), floor.w2*2, 0, floor.d2*2);
+		System.out.println(level.toString());
 		
 		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Cannon2.obj"), null, 1f);
 //		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));
