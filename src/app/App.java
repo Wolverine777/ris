@@ -7,11 +7,14 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import javax.vecmath.Vector3f;
+
 import org.lwjgl.input.Keyboard;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import app.eventsystem.Level;
 import app.eventsystem.Types;
 import app.messages.Message;
 import app.messages.Mode;
@@ -103,6 +106,7 @@ public class App extends WorldState {
 		transform(floor, vecmath.translationMatrix(0, -2f, 0));
 		addPhysicFloor(floor);
 		append(floor, g1);
+		Level level=new Level(floor.getWorldTransform().getPosition(), floor.w2*2, 0, floor.d2*2);
 		
 		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Cannon2.obj"), null, 1f);
 //		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));

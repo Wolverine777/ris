@@ -51,7 +51,7 @@ import app.vecmathimp.VectorImp;
  * @author Constantin, Benjamin, Fabian
  * 
  */
-public class WorldState extends UntypedActor{
+public abstract class WorldState extends UntypedActor{
 	public static ActorSystem system;
 	
 	private Map<String, Node> nodes = new HashMap<String, Node>();
