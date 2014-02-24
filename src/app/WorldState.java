@@ -17,6 +17,8 @@ import akka.actor.UntypedActor;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.Events;
 import app.eventsystem.FloorCreation;
+import app.eventsystem.Level;
+import app.eventsystem.LevelCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
@@ -63,6 +65,7 @@ public abstract class WorldState extends UntypedActor{
 	private ActorRef simulator;
 	private ActorRef input;
 	private ActorRef physic;
+	private ActorRef ai;
 
 	protected Node startNode;
 	protected Camera camera;
@@ -73,6 +76,7 @@ public abstract class WorldState extends UntypedActor{
 		System.out.println("\nStarting new loop");
 
 		physic.tell(Message.LOOP, self());
+		ai.tell(Message.LOOP, self());
 		input.tell(Message.LOOP, self());
 		simulator.tell(Message.LOOP, self());
 		renderer.tell(Message.DISPLAY, self());
@@ -134,6 +138,9 @@ public abstract class WorldState extends UntypedActor{
 			physic = getContext().actorOf(Props.create(Physic.class), "Physic");
 			unitState.put(physic, false);
 			
+			ai = getContext().actorOf(Props.create(Ai.class), "Ai");
+			unitState.put(ai, false);
+			
 			observers.put(Events.NODE_CREATION, renderer);
 //			observers.put(Events.NODE_CREATION, simulator); done by simulateonkey, only need for modification
 			observers.put(Events.NODE_MODIFICATION, renderer);
@@ -146,6 +153,7 @@ public abstract class WorldState extends UntypedActor{
 			simulator.tell(Message.INIT, self());
 			physic.tell(new PhysicInitialization(simulator), self());
 			input.tell(Message.INIT, self());
+			ai.tell(Message.INIT, self());
 		} else if (message instanceof RendererInitialized) {
 			shader = ((RendererInitialized) message).shader;
 			
@@ -453,5 +461,14 @@ public abstract class WorldState extends UntypedActor{
 			if(simulation!=SimulateType.NONE) input.tell(new RegisterKeys(keys, true), simulator);
 			else input.tell(new RegisterKeys(keys, false), simulator);
 		}
+	}
+	
+	public void sendLevelAi(Level level){
+		
+		LevelCreation levelcreation = new LevelCreation();
+		levelcreation.level = level;
+		
+		ai.tell(levelcreation, self());
+		
 	}
 }
