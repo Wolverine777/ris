@@ -16,8 +16,10 @@ import app.eventsystem.SimulateCreation;
 import app.eventsystem.Types;
 import app.messages.Message;
 import app.nodes.Node;
+import app.nodes.shapes.Cube;
 import app.nodes.shapes.Shape;
 import app.vecmathimp.VectorImp;
+
 
 
 public class Ai extends UntypedActor {
@@ -37,8 +39,21 @@ public class Ai extends UntypedActor {
 
 	}
 
-	private LevelNode findClosestCoin() {
-		return null;
+	private VectorImp findClosestCoin(Node n) {
+		float distance = 1000000;
+		float tempdistance = 0;
+		Node nearest = null;
+		for (Node node : nodes.values()) {
+			if(node instanceof Cube){
+				tempdistance = node.getWorldTransform().getPosition().sub(n.getWorldTransform().getPosition()).length();
+				if(tempdistance < distance){
+				distance = tempdistance;
+				nearest = node;
+				}
+			}
+		}
+		VectorImp closestlevelnode= new VectorImp(level.getNearestinLevel(nearest.getWorldTransform().getPosition()).x(), level.getNearestinLevel(nearest.getWorldTransform().getPosition()).y(), level.getNearestinLevel(nearest.getWorldTransform().getPosition()).z());
+		return closestlevelnode;
 	}
 
 	private void aiLoop() {
