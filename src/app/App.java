@@ -111,7 +111,7 @@ public class App extends WorldState {
 //		System.out.println(level.toString());
 		
 		Cube c6 = createCube("Cube6", shader, 1f);
-		transform(c6, vecmath.translationMatrix(1.111f,0,1.111f));
+		transform(c6, vecmath.translationMatrix(0.51f,0,0.51f));
 		addAi(c6);
 		
 		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Cannon2.obj"), null, 1f);

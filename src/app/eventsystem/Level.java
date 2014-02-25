@@ -57,7 +57,7 @@ public class Level {
 	}
 	
 	public Vector getNearestinLevel(Vector position){
-		int roundvalue = 10000;
+		float roundvalue = 10000;
 	
 		position = roundVector(position, roundvalue);
 			
@@ -66,7 +66,7 @@ public class Level {
 		return position;
 	}
 	
-	public Vector roundVector(Vector position, int roundvalue){
+	public Vector roundVector(Vector position, float roundvalue){
 		float newx = 0;
 		float newz = 0;
 		
@@ -91,7 +91,7 @@ public class Level {
 			}
 		}
 		if(newx == 0 ){
-			System.out.println("position: " + position.x());
+			System.out.println("position: " + position.x() + " roundvlaue: " + roundvalue + " position*roundvalue: " + Math.round(position.x()*roundvalue)/roundvalue);
 			newx = Math.round(position.x()*roundvalue)/roundvalue;
 			System.out.println("Newx: " + newx);
 		}
