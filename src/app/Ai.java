@@ -8,6 +8,7 @@ import app.datatype.Route;
 import app.eventsystem.Level;
 import app.eventsystem.LevelCreation;
 import app.eventsystem.LevelNode;
+import app.eventsystem.SimulateCreation;
 import app.messages.Message;
 import app.nodes.Node;
 
@@ -15,16 +16,22 @@ public class Ai extends UntypedActor {
 	
 	Level level;
 	private Map<String, Node> nodes = new HashMap<String, Node>();
+	private Route perfectway;
 
 	private void initialize() {
 		 getSender().tell(Message.INITIALIZED, self());
 
 	}
 
-	private Route aStar(){
+	private Route aStar(LevelNode target){
 		return null;
 		
 	}
+	
+	private LevelNode findClosestCoin(){
+		return null;
+	}
+	
 	
 	private void aiLoop() {
 			
@@ -42,7 +49,8 @@ public class Ai extends UntypedActor {
 		} else if (message == Message.INIT) {
 			initialize();
 		} else if (message instanceof LevelCreation){
-			this.level = ((LevelCreation) message).level;			
+			LevelCreation lc=(LevelCreation)message;
+			level = new Level(lc.position, lc.width, lc.height, lc.depth);			
 		}
 
 	}

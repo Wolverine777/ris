@@ -463,11 +463,14 @@ public abstract class WorldState extends UntypedActor{
 		}
 	}
 	
-	public void sendLevelAi(Level level){
+	public void sendLevelAi(Plane floor){
 		
 		LevelCreation levelcreation = new LevelCreation();
-		levelcreation.level = level;
-		
+		levelcreation.position = floor.getWorldTransform().getPosition();
+		levelcreation.width = floor.w2*2;
+		levelcreation.height = 0;
+		levelcreation.depth = floor.d2*2;
+				
 		ai.tell(levelcreation, self());
 		
 	}

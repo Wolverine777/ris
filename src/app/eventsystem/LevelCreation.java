@@ -1,7 +1,11 @@
 package app.eventsystem;
 
+import app.vecmath.Vector;
+
 public class LevelCreation {
 	
-	public Level level;
+	public Vector position;
+	
+	public float width,height,depth;
 
 }
