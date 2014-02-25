@@ -51,5 +51,11 @@ public class LevelNode {
 	public int getVal() {
 		return val;
 	}
+
+	public Vector getPOS() {
+		return POS;
+	}
+	
+	
 	
 }

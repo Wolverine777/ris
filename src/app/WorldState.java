@@ -474,4 +474,21 @@ public abstract class WorldState extends UntypedActor{
 		ai.tell(levelcreation, self());
 		
 	}
+	
+	protected void addAi(Cube cube){
+		
+		
+		NodeCreation n = new NodeCreation();
+		n.modelmatrix = (nodes.get(cube.id).getWorldTransform());
+		n.id = cube.id;
+		n.type = Types.CUBE;
+		n.shader = cube.getShader();
+		n.d = cube.getD2();
+		n.w = cube.getW2();
+	    n.h = cube.getH2();
+		n.center = cube.getCenter();
+		n.radius = cube.getRadius();
+		
+		ai.tell(n, self());
+	}
 }
