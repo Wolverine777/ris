@@ -61,14 +61,14 @@ public class Physic extends UntypedActor {
 				p.id = n.id;
 				p.force = n.getForce();
 				
-				System.out.println("Noch keine Collision: Vektor: " + p.force);
+//				System.out.println("Noch keine Collision: Vektor: " + p.force);
 				simulator.tell(p, self());
 
 			} else if (collisionGround(n) == true
 					&& collisionObjects(n) == null) {
 				
 				
-				System.out.println("komm ich hier rein? Ich hoffe ja");
+//				System.out.println("komm ich hier rein? Ich hoffe ja");
 				
 				VectorImp opposite = oppositeDirectionGround(n);
 				n.setVelocity(opposite);

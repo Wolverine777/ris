@@ -491,4 +491,19 @@ public abstract class WorldState extends UntypedActor{
 		
 		ai.tell(n, self());
 	}
+	
+	protected void addAi(Sphere sphere){
+		
+		
+		NodeCreation n = new NodeCreation();
+		n.modelmatrix = (nodes.get(sphere.id).getWorldTransform());
+		n.id = sphere.id;
+		n.type = Types.SPHERE;
+		n.shader = sphere.getShader();
+		n.center = sphere.getCenter();
+		n.radius = sphere.getRadius();
+		
+		
+		ai.tell(n, self());
+	}
 }

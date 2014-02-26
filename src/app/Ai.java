@@ -20,8 +20,6 @@ import app.nodes.shapes.Cube;
 import app.nodes.shapes.Shape;
 import app.vecmathimp.VectorImp;
 
-
-
 public class Ai extends UntypedActor {
 
 	Level level;
@@ -44,25 +42,32 @@ public class Ai extends UntypedActor {
 		float tempdistance = 0;
 		Node nearest = null;
 		for (Node node : nodes.values()) {
-			if(node instanceof Cube){
+			if (node instanceof Cube) {
+				System.out.println("Node(Cube) findclosest: " + node.id);
 				tempdistance = node.getWorldTransform().getPosition().sub(n.getWorldTransform().getPosition()).length();
-				if(tempdistance < distance){
-				distance = tempdistance;
-				nearest = node;
+				if (tempdistance < distance) {
+					distance = tempdistance;
+					System.out.println("distance coin: " + distance);
+					nearest = node;
 				}
 			}
 		}
-		VectorImp closestlevelnode= new VectorImp(level.getNearestinLevel(nearest.getWorldTransform().getPosition()).x(), level.getNearestinLevel(nearest.getWorldTransform().getPosition()).y(), level.getNearestinLevel(nearest.getWorldTransform().getPosition()).z());
+		VectorImp closestlevelnode = new VectorImp(level.getNearestinLevel(nearest.getWorldTransform().getPosition()).x(),
+				level.getNearestinLevel(nearest.getWorldTransform().getPosition()).y(),
+				level.getNearestinLevel(nearest.getWorldTransform().getPosition()).z());
+		System.out.println("closestlevelNode: " + closestlevelnode);
 		return closestlevelnode;
 	}
 
 	private void aiLoop() {
 
-		System.out.println("Level size: " + level.size());
+//		System.out.println("Level size: " + level.getLevelPoints().size());
 		System.out.println(level.toString());
 		for (Node n : nodes.values()) {
 			System.out.println("NodeAI: " + n.id);
-			VectorImp closest = new VectorImp(level.getNearestinLevel(n.getWorldTransform().getPosition()).x(),level.getNearestinLevel(n.getWorldTransform().getPosition()).y(),level.getNearestinLevel(n.getWorldTransform().getPosition()).z());
+			findClosestCoin(n);
+			VectorImp closest = new VectorImp(level.getNearestinLevel(n.getWorldTransform().getPosition()).x(),
+					level.getNearestinLevel(n.getWorldTransform().getPosition()).y(), level.getNearestinLevel(n.getWorldTransform().getPosition()).z());
 			System.out.println("Nearest is: " + closest.toString());
 		}
 		getSender().tell(Message.DONE, self());
@@ -88,6 +93,23 @@ public class Ai extends UntypedActor {
 						((NodeCreation) message).shader,
 						((NodeCreation) message).w, ((NodeCreation) message).h,
 						((NodeCreation) message).d,
+						((NodeCreation) message).mass);
+				if ((((NodeCreation) message).modelmatrix != null)) {
+					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
+				}
+				if ((((NodeCreation) message).center != null)) {
+					((Shape) newNode)
+							.setCenter(((NodeCreation) message).center);
+				}
+				if ((((NodeCreation) message).radius != 0)) {
+					((Shape) newNode)
+							.setRadius(((NodeCreation) message).radius);
+				}
+				nodes.put(newNode.id, newNode);
+			} else if (((NodeCreation) message).type == Types.SPHERE) {
+
+				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
+						((NodeCreation) message).shader,
 						((NodeCreation) message).mass);
 				if ((((NodeCreation) message).modelmatrix != null)) {
 					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
