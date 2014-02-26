@@ -58,7 +58,7 @@ public class Ai extends UntypedActor {
 
 	private void aiLoop() {
 
-		System.out.println("Level size: " + level.getLevelPoints().size());
+		System.out.println("Level size: " + level.size());
 		System.out.println(level.toString());
 		for (Node n : nodes.values()) {
 			System.out.println("NodeAI: " + n.id);
