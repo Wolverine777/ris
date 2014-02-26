@@ -117,9 +117,7 @@ public class Simulator extends UntypedActor {
         	toggeled.clear();
         	pressedKeys.addAll(((KeyState)message).getPressedKeys());
         	toggeled.addAll(((KeyState)message).getToggled());
-        }
-         
-        	else if (message instanceof NodeModification) {
+        }else if (message instanceof NodeModification) {
         	System.out.println("Nodes " + nodes);
         	System.out.println("Accesing " + ((NodeModification) message).id);
         	if(nodes.containsKey(((NodeModification) message).id)){
@@ -196,7 +194,12 @@ public class Simulator extends UntypedActor {
         	}
         }else if (message instanceof SingelSimulation){
         	SingelSimulation simulation=(SingelSimulation)message;
-        	doSimulation(simulation.getNode(), simulation.getType(), simulation.getVec());
+        	if(nodes.containsKey(simulation.getNodeId()))doSimulation(nodes.get(simulation.getNodeId()), simulation.getType(), simulation.getVec());
+        	else{
+        		nodes.put(simulation.getNodeId(), nodeFactory.groupNode(simulation.getNodeId(), simulation.getModelMatrix()));
+        		doSimulation(nodes.get(simulation.getNodeId()), simulation.getType(), simulation.getVec());
+        		nodes.remove(simulation.getNodeId());
+        	}
         }
     }
 }

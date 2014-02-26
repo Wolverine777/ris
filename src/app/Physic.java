@@ -43,7 +43,7 @@ public class Physic extends UntypedActor {
 		elapsed = zeit.elapsed();
 		// System.out.println("hierho:" + nodes.isEmpty());
 		for (Node n : nodes.values()) {
-			System.out.println("Radius n oben: " + ((Shape) n).getRadius());
+//			System.out.println("Radius n oben: " + ((Shape) n).getRadius());
 			if (collisionGround(n) == false && collisionObjects(n) == null) {
 				// for(Node n: nodes.values()){
 				// System.out.println("Matrix NodePhysic: " +
@@ -90,7 +90,7 @@ public class Physic extends UntypedActor {
 				p1.id = n.id;
 				p1.force = n.getForce();
 				
-				System.out.println("Ich stecke fest: rescue me!!! " + "Vektor: " + p1.force );
+//				System.out.println("Ich stecke fest: rescue me!!! " + "Vektor: " + p1.force );
 				
 				simulator.tell(p1, self());				
 				
@@ -167,7 +167,7 @@ public class Physic extends UntypedActor {
 		
 		distance = (float) Math.sqrt((float) Math.pow(((Shape) n).getCenter().y() - floor.y(),2));
 		radiuses = ((Shape) n).getRadius();
-		System.out.println("distance ground: " + distance + " radiuses ground: " + radiuses);
+//		System.out.println("distance ground: " + distance + " radiuses ground: " + radiuses);
 			
 		if(distance < radiuses){
 				return true;
@@ -220,7 +220,6 @@ public class Physic extends UntypedActor {
 	public void onReceive(Object message) throws Exception {
 		if (message == Message.LOOP) {
 			physic();
-			System.out.println("gibt es hier auch noch Nodes? " + nodes);
 		} else if (message instanceof PhysicInitialization) {
 			this.simulator = (((PhysicInitialization) message).simulator);
 			initialize();

@@ -12,6 +12,7 @@ import app.eventsystem.Level;
 import app.eventsystem.LevelCreation;
 import app.eventsystem.LevelNode;
 import app.eventsystem.NodeCreation;
+import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
 import app.eventsystem.Types;
 import app.messages.Message;
@@ -56,7 +57,7 @@ public class Ai extends UntypedActor {
 				}
 			}
 		}
-		VectorImp closestlevelnode = (VectorImp) level.getNearestinLevel(nearest.getWorldTransform().getPosition());
+		VectorImp closestlevelnode = (VectorImp) getNearestNodeinLevel(nearest);
 		System.out.println("closestlevelNode: " + closestlevelnode);
 		return closestlevelnode;
 	}
@@ -67,9 +68,8 @@ public class Ai extends UntypedActor {
 		System.out.println(level.toString());
 		for (Node n : nodes.values()) {
 			System.out.println("NodeAI: " + n.id);
-			findClosestCoin(n);
-			VectorImp closest = new VectorImp(level.getNearestinLevel(n.getWorldTransform().getPosition()).x(),
-					level.getNearestinLevel(n.getWorldTransform().getPosition()).y(), level.getNearestinLevel(n.getWorldTransform().getPosition()).z());
+//			findClosestCoin(n);
+			VectorImp closest = (VectorImp) getNearestNodeinLevel(n);
 			System.out.println("Nearest is: " + closest.toString());
 		}
 		getSender().tell(Message.DONE, self());
@@ -80,6 +80,7 @@ public class Ai extends UntypedActor {
 	public void onReceive(Object message) throws Exception {
 		if (message == Message.LOOP) {
 			System.out.println("ai loop");
+			getSender().tell(Message.DONE, self());
 			aiLoop();
 		} else if (message instanceof PhysicInitialization) {
 			this.simulator = (((PhysicInitialization) message).simulator);
@@ -130,13 +131,21 @@ public class Ai extends UntypedActor {
 		} else if (message instanceof LevelCreation) {
 			LevelCreation lc = (LevelCreation) message;
 			level = new Level(lc.position, lc.width, lc.height, lc.depth);
+		} else if(message instanceof NodeModification){
+			if(nodes.containsKey(((NodeModification) message).id)){
+        		Node modify = nodes.get(((NodeModification) message).id);
+        		if (((NodeModification) message).localMod != null){
+        			modify.updateWorldTransform(((NodeModification) message).localMod);
+        		}
+        	}
 		}
 
 	}
 	
 	private Vector getNearestNodeinLevel(Node object){
 		Vector nearestVec = level.getNearestinLevel(object.getWorldTransform().getPosition());
-		simulator.tell(new SingelSimulation(object, SimulateType.TRANSLATE, object.getWorldTransform().getPosition().sub(nearestVec)), self());
+		Vector translate=(nearestVec.sub(object.getWorldTransform().getPosition()));
+		if(!translate.equals(new VectorImp(0, 0, 0)))simulator.tell(new SingelSimulation(object.id, SimulateType.TRANSLATE, translate,object.getWorldTransform()), self());
 		return nearestVec;
 	}
 

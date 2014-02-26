@@ -1,6 +1,6 @@
 package app.messages;
 
-import app.nodes.Node;
+import app.vecmath.Matrix;
 import app.vecmath.Vector;
 
 /**
@@ -9,11 +9,12 @@ import app.vecmath.Vector;
  */
 
 public class SingelSimulation {
-	private Node node;
+	private String nodeId;
 	private SimulateType type; 
 	private Vector vec;
-	public SingelSimulation(Node node, SimulateType type, Vector vec){
-		if(node==null||type==null||vec==null){
+	private Matrix modelMatrix;
+	public SingelSimulation(String nodeId, SimulateType type, Vector vec, Matrix modelMatix){
+		if(nodeId==null||type==null||vec==null||modelMatix==null){
 			try {
 				throw new Exception("Nicht zulässig");
 			} catch (Exception e) {
@@ -21,13 +22,14 @@ public class SingelSimulation {
 				System.exit(0);
 			}
 		}
-		this.node=node;
+		this.nodeId=nodeId;
 		this.type=type;
 		this.vec=vec;
+		this.modelMatrix=modelMatix;
 	}
 	
-	public Node getNode() {
-		return node;
+	public String getNodeId() {
+		return nodeId;
 	}
 	public SimulateType getType() {
 		return type;
@@ -35,4 +37,9 @@ public class SingelSimulation {
 	public Vector getVec() {
 		return vec;
 	}
+
+	public Matrix getModelMatrix() {
+		return modelMatrix;
+	}
+	
 }

@@ -142,10 +142,10 @@ public abstract class WorldState extends UntypedActor{
 			unitState.put(ai, false);
 			
 			observers.put(Events.NODE_CREATION, renderer);
-//			observers.put(Events.NODE_CREATION, simulator); done by simulateonkey, only need for modification
 			observers.put(Events.NODE_MODIFICATION, renderer);
 			observers.put(Events.NODE_MODIFICATION, simulator);
 			observers.put(Events.NODE_MODIFICATION, physic);
+			observers.put(Events.NODE_MODIFICATION, ai);
 			
 			System.out.println("Initializing Entities");
 
@@ -194,7 +194,6 @@ public abstract class WorldState extends UntypedActor{
 			for (ActorRef observer : observers.get(Events.NODE_MODIFICATION)) { 
 //				System.out.println("announce:"+getSender()+"message"+event.toString());
 				if(!observer.equals(getSender())){
-					if(observer.equals(physic))System.out.println("PHYYYYYYYYYYYYYYSIC NODEMF");
 					observer.tell(event, self()); 
 				}
 				else if(observer.equals(getSender()) && getSender().equals(renderer)){
@@ -232,14 +231,14 @@ public abstract class WorldState extends UntypedActor{
 		announce(nm);
 	}
 	
-	protected void append(Node n, Node m) {
-		n.appendTo(m);
+	protected void append(Node nodeAppend, Node toNode) {
+		nodeAppend.appendTo(toNode);
 		
 		NodeModification nm = new NodeModification();
-		nm.id = n.id;
-		nm.appendTo = m.id;
+		nm.id = nodeAppend.id;
+		nm.appendTo = toNode.id;
 		
-		System.out.println("__ Appending " + n.id + " to " + m.id);
+		System.out.println("__ Appending " + nodeAppend.id + " to " + toNode.id);
 		
 		
 		announce(nm);
@@ -330,6 +329,13 @@ public abstract class WorldState extends UntypedActor{
         
         announce(n);
         
+        LevelCreation levelcreation = new LevelCreation();
+		levelcreation.position = plane.getWorldTransform().getPosition();
+		levelcreation.width = plane.w2*2;
+		levelcreation.height = 0;
+		levelcreation.depth = plane.d2*2;
+				
+		ai.tell(levelcreation, self());
         return plane;
 	}
 	
@@ -463,19 +469,7 @@ public abstract class WorldState extends UntypedActor{
 		}
 	}
 	
-	public void sendLevelAi(Plane floor){
-		
-		LevelCreation levelcreation = new LevelCreation();
-		levelcreation.position = floor.getWorldTransform().getPosition();
-		levelcreation.width = floor.w2*2;
-		levelcreation.height = 0;
-		levelcreation.depth = floor.d2*2;
-				
-		ai.tell(levelcreation, self());
-		
-	}
-	
-	protected void addAi(Cube cube){
+	protected void addToAi(Cube cube){
 		
 		
 		NodeCreation n = new NodeCreation();
@@ -492,7 +486,7 @@ public abstract class WorldState extends UntypedActor{
 		ai.tell(n, self());
 	}
 	
-	protected void addAi(Sphere sphere){
+	protected void addToAi(Sphere sphere){
 		
 		
 		NodeCreation n = new NodeCreation();

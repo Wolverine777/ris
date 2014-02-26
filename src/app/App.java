@@ -103,20 +103,21 @@ public class App extends WorldState {
 		append(c5, head);
 		
 		Plane floor = createPlane("Floor", shader, 2, 2, 1f);
-//		transform(floor, vecmath.translationMatrix(0, -2f, 0));
+		transform(floor, vecmath.translationMatrix(0, -2f, 0));
 		addPhysicFloor(floor);
 		append(floor, g1);
 //		Level level=new Level(floor.getWorldTransform().getPosition(), floor.w2*2, 0, floor.d2*2);
-		sendLevelAi(floor);
 //		System.out.println(level.toString());
 		
-		Cube c6 = createCube("Cube6", shader, 1f);
-		transform(c6, vecmath.translationMatrix(2f,0,2f));
-		addAi(c6);
+		Cube c6 = createCube("coinbla", shader, 1f);
+		transform(c6, vecmath.translationMatrix(0.6f,0,0.6f));
+		addToAi(c6);
+		append(c6, head);
 		
-		Sphere c7 = createSphere("Shpere7", shader, 1f);
-		transform(c5, vecmath.translationMatrix(1f, 0, 1f));
-		addAi(c7);
+		Sphere c7 = createSphere("car", shader, 1f);
+		transform(c7, vecmath.translationMatrix(0.2f, 0, 1f));
+		addToAi(c7);
+		append(c7, head);
 		
 		
 		

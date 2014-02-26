@@ -3,8 +3,11 @@ package app.eventsystem;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
+import java.util.TreeSet;
+
 import app.vecmath.Vector;
 import app.vecmathimp.VectorImp;
+
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
@@ -14,7 +17,7 @@ import com.google.common.collect.Table;
  */
 
 public class Level {
-	private final float GRIDREFACTOR=2.f;
+	private final float GRIDREFACTOR=2.f; 
 	private Table<Float, Float, LevelNode> levelPoints;
 	
 	public Level(Vector centerPosition, float width, float hight, float depth){
@@ -55,20 +58,26 @@ public class Level {
 	}
 	
 	public Vector getNearestinLevel(Vector position){
-		if(levelPoints.contains(position.x(), position.z())){
-			return position;
-		}else if(levelPoints.containsRow(position.x())){
-			NavigableSet<Float> zValues = (NavigableSet<Float>) levelPoints.columnKeySet();
-			return new VectorImp(position.x(), position.y(), zValues.ceiling(position.z()));
-		}else if(levelPoints.containsColumn(position.z())){
-			NavigableSet<Float> xValues = (NavigableSet<Float>) levelPoints.rowKeySet();
-			return new VectorImp(xValues.ceiling(position.x()), position.y(), position.z());
+		return new VectorImp(getNearest(position.x(),true), position.y(), getNearest(position.z(),false));
+	}
+	
+	private Float getNearest(Float posVal, boolean xOrz){
+		Float max=0.0F,min=0.0F;
+		if(xOrz){
+			NavigableSet<Float> xValues = new TreeSet<Float>(levelPoints.rowKeySet());
+			max= xValues.ceiling(posVal);
+			min= xValues.floor(posVal);
 		}else{
-			NavigableSet<Float> zValues = (NavigableSet<Float>) levelPoints.columnKeySet();
-			NavigableSet<Float> xValues = (NavigableSet<Float>) levelPoints.rowKeySet();
-			return new VectorImp(xValues.ceiling(position.x()), position.y(), zValues.ceiling(position.z()));
+			NavigableSet<Float> zValues = new TreeSet<Float>(levelPoints.columnKeySet());
+			max= zValues.ceiling(posVal);
+			min= zValues.floor(posVal);
 		}
-		
+		if(max==null)return min;
+		else if(min==null)return max;
+		else{
+			if(Math.min(Math.abs((max-posVal)), Math.abs((min-posVal)))==Math.abs((max-posVal)))return max;
+			else return min;
+		}
 	}
 	
 	public int size(){
