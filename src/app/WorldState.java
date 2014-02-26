@@ -153,7 +153,7 @@ public abstract class WorldState extends UntypedActor{
 			simulator.tell(Message.INIT, self());
 			physic.tell(new PhysicInitialization(simulator), self());
 			input.tell(Message.INIT, self());
-			ai.tell(Message.INIT, self());
+			ai.tell(new PhysicInitialization(simulator), self());
 		} else if (message instanceof RendererInitialized) {
 			shader = ((RendererInitialized) message).shader;
 			

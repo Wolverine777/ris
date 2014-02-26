@@ -24,6 +24,7 @@ import app.messages.KeyState;
 import app.messages.Message;
 import app.messages.Mode;
 import app.messages.SimulateType;
+import app.messages.SingelSimulation;
 import app.nodes.Node;
 import app.toolkit.StopWatch;
 import app.vecmath.Matrix;
@@ -193,6 +194,9 @@ public class Simulator extends UntypedActor {
         		  }
         		}
         	}
+        }else if (message instanceof SingelSimulation){
+        	SingelSimulation simulation=(SingelSimulation)message;
+        	doSimulation(simulation.getNode(), simulation.getType(), simulation.getVec());
         }
     }
 }

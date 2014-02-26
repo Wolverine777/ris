@@ -3,10 +3,8 @@ package app.eventsystem;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
-
 import app.vecmath.Vector;
 import app.vecmathimp.VectorImp;
-
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 

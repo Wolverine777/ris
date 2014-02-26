@@ -4,8 +4,8 @@ import static app.nodes.NodeFactory.nodeFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
+import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import app.datatype.Route;
 import app.eventsystem.Level;
@@ -15,9 +15,13 @@ import app.eventsystem.NodeCreation;
 import app.eventsystem.SimulateCreation;
 import app.eventsystem.Types;
 import app.messages.Message;
+import app.messages.PhysicInitialization;
+import app.messages.SimulateType;
+import app.messages.SingelSimulation;
 import app.nodes.Node;
 import app.nodes.shapes.Cube;
 import app.nodes.shapes.Shape;
+import app.vecmath.Vector;
 import app.vecmathimp.VectorImp;
 
 public class Ai extends UntypedActor {
@@ -25,6 +29,7 @@ public class Ai extends UntypedActor {
 	Level level;
 	private Map<String, Node> nodes = new HashMap<String, Node>();
 	private Route perfectway;
+	ActorRef simulator;
 
 	private void initialize() {
 
@@ -37,24 +42,21 @@ public class Ai extends UntypedActor {
 
 	}
 
-	private VectorImp findClosestCoin(Node n) {
-		float distance = 1000000;
-		float tempdistance = 0;
+	private VectorImp findClosestCoin(Node car) {
+		float distance = -1;
 		Node nearest = null;
 		for (Node node : nodes.values()) {
 			if (node instanceof Cube) {
 				System.out.println("Node(Cube) findclosest: " + node.id);
-				tempdistance = node.getWorldTransform().getPosition().sub(n.getWorldTransform().getPosition()).length();
-				if (tempdistance < distance) {
+				float tempdistance = node.getWorldTransform().getPosition().sub(car.getWorldTransform().getPosition()).length();
+				if (tempdistance < distance || distance<0) {
 					distance = tempdistance;
 					System.out.println("distance coin: " + distance);
 					nearest = node;
 				}
 			}
 		}
-		VectorImp closestlevelnode = new VectorImp(level.getNearestinLevel(nearest.getWorldTransform().getPosition()).x(),
-				level.getNearestinLevel(nearest.getWorldTransform().getPosition()).y(),
-				level.getNearestinLevel(nearest.getWorldTransform().getPosition()).z());
+		VectorImp closestlevelnode = (VectorImp) level.getNearestinLevel(nearest.getWorldTransform().getPosition());
 		System.out.println("closestlevelNode: " + closestlevelnode);
 		return closestlevelnode;
 	}
@@ -79,7 +81,8 @@ public class Ai extends UntypedActor {
 		if (message == Message.LOOP) {
 			System.out.println("ai loop");
 			aiLoop();
-		} else if (message == Message.INIT) {
+		} else if (message instanceof PhysicInitialization) {
+			this.simulator = (((PhysicInitialization) message).simulator);
 			initialize();
 		} else if (message instanceof NodeCreation) {
 
@@ -129,6 +132,12 @@ public class Ai extends UntypedActor {
 			level = new Level(lc.position, lc.width, lc.height, lc.depth);
 		}
 
+	}
+	
+	private Vector getNearestNodeinLevel(Node object){
+		Vector nearestVec = level.getNearestinLevel(object.getWorldTransform().getPosition());
+		simulator.tell(new SingelSimulation(object, SimulateType.TRANSLATE, object.getWorldTransform().getPosition().sub(nearestVec)), self());
+		return nearestVec;
 	}
 
 }

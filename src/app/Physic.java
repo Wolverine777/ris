@@ -80,6 +80,7 @@ public class Physic extends UntypedActor {
 				n.setForce(n.getVelocity());
 				n.setVelocity(n.getForce());
 //				
+				//TODO: nicht mehr verschieben, ansonsten SingelSimulation
 				VectorImp vec = new VectorImp(0, 0.05f, 0);
 				Matrix modify=MatrixImp.translate(vec);
 	    		n.updateWorldTransform(modify);
