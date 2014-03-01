@@ -102,7 +102,7 @@ public class App extends WorldState {
 		addPhysic(c5, new VectorImp(0,-0.03f,0));
 		append(c5, head);
 		
-		Plane floor = createPlane("Floor", shader, 2, 2, 1f);
+		announceFloor(floor);
 		transform(floor, vecmath.translationMatrix(0, -2f, 0));
 		addPhysicFloor(floor);
 		append(floor, g1);

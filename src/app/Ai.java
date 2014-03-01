@@ -2,11 +2,19 @@ package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
+import app.datatype.AStarNodes;
 import app.datatype.Route;
 import app.eventsystem.Level;
 import app.eventsystem.LevelCreation;
@@ -15,6 +23,7 @@ import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
 import app.eventsystem.Types;
+import app.messages.AiInitialization;
 import app.messages.Message;
 import app.messages.PhysicInitialization;
 import app.messages.SimulateType;
@@ -32,15 +41,56 @@ public class Ai extends UntypedActor {
 	private Route perfectway;
 	ActorRef simulator;
 
-	private void initialize() {
-
+	private void initialize(Vector levelPosition, float width, float depth) {
+		System.out.println("initLevel"+levelPosition +"w: "+ width +"d: "+ depth);
+		level=new Level(levelPosition, width, depth);
+		System.out.println(level.toString());
 		getSender().tell(Message.INITIALIZED, self());
 
 	}
 
-	private Route aStar(LevelNode target) {
+	private Route aStar(List<LevelNode> path, LinkedHashMap<LevelNode, AStarNodes> lookAt, List<LevelNode> visited, LevelNode target) {
+		if(starParamsValid(path,lookAt, visited, target)){
+			System.out.println("path:"+path.get(0).getPOS());
+			for(LevelNode child:path.get(0).getChilds()){
+				System.out.println("in for:"+child.getPOS());
+				if(child.getValOfEdge(path.get(0))>0&&!visited.contains(child)){
+					System.out.println("put in: " +"lookat size: " + lookAt.size());
+					int resistance = lookAt.get(path.get(0)).getResistance()+child.getValOfEdge(path.get(0)); //resistance till parent + resistance child to parent
+					double distance=child.lengthtoNode(target)+resistance; //pytagoras lenght + resistance
+					System.out.print(" distance: "+distance);
+					if(lookAt.containsKey(child))if(lookAt.get(child).getLength()<=distance)continue;
+					lookAt.put(child, new AStarNodes(distance, resistance, path));
+				}
+			}
+			if(path.contains(target))return new Route((int) lookAt.get(target).getLength(), path);
+			lookAt.remove(path.get(0));
+			visited.add(path.get(0));
+			
+			System.out.println(lookAt.toString());
+			LevelNode min=Collections.min(lookAt.entrySet(), new Comparator<Map.Entry<LevelNode, AStarNodes>>() {
+				@Override
+				public int compare(Entry<LevelNode, AStarNodes> o1,
+						Entry<LevelNode, AStarNodes> o2) {
+					return Double.compare(o1.getValue().getLength(), o2.getValue().getLength());
+				}}).getKey();
+			
+			List<LevelNode> pathMin=new LinkedList<LevelNode>();
+			pathMin.add(min);
+			pathMin.addAll(lookAt.get(min).getPath());
+			if(min.equals(target)){
+				return new Route((int)lookAt.get(min).getLength(), pathMin);
+			}else{
+				return aStar(pathMin, lookAt, visited, target);
+			}
+		}
+		System.out.println("Falsche Parameter Übergeben");
 		return null;
-
+	}
+	
+	private boolean starParamsValid(List<LevelNode> path, Map<LevelNode, AStarNodes> lookAt, List<LevelNode> visited, LevelNode target){
+		if(path!=null&&lookAt!=null&&!lookAt.isEmpty()&&target!=null&&visited!=null) return true;
+		return false;
 	}
 
 	private VectorImp findClosestCoin(Node car) {
@@ -72,6 +122,23 @@ public class Ai extends UntypedActor {
 			VectorImp closest = (VectorImp) getNearestNodeinLevel(n);
 			System.out.println("Nearest is: " + closest.toString());
 		}
+		
+		LinkedHashMap<LevelNode, AStarNodes> lookAt= new LinkedHashMap<LevelNode, AStarNodes>();
+		LevelNode target = level.toArray()[0]; 
+		LevelNode startNode=level.toArray()[12]; 
+		lookAt.put(startNode, new AStarNodes(startNode.lengthtoNode(target), 0, new LinkedList<LevelNode>()));
+		System.out.println("StartNode: "+startNode.getPOS());
+		System.out.println("EndNode: "+target.getPOS());
+		List<LevelNode>path =new LinkedList<LevelNode>();
+		path.add(startNode);
+		LinkedList<LevelNode> visit=new LinkedList<LevelNode>();
+		System.out.println("lookat size vor dem call: " + lookAt.size());
+		Route r=aStar(path, lookAt, visit, target);
+		System.out.println(r.toString());
+//		System.out.println(aStar(path, lookAt, new LinkedList<LevelNode>(), target).toString()); //warum?
+		lookAt.clear();
+		System.out.println("gecleart??????? " + lookAt.size());
+		path.clear();
 		getSender().tell(Message.DONE, self());
 
 	}
@@ -82,9 +149,10 @@ public class Ai extends UntypedActor {
 			System.out.println("ai loop");
 			getSender().tell(Message.DONE, self());
 			aiLoop();
-		} else if (message instanceof PhysicInitialization) {
-			this.simulator = (((PhysicInitialization) message).simulator);
-			initialize();
+		} else if (message instanceof AiInitialization) {
+			AiInitialization init= (AiInitialization) message;
+			this.simulator = (init.getSimulator());
+			initialize(init.getCenterPosition(), init.getWidth(), init.getDepth());
 		} else if (message instanceof NodeCreation) {
 
 			if (((NodeCreation) message).type == Types.GROUP) {
@@ -128,9 +196,6 @@ public class Ai extends UntypedActor {
 				}
 				nodes.put(newNode.id, newNode);
 			}
-		} else if (message instanceof LevelCreation) {
-			LevelCreation lc = (LevelCreation) message;
-			level = new Level(lc.position, lc.width, lc.height, lc.depth);
 		} else if(message instanceof NodeModification){
 			if(nodes.containsKey(((NodeModification) message).id)){
         		Node modify = nodes.get(((NodeModification) message).id);

@@ -10,11 +10,11 @@ public class Route {
 	private int totalway = 0;
 	private List<LevelNode> waypoints = new ArrayList<LevelNode>();
 
-	public Route(){
-		
+	public Route(int totalway, List<LevelNode> waypoints) {
+		this.totalway = totalway;
+		this.waypoints = waypoints;
 	}
 
-	
 	public int getTotalway() {
 		return totalway;
 	}
@@ -31,5 +31,10 @@ public class Route {
 		this.waypoints = waypoints;
 	}
 	
+	public String toString(){
+		String out="Len:("+totalway+") Way: ";
+		for(LevelNode node:waypoints)out+="-->("+node.getPOS().x()+"/"+node.getPOS().z()+")";
+		return out;
+	}
 	
 }

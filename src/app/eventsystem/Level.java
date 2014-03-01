@@ -10,6 +10,7 @@ import app.vecmathimp.VectorImp;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.google.common.collect.Table.Cell;
 
 /**
  * @author Benjamin Reemts, Fabian Unruh
@@ -20,16 +21,42 @@ public class Level {
 	private final float GRIDREFACTOR=2.f; 
 	private Table<Float, Float, LevelNode> levelPoints;
 	
-	public Level(Vector centerPosition, float width, float hight, float depth){
-		makeLevel(centerPosition, width, hight, depth);
+	public Level(Vector centerPosition, float width, float depth){
+		makeLevel(centerPosition, width, depth);
 	}
 	
-	private void makeLevel(Vector centerPosition, float width, float hight, float depth){
+	private void makeLevel(Vector centerPosition, float width, float depth){
 		levelPoints = HashBasedTable.create((int)(width*GRIDREFACTOR),(int)(depth*GRIDREFACTOR));
 		for(float x=centerPosition.x()-(width/2)*GRIDREFACTOR; x<=centerPosition.x()+(width/2)*GRIDREFACTOR; x++){
 			for(float z=centerPosition.z()-(depth/2)*GRIDREFACTOR; z<=centerPosition.z()+(depth/2)*GRIDREFACTOR; z++){
 				levelPoints.put(x/GRIDREFACTOR, z/GRIDREFACTOR, new LevelNode(new VectorImp(x/GRIDREFACTOR, centerPosition.y(), z/GRIDREFACTOR)));
+				
 			}
+		}
+		
+		for(Float row: levelPoints.rowKeySet()){
+			LevelNode lastNode=null;
+			for(Map.Entry<Float, LevelNode> pair:levelPoints.rowMap().get(row).entrySet()){
+				LevelNode currentNode=pair.getValue();
+				if(lastNode!=null){
+					currentNode.addEdge(lastNode);
+					lastNode.addEdge(currentNode);
+				}
+				lastNode=currentNode;
+			}
+			lastNode=null;
+		}
+		for(Float col: levelPoints.columnKeySet()){
+			LevelNode lastNode=null;
+			for(Map.Entry<Float, LevelNode> pair:levelPoints.columnMap().get(col).entrySet()){
+				LevelNode currentNode=pair.getValue();
+				if(lastNode!=null){
+					currentNode.addEdge(lastNode);
+					lastNode.addEdge(currentNode);
+				}
+				lastNode=currentNode;
+			}
+			lastNode=null;
 		}
 	}
 	
@@ -82,5 +109,9 @@ public class Level {
 	
 	public int size(){
 		return levelPoints.size();
+	}
+	
+	public LevelNode[] toArray(){
+		return levelPoints.values().toArray(new LevelNode[0]); 
 	}
 }

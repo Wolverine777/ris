@@ -77,11 +77,11 @@ public class Plane extends Shape {
 		colorData.rewind();
 		normalData.rewind();
 	}
-	public float getW2() {
+	public float getW() {
 		return w2*2;
 	}
 
-	public float getD2() {
+	public float getD() {
 		return d2*2;
 	}
 }

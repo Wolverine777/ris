@@ -24,6 +24,7 @@ import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
 import app.eventsystem.StartNodeModification;
 import app.eventsystem.Types;
+import app.messages.AiInitialization;
 import app.messages.Message;
 import app.messages.Mode;
 import app.messages.RegisterKeys;
@@ -70,6 +71,7 @@ public abstract class WorldState extends UntypedActor{
 	protected Node startNode;
 	protected Camera camera;
 	protected Shader shader;
+	protected Plane floor=new Plane("Floor", shader, 2, 2, 1.0f);
 
 	private void loop() {
 
@@ -153,7 +155,7 @@ public abstract class WorldState extends UntypedActor{
 			simulator.tell(Message.INIT, self());
 			physic.tell(new PhysicInitialization(simulator), self());
 			input.tell(Message.INIT, self());
-			ai.tell(new PhysicInitialization(simulator), self());
+			ai.tell(new AiInitialization(simulator, floor.getWorldTransform().getPosition(), floor.w2*2, floor.d2*2), self());
 		} else if (message instanceof RendererInitialized) {
 			shader = ((RendererInitialized) message).shader;
 			
@@ -328,15 +330,22 @@ public abstract class WorldState extends UntypedActor{
         n.d = depth;
         
         announce(n);
-        
-        LevelCreation levelcreation = new LevelCreation();
-		levelcreation.position = plane.getWorldTransform().getPosition();
-		levelcreation.width = plane.w2*2;
-		levelcreation.height = 0;
-		levelcreation.depth = plane.d2*2;
-				
-		ai.tell(levelcreation, self());
         return plane;
+	}
+	
+	protected void announceFloor(Plane floor) {
+		nodes.put(floor.id, floor);
+		
+		NodeCreation n = new NodeCreation();
+        n.id = floor.id;
+        n.type = Types.PLANE;
+        n.shader = shader;
+        n.mass = floor.getMass();
+        
+        n.w = floor.getW();
+        n.d = floor.getD();
+        
+        announce(n);
 	}
 	
 	protected ObjLoader createObject(String id, Shader shader, File sourceFile, File sourceTex, float mass) {
@@ -451,8 +460,8 @@ public abstract class WorldState extends UntypedActor{
 		    sc.longs = p.longs;
 		}else if(object instanceof Plane){
 			Plane p=(Plane)object;
-			sc.w = p.getW2();
-	        sc.d = p.getD2();
+			sc.w = p.getW();
+	        sc.d = p.getD();
 		}/*else if(object instanceof Torus){
 			Torus t=(Torus) object;
 			

@@ -167,4 +167,9 @@ public abstract class Shape extends Node {
 	public void setRadius(float radius) {
 		this.radius = radius;
 	}
+
+	public float getMass() {
+		return mass;
+	}
+	
 }
