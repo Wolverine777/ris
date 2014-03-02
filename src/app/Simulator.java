@@ -23,6 +23,7 @@ import app.Types.SimulateType;
 import app.datatype.KeyDef;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
+import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
 import app.eventsystem.PhysicModification;
 import app.eventsystem.SimulateCreation;
@@ -201,6 +202,11 @@ public class Simulator extends UntypedActor {
         		doSimulation(nodes.get(simulation.getNodeId()), simulation.getType(), simulation.getVec());
         		nodes.remove(simulation.getNodeId());
         	}
-        }
+        }  else if (message instanceof NodeDeletion){
+			NodeDeletion delete = (NodeDeletion)message;
+			for(String id: delete.ids){
+				nodes.remove(nodes.get(id));
+			}
+		}
     }
 }

@@ -86,7 +86,8 @@ public abstract class Node {
     public Edge append(Node n, Map<String, String> data) {
         return new DefaultEdge(this, n, data);
     }
-
+    
+   
     public Map<String, String> getData(Node n) {
         for (Edge e : edges) {
             if (e.getOtherNode(this) == n) return e.getData();
@@ -111,6 +112,9 @@ public abstract class Node {
 		this.force = force;
 	}
 	
+	public List<Edge> getEdges() {
+		return edges;
+	}
 
 	public abstract void display(Matrix m);
 }

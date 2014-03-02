@@ -2,6 +2,7 @@ package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import akka.actor.UntypedActor;
 import app.Types.ObjectTypes;
 import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
+import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
 import app.eventsystem.PhysicModification;
 import app.messages.Message;
@@ -42,6 +44,7 @@ public class Physic extends UntypedActor {
 
 	public void physic() {
 		elapsed = zeit.elapsed();
+		NodeDeletion delete = new NodeDeletion();
 		// System.out.println("hierho:" + nodes.isEmpty());
 		for (Node n : nodes.values()) {
 //			System.out.println("Radius n oben: " + ((Shape) n).getRadius());
@@ -102,44 +105,46 @@ public class Physic extends UntypedActor {
 
 			} else if (collisionGround(n) == false
 					&& collisionObjects(n) != null) {
-//				 System.out.println("richtige schleife!!!!!!!!!!!");
+
 				 
-//				 Node collision = collisionObjects(n);
-//				
-//				if(n.getVelocity().x() > 0){
-//					VectorImp vec = new VectorImp(-0.5f, 0, 0);
-//					Matrix modify=MatrixImp.translate(vec);
-//		    		n.updateWorldTransform(modify);
-//		    		getSender().tell(new NodeModification(n.id,modify), self());
-//				}
-//				else if(n.getVelocity().x() <0){
-//					VectorImp vec = new VectorImp(0.5f, 0, 0);
-//					Matrix modify=MatrixImp.translate(vec);
-//		    		n.updateWorldTransform(modify);
-//		    		getSender().tell(new NodeModification(n.id,modify), self());
-//				}
-				 
-				VectorImp opposite = oppositeDirection(n);
-				
-				n.setVelocity(opposite);
-				 
-				// TODO Erdanziehungskraft m*g?
-				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
-				// TODO Masse einabauen, dann impuls setzen und dann velocity
-				n.setVelocity(n.getForce());
-				
-				
+//				Node collision = collisionObjects(n);
+
+							
+				System.out.println("Node id: " + n.id);
+				delete.ids.add(n.id);
 			
-				PhysicModification p1 = new PhysicModification();
-				p1.id = n.id;
-				p1.force = n.getForce();
 				
-								
-				simulator.tell(p1, self());	
+				
+//				VectorImp opposite = oppositeDirection(n);
+//				
+//				n.setVelocity(opposite);
+//				 
+//				// TODO Erdanziehungskraft m*g?
+//				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
+//				// TODO Masse einabauen, dann impuls setzen und dann velocity
+//				n.setVelocity(n.getForce());
+//				
+//				
+//			
+//				PhysicModification p1 = new PhysicModification();
+//				p1.id = n.id;
+//				p1.force = n.getForce();
+//				
+//								
+//				simulator.tell(p1, self());	
 				
 
 			}
 		}
+		
+		if(delete.ids.isEmpty() != true){
+			for(String id: delete.ids){
+				nodes.remove(id);
+			}
+			getSender().tell(delete, self());
+			
+		}
+		
 		getSender().tell(Message.DONE, self());
 		System.out.println("physic loop");
 	}
@@ -300,6 +305,11 @@ public class Physic extends UntypedActor {
 		else if( message instanceof FloorCreation){
 			floor = ((FloorCreation) message).position;			
 			
+		}  else if (message instanceof NodeDeletion){
+			NodeDeletion delete = (NodeDeletion)message;
+			for(String id: delete.ids){
+				nodes.remove(nodes.get(id));
+			}
 		}
 		
 	}

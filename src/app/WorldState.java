@@ -26,6 +26,7 @@ import app.datatype.Level;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
+import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
 import app.eventsystem.StartNodeModification;
@@ -148,6 +149,11 @@ public abstract class WorldState extends UntypedActor{
 			observers.put(Events.NODE_MODIFICATION, simulator);
 			observers.put(Events.NODE_MODIFICATION, physic);
 			observers.put(Events.NODE_MODIFICATION, ai);
+			observers.put(Events.NODE_DELETION, renderer);
+			observers.put(Events.NODE_DELETION, simulator);
+			observers.put(Events.NODE_DELETION, physic);
+			observers.put(Events.NODE_DELETION, ai);
+			
 			
 			System.out.println("Initializing Entities");
 
@@ -180,7 +186,11 @@ public abstract class WorldState extends UntypedActor{
 		} else if (message instanceof StartNodeModification) {
 			
 			announce(message);
+		} else if(message instanceof NodeDeletion){
+			
+			announce(message);
 		}
+		
 	}
 
 	protected void initialize() {
@@ -202,7 +212,16 @@ public abstract class WorldState extends UntypedActor{
 					observer.tell(event, self()); 
 				}
 			}
-		} 	
+		} else if (event instanceof NodeDeletion){
+			for(String id: ((NodeDeletion) event).ids){
+				nodes.remove(nodes.get(id));
+			}
+			for (ActorRef observer : observers.get(Events.NODE_DELETION)){
+				if(!observer.equals(getSender())){
+					observer.tell(event, self());
+				}
+			}
+		}
 	}
 
 	protected void setCamera(Camera cam) {
