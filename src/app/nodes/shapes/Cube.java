@@ -6,11 +6,11 @@ import app.nodes.shapes.Texture;
 
 import org.lwjgl.BufferUtils;
 
+import vecmath.Color;
+import vecmath.Vector;
 import app.shader.Shader;
-import app.vecmath.Color;
-import app.vecmath.Vector;
 import static app.nodes.shapes.Vertex.*;
-import static app.vecmathimp.FactoryDefault.vecmath;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 public class Cube extends Shape {
 

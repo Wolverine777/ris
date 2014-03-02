@@ -11,29 +11,45 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import vecmath.Vector;
+import vecmath.vecmathimp.VectorImp;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
+import app.Types.ObjectTypes;
+import app.Types.SimulateType;
 import app.datatype.AStarNodes;
+import app.datatype.Level;
+import app.datatype.LevelNode;
 import app.datatype.Route;
-import app.eventsystem.Level;
-import app.eventsystem.LevelNode;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeModification;
-import app.eventsystem.Types;
 import app.messages.AiInitialization;
 import app.messages.Message;
-import app.messages.SimulateType;
 import app.messages.SingelSimulation;
 import app.nodes.Node;
 import app.nodes.shapes.Cube;
 import app.nodes.shapes.Shape;
-import app.vecmath.Vector;
-import app.vecmathimp.VectorImp;
 
 public class Ai extends UntypedActor {
 
 	Level level;
 	private Map<String, Node> nodes = new HashMap<String, Node>();
+	private List<Node> bots=new LinkedList<Node>(){
+		private static final long serialVersionUID = 4808793150108855621L;
+		@Override
+		public boolean contains(Object o){
+			for(Node x:this)if(((Node)o).id.equals(x.id))return true;
+	        return false;
+		}
+	};
+	List<Node> flags=new LinkedList<Node>(){
+		private static final long serialVersionUID = 7233857901815694877L;
+		@Override
+		public boolean contains(Object o) {
+			for(Node x:this)if(((Node)o).id.equals(x.id))return true;
+	        return false;
+	    }
+	};
 	private Map<Node, Route> perfectway= new HashMap<Node, Route>();
 	ActorRef simulator;
 
@@ -42,9 +58,26 @@ public class Ai extends UntypedActor {
 		level=new Level(levelPosition, width, depth);
 		System.out.println(level.toString());
 		getSender().tell(Message.INITIALIZED, self());
-
 	}
-
+	
+	private void findRoute(Node bot){
+		LevelNode startNode= level.getLevelNode(getNearestNodeinLevel(bot));
+		LevelNode target = level.getLevelNode(getNearestNodeinLevel(findClosestCoin(bot))); 
+		
+		LinkedHashMap<LevelNode, AStarNodes> lookAt= new LinkedHashMap<LevelNode, AStarNodes>();
+		lookAt.put(startNode, new AStarNodes(startNode.lengthtoNode(target), 0, new LinkedList<LevelNode>()));
+		
+		List<LevelNode>path =new LinkedList<LevelNode>();
+		path.add(startNode);
+		
+		LinkedList<LevelNode> visit=new LinkedList<LevelNode>();
+		
+		perfectway.put(bot, aStar(path, lookAt, visit, target));
+		
+		lookAt.clear();
+		path.clear();
+	}
+	
 	private Route aStar(List<LevelNode> path, LinkedHashMap<LevelNode, AStarNodes> lookAt, List<LevelNode> visited, LevelNode target) {
 		if(starParamsValid(path,lookAt, visited, target)){
 			for(LevelNode child:path.get(0).getChilds()){
@@ -87,23 +120,24 @@ public class Ai extends UntypedActor {
 		return false;
 	}
 
-	private VectorImp findClosestCoin(Node car) {
+	private Node findClosestCoin(Node car) { //VectorImp
 		float distance = -1;
 		Node nearest = null;
-		for (Node node : nodes.values()) {
-			if (node instanceof Cube) {
-				System.out.println("Node(Cube) findclosest: " + node.id);
+		for (Node node : flags) { //nodes.values()
+//			if (node instanceof Cube) {
+//				System.out.println("Node(Cube) findclosest: " + node.id);
 				float tempdistance = node.getWorldTransform().getPosition().sub(car.getWorldTransform().getPosition()).length();
 				if (tempdistance < distance || distance<0) {
 					distance = tempdistance;
-					System.out.println("distance coin: " + distance);
+//					System.out.println("distance coin: " + distance);
 					nearest = node;
 				}
-			}
+//			}
 		}
-		VectorImp closestlevelnode = (VectorImp) getNearestNodeinLevel(nearest);
-		System.out.println("closestlevelNode: " + closestlevelnode);
-		return closestlevelnode;
+//		VectorImp closestlevelnode = (VectorImp) getNearestNodeinLevel(nearest); //return changed to Node
+//		System.out.println("closestlevelNode: " + closestlevelnode);
+//		return closestlevelnode;
+		return nearest;
 	}
 
 	private void aiLoop() {
@@ -149,11 +183,11 @@ public class Ai extends UntypedActor {
 			initialize(init.getCenterPosition(), init.getWidth(), init.getDepth());
 		} else if (message instanceof NodeCreation) {
 
-			if (((NodeCreation) message).type == Types.GROUP) {
+			if (((NodeCreation) message).type == ObjectTypes.GROUP) {
 				Node newNode = nodeFactory
 						.groupNode(((NodeCreation) message).id);
 				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == Types.CUBE) {
+			} else if (((NodeCreation) message).type == ObjectTypes.CUBE) {
 
 				Node newNode = nodeFactory.cube(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
@@ -172,7 +206,7 @@ public class Ai extends UntypedActor {
 							.setRadius(((NodeCreation) message).radius);
 				}
 				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == Types.SPHERE) {
+			} else if (((NodeCreation) message).type == ObjectTypes.SPHERE) {
 
 				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
@@ -203,8 +237,8 @@ public class Ai extends UntypedActor {
 	
 	private Vector getNearestNodeinLevel(Node object){
 		Vector nearestVec = level.getNearestinLevel(object.getWorldTransform().getPosition());
-		Vector translate=(nearestVec.sub(object.getWorldTransform().getPosition()));
-		if(!translate.equals(new VectorImp(0, 0, 0)))simulator.tell(new SingelSimulation(object.id, SimulateType.TRANSLATE, translate,object.getWorldTransform()), self());
+//		Vector translate=(nearestVec.sub(object.getWorldTransform().getPosition()));
+//		if(!translate.equals(new VectorImp(0, 0, 0)))simulator.tell(new SingelSimulation(object.id, SimulateType.TRANSLATE, translate,object.getWorldTransform()), self());
 		return nearestVec;
 	}
 

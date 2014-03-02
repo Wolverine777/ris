@@ -2,11 +2,11 @@
  * Copyright (c) 2013 Henrik Tramberend, Marc Latoschik.
  * All rights reserved.
  *******************************************************************************/
-package app.vecmath;
+package vecmath;
 
 import java.nio.FloatBuffer;
 
-import app.vecmathimp.ColorImp;
+import vecmath.vecmathimp.ColorImp;
 
 /**
  * A simple three component color vector. Color vectors are non-mutable and can

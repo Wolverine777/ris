@@ -2,7 +2,7 @@
  * Copyright (c) 2013 Henrik Tramberend, Marc Latoschik.
  * All rights reserved.
  *******************************************************************************/
-package app.vecmath;
+package vecmath;
 
 /**
  * A 4-element quaternion represented by float precision floating point x,y,z,w

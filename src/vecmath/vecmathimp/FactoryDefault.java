@@ -2,12 +2,12 @@
  * Copyright (c) 2013 Henrik Tramberend, Marc Latoschik.
  * All rights reserved.
  *******************************************************************************/
-package app.vecmathimp;
+package vecmath.vecmathimp;
 
-import app.vecmath.Color;
-import app.vecmath.Factory;
-import app.vecmath.Matrix;
-import app.vecmath.Vector;
+import vecmath.Color;
+import vecmath.Factory;
+import vecmath.Matrix;
+import vecmath.Vector;
 
 //Our implementation of the Factory interface. For deployment this source 
 //file is exluded from the package and the compiled class file is 

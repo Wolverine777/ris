@@ -2,34 +2,35 @@ package app;
 
 
 import static app.nodes.NodeFactory.nodeFactory;
-import static app.vecmathimp.FactoryDefault.vecmath;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import vecmath.Matrix;
+import vecmath.Vector;
+import vecmath.vecmathimp.MatrixImp;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
 import akka.actor.UntypedActor;
+import app.Types.KeyMode;
+import app.Types.ObjectTypes;
+import app.Types.SimulateType;
+import app.datatype.KeyDef;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeModification;
 import app.eventsystem.PhysicModification;
 import app.eventsystem.SimulateCreation;
-import app.eventsystem.Types;
-import app.messages.KeyDef;
 import app.messages.KeyState;
 import app.messages.Message;
-import app.messages.Mode;
-import app.messages.SimulateType;
 import app.messages.SingelSimulation;
 import app.nodes.Node;
 import app.toolkit.StopWatch;
-import app.vecmath.Matrix;
-import app.vecmath.Vector;
-import app.vecmathimp.MatrixImp;
 
 public class Simulator extends UntypedActor {
     
@@ -53,11 +54,11 @@ public class Simulator extends UntypedActor {
     			if(keys==null||keys.isEmpty()){
     				doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
     			}else{
-    				if(entry.getValue().getMode()==Mode.DOWN){
+    				if(entry.getValue().getMode()==KeyMode.DOWN){
     					boolean contains=false;
     					for(Integer i:keys)if(pressedKeys.contains(i))contains=true;
     					if(contains)doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
-    				}else if(entry.getValue().getMode()==Mode.TOGGLE){
+    				}else if(entry.getValue().getMode()==KeyMode.TOGGLE){
     					boolean contains=false;
     					for(Integer i:keys)if(toggeled.contains(i))contains=true;
     					if(contains)doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
@@ -142,17 +143,17 @@ public class Simulator extends UntypedActor {
         		System.out.println("jashdlhwidaljhdlahs"+sc.id);
         		//TODO: ein Type reicht nur ein Shape, von den objekten wird nur id und woldtrafo benoetigt.
         		//TODO: Generics?
-        		if (((NodeCreation) message).type == Types.GROUP) {
+        		if (((NodeCreation) message).type == ObjectTypes.GROUP) {
         			newNode = nodeFactory.groupNode(((NodeCreation) message).id);
         			nodes.put(newNode.id, newNode);
-        		} else if (((NodeCreation) message).type == Types.CUBE) {
+        		} else if (((NodeCreation) message).type == ObjectTypes.CUBE) {
         			newNode = nodeFactory.cube(((NodeCreation) message).id, ((NodeCreation) message).shader, ((NodeCreation) message).w, ((NodeCreation) message).h,
     						((NodeCreation) message).d, ((NodeCreation) message).mass);
         			nodes.put(newNode.id, newNode);
-        		}else if(((NodeCreation) message).type == Types.CAMERA){
+        		}else if(((NodeCreation) message).type == ObjectTypes.CAMERA){
         			newNode = nodeFactory.camera(((CameraCreation) message).id);
         			nodes.put(((CameraCreation) message).id, newNode);
-        		}else if(((NodeCreation) message).type == Types.OBJECT){
+        		}else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
     				NodeCreation nc=(NodeCreation) message;
     				newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
     				nodes.put(newNode.id, newNode);

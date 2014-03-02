@@ -1,6 +1,6 @@
 package app.eventsystem;
 
-import app.vecmath.Vector;
+import vecmath.Vector;
 
 public class PhysicModification {
 	

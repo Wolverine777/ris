@@ -1,11 +1,11 @@
 package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
-import static app.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glViewport;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,19 +16,19 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
+import vecmath.Matrix;
 import akka.actor.UntypedActor;
+import app.Types.ObjectTypes;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeModification;
 import app.eventsystem.StartNodeModification;
-import app.eventsystem.Types;
 import app.messages.Message;
 import app.messages.RendererInitialization;
 import app.messages.RendererInitialized;
 import app.nodes.Node;
 import app.nodes.camera.Camera;
 import app.shader.Shader;
-import app.vecmath.Matrix;
 
 public class Renderer extends UntypedActor {
 	private static final int width = 640;
@@ -117,34 +117,34 @@ public class Renderer extends UntypedActor {
 		} else if (message instanceof RendererInitialization) {
 			initialize();
 		} else if (message instanceof NodeCreation) {
-			if (((NodeCreation) message).type == Types.GROUP) {
+			if (((NodeCreation) message).type == ObjectTypes.GROUP) {
 				Node newNode = nodeFactory
 						.groupNode(((NodeCreation) message).id);
 				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == Types.CUBE) {
+			} else if (((NodeCreation) message).type == ObjectTypes.CUBE) {
 
 				Node newNode = nodeFactory.cube(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
 						((NodeCreation) message).w, ((NodeCreation) message).h,
 						((NodeCreation) message).d, ((NodeCreation) message).mass);
 				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == Types.PIPE) {
+			} else if (((NodeCreation) message).type == ObjectTypes.PIPE) {
 				Node newNode = nodeFactory.pipe(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
 						((NodeCreation) message).r,
 						((NodeCreation) message).lats,
 						((NodeCreation) message).longs,((NodeCreation) message).mass);
 				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == Types.SPHERE) {
+			} else if (((NodeCreation) message).type == ObjectTypes.SPHERE) {
 				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
 						((NodeCreation) message).shader, ((NodeCreation) message).mass);
 				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == Types.PLANE) {
+			} else if (((NodeCreation) message).type == ObjectTypes.PLANE) {
 				Node newNode = nodeFactory.plane(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
 						((NodeCreation) message).w, ((NodeCreation) message).d, ((NodeCreation) message).mass);
 				nodes.put(newNode.id, newNode);
-			}else if(((NodeCreation) message).type == Types.OBJECT){
+			}else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
 				NodeCreation nc=(NodeCreation) message;
 				Node newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
 				nodes.put(newNode.id, newNode);

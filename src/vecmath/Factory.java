@@ -2,7 +2,7 @@
  * Copyright (c) 2013 Henrik Tramberend, Marc Latoschik.
  * All rights reserved.
  *******************************************************************************/
-package app.vecmath;
+package vecmath;
 
 public interface Factory {
   

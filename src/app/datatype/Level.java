@@ -1,12 +1,12 @@
-package app.eventsystem;
+package app.datatype;
 
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
-import app.vecmath.Vector;
-import app.vecmathimp.VectorImp;
+import vecmath.Vector;
+import vecmath.vecmathimp.VectorImp;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
@@ -105,6 +105,14 @@ public class Level {
 			if(Math.min(Math.abs((max-posVal)), Math.abs((min-posVal)))==Math.abs((max-posVal)))return max;
 			else return min;
 		}
+	}
+	
+	public LevelNode getLevelNode(float x, float z){
+		return levelPoints.get(x, z);
+	}
+	
+	public LevelNode getLevelNode(Vector vec){
+		return levelPoints.get(vec.x(), vec.z());
 	}
 	
 	public int size(){

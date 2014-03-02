@@ -2,13 +2,13 @@
  * Copyright (c) 2013 Henrik Tramberend, Marc Latoschik.
  * All rights reserved.
  *******************************************************************************/
-package app.vecmathimp;
+package vecmath.vecmathimp;
 
 import java.lang.Math;
 
-import app.vecmath.Matrix;
-import app.vecmath.Quaternion;
-import app.vecmath.Vector;
+import vecmath.Matrix;
+import vecmath.Quaternion;
+import vecmath.Vector;
 
 /**
  * A 4-element quaternion represented by float precision floating point x,y,z,w

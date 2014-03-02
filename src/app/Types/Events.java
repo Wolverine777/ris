@@ -1,4 +1,4 @@
-package app.eventsystem;
+package app.Types;
 
 public enum Events {
 	NODE_CREATION,

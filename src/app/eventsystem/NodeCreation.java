@@ -2,14 +2,15 @@ package app.eventsystem;
 
 import java.io.File;
 
+import vecmath.Matrix;
+import vecmath.Vector;
+import app.Types.ObjectTypes;
 import app.shader.Shader;
-import app.vecmath.Matrix;
-import app.vecmath.Vector;
 
 public class NodeCreation {
 	public String id;
 	public Shader shader;
-	public Types type;
+	public ObjectTypes type;
 	
 	public Matrix modelmatrix;
 	

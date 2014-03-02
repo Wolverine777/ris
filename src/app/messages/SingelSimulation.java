@@ -1,7 +1,8 @@
 package app.messages;
 
-import app.vecmath.Matrix;
-import app.vecmath.Vector;
+import vecmath.Matrix;
+import vecmath.Vector;
+import app.Types.SimulateType;
 
 /**
  * @author Benjamin Reemts

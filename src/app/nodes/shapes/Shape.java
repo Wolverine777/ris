@@ -9,14 +9,14 @@ import java.nio.FloatBuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
+import vecmath.Matrix;
+import vecmath.Vector;
+import vecmath.vecmathimp.FactoryDefault;
+import vecmath.vecmathimp.MatrixImp;
+import vecmath.vecmathimp.VectorImp;
 import app.nodes.Node;
 import app.nodes.shapes.Vertex;
 import app.shader.Shader;
-import app.vecmath.Matrix;
-import app.vecmath.Vector;
-import app.vecmathimp.FactoryDefault;
-import app.vecmathimp.MatrixImp;
-import app.vecmathimp.VectorImp;
 
 public abstract class Shape extends Node {
 	protected Vertex[] vertices={};

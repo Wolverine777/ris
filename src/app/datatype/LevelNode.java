@@ -1,11 +1,11 @@
-package app.eventsystem;
-
-import app.vecmath.Vector;
+package app.datatype;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import vecmath.Vector;
 
 /**
  * @author Benjamin Reemts

@@ -2,16 +2,24 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
+import vecmath.Vector;
+import vecmath.vecmathimp.VectorImp;
+import app.Renderer;
 import app.datatype.AStarNodes;
-import app.eventsystem.LevelNode;
-import app.vecmath.Vector;
-import app.vecmathimp.VectorImp;
+import app.datatype.LevelNode;
+import app.nodes.GroupNode;
+import app.nodes.Node;
+import app.nodes.shapes.Cube;
+import app.nodes.shapes.Plane;
+import app.shader.Shader;
 
 
 /**
@@ -36,7 +44,20 @@ public class TestClass {
 		TestClass tc=new TestClass();
 		tc.testMin();
 		
-		
+		List<Node> flags=new LinkedList<Node>(){
+			private static final long serialVersionUID = 7233857901815694877L;
+			public boolean contains(Object o) {
+				for(Node x:this){
+					System.out.println(x.id);
+					if(((Node)o).id.equals(x.id))return true;
+				}
+		        return false;
+		    }
+		};
+		flags.add(new GroupNode("test"));
+		flags.add(new GroupNode("test2"));
+		flags.add(new GroupNode("test3"));
+		System.out.println("contains: "+flags.contains(new GroupNode("test3")));
 	}
 	
 	public void testMin(){

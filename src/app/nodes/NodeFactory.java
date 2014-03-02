@@ -3,6 +3,7 @@ package app.nodes;
 import java.io.File;
 import java.util.Map;
 
+import vecmath.Matrix;
 import app.nodes.camera.Camera;
 import app.nodes.shapes.Cube;
 import app.nodes.shapes.ObjLoader;
@@ -10,7 +11,6 @@ import app.nodes.shapes.Pipe;
 import app.nodes.shapes.Plane;
 import app.nodes.shapes.Sphere;
 import app.shader.Shader;
-import app.vecmath.Matrix;
 
 /**
  * Creates and keeps track of created nodes for easy modification

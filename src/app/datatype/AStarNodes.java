@@ -2,8 +2,6 @@ package app.datatype;
 
 import java.util.List;
 
-import app.eventsystem.LevelNode;
-
 /**
  * @author Benjamin Reemts
  *

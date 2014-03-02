@@ -1,9 +1,9 @@
 package app.nodes.camera;
 
+import vecmath.Matrix;
+import vecmath.vecmathimp.FactoryDefault;
 import app.nodes.Node;
 import app.shader.Shader;
-import app.vecmath.Matrix;
-import app.vecmathimp.FactoryDefault;
 
 public class Camera extends Node {
 	public Camera(String id){

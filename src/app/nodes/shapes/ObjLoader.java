@@ -1,6 +1,6 @@
 package app.nodes.shapes;
 
-import static app.vecmathimp.FactoryDefault.vecmath;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.io.File;
 import java.util.Arrays;
@@ -9,11 +9,11 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
+import vecmath.Color;
+import vecmath.Vector;
 import app.toolkit.BasicFunctions;
 import app.toolkit.Texture;
 import app.nodes.shapes.Vertex;
-import app.vecmath.Color;
-import app.vecmath.Vector;
 import app.shader.Shader;
 
 /**

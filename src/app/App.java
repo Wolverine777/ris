@@ -1,7 +1,7 @@
 package app;
 
-import static app.vecmathimp.FactoryDefault.vecmath;
 import static app.nodes.NodeFactory.nodeFactory;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.io.File;
 import java.util.Arrays;
@@ -11,22 +11,22 @@ import javax.vecmath.Vector3f;
 
 import org.lwjgl.input.Keyboard;
 
+import vecmath.vecmathimp.FactoryDefault;
+import vecmath.vecmathimp.VectorImp;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import app.eventsystem.Level;
-import app.eventsystem.Types;
+import app.Types.KeyMode;
+import app.Types.ObjectTypes;
+import app.Types.SimulateType;
+import app.datatype.Level;
 import app.messages.Message;
-import app.messages.Mode;
-import app.messages.SimulateType;
 import app.nodes.GroupNode;
 import app.nodes.shapes.Cube;
 import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Pipe;
 import app.nodes.shapes.Plane;
 import app.nodes.shapes.Sphere;
-import app.vecmathimp.FactoryDefault;
-import app.vecmathimp.VectorImp;
 
 /**
  * Put your stuff here
@@ -63,8 +63,8 @@ public class App extends WorldState {
 //		transform(c1, vecmath.translationMatrix(-1, 0.5f, 0));
 //		transform(c1, vecmath.scaleMatrix(2, 2, 2));
 //		transform(c1, vecmath.translationMatrix(1.5f, -1, 0));
-		simulateOnKey(c1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(1f, 0, 0) ,Types.CUBE);
-		simulateOnKey(c1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_E)), SimulateType.TRANSLATE, Mode.DOWN, new VectorImp(-0.01f, 0, 0) ,Types.CUBE);
+		simulateOnKey(c1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0, 0) ,ObjectTypes.CUBE);
+		simulateOnKey(c1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_E)), SimulateType.TRANSLATE, KeyMode.DOWN, new VectorImp(-0.01f, 0, 0) ,ObjectTypes.CUBE);
 //		addPhysic(c1, new VectorImp(0.00001f,0,0));
 
 		GroupNode g1 = createGroup("group");
@@ -75,10 +75,10 @@ public class App extends WorldState {
 //		transform(c2, vecmath.translationMatrix(-1.5f, 2, 0));
 //		transform(c2, vecmath.scaleMatrix(2f, 2f, 0));
 //		transform(c2, vecmath.translationMatrix(-2f, 2, 0));
-		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_R)), SimulateType.TRANSLATE, Mode.TOGGLE, new VectorImp(0.01f, 0, 0) ,Types.CUBE);
-		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_E)), SimulateType.TRANSLATE, Mode.DOWN, new VectorImp(-0.01f, 0, 0) ,Types.CUBE);
-		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_D)), SimulateType.TRANSLATE, Mode.DOWN, new VectorImp(0.0f, 0.01f, 0) ,Types.CUBE);
-		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(1f, 0, 0) ,Types.CUBE);
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_R)), SimulateType.TRANSLATE, KeyMode.TOGGLE, new VectorImp(0.01f, 0, 0) ,ObjectTypes.CUBE);
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_E)), SimulateType.TRANSLATE, KeyMode.DOWN, new VectorImp(-0.01f, 0, 0) ,ObjectTypes.CUBE);
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_D)), SimulateType.TRANSLATE, KeyMode.DOWN, new VectorImp(0.0f, 0.01f, 0) ,ObjectTypes.CUBE);
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0, 0) ,ObjectTypes.CUBE);
 //		transform(c2, vecmath.translationMatrix(1, 0, 0));
 		append(c2, g1);
 
@@ -126,14 +126,14 @@ public class App extends WorldState {
 //		transform(testObj, vecmath.scaleMatrix(0.01f, 0.01f, 0.01f));
 		transform(testObj, vecmath.translationMatrix(-3f, -2f, 5f));
 //		transform(testObj, vecmath.translationMatrix(-8f, 0f, 0f));
-		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(0f, 0f, 1f) ,Types.OBJECT);
-		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(0f, 1f, 0f) ,Types.OBJECT);
+		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f) ,ObjectTypes.OBJECT);
+		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 1f, 0f) ,ObjectTypes.OBJECT);
 		append(testObj, head);
 		
 		ObjLoader sphere=createObject("objSphere", shader, new File("obj/Sphere.obj"), null, 1f);
 		transform(sphere, vecmath.translationMatrix(4f, 0f, 0f));
-		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_DOWN)), SimulateType.TRANSLATE, Mode.DOWN, new VectorImp(0.0f, 0.0f, 0.1f) ,Types.CUBE);
-		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_P)), SimulateType.ROTATE, Mode.DOWN, new VectorImp(1f, 0, 0) ,Types.CUBE);
+		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_DOWN)), SimulateType.TRANSLATE, KeyMode.DOWN, new VectorImp(0.0f, 0.0f, 0.1f) ,ObjectTypes.CUBE);
+		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_P)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0, 0) ,ObjectTypes.CUBE);
 		append(sphere, head);
 	}
 

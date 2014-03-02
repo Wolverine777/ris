@@ -1,8 +1,10 @@
-package app.messages;
+package app.datatype;
 
 import java.util.Set;
 
-import app.vecmath.Vector;
+import vecmath.Vector;
+import app.Types.KeyMode;
+import app.Types.SimulateType;
 
 /**
  * @author Benjamin Reemts
@@ -12,17 +14,17 @@ import app.vecmath.Vector;
 public class KeyDef {
 	private SimulateType type;
 	private Set<Integer> keys;
-	private Mode mode;
+	private KeyMode mode;
 	private Vector vector;
 	
 
-	public KeyDef(SimulateType type, Set<Integer> keys, Mode mode){
+	public KeyDef(SimulateType type, Set<Integer> keys, KeyMode mode){
 		this.type=type;
 		this.keys=keys;
 		this.mode=mode;
 	}
 	
-	public KeyDef(SimulateType type, Set<Integer> keys, Mode mode, Vector vec){
+	public KeyDef(SimulateType type, Set<Integer> keys, KeyMode mode, Vector vec){
 		this.type=type;
 		this.keys=keys;
 		this.mode=mode;
@@ -40,7 +42,7 @@ public class KeyDef {
 	}
 
 
-	public Mode getMode() {
+	public KeyMode getMode() {
 		return mode;
 	}
 

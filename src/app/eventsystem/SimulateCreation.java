@@ -2,19 +2,19 @@ package app.eventsystem;
 
 import java.util.Set;
 
-import app.messages.Mode;
-import app.messages.SimulateType;
-import app.vecmath.Vector;
+import vecmath.Vector;
+import app.Types.KeyMode;
+import app.Types.SimulateType;
 
 public class SimulateCreation extends NodeCreation {
 	private Set<Integer> keys;
 	private SimulateType simulation;
-	private Mode mode;
+	private KeyMode mode;
 	private Vector vector;
 
 	// TODO: add modelmatrix as params, can be null
 
-	public SimulateCreation(String objectId, Set<Integer> keys, SimulateType simulation, Mode mode, Vector vec) {
+	public SimulateCreation(String objectId, Set<Integer> keys, SimulateType simulation, KeyMode mode, Vector vec) {
 		id = objectId;
 		this.keys = keys;
 		this.simulation = simulation;
@@ -38,7 +38,7 @@ public class SimulateCreation extends NodeCreation {
 		return simulation;
 	}
 
-	public Mode getMode() {
+	public KeyMode getMode() {
 		return mode;
 	}
 

@@ -2,8 +2,8 @@ package app.nodes;
 
 import java.util.Map;
 
+import vecmath.Matrix;
 import app.edges.Edge;
-import app.vecmath.Matrix;
 
 public class GroupNode extends Node {
 

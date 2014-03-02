@@ -1,6 +1,6 @@
-package app.eventsystem;
+package app.Types;
 
-public enum Types {
+public enum ObjectTypes {
 	GROUP,
 	CUBE,
 	PIPE,

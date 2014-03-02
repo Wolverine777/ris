@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import vecmath.Matrix;
+import vecmath.Vector;
+import vecmath.vecmathimp.VectorImp;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
@@ -14,24 +18,23 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+import app.Types.Events;
+import app.Types.KeyMode;
+import app.Types.ObjectTypes;
+import app.Types.SimulateType;
+import app.datatype.Level;
 import app.eventsystem.CameraCreation;
-import app.eventsystem.Events;
 import app.eventsystem.FloorCreation;
-import app.eventsystem.Level;
-import app.eventsystem.LevelCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
 import app.eventsystem.StartNodeModification;
-import app.eventsystem.Types;
 import app.messages.AiInitialization;
 import app.messages.Message;
-import app.messages.Mode;
 import app.messages.RegisterKeys;
 import app.messages.PhysicInitialization;
 import app.messages.RendererInitialization;
 import app.messages.RendererInitialized;
-import app.messages.SimulateType;
 import app.nodes.GroupNode;
 import app.nodes.Node;
 import app.nodes.camera.Camera;
@@ -44,9 +47,6 @@ import app.nodes.shapes.Sphere;
 import app.nodes.shapes.Torus;
 import app.shader.Shader;
 import app.toolkit.StopWatch;
-import app.vecmath.Matrix;
-import app.vecmath.Vector;
-import app.vecmathimp.VectorImp;
 
 /**
  * Technical base
@@ -252,7 +252,7 @@ public abstract class WorldState extends UntypedActor{
 		
 		NodeCreation n = new NodeCreation();
         n.id = id;
-        n.type = Types.GROUP;
+        n.type = ObjectTypes.GROUP;
         n.shader = null;
         announce(n);
         
@@ -269,7 +269,7 @@ public abstract class WorldState extends UntypedActor{
 		
 		NodeCreation n = new NodeCreation();
 		n.id = id;
-        n.type = Types.CUBE;
+        n.type = ObjectTypes.CUBE;
         n.shader = shader;
         n.mass = mass;
         
@@ -288,7 +288,7 @@ public abstract class WorldState extends UntypedActor{
 		
 		NodeCreation n = new NodeCreation();
         n.id = id;
-        n.type = Types.PIPE;
+        n.type = ObjectTypes.PIPE;
         n.shader = shader;
         n.mass = mass;
         
@@ -307,7 +307,7 @@ public abstract class WorldState extends UntypedActor{
 		
 		NodeCreation n = new NodeCreation();
 		n.id = id;
-        n.type = Types.SPHERE;
+        n.type = ObjectTypes.SPHERE;
         n.shader = shader;
         n.mass = mass;
         
@@ -322,7 +322,7 @@ public abstract class WorldState extends UntypedActor{
 		
 		NodeCreation n = new NodeCreation();
         n.id = id;
-        n.type = Types.PLANE;
+        n.type = ObjectTypes.PLANE;
         n.shader = shader;
         n.mass = mass;
         
@@ -338,7 +338,7 @@ public abstract class WorldState extends UntypedActor{
 		
 		NodeCreation n = new NodeCreation();
         n.id = floor.id;
-        n.type = Types.PLANE;
+        n.type = ObjectTypes.PLANE;
         n.shader = shader;
         n.mass = floor.getMass();
         
@@ -354,7 +354,7 @@ public abstract class WorldState extends UntypedActor{
 		
 		NodeCreation n = new NodeCreation();
         n.id = id;
-        n.type = Types.OBJECT;
+        n.type = ObjectTypes.OBJECT;
         n.shader = shader;
         n.sourceFile=sourceFile;
         n.sourceTex=sourceTex;
@@ -369,7 +369,7 @@ public abstract class WorldState extends UntypedActor{
 		
 		NodeCreation n = new NodeCreation();
 		n.id = cube.id;
-		n.type = Types.CUBE;
+		n.type = ObjectTypes.CUBE;
 		n.shader = cube.getShader();
 		n.d = cube.getD2();
 		n.w = cube.getW2();
@@ -388,7 +388,7 @@ public abstract class WorldState extends UntypedActor{
 		NodeCreation n = new NodeCreation();
 		n.modelmatrix = (nodes.get(cube.id).getWorldTransform());
 		n.id = cube.id;
-		n.type = Types.CUBE;
+		n.type = ObjectTypes.CUBE;
 		n.shader = cube.getShader();
 		n.impulse = impulse;
 		n.d = cube.getD2();
@@ -397,12 +397,13 @@ public abstract class WorldState extends UntypedActor{
 		n.center = cube.getCenter();
 		n.radius = cube.getRadius();
 		
+		//TODO: sinnvolle kapselung announcePhysic
 		physic.tell(n, self());
 //		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?
 //		sc.setSimulation(SimulateType.PHYSIC);
 		SimulateCreation sc = new SimulateCreation(cube.id, null, SimulateType.PHYSIC, null, null);
 		sc.modelmatrix = n.getModelmatrix();
-		sc.type = Types.CUBE;
+		sc.type = ObjectTypes.CUBE;
 		simulator.tell(sc,self());
 			
 	}
@@ -413,7 +414,7 @@ public abstract class WorldState extends UntypedActor{
 		NodeCreation n = new NodeCreation();
 		n.modelmatrix = (nodes.get(sphere.id).getWorldTransform());
 		n.id = sphere.id;
-		n.type = Types.SPHERE;
+		n.type = ObjectTypes.SPHERE;
 		n.shader = sphere.getShader();
 		n.impulse = impulse;
 		n.center = sphere.getCenter();
@@ -425,7 +426,7 @@ public abstract class WorldState extends UntypedActor{
 //		sc.setSimulation(SimulateType.PHYSIC);
 		SimulateCreation sc = new SimulateCreation(sphere.id, null, SimulateType.PHYSIC, null, null);
 		sc.modelmatrix = n.getModelmatrix();
-		sc.type = Types.CUBE;
+		sc.type = ObjectTypes.CUBE;
 		simulator.tell(sc,self());
 			
 	}
@@ -441,7 +442,7 @@ public abstract class WorldState extends UntypedActor{
 		
 	}
 	
-	protected void simulateOnKey(Node object, Set<Integer> keys, SimulateType simulation, Mode mode, Vector vec, Types type){ //TODO:better solution for type
+	protected void simulateOnKey(Node object, Set<Integer> keys, SimulateType simulation, KeyMode mode, Vector vec, ObjectTypes type){ //TODO:better solution for type
 		SimulateCreation sc=new SimulateCreation(object.id, keys, simulation, mode, vec);
 		sc.type=type;
 		sc.modelmatrix=object.getWorldTransform();
@@ -484,7 +485,7 @@ public abstract class WorldState extends UntypedActor{
 		NodeCreation n = new NodeCreation();
 		n.modelmatrix = (nodes.get(cube.id).getWorldTransform());
 		n.id = cube.id;
-		n.type = Types.CUBE;
+		n.type = ObjectTypes.CUBE;
 		n.shader = cube.getShader();
 		n.d = cube.getD2();
 		n.w = cube.getW2();
@@ -501,7 +502,7 @@ public abstract class WorldState extends UntypedActor{
 		NodeCreation n = new NodeCreation();
 		n.modelmatrix = (nodes.get(sphere.id).getWorldTransform());
 		n.id = sphere.id;
-		n.type = Types.SPHERE;
+		n.type = ObjectTypes.SPHERE;
 		n.shader = sphere.getShader();
 		n.center = sphere.getCenter();
 		n.radius = sphere.getRadius();

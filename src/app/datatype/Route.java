@@ -1,9 +1,8 @@
 package app.datatype;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import app.eventsystem.LevelNode;
 
 public class Route {
 	
@@ -12,6 +11,7 @@ public class Route {
 
 	public Route(int totalway, List<LevelNode> waypoints) {
 		this.totalway = totalway;
+		Collections.reverse(waypoints);
 		this.waypoints = waypoints;
 	}
 
@@ -19,16 +19,8 @@ public class Route {
 		return totalway;
 	}
 
-	public void setTotalway(int totalway) {
-		this.totalway = totalway;
-	}
-
 	public List<LevelNode> getWaypoints() {
 		return waypoints;
-	}
-
-	public void setWaypoints(List<LevelNode> waypoints) {
-		this.waypoints = waypoints;
 	}
 	
 	public String toString(){

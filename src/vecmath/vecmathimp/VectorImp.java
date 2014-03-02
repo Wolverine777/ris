@@ -2,13 +2,13 @@
  * Copyright (c) 2013 Henrik Tramberend, Marc Latoschik.
  * All rights reserved.
  *******************************************************************************/
-package app.vecmathimp;
+package vecmath.vecmathimp;
 
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import app.vecmath.Vector;
+import vecmath.Vector;
 
 /**
  * Simple 3 component vector class. Vectors are non mutable and can be passed

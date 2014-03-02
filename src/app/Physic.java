@@ -5,25 +5,26 @@ import static app.nodes.NodeFactory.nodeFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import vecmath.Matrix;
+import vecmath.Vector;
+import vecmath.vecmathimp.MatrixImp;
+import vecmath.vecmathimp.VectorImp;
+
 import com.google.common.collect.Sets.SetView;
 
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
+import app.Types.ObjectTypes;
 import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeModification;
 import app.eventsystem.PhysicModification;
-import app.eventsystem.Types;
 import app.messages.Message;
 import app.messages.PhysicInitialization;
 import app.messages.RendererInitialization;
 import app.nodes.Node;
 import app.nodes.shapes.Shape;
 import app.toolkit.StopWatch;
-import app.vecmath.Matrix;
-import app.vecmath.Vector;
-import app.vecmathimp.MatrixImp;
-import app.vecmathimp.VectorImp;
 
 public class Physic extends UntypedActor {
 
@@ -229,11 +230,11 @@ public class Physic extends UntypedActor {
 			initialize();
 		} else if (message instanceof NodeCreation) {
 			
-			if (((NodeCreation) message).type == Types.GROUP) {
+			if (((NodeCreation) message).type == ObjectTypes.GROUP) {
 				Node newNode = nodeFactory
 						.groupNode(((NodeCreation) message).id);
 				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == Types.CUBE) {
+			} else if (((NodeCreation) message).type == ObjectTypes.CUBE) {
 
 				Node newNode = nodeFactory.cube(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
@@ -254,7 +255,7 @@ public class Physic extends UntypedActor {
 							.setRadius(((NodeCreation) message).radius);
 				}
 				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == Types.SPHERE) {
+			} else if (((NodeCreation) message).type == ObjectTypes.SPHERE) {
 
 				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
 						((NodeCreation) message).shader, ((NodeCreation) message).mass);

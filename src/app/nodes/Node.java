@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import vecmath.Matrix;
+import vecmath.Vector;
+import vecmath.vecmathimp.FactoryDefault;
 import app.edges.DefaultEdge;
 import app.edges.Edge;
-import app.vecmath.Matrix;
-import app.vecmath.Vector;
-import app.vecmathimp.FactoryDefault;
 
 public abstract class Node {
     private Matrix modelMatrix, worldTrafo;

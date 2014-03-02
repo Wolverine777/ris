@@ -1,16 +1,17 @@
 package app.nodes.shapes;
 
 import static app.nodes.shapes.Vertex.*;
-import static app.vecmathimp.FactoryDefault.vecmath;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.shader.Shader;
-import app.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+
+import vecmath.Vector;
 
 /**
  * Torus (the donut-ish thing)

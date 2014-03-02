@@ -1,7 +1,7 @@
 package app.messages;
 
+import vecmath.Vector;
 import akka.actor.ActorRef;
-import app.vecmath.Vector;
 
 /**
  * @author Benjamin Reemts

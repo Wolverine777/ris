@@ -1,6 +1,6 @@
 package app.eventsystem;
 
-import app.vecmath.Matrix;
+import vecmath.Matrix;
 
 public class NodeModification {
 	public String id;

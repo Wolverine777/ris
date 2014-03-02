@@ -10,13 +10,14 @@ import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
 import java.io.File;
+
 import org.lwjgl.opengl.GL20;
 
+import vecmath.Matrix;
+import vecmath.vecmathimp.FactoryDefault;
 import app.toolkit.BasicFunctions;
 import app.toolkit.MatrixUniform;
 import app.toolkit.Util;
-import app.vecmath.Matrix;
-import app.vecmathimp.FactoryDefault;
 
 public class Shader {
 	private static Matrix viewMatrix = FactoryDefault.vecmath.identityMatrix();
