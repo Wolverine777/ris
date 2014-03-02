@@ -80,8 +80,12 @@ public class Physic extends UntypedActor {
 				n.setForce(n.getVelocity());
 				n.setVelocity(n.getForce());
 //				
-				//TODO: nicht mehr verschieben, ansonsten SingelSimulation
-				VectorImp vec = new VectorImp(0, 0.05f, 0);
+				/*TODO: nicht mehr verschieben, ansonsten SingelSimulation
+				 *  Oder Map mit Nodes,Matrix und nur intern verschieben, damit collision nix mehr erkennt und den richtingen verschiebungsvektor setzt, 
+				 *  danach bei nModifikation recive aus der map die matrix holen, damit interne raprä. mit anderen actors gleich bleibt
+				 *  vorteil, interne verschiebung nicht sichtbar. also sieht man nur die kugel in das andere object rein gehen, aber danach auch wieder raus
+				 */
+				VectorImp vec = new VectorImp(0, 0.05f, 0); //für den vorschlag oben hier nicht um festen wert verschieben, sondern differenz +0.001 damit gerade knapp über boden.
 				Matrix modify=MatrixImp.translate(vec);
 	    		n.updateWorldTransform(modify);
 	    		getSender().tell(new NodeModification(n.id,modify), self());

@@ -2,7 +2,6 @@ package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -17,15 +16,12 @@ import akka.actor.UntypedActor;
 import app.datatype.AStarNodes;
 import app.datatype.Route;
 import app.eventsystem.Level;
-import app.eventsystem.LevelCreation;
 import app.eventsystem.LevelNode;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeModification;
-import app.eventsystem.SimulateCreation;
 import app.eventsystem.Types;
 import app.messages.AiInitialization;
 import app.messages.Message;
-import app.messages.PhysicInitialization;
 import app.messages.SimulateType;
 import app.messages.SingelSimulation;
 import app.nodes.Node;
@@ -38,7 +34,7 @@ public class Ai extends UntypedActor {
 
 	Level level;
 	private Map<String, Node> nodes = new HashMap<String, Node>();
-	private Route perfectway;
+	private Map<Node, Route> perfectway= new HashMap<Node, Route>();
 	ActorRef simulator;
 
 	private void initialize(Vector levelPosition, float width, float depth) {
@@ -51,15 +47,12 @@ public class Ai extends UntypedActor {
 
 	private Route aStar(List<LevelNode> path, LinkedHashMap<LevelNode, AStarNodes> lookAt, List<LevelNode> visited, LevelNode target) {
 		if(starParamsValid(path,lookAt, visited, target)){
-			System.out.println("path:"+path.get(0).getPOS());
 			for(LevelNode child:path.get(0).getChilds()){
-				System.out.println("in for:"+child.getPOS());
 				if(child.getValOfEdge(path.get(0))>0&&!visited.contains(child)){
-					System.out.println("put in: " +"lookat size: " + lookAt.size());
 					int resistance = lookAt.get(path.get(0)).getResistance()+child.getValOfEdge(path.get(0)); //resistance till parent + resistance child to parent
 					double distance=child.lengthtoNode(target)+resistance; //pytagoras lenght + resistance
 					System.out.print(" distance: "+distance);
-					if(lookAt.containsKey(child))if(lookAt.get(child).getLength()<=distance)continue;
+					if(lookAt.containsKey(child))if(lookAt.get(child).getLength()<=distance)continue; //keep only shortest way to child
 					lookAt.put(child, new AStarNodes(distance, resistance, path));
 				}
 			}
@@ -68,6 +61,7 @@ public class Ai extends UntypedActor {
 			visited.add(path.get(0));
 			
 			System.out.println(lookAt.toString());
+			if(lookAt.isEmpty())return null;
 			LevelNode min=Collections.min(lookAt.entrySet(), new Comparator<Map.Entry<LevelNode, AStarNodes>>() {
 				@Override
 				public int compare(Entry<LevelNode, AStarNodes> o1,
