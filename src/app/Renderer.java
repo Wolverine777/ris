@@ -19,6 +19,7 @@ import org.lwjgl.opengl.PixelFormat;
 
 import vecmath.Matrix;
 import akka.actor.UntypedActor;
+import app.Types.ObjectTypes;
 import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
@@ -177,6 +178,7 @@ public class Renderer extends UntypedActor {
 			for(String id: delete.ids){
 				Node modify = nodes.get(id);
 				ArrayList<Edge> removeEdges = new ArrayList<>(); 
+				if(modify!=null){
 				for(Edge e: modify.getEdges()){
 					removeEdges.add(e);
 					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
@@ -187,6 +189,7 @@ public class Renderer extends UntypedActor {
 				}
 			
 				nodes.remove(modify);
+				}
 			}
 		}
 //		else if(message instanceof Float){

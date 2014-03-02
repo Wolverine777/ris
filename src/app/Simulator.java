@@ -4,6 +4,7 @@ package app;
 import static app.nodes.NodeFactory.nodeFactory;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -21,6 +22,7 @@ import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.SimulateType;
 import app.datatype.KeyDef;
+import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeDeletion;
@@ -203,9 +205,22 @@ public class Simulator extends UntypedActor {
         		nodes.remove(simulation.getNodeId());
         	}
         }  else if (message instanceof NodeDeletion){
-			NodeDeletion delete = (NodeDeletion)message;
+        	NodeDeletion delete = (NodeDeletion)message;
 			for(String id: delete.ids){
-				nodes.remove(nodes.get(id));
+				Node modify = nodes.get(id);
+				ArrayList<Edge> removeEdges = new ArrayList<>(); 
+				if(modify!=null){
+				for(Edge e: modify.getEdges()){
+					removeEdges.add(e);
+					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+					
+				}
+				for(Edge e : removeEdges){
+					modify.removeEdge(e);
+				}
+			
+				nodes.remove(modify);
+				}
 			}
 		}
     }

@@ -16,6 +16,7 @@ import com.google.common.collect.Sets.SetView;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import app.Types.ObjectTypes;
+import app.edges.Edge;
 import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeDeletion;
@@ -308,7 +309,20 @@ public class Physic extends UntypedActor {
 		}  else if (message instanceof NodeDeletion){
 			NodeDeletion delete = (NodeDeletion)message;
 			for(String id: delete.ids){
-				nodes.remove(nodes.get(id));
+				Node modify = nodes.get(id);
+				ArrayList<Edge> removeEdges = new ArrayList<>(); 
+				if(modify!=null){
+				for(Edge e: modify.getEdges()){
+					removeEdges.add(e);
+					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+					
+				}
+				for(Edge e : removeEdges){
+					modify.removeEdge(e);
+				}
+			
+				nodes.remove(modify);
+				}
 			}
 		}
 		

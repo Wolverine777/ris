@@ -3,6 +3,7 @@ package app;
 import static app.nodes.NodeFactory.nodeFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -23,6 +24,7 @@ import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.SimulateType;
 import app.datatype.Level;
+import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
@@ -213,8 +215,22 @@ public abstract class WorldState extends UntypedActor{
 				}
 			}
 		} else if (event instanceof NodeDeletion){
-			for(String id: ((NodeDeletion) event).ids){
-				nodes.remove(nodes.get(id));
+			NodeDeletion delete = (NodeDeletion)event;
+			for(String id: delete.ids){
+				Node modify = nodes.get(id);
+				ArrayList<Edge> removeEdges = new ArrayList<>(); 
+				if(modify!=null){
+				for(Edge e: modify.getEdges()){
+					removeEdges.add(e);
+					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+					
+				}
+				for(Edge e : removeEdges){
+					modify.removeEdge(e);
+				}
+			
+				nodes.remove(modify);
+				}
 			}
 			for (ActorRef observer : observers.get(Events.NODE_DELETION)){
 				if(!observer.equals(getSender())){
