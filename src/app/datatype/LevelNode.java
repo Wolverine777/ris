@@ -47,9 +47,9 @@ public class LevelNode {
 	}
 	
 	public List<LevelNode> getChilds(){
-		System.out.println("parentNode: "+POS);
-		System.out.println("childlist:"+new LinkedList<LevelNode>(edges.keySet()).size());
-		System.out.println("childlist set:"+edges.keySet().size());
+//		System.out.println("parentNode: "+POS);
+//		System.out.println("childlist:"+new LinkedList<LevelNode>(edges.keySet()).size());
+//		System.out.println("childlist set:"+edges.keySet().size());
 		return new LinkedList<LevelNode>(edges.keySet());
 	}
 
@@ -71,7 +71,7 @@ public class LevelNode {
 	}
 	
 	public double lengthtoNode(LevelNode target){
-		System.out.println("länge von "+ POS+" bis "+ target.getPOS()+" :"+ Math.sqrt((Math.pow((target.getPOS().x()-POS.x()), 2)+Math.pow((target.getPOS().z()-POS.z()), 2))));
+//		System.out.println("länge von "+ POS+" bis "+ target.getPOS()+" :"+ Math.sqrt((Math.pow((target.getPOS().x()-POS.x()), 2)+Math.pow((target.getPOS().z()-POS.z()), 2))));
 		return Math.sqrt((Math.pow((target.getPOS().x()-POS.x()), 2)+Math.pow((target.getPOS().z()-POS.z()), 2)));
 	}
 	

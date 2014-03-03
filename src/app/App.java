@@ -91,15 +91,15 @@ public class App extends WorldState {
 //		addPhysic(c4, new VectorImp(0.01f,0.01f,0));
 //		append(c4, head);
 		
-		Sphere c8 = createSphere("Shpere3", shader, 1f);
-		transform(c8, vecmath.translationMatrix(-5f, 1f, 0));
-		addPhysic(c8, new VectorImp(0.01f,0.01f,0));
-		append(c8, head);
+//		Sphere c8 = createSphere("Shpere3", shader, 1f);
+//		transform(c8, vecmath.translationMatrix(-5f, 1f, 0));
+//		addPhysic(c8, new VectorImp(0.01f,0.01f,0));
+//		append(c8, head);
 		
 		
 		Sphere c5 = createSphere("Shpere2", shader, 1f);
 		transform(c5, vecmath.translationMatrix(5f, 1f, 0));
-		addPhysic(c5, new VectorImp(-0.01f,0.01f,0));
+		addPhysic(c5, new VectorImp(0.0f,-0.01f,0));
 		append(c5, head);
 		
 		announceFloor(floor);

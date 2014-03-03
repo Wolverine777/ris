@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.SingleSelectionModel;
+
 import vecmath.Matrix;
 import vecmath.Vector;
 import vecmath.vecmathimp.MatrixImp;
@@ -16,6 +18,7 @@ import com.google.common.collect.Sets.SetView;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import app.Types.ObjectTypes;
+import app.Types.SimulateType;
 import app.edges.Edge;
 import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
@@ -25,6 +28,7 @@ import app.eventsystem.PhysicModification;
 import app.messages.Message;
 import app.messages.PhysicInitialization;
 import app.messages.RendererInitialization;
+import app.messages.SingelSimulation;
 import app.nodes.Node;
 import app.nodes.shapes.Shape;
 import app.toolkit.StopWatch;
@@ -46,15 +50,9 @@ public class Physic extends UntypedActor {
 	public void physic() {
 		elapsed = zeit.elapsed();
 		NodeDeletion delete = new NodeDeletion();
-		// System.out.println("hierho:" + nodes.isEmpty());
 		for (Node n : nodes.values()) {
 //			System.out.println("Radius n oben: " + ((Shape) n).getRadius());
-			if (collisionGround(n) == false && collisionObjects(n) == null) {
-				// for(Node n: nodes.values()){
-				// System.out.println("Matrix NodePhysic: " +
-				// n.getWorldTransform().toString());
-				// System.out.println("funkt das???" + n.id);
-				// System.out.println("alte velo:" + n.id + n.getVelocity());
+			if (collisionGround(n) == 0 && collisionObjects(n) == null) {
 				// TODO Erdanziehungskraft m*g?
 				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()
 						* elapsed, 0))));
@@ -69,11 +67,9 @@ public class Physic extends UntypedActor {
 //				System.out.println("Noch keine Collision: Vektor: " + p.force);
 				simulator.tell(p, self());
 
-			} else if (collisionGround(n) == true
+			} else if (collisionGround(n) != 0
 					&& collisionObjects(n) == null) {
 				
-				
-//				System.out.println("komm ich hier rein? Ich hoffe ja");
 				
 				VectorImp opposite = oppositeDirectionGround(n);
 				n.setVelocity(opposite);
@@ -90,51 +86,38 @@ public class Physic extends UntypedActor {
 				 *  danach bei nModifikation recive aus der map die matrix holen, damit interne raprä. mit anderen actors gleich bleibt
 				 *  vorteil, interne verschiebung nicht sichtbar. also sieht man nur die kugel in das andere object rein gehen, aber danach auch wieder raus
 				 */
-				VectorImp vec = new VectorImp(0, 0.05f, 0); //für den vorschlag oben hier nicht um festen wert verschieben, sondern differenz +0.001 damit gerade knapp über boden.
-				Matrix modify=MatrixImp.translate(vec);
-	    		n.updateWorldTransform(modify);
-	    		getSender().tell(new NodeModification(n.id,modify), self());
+				
+				float differenceinfloor = collisionGround(n);
+//				float differenceinfloor = (float) Math.sqrt((float) Math.pow((n.getWorldTransform().getPosition().y() - floor.y()),2));
+				VectorImp vec = new VectorImp(0, differenceinfloor + 0.01f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
+				SingelSimulation ss = new SingelSimulation(n.id, SimulateType.TRANSLATE, vec, n.getWorldTransform());
+//				Matrix modify=MatrixImp.translate(vec);
+//	    		n.updateWorldTransform(modify);
+//	    		getSender().tell(new NodeModification(n.id,modify), self());
+				
+				simulator.tell(ss, self());
 			
 				PhysicModification p1 = new PhysicModification();
 				p1.id = n.id;
 				p1.force = n.getForce();
 				
-//				System.out.println("Ich stecke fest: rescue me!!! " + "Vektor: " + p1.force );
 				
 				simulator.tell(p1, self());				
 				
 
-			} else if (collisionGround(n) == false
+			} else if (collisionGround(n) == 0
 					&& collisionObjects(n) != null) {
 
 				 
 //				Node collision = collisionObjects(n);
 
 							
-				System.out.println("Node id: " + n.id);
 				delete.ids.add(n.id);
-			
-				
-				
-//				VectorImp opposite = oppositeDirection(n);
-//				
-//				n.setVelocity(opposite);
-//				 
-//				// TODO Erdanziehungskraft m*g?
-//				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
-//				// TODO Masse einabauen, dann impuls setzen und dann velocity
-//				n.setVelocity(n.getForce());
-//				
-//				
-//			
-//				PhysicModification p1 = new PhysicModification();
-//				p1.id = n.id;
-//				p1.force = n.getForce();
-//				
-//								
-//				simulator.tell(p1, self());	
 				
 
+			} else if(collisionGround(n) !=0 && collisionObjects(n) !=null){
+				
+				delete.ids.add(n.id);
 			}
 		}
 		
@@ -153,7 +136,6 @@ public class Physic extends UntypedActor {
 	private Node collisionObjects(Node n) {
 		float distance = 0;
 		float radiuses = 0;
-//		System.out.println("geht das hier überhaupt rein??????????");
 		for (Node node : nodes.values()) {
 			if (!node.equals(n)) {
 //				System.out.println("Center n: " + ((Shape) n).getCenter());
@@ -172,7 +154,7 @@ public class Physic extends UntypedActor {
 		return null;
 	}
 
-	private boolean collisionGround(Node n) {
+	private float collisionGround(Node n) {
 		float distance = 0;
 		float radiuses = 0;
 		
@@ -181,11 +163,12 @@ public class Physic extends UntypedActor {
 //		System.out.println("distance ground: " + distance + " radiuses ground: " + radiuses);
 			
 		if(distance < radiuses){
-				return true;
+			float inground = radiuses -distance;
+					return inground;
 				
 		
 		}
-		return false;
+		return 0;
 	}
 	
 	private VectorImp oppositeDirection(Node n){
