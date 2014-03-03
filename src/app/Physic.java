@@ -51,19 +51,16 @@ public class Physic extends UntypedActor {
 		elapsed = zeit.elapsed();
 		NodeDeletion delete = new NodeDeletion();
 		for (Node n : nodes.values()) {
-//			System.out.println("Radius n oben: " + ((Shape) n).getRadius());
 			if (collisionGround(n) == 0 && collisionObjects(n) == null) {
-				// TODO Erdanziehungskraft m*g?
+			
 				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
-				// TODO Masse einabauen, dann impuls setzen und dann velocity
+				
 				n.setVelocity(n.getForce());
-				// System.out.println("neue velo:" + n.id + n.getVelocity());
-
+				
 				PhysicModification p = new PhysicModification();
 				p.id = n.id;
 				p.force = n.getForce();
 				
-//				System.out.println("Noch keine Collision: Vektor: " + p.force);
 				simulator.tell(p, self());
 
 			} else if (collisionGround(n) != 0
@@ -151,6 +148,23 @@ public class Physic extends UntypedActor {
 			}
 		}
 		return null;
+	}
+	
+	private Vector collisionGroundPosition(Node n){
+		Node temp = n;
+		while(collisionGround(n)==0){
+			
+			temp.setForce((temp.getVelocity().add(new VectorImp(0, ground.y()* temp.getMass()* elapsed, 0))));
+			
+			temp.setVelocity(temp.getForce());
+			
+			Matrix modify=MatrixImp.translate(temp.force);
+    		temp.updateWorldTransform(modify);
+		}
+		VectorImp impact = new VectorImp(temp.getWorldTransform().getPosition().x(), floor.y(), temp.getWorldTransform().getPosition().z());
+				
+		return impact;
+		
 	}
 
 	private float collisionGround(Node n) {
