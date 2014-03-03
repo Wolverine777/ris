@@ -19,6 +19,7 @@ public abstract class Node {
     public Vector acceleration;
     public Vector force;
 	public Vector impulse;
+	public float mass;
 
     public Matrix getWorldTransform() {
         return worldTrafo;
@@ -114,6 +115,10 @@ public abstract class Node {
 	
 	public List<Edge> getEdges() {
 		return edges;
+	}
+	
+	public float getMass() {
+		return mass;
 	}
 
 	public abstract void display(Matrix m);

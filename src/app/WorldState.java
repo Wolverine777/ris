@@ -346,6 +346,8 @@ public abstract class WorldState extends UntypedActor{
         n.shader = shader;
         n.mass = mass;
         
+        System.out.println("Was geht hier? " + n.mass);
+        
         announce(n);
         
         return sphere;
@@ -411,6 +413,7 @@ public abstract class WorldState extends UntypedActor{
 	    n.h = cube.getH2();
 	    n.center = cube.getCenter();
 		n.radius = cube.getRadius();
+		n.mass = cube.getMass();
 	    
 		
 		physic.tell(n, self());
@@ -431,6 +434,7 @@ public abstract class WorldState extends UntypedActor{
 	    n.h = cube.getH2();
 		n.center = cube.getCenter();
 		n.radius = cube.getRadius();
+		n.mass = cube.getMass();
 		
 		//TODO: sinnvolle kapselung announcePhysic
 		physic.tell(n, self());
@@ -454,6 +458,7 @@ public abstract class WorldState extends UntypedActor{
 		n.impulse = impulse;
 		n.center = sphere.getCenter();
 		n.radius = sphere.getRadius();
+		n.mass = sphere.getMass();
 		
 		
 		physic.tell(n, self());

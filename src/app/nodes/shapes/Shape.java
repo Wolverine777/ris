@@ -31,7 +31,6 @@ public abstract class Shape extends Node {
 	protected FloatBuffer textureData3;
 	protected Texture tex;
 	protected Shader shader;
-	protected float mass;
 	protected int mode = GL11.GL_QUADS;
 	private Vector center = new VectorImp(0,0,0);
 	private float radius;
@@ -166,10 +165,6 @@ public abstract class Shape extends Node {
 
 	public void setRadius(float radius) {
 		this.radius = radius;
-	}
-
-	public float getMass() {
-		return mass;
 	}
 	
 }

@@ -146,6 +146,7 @@ public class Renderer extends UntypedActor {
 				Node newNode = nodeFactory.plane(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
 						((NodeCreation) message).w, ((NodeCreation) message).d, ((NodeCreation) message).mass);
+				System.out.println("renderer mass: " + newNode.mass);
 				nodes.put(newNode.id, newNode);
 			}else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
 				NodeCreation nc=(NodeCreation) message;

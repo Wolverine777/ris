@@ -54,8 +54,7 @@ public class Physic extends UntypedActor {
 //			System.out.println("Radius n oben: " + ((Shape) n).getRadius());
 			if (collisionGround(n) == 0 && collisionObjects(n) == null) {
 				// TODO Erdanziehungskraft m*g?
-				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()
-						* elapsed, 0))));
+				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
 				// TODO Masse einabauen, dann impuls setzen und dann velocity
 				n.setVelocity(n.getForce());
 				// System.out.println("neue velo:" + n.id + n.getVelocity());
@@ -230,7 +229,13 @@ public class Physic extends UntypedActor {
 						((NodeCreation) message).w, ((NodeCreation) message).h,
 						((NodeCreation) message).d, ((NodeCreation) message).mass);
 				if ((((NodeCreation) message).impulse != null)) {
-					newNode.setVelocity(((NodeCreation) message).impulse);
+					Vector impulse = (((NodeCreation) message).impulse);
+					float newx = impulse.x()/newNode.mass;
+					float newy = impulse.y()/newNode.mass;
+					float newz = impulse.z()/newNode.mass;
+					
+					VectorImp newimpulse = new VectorImp(newx, newy, newz);
+					newNode.setVelocity(newimpulse);
 				}
 				if ((((NodeCreation) message).modelmatrix != null)) {
 					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
@@ -250,8 +255,15 @@ public class Physic extends UntypedActor {
 						((NodeCreation) message).shader, ((NodeCreation) message).mass);
 
 				if ((((NodeCreation) message).impulse != null)) {
-					// TODO Masse einbauen
-					newNode.setVelocity(((NodeCreation) message).impulse);
+					Vector impulse = (((NodeCreation) message).impulse);
+			
+					float newx = impulse.x()/newNode.mass;
+					float newy = impulse.y()/newNode.mass;
+					float newz = impulse.z()/newNode.mass;
+					
+					VectorImp newimpulse = new VectorImp(newx, newy, newz);
+					newNode.setVelocity(newimpulse);
+
 				}
 				if ((((NodeCreation) message).modelmatrix != null)) {
 					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
