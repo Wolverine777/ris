@@ -2,8 +2,11 @@ package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.SingleSelectionModel;
 
 import vecmath.Matrix;
 import vecmath.Vector;
@@ -15,13 +18,17 @@ import com.google.common.collect.Sets.SetView;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import app.Types.ObjectTypes;
+import app.Types.SimulateType;
+import app.edges.Edge;
 import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
+import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
 import app.eventsystem.PhysicModification;
 import app.messages.Message;
 import app.messages.PhysicInitialization;
 import app.messages.RendererInitialization;
+import app.messages.SingelSimulation;
 import app.nodes.Node;
 import app.nodes.shapes.Shape;
 import app.toolkit.StopWatch;
@@ -29,6 +36,7 @@ import app.toolkit.StopWatch;
 public class Physic extends UntypedActor {
 
 	private Map<String, Node> nodes = new HashMap<String, Node>();
+	private Map<String, Vector> impacts = new HashMap<String, Vector>();
 	ActorRef simulator;
 	private StopWatch zeit = new StopWatch();
 	private Vector ground = new VectorImp(0f, -0.001f, 0f);
@@ -38,38 +46,28 @@ public class Physic extends UntypedActor {
 	private void initialize() {
 		getSender().tell(Message.INITIALIZED, self());
 		System.out.println("Physic initialised");
+		elapsed = zeit.elapsed();
 	}
 
 	public void physic() {
 		elapsed = zeit.elapsed();
-		// System.out.println("hierho:" + nodes.isEmpty());
+		NodeDeletion delete = new NodeDeletion();
 		for (Node n : nodes.values()) {
-//			System.out.println("Radius n oben: " + ((Shape) n).getRadius());
-			if (collisionGround(n) == false && collisionObjects(n) == null) {
-				// for(Node n: nodes.values()){
-				// System.out.println("Matrix NodePhysic: " +
-				// n.getWorldTransform().toString());
-				// System.out.println("funkt das???" + n.id);
-				// System.out.println("alte velo:" + n.id + n.getVelocity());
-				// TODO Erdanziehungskraft m*g?
-				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()
-						* elapsed, 0))));
-				// TODO Masse einabauen, dann impuls setzen und dann velocity
+			if (collisionGround(n) == 0 && collisionObjects(n) == null) {
+			
+				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
+				
 				n.setVelocity(n.getForce());
-				// System.out.println("neue velo:" + n.id + n.getVelocity());
-
+				
 				PhysicModification p = new PhysicModification();
 				p.id = n.id;
 				p.force = n.getForce();
 				
-//				System.out.println("Noch keine Collision: Vektor: " + p.force);
 				simulator.tell(p, self());
 
-			} else if (collisionGround(n) == true
+			} else if (collisionGround(n) != 0
 					&& collisionObjects(n) == null) {
 				
-				
-//				System.out.println("komm ich hier rein? Ich hoffe ja");
 				
 				VectorImp opposite = oppositeDirectionGround(n);
 				n.setVelocity(opposite);
@@ -86,68 +84,59 @@ public class Physic extends UntypedActor {
 				 *  danach bei nModifikation recive aus der map die matrix holen, damit interne raprä. mit anderen actors gleich bleibt
 				 *  vorteil, interne verschiebung nicht sichtbar. also sieht man nur die kugel in das andere object rein gehen, aber danach auch wieder raus
 				 */
-				VectorImp vec = new VectorImp(0, 0.05f, 0); //für den vorschlag oben hier nicht um festen wert verschieben, sondern differenz +0.001 damit gerade knapp über boden.
-				Matrix modify=MatrixImp.translate(vec);
-	    		n.updateWorldTransform(modify);
-	    		getSender().tell(new NodeModification(n.id,modify), self());
+				
+				float differenceinfloor = collisionGround(n);
+//				float differenceinfloor = (float) Math.sqrt((float) Math.pow((n.getWorldTransform().getPosition().y() - floor.y()),2));
+				VectorImp vec = new VectorImp(0, differenceinfloor + 0.01f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
+				SingelSimulation ss = new SingelSimulation(n.id, SimulateType.TRANSLATE, vec, n.getWorldTransform());
+//				Matrix modify=MatrixImp.translate(vec);
+//	    		n.updateWorldTransform(modify);
+//	    		getSender().tell(new NodeModification(n.id,modify), self());
+				
+				simulator.tell(ss, self());
 			
 				PhysicModification p1 = new PhysicModification();
 				p1.id = n.id;
 				p1.force = n.getForce();
 				
-//				System.out.println("Ich stecke fest: rescue me!!! " + "Vektor: " + p1.force );
 				
 				simulator.tell(p1, self());				
 				
 
-			} else if (collisionGround(n) == false
+			} else if (collisionGround(n) == 0
 					&& collisionObjects(n) != null) {
-//				 System.out.println("richtige schleife!!!!!!!!!!!");
+
 				 
-//				 Node collision = collisionObjects(n);
-//				
-//				if(n.getVelocity().x() > 0){
-//					VectorImp vec = new VectorImp(-0.5f, 0, 0);
-//					Matrix modify=MatrixImp.translate(vec);
-//		    		n.updateWorldTransform(modify);
-//		    		getSender().tell(new NodeModification(n.id,modify), self());
-//				}
-//				else if(n.getVelocity().x() <0){
-//					VectorImp vec = new VectorImp(0.5f, 0, 0);
-//					Matrix modify=MatrixImp.translate(vec);
-//		    		n.updateWorldTransform(modify);
-//		    		getSender().tell(new NodeModification(n.id,modify), self());
-//				}
-				 
-				VectorImp opposite = oppositeDirection(n);
-				
-				n.setVelocity(opposite);
-				 
-				// TODO Erdanziehungskraft m*g?
-				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
-				// TODO Masse einabauen, dann impuls setzen und dann velocity
-				n.setVelocity(n.getForce());
-				
-				
-			
-				PhysicModification p1 = new PhysicModification();
-				p1.id = n.id;
-				p1.force = n.getForce();
-				
-								
-				simulator.tell(p1, self());	
+//				Node collision = collisionObjects(n);
+
+							
+				delete.ids.add(n.id);
 				
 
+			} else if(collisionGround(n) !=0 && collisionObjects(n) !=null){
+				
+				delete.ids.add(n.id);
 			}
+//			Vector impact = collisionGroundPosition(n);
+//			System.out.println("IMpact oben: " + impact.toString());
 		}
+		
+		if(delete.ids.isEmpty() != true){
+			for(String id: delete.ids){
+				nodes.remove(id);
+			}
+			getSender().tell(delete, self());
+			
+		}
+		
 		getSender().tell(Message.DONE, self());
 		System.out.println("physic loop");
+		System.out.println("Impacts: " + impacts.toString());
 	}
 
 	private Node collisionObjects(Node n) {
 		float distance = 0;
 		float radiuses = 0;
-//		System.out.println("geht das hier überhaupt rein??????????");
 		for (Node node : nodes.values()) {
 			if (!node.equals(n)) {
 //				System.out.println("Center n: " + ((Shape) n).getCenter());
@@ -165,21 +154,51 @@ public class Physic extends UntypedActor {
 		}
 		return null;
 	}
+	
+	private void collisionGroundPosition(String id, Node n){
+		
+		float durchlauf = 0;
+		System.out.println("collision ground posi: " + n.id);
+		
+		
+				
+		while(collisionGround(n)==0){
+			
+			System.out.println("Durchlauf Nr: " + durchlauf);
+			
+			n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
+			
+			n.setVelocity(n.getForce());
+			
+			Matrix modify=MatrixImp.translate(n.getForce());
+    		n.updateWorldTransform(modify);
+			
+    		durchlauf++;
+		}
+		VectorImp impact = new VectorImp(n.getWorldTransform().getPosition().x(), floor.y(), n.getWorldTransform().getPosition().z());
+				
+		impacts.put(id, impact);
+		
+	}
+	
 
-	private boolean collisionGround(Node n) {
+	private float collisionGround(Node n) {
 		float distance = 0;
 		float radiuses = 0;
 		
+		
+//		System.out.println("flooooooor: " + floor.y());
 		distance = (float) Math.sqrt((float) Math.pow(((Shape) n).getCenter().y() - floor.y(),2));
 		radiuses = ((Shape) n).getRadius();
 //		System.out.println("distance ground: " + distance + " radiuses ground: " + radiuses);
 			
 		if(distance < radiuses){
-				return true;
+			float inground = radiuses -distance;
+					return inground;
 				
 		
 		}
-		return false;
+		return 0;
 	}
 	
 	private VectorImp oppositeDirection(Node n){
@@ -241,7 +260,13 @@ public class Physic extends UntypedActor {
 						((NodeCreation) message).w, ((NodeCreation) message).h,
 						((NodeCreation) message).d, ((NodeCreation) message).mass);
 				if ((((NodeCreation) message).impulse != null)) {
-					newNode.setVelocity(((NodeCreation) message).impulse);
+					Vector impulse = (((NodeCreation) message).impulse);
+					float newx = impulse.x()/newNode.mass;
+					float newy = impulse.y()/newNode.mass;
+					float newz = impulse.z()/newNode.mass;
+					
+					VectorImp newimpulse = new VectorImp(newx, newy, newz);
+					newNode.setVelocity(newimpulse);
 				}
 				if ((((NodeCreation) message).modelmatrix != null)) {
 					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
@@ -259,23 +284,40 @@ public class Physic extends UntypedActor {
 
 				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
 						((NodeCreation) message).shader, ((NodeCreation) message).mass);
+				
+				Node newNode2 = nodeFactory.sphere("hallo",
+						((NodeCreation) message).shader, ((NodeCreation) message).mass);
 
 				if ((((NodeCreation) message).impulse != null)) {
-					// TODO Masse einbauen
-					newNode.setVelocity(((NodeCreation) message).impulse);
+					Vector impulse = (((NodeCreation) message).impulse);
+			
+					float newx = impulse.x()/newNode.mass;
+					float newy = impulse.y()/newNode.mass;
+					float newz = impulse.z()/newNode.mass;
+					
+					VectorImp newimpulse = new VectorImp(newx, newy, newz);
+					newNode.setVelocity(newimpulse);
+					newNode2.setVelocity(newimpulse);
+
 				}
 				if ((((NodeCreation) message).modelmatrix != null)) {
 					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
+					newNode2.updateWorldTransform(((NodeCreation) message).modelmatrix);
 				}
 				if ((((NodeCreation) message).center != null)) {
 					((Shape) newNode)
+							.setCenter(((NodeCreation) message).center);
+					((Shape) newNode2)
 							.setCenter(((NodeCreation) message).center);
 				}
 				if ((((NodeCreation) message).radius != 0)) {
 					((Shape) newNode)
 							.setRadius(((NodeCreation) message).radius);
+					((Shape) newNode2)
+							.setRadius(((NodeCreation) message).radius);
 				}
 				nodes.put(newNode.id, newNode);
+				collisionGroundPosition(newNode.id, newNode2);
 			}
 		} else if (message instanceof NodeModification) {
 			// System.out.println("NODEMODIFICATION!!!!!");
@@ -300,6 +342,24 @@ public class Physic extends UntypedActor {
 		else if( message instanceof FloorCreation){
 			floor = ((FloorCreation) message).position;			
 			
+		}  else if (message instanceof NodeDeletion){
+			NodeDeletion delete = (NodeDeletion)message;
+			for(String id: delete.ids){
+				Node modify = nodes.get(id);
+				ArrayList<Edge> removeEdges = new ArrayList<>(); 
+				if(modify!=null){
+				for(Edge e: modify.getEdges()){
+					removeEdges.add(e);
+					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+					
+				}
+				for(Edge e : removeEdges){
+					modify.removeEdge(e);
+				}
+			
+				nodes.remove(modify);
+				}
+			}
 		}
 		
 	}

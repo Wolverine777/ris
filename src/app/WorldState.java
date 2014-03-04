@@ -3,6 +3,7 @@ package app;
 import static app.nodes.NodeFactory.nodeFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -23,9 +24,11 @@ import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.SimulateType;
 import app.datatype.Level;
+import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
+import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
 import app.eventsystem.StartNodeModification;
@@ -148,6 +151,11 @@ public abstract class WorldState extends UntypedActor{
 			observers.put(Events.NODE_MODIFICATION, simulator);
 			observers.put(Events.NODE_MODIFICATION, physic);
 			observers.put(Events.NODE_MODIFICATION, ai);
+			observers.put(Events.NODE_DELETION, renderer);
+			observers.put(Events.NODE_DELETION, simulator);
+			observers.put(Events.NODE_DELETION, physic);
+			observers.put(Events.NODE_DELETION, ai);
+			
 			
 			System.out.println("Initializing Entities");
 
@@ -180,7 +188,11 @@ public abstract class WorldState extends UntypedActor{
 		} else if (message instanceof StartNodeModification) {
 			
 			announce(message);
+		} else if(message instanceof NodeDeletion){
+			
+			announce(message);
 		}
+		
 	}
 
 	protected void initialize() {
@@ -202,7 +214,30 @@ public abstract class WorldState extends UntypedActor{
 					observer.tell(event, self()); 
 				}
 			}
-		} 	
+		} else if (event instanceof NodeDeletion){
+			NodeDeletion delete = (NodeDeletion)event;
+			for(String id: delete.ids){
+				Node modify = nodes.get(id);
+				ArrayList<Edge> removeEdges = new ArrayList<>(); 
+				if(modify!=null){
+				for(Edge e: modify.getEdges()){
+					removeEdges.add(e);
+					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+					
+				}
+				for(Edge e : removeEdges){
+					modify.removeEdge(e);
+				}
+			
+				nodes.remove(modify);
+				}
+			}
+			for (ActorRef observer : observers.get(Events.NODE_DELETION)){
+				if(!observer.equals(getSender())){
+					observer.tell(event, self());
+				}
+			}
+		}
 	}
 
 	protected void setCamera(Camera cam) {
@@ -311,6 +346,8 @@ public abstract class WorldState extends UntypedActor{
         n.shader = shader;
         n.mass = mass;
         
+        System.out.println("Was geht hier? " + n.mass);
+        
         announce(n);
         
         return sphere;
@@ -376,6 +413,7 @@ public abstract class WorldState extends UntypedActor{
 	    n.h = cube.getH2();
 	    n.center = cube.getCenter();
 		n.radius = cube.getRadius();
+		n.mass = cube.getMass();
 	    
 		
 		physic.tell(n, self());
@@ -396,6 +434,7 @@ public abstract class WorldState extends UntypedActor{
 	    n.h = cube.getH2();
 		n.center = cube.getCenter();
 		n.radius = cube.getRadius();
+		n.mass = cube.getMass();
 		
 		//TODO: sinnvolle kapselung announcePhysic
 		physic.tell(n, self());
@@ -419,6 +458,7 @@ public abstract class WorldState extends UntypedActor{
 		n.impulse = impulse;
 		n.center = sphere.getCenter();
 		n.radius = sphere.getRadius();
+		n.mass = sphere.getMass();
 		
 		
 		physic.tell(n, self());

@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glViewport;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +20,10 @@ import org.lwjgl.opengl.PixelFormat;
 import vecmath.Matrix;
 import akka.actor.UntypedActor;
 import app.Types.ObjectTypes;
+import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
+import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
 import app.eventsystem.StartNodeModification;
 import app.messages.Message;
@@ -143,6 +146,7 @@ public class Renderer extends UntypedActor {
 				Node newNode = nodeFactory.plane(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
 						((NodeCreation) message).w, ((NodeCreation) message).d, ((NodeCreation) message).mass);
+				System.out.println("renderer mass: " + newNode.mass);
 				nodes.put(newNode.id, newNode);
 			}else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
 				NodeCreation nc=(NodeCreation) message;
@@ -170,7 +174,25 @@ public class Renderer extends UntypedActor {
 		} else if (message instanceof StartNodeModification) {
 			start = nodes.get(((StartNodeModification) message).id);
 
-		} 
+		} else if (message instanceof NodeDeletion){
+			NodeDeletion delete = (NodeDeletion)message;
+			for(String id: delete.ids){
+				Node modify = nodes.get(id);
+				ArrayList<Edge> removeEdges = new ArrayList<>(); 
+				if(modify!=null){
+				for(Edge e: modify.getEdges()){
+					removeEdges.add(e);
+					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+					
+				}
+				for(Edge e : removeEdges){
+					modify.removeEdge(e);
+				}
+			
+				nodes.remove(modify);
+				}
+			}
+		}
 //		else if(message instanceof Float){
 //			if(medTime==0)medTime=(Float)message;
 //			else medTime=(medTime+(Float)message)/2;

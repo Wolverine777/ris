@@ -2,6 +2,7 @@ package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -21,7 +22,9 @@ import app.datatype.AStarNodes;
 import app.datatype.Level;
 import app.datatype.LevelNode;
 import app.datatype.Route;
+import app.edges.Edge;
 import app.eventsystem.NodeCreation;
+import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
 import app.messages.AiInitialization;
 import app.messages.Message;
@@ -86,7 +89,7 @@ public class Ai extends UntypedActor {
 				if(child.getValOfEdge(path.get(0))>0&&!visited.contains(child)){
 					int resistance = lookAt.get(path.get(0)).getResistance()+child.getValOfEdge(path.get(0)); //resistance till parent + resistance child to parent
 					double distance=child.lengthtoNode(target)+resistance; //pytagoras lenght + resistance
-					System.out.print(" distance: "+distance);
+//					System.out.print(" distance: "+distance);
 					if(lookAt.containsKey(child))if(lookAt.get(child).getLength()<=distance)continue; //keep only shortest way to child
 					lookAt.put(child, new AStarNodes(distance, resistance, path));
 				}
@@ -95,7 +98,7 @@ public class Ai extends UntypedActor {
 			lookAt.remove(path.get(0));
 			visited.add(path.get(0));
 			
-			System.out.println(lookAt.toString());
+//			System.out.println(lookAt.toString());
 			if(lookAt.isEmpty())return null;
 			LevelNode min=Collections.min(lookAt.entrySet(), new Comparator<Map.Entry<LevelNode, AStarNodes>>() {
 				@Override
@@ -164,10 +167,9 @@ public class Ai extends UntypedActor {
 		LinkedList<LevelNode> visit=new LinkedList<LevelNode>();
 		System.out.println("lookat size vor dem call: " + lookAt.size());
 		Route r=aStar(path, lookAt, visit, target);
-		System.out.println(r.toString());
+//		System.out.println(r.toString());
 //		System.out.println(aStar(path, lookAt, new LinkedList<LevelNode>(), target).toString()); //warum?
 		lookAt.clear();
-		System.out.println("gecleart??????? " + lookAt.size());
 		path.clear();
 		getSender().tell(Message.DONE, self());
 
@@ -233,7 +235,26 @@ public class Ai extends UntypedActor {
         			modify.updateWorldTransform(((NodeModification) message).localMod);
         		}
         	}
+		} else if (message instanceof NodeDeletion){
+			NodeDeletion delete = (NodeDeletion)message;
+			for(String id: delete.ids){
+				Node modify = nodes.get(id);
+				ArrayList<Edge> removeEdges = new ArrayList<>(); 
+				if(modify!=null){
+				for(Edge e: modify.getEdges()){
+					removeEdges.add(e);
+					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+					
+				}
+				for(Edge e : removeEdges){
+					modify.removeEdge(e);
+				}
+			
+				nodes.remove(modify);
+				}
+			}
 		}
+			
 
 	}
 	
