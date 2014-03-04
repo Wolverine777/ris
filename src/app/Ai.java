@@ -34,6 +34,8 @@ public class Ai extends UntypedActor {
 
 	Level level;
 	private Map<String, Node> nodes = new HashMap<String, Node>();
+	
+	//TODO: Car das eine route hat und eine aktualisierungsfrequenz und pick up auslösen kann
 	private List<Node> bots=new LinkedList<Node>(){
 		private static final long serialVersionUID = 4808793150108855621L;
 		@Override
