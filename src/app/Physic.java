@@ -36,6 +36,7 @@ import app.toolkit.StopWatch;
 public class Physic extends UntypedActor {
 
 	private Map<String, Node> nodes = new HashMap<String, Node>();
+	private Map<String, Vector> impacts = new HashMap<String, Vector>();
 	ActorRef simulator;
 	private StopWatch zeit = new StopWatch();
 	private Vector ground = new VectorImp(0f, -0.001f, 0f);
@@ -45,6 +46,7 @@ public class Physic extends UntypedActor {
 	private void initialize() {
 		getSender().tell(Message.INITIALIZED, self());
 		System.out.println("Physic initialised");
+		elapsed = zeit.elapsed();
 	}
 
 	public void physic() {
@@ -115,6 +117,8 @@ public class Physic extends UntypedActor {
 				
 				delete.ids.add(n.id);
 			}
+//			Vector impact = collisionGroundPosition(n);
+//			System.out.println("IMpact oben: " + impact.toString());
 		}
 		
 		if(delete.ids.isEmpty() != true){
@@ -127,6 +131,7 @@ public class Physic extends UntypedActor {
 		
 		getSender().tell(Message.DONE, self());
 		System.out.println("physic loop");
+		System.out.println("Impacts: " + impacts.toString());
 	}
 
 	private Node collisionObjects(Node n) {
@@ -150,27 +155,39 @@ public class Physic extends UntypedActor {
 		return null;
 	}
 	
-	private Vector collisionGroundPosition(Node n){
-		Node temp = n;
+	private void collisionGroundPosition(String id, Node n){
+		
+		float durchlauf = 0;
+		System.out.println("collision ground posi: " + n.id);
+		
+		
+				
 		while(collisionGround(n)==0){
 			
-			temp.setForce((temp.getVelocity().add(new VectorImp(0, ground.y()* temp.getMass()* elapsed, 0))));
+			System.out.println("Durchlauf Nr: " + durchlauf);
 			
-			temp.setVelocity(temp.getForce());
+			n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
 			
-			Matrix modify=MatrixImp.translate(temp.force);
-    		temp.updateWorldTransform(modify);
+			n.setVelocity(n.getForce());
+			
+			Matrix modify=MatrixImp.translate(n.getForce());
+    		n.updateWorldTransform(modify);
+			
+    		durchlauf++;
 		}
-		VectorImp impact = new VectorImp(temp.getWorldTransform().getPosition().x(), floor.y(), temp.getWorldTransform().getPosition().z());
+		VectorImp impact = new VectorImp(n.getWorldTransform().getPosition().x(), floor.y(), n.getWorldTransform().getPosition().z());
 				
-		return impact;
+		impacts.put(id, impact);
 		
 	}
+	
 
 	private float collisionGround(Node n) {
 		float distance = 0;
 		float radiuses = 0;
 		
+		
+//		System.out.println("flooooooor: " + floor.y());
 		distance = (float) Math.sqrt((float) Math.pow(((Shape) n).getCenter().y() - floor.y(),2));
 		radiuses = ((Shape) n).getRadius();
 //		System.out.println("distance ground: " + distance + " radiuses ground: " + radiuses);
@@ -267,6 +284,9 @@ public class Physic extends UntypedActor {
 
 				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
 						((NodeCreation) message).shader, ((NodeCreation) message).mass);
+				
+				Node newNode2 = nodeFactory.sphere("hallo",
+						((NodeCreation) message).shader, ((NodeCreation) message).mass);
 
 				if ((((NodeCreation) message).impulse != null)) {
 					Vector impulse = (((NodeCreation) message).impulse);
@@ -277,20 +297,27 @@ public class Physic extends UntypedActor {
 					
 					VectorImp newimpulse = new VectorImp(newx, newy, newz);
 					newNode.setVelocity(newimpulse);
+					newNode2.setVelocity(newimpulse);
 
 				}
 				if ((((NodeCreation) message).modelmatrix != null)) {
 					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
+					newNode2.updateWorldTransform(((NodeCreation) message).modelmatrix);
 				}
 				if ((((NodeCreation) message).center != null)) {
 					((Shape) newNode)
+							.setCenter(((NodeCreation) message).center);
+					((Shape) newNode2)
 							.setCenter(((NodeCreation) message).center);
 				}
 				if ((((NodeCreation) message).radius != 0)) {
 					((Shape) newNode)
 							.setRadius(((NodeCreation) message).radius);
+					((Shape) newNode2)
+							.setRadius(((NodeCreation) message).radius);
 				}
 				nodes.put(newNode.id, newNode);
+				collisionGroundPosition(newNode.id, newNode2);
 			}
 		} else if (message instanceof NodeModification) {
 			// System.out.println("NODEMODIFICATION!!!!!");

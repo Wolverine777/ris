@@ -141,7 +141,7 @@ public abstract class Shape extends Node {
 	public void updateWorldTransform(Matrix previousTrafo){
 		super.updateWorldTransform(previousTrafo);
 	    center = previousTrafo.mult(MatrixImp.translate(center)).getPosition();
-	    System.out.println("Neues center für Cube: " + super.id + center.toString());
+//	    System.out.println("Neues center für Cube: " + super.id + center.toString());
 //	    System.out.println("Radius für Cube: " + super.id + radius);
 	}
 	

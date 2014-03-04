@@ -67,9 +67,15 @@ public class App extends WorldState {
 		simulateOnKey(c1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_E)), SimulateType.TRANSLATE, KeyMode.DOWN, new VectorImp(-0.01f, 0, 0) ,ObjectTypes.CUBE);
 //		addPhysic(c1, new VectorImp(0.00001f,0,0));
 
+		
 		GroupNode g1 = createGroup("group");
 		append(g1,head);
 //		transform(g1, vecmath.translationMatrix(0, -1, 0));
+
+		announceFloor(floor);
+		transform(floor, vecmath.translationMatrix(0, -2f, 0));
+		addPhysicFloor(floor);
+		append(floor, g1);
 		
 		Cube c2 = createCube("Cube2", shader, 1.5f, 1.5f, 1.5f, 1f);
 //		transform(c2, vecmath.translationMatrix(-1.5f, 2, 0));
@@ -101,13 +107,7 @@ public class App extends WorldState {
 		transform(c5, vecmath.translationMatrix(5f, 1f, 0));
 		addPhysic(c5, new VectorImp(0.0f,0.01f,0));
 		append(c5, head);
-		
-		announceFloor(floor);
-		transform(floor, vecmath.translationMatrix(0, -2f, 0));
-		addPhysicFloor(floor);
-		append(floor, g1);
-//		Level level=new Level(floor.getWorldTransform().getPosition(), floor.w2*2, 0, floor.d2*2);
-//		System.out.println(level.toString());
+
 		
 		Cube c6 = createCube("coinbla", shader, 1f);
 		transform(c6, vecmath.translationMatrix(0.6f,0,0.6f));
