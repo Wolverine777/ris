@@ -32,14 +32,14 @@ public abstract class Shape extends Node {
 	protected Texture tex;
 	protected Shader shader;
 	protected int mode = GL11.GL_QUADS;
-	private Vector center = new VectorImp(0,0,0);
-	private float radius;
+	protected Vector center = new VectorImp(0,0,0);
+	protected float radius;
 
 	public Shape(String id, Shader shader, float mass) {
 		super(id, FactoryDefault.vecmath.identityMatrix());
 		this.shader = shader;
 		this.mass = mass;
-		findCenter();
+//		findCenter();
 				
 	}
 	
@@ -141,7 +141,7 @@ public abstract class Shape extends Node {
 	public void updateWorldTransform(Matrix previousTrafo){
 		super.updateWorldTransform(previousTrafo);
 	    center = previousTrafo.mult(MatrixImp.translate(center)).getPosition();
-//	    System.out.println("Neues center für Cube: " + super.id + center.toString());
+	    System.out.println("Neues center: " + super.id + center.toString());
 //	    System.out.println("Radius für Cube: " + super.id + radius);
 	}
 	

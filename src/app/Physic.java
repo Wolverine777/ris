@@ -59,6 +59,7 @@ public class Physic extends UntypedActor {
 				
 				n.setVelocity(n.getForce());
 				
+					
 				PhysicModification p = new PhysicModification();
 				p.id = n.getId();
 				p.force = n.getForce();
@@ -131,7 +132,7 @@ public class Physic extends UntypedActor {
 		
 		getSender().tell(Message.DONE, self());
 		System.out.println("physic loop");
-		System.out.println("Impacts: " + impacts.toString());
+//		System.out.println("Impacts: " + impacts.toString());
 	}
 
 	private Node collisionObjects(Node n) {
@@ -164,7 +165,7 @@ public class Physic extends UntypedActor {
 				
 		while(collisionGround(n)==0){
 			
-			System.out.println("Durchlauf Nr: " + durchlauf);
+//			System.out.println("Durchlauf Nr: " + durchlauf);
 			
 			n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
 			
@@ -318,6 +319,32 @@ public class Physic extends UntypedActor {
 				}
 				nodes.put(newNode.getId(), newNode);
 				collisionGroundPosition(newNode.getId(), newNode2);
+			} else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
+				NodeCreation nc=(NodeCreation) message;
+				Node newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
+				
+				if ((((NodeCreation) message).impulse != null)) {
+					Vector impulse = (((NodeCreation) message).impulse);
+					float newx = impulse.x()/newNode.mass;
+					float newy = impulse.y()/newNode.mass;
+					float newz = impulse.z()/newNode.mass;
+					
+					VectorImp newimpulse = new VectorImp(newx, newy, newz);
+					newNode.setVelocity(newimpulse);
+				}
+				if ((((NodeCreation) message).modelmatrix != null)) {
+					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
+				}
+				if ((((NodeCreation) message).center != null)) {
+					((Shape) newNode)
+							.setCenter(((NodeCreation) message).center);
+				}
+				if ((((NodeCreation) message).radius != 0)) {
+					((Shape) newNode)
+							.setRadius(((NodeCreation) message).radius);
+					System.out.println("center objtest physic: " + ((Shape) newNode).getCenter() + "Position: " + newNode.getWorldTransform().getPosition());
+				}
+				nodes.put(newNode.id, newNode);
 			}
 		} else if (message instanceof NodeModification) {
 			// System.out.println("NODEMODIFICATION!!!!!");

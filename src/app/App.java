@@ -18,6 +18,7 @@ import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.SimulateType;
 import app.messages.Message;
+import app.messages.RegisterKeys;
 import app.nodes.GroupNode;
 import app.nodes.shapes.*;
 
@@ -86,35 +87,37 @@ public class App extends WorldState {
 //		append(c4, head);
 		
 //		Sphere c8 = createSphere("Shpere3", shader, 3f);
-//		transform(c8, vecmath.translationMatrix(-5f, 1f, 0));
+//		transform(c8, vecmath.translationMatrix(-5f, 0.5f, 0));
 //		addPhysic(c8, new VectorImp(0.0f,0.01f,0));
 //		append(c8, head);
-//		
-//		
-//		Sphere c5 = createSphere("Shpere2", shader, 1f);
-//		transform(c5, vecmath.translationMatrix(5f, 1f, 0));
-//		addPhysic(c5, new VectorImp(0.0f,0.01f,0));
-//		append(c5, head);
-//
-//		
-//		Cube c6 = createCube("coinbla", shader, 1f);
-//		transform(c6, vecmath.translationMatrix(0.6f,0,0.6f));
-//		append(c6, head);
-//		
-//		Sphere c7 = createSphere("car", shader, 1f);
-//		transform(c7, vecmath.translationMatrix(0.2f, 0, 1f));
-//		append(c7, head);
+		
+		
+		Sphere c5 = createSphere("Shpere2", shader, 1f);
+		transform(c5, vecmath.translationMatrix(5f, 3f, 0));
+		addPhysic(c5, new VectorImp(0.0f,0.00f,0));
+		append(c5, head);
+
+		
+		Cube c6 = createCube("coinbla", shader, 1f);
+		transform(c6, vecmath.translationMatrix(0.6f,0,0.6f));
+		addToAi(c6);
+		append(c6, head);
+		
+		Sphere c7 = createSphere("car", shader, 1f);
+		transform(c7, vecmath.translationMatrix(0.2f, 0, 1f));
+		addToAi(c7);
+		append(c7, head);
 		
 		
 		
-		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Cannon2.obj"), null, 1f);
-//		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));
-//		transform(testObj, vecmath.scaleMatrix(0.01f, 0.01f, 0.01f));
-		transform(testObj, vecmath.translationMatrix(-3f, -2f, 5f));
-//		transform(testObj, vecmath.translationMatrix(-8f, 0f, 0f));
-		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f) ,ObjectTypes.OBJECT);
-		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 1f, 0f) ,ObjectTypes.OBJECT);
-		append(testObj, head);
+//		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Cannon2.obj"), null, 1f);
+////		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));
+////		transform(testObj, vecmath.scaleMatrix(0.01f, 0.01f, 0.01f));
+//		transform(testObj, vecmath.translationMatrix(-3f, -2f, 5f));
+////		transform(testObj, vecmath.translationMatrix(-8f, 0f, 0f));
+//		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f) ,ObjectTypes.OBJECT);
+//		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 1f, 0f) ,ObjectTypes.OBJECT);
+//		append(testObj, head);
 		
 //		ObjLoader sphere=createObject("objSphere", shader, new File("obj/Sphere.obj"), null, 1f);
 //		transform(sphere, vecmath.translationMatrix(4f, 0f, 0f));
@@ -131,6 +134,13 @@ public class App extends WorldState {
 		transform(coin, vecmath.scaleMatrix(0.5f, 0.2f, 0.5f));
 		transform(coin,  vecmath.translationMatrix(0.5f, floor.getGround(), 0));
 		append(coin, head);
+
+		ObjLoader objsphere=createObject("objSphere2", shader, new File("obj/Sphere.obj"), null, 1f);
+		transform(objsphere, vecmath.translationMatrix(4f, 0f, 0f));
+		addPhysic(objsphere, new VectorImp(0.0f,0.00f,0));
+		append(objsphere, head);
+		
+		doCanonBalls();
 	}
 
 	public static void main(String[] args) {
