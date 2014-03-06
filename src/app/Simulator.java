@@ -156,7 +156,11 @@ public class Simulator extends UntypedActor {
     				NodeCreation nc=(NodeCreation) message;
     				newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
     				nodes.put(newNode.getId(), newNode);
-        		}
+        		} else if(((NodeCreation) message).type == ObjectTypes.CANON){
+    				NodeCreation nc=(NodeCreation) message;
+    				newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
+    				nodes.put(newNode.id, newNode);
+    			}
         		
         		else{
         			throw new Exception("Please implement Type");

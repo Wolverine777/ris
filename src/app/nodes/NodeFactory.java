@@ -7,6 +7,7 @@ import vecmath.Matrix;
 import app.nodes.camera.Camera;
 import app.nodes.shapes.Car;
 import app.nodes.shapes.Coin;
+import app.nodes.shapes.Canon;
 import app.nodes.shapes.Cube;
 import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Pipe;
@@ -67,6 +68,18 @@ public class NodeFactory {
 	public Sphere sphere(String id, Shader shader, float mass) {
 		Sphere s = new Sphere(id, shader, mass);
 		return s;
+	}
+	
+	public Canon canon(String id, Shader shader, File sourceFile, float mass){
+		Canon c = new Canon(id, shader, sourceFile, mass);
+		return c;
+	}
+	
+	public Canon canon(String id, Shader shader, File sourceFile, File sourceTex,
+			float mass) {
+		Canon c = new Canon (id, shader, sourceFile, sourceTex, mass);
+		return c;
+		
 	}
 	
 	public Plane plane(String id, Shader shader, float width, float depth, float hight, float mass) {
