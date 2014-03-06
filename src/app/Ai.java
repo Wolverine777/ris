@@ -144,6 +144,7 @@ public class Ai extends UntypedActor {
 	}
 
 	private void aiLoop() {
+		System.out.println("Ai Loop");
 		int index=0;
 		if(!coins.isEmpty()){
 			for(Car car:cars.values()){
