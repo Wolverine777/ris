@@ -43,7 +43,7 @@ public class App extends WorldState {
 		GroupNode head = createGroup("Group");
 		setStart(head);
 
-		System.out.println("Using shader " + shader);
+		System.out.println("Using shader " + shader); 
 
 		Cube c1 = createCube("Cube1", shader, 0.3f, 0.3f, 0.3f);
 		append(c1, head);
