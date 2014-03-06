@@ -1,13 +1,22 @@
 package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.lwjgl.input.Keyboard;
+
+
+import vecmath.Matrix;
+import vecmath.Vector;
+import vecmath.vecmathimp.VectorImp;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
@@ -16,18 +25,27 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+import app.Types.Events;
+import app.Types.KeyMode;
+import app.Types.ObjectTypes;
+import app.Types.SimulateType;
+import app.datatype.Level;
+import app.edges.Edge;
 import app.eventsystem.CameraCreation;
-import app.eventsystem.Events;
+import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
+import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
 import app.eventsystem.StartNodeModification;
-import app.eventsystem.Target;
-import app.eventsystem.Types;
-import app.eventsystem.WorldEvents;
-import app.messages.KeyEvent;
+import app.messages.AiInitialization;
+import app.messages.KeyState;
 import app.messages.Message;
+<<<<<<< HEAD
 import app.messages.Mode;
+=======
+import app.messages.RegisterKeys;
+>>>>>>> refs/remotes/origin/test
 import app.messages.PhysicInitialization;
 import app.messages.RendererInitialization;
 import app.messages.RendererInitialized;
@@ -35,22 +53,32 @@ import app.messages.SimulateType;
 import app.nodes.GroupNode;
 import app.nodes.Node;
 import app.nodes.camera.Camera;
+import app.nodes.shapes.Canon;
 import app.nodes.shapes.Cube;
+import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Pipe;
 import app.nodes.shapes.Plane;
+<<<<<<< HEAD
 import app.nodes.shapes.Sphere;
 import app.shader.Shader;
 import app.toolkit.StopWatch;
 import app.vecmath.Matrix;
 import app.vecmath.Vector;
+=======
+import app.nodes.shapes.Shape;
+import app.nodes.shapes.Sphere;
+import app.nodes.shapes.Torus;
+import app.shader.Shader;
+import app.toolkit.StopWatch;
+>>>>>>> refs/remotes/origin/test
 
 /**
  * Technical base
  * 
- * @author Constantin
+ * @author Constantin, Benjamin, Fabian
  * 
  */
-public class WorldState extends UntypedActor{
+public abstract class WorldState extends UntypedActor{
 	public static ActorSystem system;
 	
 	private Map<String, Node> nodes = new HashMap<String, Node>();
@@ -62,19 +90,44 @@ public class WorldState extends UntypedActor{
 	private ActorRef simulator;
 	private ActorRef input;
 	private ActorRef physic;
+<<<<<<< HEAD
 
+=======
+	private ActorRef ai;
+	
+	
+>>>>>>> refs/remotes/origin/test
 	protected Node startNode;
 	protected Camera camera;
 	protected Shader shader;
+	protected Plane floor=new Plane("Floor", shader, 2, 2, 1.0f);
+	protected Canon canon = new Canon("Canon", shader, new File("obj/Sphere.obj"), null, 1.0f);
+	private Set<Integer> pressedKeys = new HashSet<Integer>();
+    private Set<Integer> toggeled=new HashSet<Integer>();
+    private float canonballnumber = 0;
 
 	private void loop() {
 
 		System.out.println("\nStarting new loop");
-
-		simulator.tell(Message.LOOP, self());
-		input.tell(Message.LOOP, self());
-		renderer.tell(Message.DISPLAY, self());
+		
+//		toggled? || toggeled.contains(Keyboard.KEY_SPACE)
+		System.out.println("pressed keys: " + pressedKeys);
+		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
+			
+			System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+			generateCanonBall();
+			
+		}
 		physic.tell(Message.LOOP, self());
+		ai.tell(Message.LOOP, self());
+		input.tell(Message.LOOP, self());
+		simulator.tell(Message.LOOP, self());
+		renderer.tell(Message.DISPLAY, self());
+<<<<<<< HEAD
+		physic.tell(Message.LOOP, self());
+=======
+		
+>>>>>>> refs/remotes/origin/test
 	}
 
 	@Override
@@ -86,7 +139,10 @@ public class WorldState extends UntypedActor{
 				for (Map.Entry<ActorRef, Boolean> entry : unitState.entrySet()) {
 					entry.setValue(false);
 				}
-				System.out.printf("Took %.2fms at %.1ffps.%n", time.elapsed()*1000, time.fps);
+//				System.out.printf("Took %.2fms at %.1ffps.%n", time.elapsed()*1000, time.fps);
+				float elapsed=time.elapsed();
+				System.out.printf("Took %.2fms(possible %.3ffps) at %.1ffps.%n", elapsed*1000, time.fps, (1/elapsed));
+//				renderer.tell(time.elapsed()*1000, self());  //TODO: nullpointer
 				loop();
 			}
 		} else if (message == Message.INITIALIZED) {
@@ -100,9 +156,14 @@ public class WorldState extends UntypedActor{
 					entry.setValue(false);
 				}
 
+				System.out.println("Initializing App");
+
+				initialize();
+
+				System.out.println("App initialized");
 				System.out.printf("Initialization finished in %.3fs",
 						time.elapsed());
-
+				
 				loop();
 			}
 		} else if (message == Message.INIT) {
@@ -125,28 +186,50 @@ public class WorldState extends UntypedActor{
 			physic = getContext().actorOf(Props.create(Physic.class), "Physic");
 			unitState.put(physic, false);
 			
+<<<<<<< HEAD
+=======
+			ai = getContext().actorOf(Props.create(Ai.class), "Ai");
+			unitState.put(ai, false);
+			
+			
+>>>>>>> refs/remotes/origin/test
 			observers.put(Events.NODE_CREATION, renderer);
-			observers.put(Events.NODE_CREATION, simulator);
 			observers.put(Events.NODE_MODIFICATION, renderer);
 			observers.put(Events.NODE_MODIFICATION, simulator);
 			observers.put(Events.NODE_MODIFICATION, physic);
+<<<<<<< HEAD
+=======
+			observers.put(Events.NODE_MODIFICATION, ai);
+			observers.put(Events.NODE_DELETION, renderer);
+			observers.put(Events.NODE_DELETION, simulator);
+			observers.put(Events.NODE_DELETION, physic);
+			observers.put(Events.NODE_DELETION, ai);
+			
+>>>>>>> refs/remotes/origin/test
 			
 			System.out.println("Initializing Entities");
 
 			renderer.tell(new RendererInitialization(0), self());
 			simulator.tell(Message.INIT, self());
 			physic.tell(new PhysicInitialization(simulator), self());
+<<<<<<< HEAD
+=======
+			input.tell(Message.INIT, self());
+			ai.tell(new AiInitialization(simulator, floor.getWorldTransform().getPosition(), floor.w2*2, floor.d2*2), self());
+			
+>>>>>>> refs/remotes/origin/test
 		} else if (message instanceof RendererInitialized) {
 			shader = ((RendererInitialized) message).shader;
 			
-			System.out.println("Initializing App");
-
-			initialize();
-
-			System.out.println("App initialized");
+			//reinpacken nach alle INIZILIZED gesendet haben
+//			System.out.println("Initializing App");
+//
+//			initialize();
+//
+//			System.out.println("App initialized");
 			
-			
-			input.tell(Message.INIT, self());
+			//rein nach allen INITs
+//			input.tell(Message.INIT, self());
 		} else if (message instanceof NodeCreation) {
 			
 			announce(message);
@@ -159,20 +242,60 @@ public class WorldState extends UntypedActor{
 		} else if (message instanceof StartNodeModification) {
 			
 			announce(message);
+		} else if(message instanceof NodeDeletion){
+			
+			announce(message);
+		} if(message instanceof KeyState){
+        	pressedKeys.clear();
+        	toggeled.clear();
+        	pressedKeys.addAll(((KeyState)message).getPressedKeys());
+        	toggeled.addAll(((KeyState)message).getToggled());
 		}
+		
 	}
 
 	protected void initialize() {
+		
 	}
 
 	public <T> void announce(T event) {
+//		System.out.println("self............................"+self());
 		if (event instanceof NodeCreation || event instanceof CameraCreation) {
 			for (ActorRef observer : observers.get(Events.NODE_CREATION)) {
 				observer.tell(event, self());
 			}
 		} else if (event instanceof NodeModification || event instanceof StartNodeModification) {
-			for (ActorRef observer : observers.get(Events.NODE_MODIFICATION)) {
-				observer.tell(event, self());
+			for (ActorRef observer : observers.get(Events.NODE_MODIFICATION)) { 
+//				System.out.println("announce:"+getSender()+"message"+event.toString());
+				if(!observer.equals(getSender())){
+					observer.tell(event, self()); 
+				}
+				else if(observer.equals(getSender()) && getSender().equals(renderer)){
+					observer.tell(event, self()); 
+				}
+			}
+		} else if (event instanceof NodeDeletion){
+			NodeDeletion delete = (NodeDeletion)event;
+			for(String id: delete.ids){
+				Node modify = nodes.get(id);
+				ArrayList<Edge> removeEdges = new ArrayList<>(); 
+				if(modify!=null){
+				for(Edge e: modify.getEdges()){
+					removeEdges.add(e);
+					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+					
+				}
+				for(Edge e : removeEdges){
+					modify.removeEdge(e);
+				}
+			
+				nodes.remove(modify);
+				}
+			}
+			for (ActorRef observer : observers.get(Events.NODE_DELETION)){
+				if(!observer.equals(getSender())){
+					observer.tell(event, self());
+				}
 			}
 		} 	
 	}
@@ -200,18 +323,19 @@ public class WorldState extends UntypedActor{
 		
 		NodeModification nm = new NodeModification();
 		nm.id = n.id;
+//		nm.localMod = n.getWorldTransform();
 		nm.localMod = m;
 		announce(nm);
 	}
 	
-	protected void append(Node n, Node m) {
-		n.appendTo(m);
+	protected void append(Node nodeAppend, Node toNode) {
+		nodeAppend.appendTo(toNode);
 		
 		NodeModification nm = new NodeModification();
-		nm.id = n.id;
-		nm.appendTo = m.id;
+		nm.id = nodeAppend.id;
+		nm.appendTo = toNode.id;
 		
-		System.out.println("__ Appending " + n.id + " to " + m.id);
+		System.out.println("__ Appending " + nodeAppend.id + " to " + toNode.id);
 		
 		
 		announce(nm);
@@ -223,25 +347,26 @@ public class WorldState extends UntypedActor{
 		
 		NodeCreation n = new NodeCreation();
         n.id = id;
-        n.type = Types.GROUP;
+        n.type = ObjectTypes.GROUP;
         n.shader = null;
         announce(n);
         
         return group;
 	}
 	
-	protected Cube createCube(String id, Shader shader) {
-		return createCube(id, shader, 1, 1, 1);
+	protected Cube createCube(String id, Shader shader, float mass) {
+		return createCube(id, shader, 1, 1, 1, mass);
 	}
 	
-	protected Cube createCube(String id, Shader shader, float w, float h, float d) {
-		Cube cube = nodeFactory.cube(id, shader, w, h, d);
+	protected Cube createCube(String id, Shader shader, float w, float h, float d, float mass) {
+		Cube cube = nodeFactory.cube(id, shader, w, h, d, mass);
 		nodes.put(id, cube);
 		
 		NodeCreation n = new NodeCreation();
-        n.id = id;
-        n.type = Types.CUBE;
+		n.id = id;
+        n.type = ObjectTypes.CUBE;
         n.shader = shader;
+        n.mass = mass;
         
         n.d = d;
         n.w = w;
@@ -252,14 +377,15 @@ public class WorldState extends UntypedActor{
         return cube;
 	}
 	
-	protected Pipe createPipe(String id, Shader shader, float r, int lats, int longs) {
-		Pipe pipe = nodeFactory.pipe(id, shader, r, lats, longs);
+	protected Pipe createPipe(String id, Shader shader, float r, int lats, int longs, float mass) {
+		Pipe pipe = nodeFactory.pipe(id, shader, r, lats, longs, mass);
 		nodes.put(id, pipe);
 		
 		NodeCreation n = new NodeCreation();
         n.id = id;
-        n.type = Types.PIPE;
+        n.type = ObjectTypes.PIPE;
         n.shader = shader;
+        n.mass = mass;
         
         n.r = r;
         n.lats = lats;
@@ -270,6 +396,7 @@ public class WorldState extends UntypedActor{
         return pipe;
 	}
 	
+<<<<<<< HEAD
 	protected Sphere createSphere(String id, Shader shader) {
 		Sphere sphere = nodeFactory.sphere(id, shader);
 		nodes.put(id, sphere);
@@ -278,40 +405,114 @@ public class WorldState extends UntypedActor{
         n.id = id;
         n.type = Types.SPHERE;
         n.shader = shader;
+=======
+	protected Sphere createSphere(String id, Shader shader, float mass) {
+		Sphere sphere = nodeFactory.sphere(id, shader, mass);
+		nodes.put(id, sphere);
+		
+		NodeCreation n = new NodeCreation();
+		n.id = id;
+        n.type = ObjectTypes.SPHERE;
+        n.shader = shader;
+        n.mass = mass;
+        
+        System.out.println("Was geht hier? " + n.mass);
+>>>>>>> refs/remotes/origin/test
         
         announce(n);
         
         return sphere;
 	}
 	
+<<<<<<< HEAD
 	protected Plane createPlane(String id, Shader shader, float width, float depth) {
 		Plane plane = nodeFactory.plane(id, shader, width, depth);
+=======
+	protected Plane createPlane(String id, Shader shader, float width, float depth, float mass) {
+		Plane plane = nodeFactory.plane(id, shader, width, depth, mass);
+>>>>>>> refs/remotes/origin/test
 		nodes.put(id, plane);
 		
 		NodeCreation n = new NodeCreation();
         n.id = id;
+<<<<<<< HEAD
         n.type = Types.PLANE;
         n.shader = shader;
+=======
+        n.type = ObjectTypes.PLANE;
+        n.shader = shader;
+        n.mass = mass;
+>>>>>>> refs/remotes/origin/test
         
         n.w = width;
         n.d = depth;
         
         announce(n);
+<<<<<<< HEAD
         
         return plane;
 	}
+=======
+        return plane;
+	}
+	
+	protected void announceFloor(Plane floor) {
+		nodes.put(floor.id, floor);
+		
+		NodeCreation n = new NodeCreation();
+        n.id = floor.id;
+        n.type = ObjectTypes.PLANE;
+        n.shader = shader;
+        n.mass = floor.getMass();
+        
+        n.w = floor.getW();
+        n.d = floor.getD();
+        
+        announce(n);
+	}
+	
+	protected ObjLoader createObject(String id, Shader shader, File sourceFile, File sourceTex, float mass) {
+		ObjLoader obj = nodeFactory.obj(id, shader, sourceFile, sourceTex, mass);
+		nodes.put(id, obj);
+		
+		NodeCreation n = new NodeCreation();
+        n.id = id;
+        n.type = ObjectTypes.OBJECT;
+        n.shader = shader;
+        n.sourceFile=sourceFile;
+        n.sourceTex=sourceTex;
+        n.mass = mass;
+        
+        announce(n);
+        
+        return obj;
+	}
+>>>>>>> refs/remotes/origin/test
 
 	protected void addPhysic(Cube cube){
 		
 		NodeCreation n = new NodeCreation();
 		n.id = cube.id;
+<<<<<<< HEAD
 		n.type = Types.CUBE;
 		n.shader = cube.getShader();
+=======
+		n.type = ObjectTypes.CUBE;
+		n.shader = cube.getShader();
+		n.d = cube.getD2();
+		n.w = cube.getW2();
+	    n.h = cube.getH2();
+	    n.center = cube.getCenter();
+		n.radius = cube.getRadius();
+		n.mass = cube.getMass();
+	    
+>>>>>>> refs/remotes/origin/test
 		
 		physic.tell(n, self());
 			
 	}
 	
+<<<<<<< HEAD
 	protected void addPhysic(Cube cube, Vector velocity){
 		
 		NodeCreation n = new NodeCreation();
@@ -326,5 +527,191 @@ public class WorldState extends UntypedActor{
 	
 	protected void simulateOnKey(Node object, Set<Integer> keys, SimulateType simulation, Mode mode){
 		simulator.tell(new SimulateCreation(object, keys, simulation, mode), getSelf());
+=======
+	protected void addPhysic(Cube cube, Vector impulse){
+		
+				
+		NodeCreation n = new NodeCreation();
+		n.modelmatrix = (nodes.get(cube.id).getWorldTransform());
+		n.id = cube.id;
+		n.type = ObjectTypes.CUBE;
+		n.shader = cube.getShader();
+		n.impulse = impulse;
+		n.d = cube.getD2();
+		n.w = cube.getW2();
+	    n.h = cube.getH2();
+		n.center = cube.getCenter();
+		n.radius = cube.getRadius();
+		n.mass = cube.getMass();
+		
+		//TODO: sinnvolle kapselung announcePhysic
+		physic.tell(n, self());
+//		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?
+//		sc.setSimulation(SimulateType.PHYSIC);
+		SimulateCreation sc = new SimulateCreation(cube.id, null, SimulateType.PHYSIC, null, null);
+		sc.modelmatrix = n.getModelmatrix();
+		sc.type = ObjectTypes.CUBE;
+		sc.shader = cube.getShader();
+		sc.impulse = impulse;
+		sc.d = cube.getD2();
+		sc.w = cube.getW2();
+	    sc.h = cube.getH2();
+		sc.center = cube.getCenter();
+		sc.radius = cube.getRadius();
+		sc.mass = cube.getMass();
+		
+		
+		
+		simulator.tell(sc,self());
+			
+	}
+	
+	protected void addPhysic(Sphere sphere, Vector impulse){
+		
+		
+		NodeCreation n = new NodeCreation();
+		n.modelmatrix = (nodes.get(sphere.id).getWorldTransform());
+		n.id = sphere.id;
+		n.type = ObjectTypes.SPHERE;
+		n.shader = sphere.getShader();
+		n.impulse = impulse;
+		n.center = sphere.getCenter();
+		n.radius = sphere.getRadius();
+		n.mass = sphere.getMass();
+		
+		
+		physic.tell(n, self());
+//		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?
+//		sc.setSimulation(SimulateType.PHYSIC);
+		SimulateCreation sc = new SimulateCreation(sphere.id, null, SimulateType.PHYSIC, null, null);
+		sc.modelmatrix = n.getModelmatrix();
+		sc.type = ObjectTypes.SPHERE;
+		sc.shader = sphere.getShader();
+		sc.impulse = impulse;
+		sc.center = sphere.getCenter();
+		sc.radius = sphere.getRadius();
+		sc.mass = sphere.getMass();
+		simulator.tell(sc,self());
+			
+	}
+	
+	protected void addPhysic(ObjLoader obj, Vector impulse){
+		
+		NodeCreation n = new NodeCreation();
+		n.modelmatrix = (nodes.get(obj.id).getWorldTransform());
+        n.id = obj.id;
+        n.type = ObjectTypes.OBJECT;
+        n.shader = shader;
+        n.sourceFile= obj.getSourceFile();
+        n.sourceTex= obj.getSourceTex();
+    	n.impulse = impulse;
+		n.center = obj.getCenter();
+		n.radius = obj.getRadius();
+		n.mass = obj.mass;
+		
+		physic.tell(n, self());
+
+		SimulateCreation sc = new SimulateCreation(obj.id, null, SimulateType.PHYSIC, null, null);
+		sc.modelmatrix = n.getModelmatrix();
+		sc.type = ObjectTypes.OBJECT;
+		sc.shader = shader;
+	    sc.sourceFile= obj.getSourceFile();
+	    sc.sourceTex= obj.getSourceTex();
+	    sc.mass = obj.mass;
+		simulator.tell(sc,self());
+		
+	}
+	
+	protected void addPhysicFloor(Plane plane){
+		
+		Vector pos = plane.getWorldTransform().getPosition();
+		
+		FloorCreation f = new FloorCreation();
+		f.position = pos;
+		
+		physic.tell(f, self());
+		
+	}
+	
+	protected void simulateOnKey(Node object, Set<Integer> keys, SimulateType simulation, KeyMode mode, Vector vec, ObjectTypes type){ //TODO:better solution for type
+		SimulateCreation sc=new SimulateCreation(object.id, keys, simulation, mode, vec);
+		sc.type=type;
+		sc.modelmatrix=object.getWorldTransform();
+		if(object instanceof Shape){
+			Shape s=(Shape)object;
+			sc.shader=s.getShader();
+		}
+		if (object instanceof Cube){
+			sc.w =((Cube)object).getW2();
+			sc.h = ((Cube)object).getH2();
+			sc.d =((Cube)object).getD2();
+		} else if(object instanceof Pipe){
+			Pipe p=(Pipe)object;
+			sc.r = p.r;
+		    sc.lats = p.lats;
+		    sc.longs = p.longs;
+		}else if(object instanceof Plane){
+			Plane p=(Plane)object;
+			sc.w = p.getW();
+	        sc.d = p.getD();
+		}/*else if(object instanceof Torus){
+			Torus t=(Torus) object;
+			
+		}*/
+		else if(object instanceof ObjLoader){
+			ObjLoader obj=(ObjLoader)object;
+			sc.sourceFile=obj.getSourceFile();
+	        sc.sourceTex=obj.getSourceTex();
+		}
+		simulator.tell(sc, getSelf());
+		if(!(keys==null||keys.isEmpty())){
+			if(simulation!=SimulateType.NONE) input.tell(new RegisterKeys(keys, true), simulator);
+			else input.tell(new RegisterKeys(keys, false), simulator);
+		}
+	}
+	
+	protected void addToAi(Cube cube){
+		
+		
+		NodeCreation n = new NodeCreation();
+		n.modelmatrix = (nodes.get(cube.id).getWorldTransform());
+		n.id = cube.id;
+		n.type = ObjectTypes.CUBE;
+		n.shader = cube.getShader();
+		n.d = cube.getD2();
+		n.w = cube.getW2();
+	    n.h = cube.getH2();
+		n.center = cube.getCenter();
+		n.radius = cube.getRadius();
+		
+		ai.tell(n, self());
+	}
+	
+	protected void addToAi(Sphere sphere){
+		
+		
+		NodeCreation n = new NodeCreation();
+		n.modelmatrix = (nodes.get(sphere.id).getWorldTransform());
+		n.id = sphere.id;
+		n.type = ObjectTypes.SPHERE;
+		n.shader = sphere.getShader();
+		n.center = sphere.getCenter();
+		n.radius = sphere.getRadius();
+		
+		
+		ai.tell(n, self());
+	}
+	
+	protected void doCanonBalls(){
+		input.tell(new RegisterKeys(new HashSet<Integer>(Arrays.asList(Keyboard.KEY_SPACE)), true), self());
+	}
+	
+	protected void generateCanonBall(){
+		Node cs = createSphere("CanonBall" + canonballnumber, shader, 1f);
+		transform(cs, vecmath.translationMatrix(-2, 2, 0) );
+		append(cs, startNode);
+		canonballnumber++;
+		
+>>>>>>> refs/remotes/origin/test
 	}
 }

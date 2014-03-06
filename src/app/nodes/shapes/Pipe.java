@@ -1,7 +1,7 @@
 package app.nodes.shapes;
 
 import static app.nodes.shapes.Vertex.*;
-import static app.vecmathimp.FactoryDefault.vecmath;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
+import vecmath.Vector;
 import app.shader.Shader;
-import app.vecmath.Vector;
 
 /**
  * Some Pipe
@@ -20,18 +20,18 @@ import app.vecmath.Vector;
  */
 public class Pipe extends Shape {
 
-	float r;
-	int lats;
-	int longs;
+	public float r;
+	public int lats;
+	public int longs;
 
 	private List<Vertex> vL = new ArrayList<Vertex>();
 
-	public Pipe(String id, Shader shader) {
-		this(id, shader, 1.5f, 10, 10);
+	public Pipe(String id, Shader shader, float mass) {
+		this(id, shader, 1.5f, 10, 10, mass);
 	}
 
-	public Pipe(String id, Shader shader, float r, int lats, int longs) {
-		super(id, shader);
+	public Pipe(String id, Shader shader, float r, int lats, int longs, float mass) {
+		super(id, shader, mass);
 		this.r = r;
 		this.lats = lats;
 		this.longs = longs;

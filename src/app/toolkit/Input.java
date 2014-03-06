@@ -10,10 +10,10 @@ import java.util.Set;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import app.vecmath.Vector;
+import vecmath.Vector;
 // Select the factory we want to use.
 // It is a bit ugly to do it at several points...though 
-import static app.vecmathimp.FactoryDefault.vecmath;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 
 /**

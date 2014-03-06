@@ -1,8 +1,8 @@
 package app.nodes.shapes;
 
-import static app.vecmathimp.FactoryDefault.vecmath;
-import app.vecmath.Color;
-import app.vecmath.Vector;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
+import vecmath.Color;
+import vecmath.Vector;
 
 public class Vertex {
 	Vector position;

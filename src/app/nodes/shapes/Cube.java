@@ -1,13 +1,16 @@
 package app.nodes.shapes;
 
 import java.io.File;
+
 import app.nodes.shapes.Texture;
+
 import org.lwjgl.BufferUtils;
+
+import vecmath.Color;
+import vecmath.Vector;
 import app.shader.Shader;
-import app.vecmath.Color;
-import app.vecmath.Vector;
 import static app.nodes.shapes.Vertex.*;
-import static app.vecmathimp.FactoryDefault.vecmath;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 public class Cube extends Shape {
 
@@ -27,29 +30,44 @@ public class Cube extends Shape {
 	private float w2;
 	private float h2;
 	private float d2;
+	
 
-	public Cube(String id, Shader shader) {
-		this(id, shader, 1f, 1f, 1f);
+	public Cube(String id, Shader shader, float mass) {
+		this(id, shader, 1f, 1f, 1f, mass);
 	}
 
-	public Cube(String id, Shader shader, float w, float h, float d) {
-		this(id, shader, w, h, d, null);
+	public Cube(String id, Shader shader, float w, float h, float d, float mass) {
+		this(id, shader, w, h, d, null, mass);
 	}
 
 	public Cube(String id, Shader shader, float w, float h, float d,
-			String sourceTex) {
-		super(id, shader);
+			String sourceTex, float mass) {
+		super(id, shader, mass);
 		w2 = w / 2;
 		h2 = h / 2;
 		d2 = d / 2;
+		
+		
+		
+//		// TODO noch eine sinnvolle Zahl drauf addieren um rechtzeitig kollision zu erkennen
+//		if(center.x() >= center.y() && center.x() >=center.z()){
+//			radius = center.x();			
+//		}
+//		else if (center.y() >= center.x() && center.y() >=center.z()){
+//			radius = center.y();			
+//		}
+//		else if (center.z() >= center.x() && center.z() >=center.y()){
+//			radius = center.z();			
+//		}
+//		System.out.println("Hat das jetzt nen mittelpunkt und nen radius?????? " + id + center.toString() + radius);
 
 		if (sourceTex != null) {
 			tex = new Texture(new File(sourceTex));
 		} else {
 			tex = null;
 		}
-
 		setup();
+		findCenter();
 	}
 
 	private void setup() {
@@ -144,4 +162,19 @@ public class Cube extends Shape {
 		colorData.rewind();
 		normalData.rewind();
 	}
+
+
+	public float getW2() {
+		return w2*2;
+	}
+
+	public float getH2() {
+		return h2*2;
+	}
+
+	public float getD2() {
+		return d2*2;
+	}
+	
+	
 }

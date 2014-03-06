@@ -2,8 +2,8 @@ package app.nodes;
 
 import java.util.Map;
 
+import vecmath.Matrix;
 import app.edges.Edge;
-import app.vecmath.Matrix;
 
 public class GroupNode extends Node {
 
@@ -25,10 +25,10 @@ public class GroupNode extends Node {
 	}
 
 	@Override
-	public void display() {
+	public void display(Matrix m) {
 		for (Edge e : edges) {
 			if (e.isStart(this)) {
-				e.getOtherNode(this).display();
+				e.getOtherNode(this).display(m.mult(getWorldTransform()));
 			}
 		}
 	}

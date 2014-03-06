@@ -1,27 +1,44 @@
 package app;
 
-import static app.vecmathimp.FactoryDefault.vecmath;
 import static app.nodes.NodeFactory.nodeFactory;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.HashSet;
 
+import javax.vecmath.Vector3f;
+
+import org.lwjgl.input.Keyboard;
+
+import vecmath.vecmathimp.FactoryDefault;
+import vecmath.vecmathimp.VectorImp;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import app.Types.KeyMode;
+import app.Types.ObjectTypes;
+import app.Types.SimulateType;
+import app.datatype.Level;
 import app.messages.Message;
+import app.messages.RegisterKeys;
 import app.nodes.GroupNode;
 import app.nodes.shapes.Cube;
+import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Pipe;
 import app.nodes.shapes.Plane;
 import app.nodes.shapes.Sphere;
+<<<<<<< HEAD
 import app.shader.Shader;
 import app.vecmathimp.FactoryDefault;
 import app.vecmathimp.VectorImp;
+=======
+>>>>>>> refs/remotes/origin/test
 
 /**
  * Put your stuff here
  * 
- * @author Constantin
+ * @author Constantin, Benjamin, Fabian
  * 
  */
 public class App extends WorldState {
@@ -37,22 +54,57 @@ public class App extends WorldState {
 	@Override
 	protected void initialize() {
 
+		/**
+		 * Note: After Creation add keys and physic before transform.
+		 */
 		setCamera(nodeFactory.camera("Cam"));
-		transform(camera, FactoryDefault.vecmath.translationMatrix(0, 0, 3));
+		transform(camera, FactoryDefault.vecmath.translationMatrix(0, 0, 10));
 
-		GroupNode head = createGroup("Group");
+		GroupNode head = createGroup("head");
 		setStart(head);
+<<<<<<< HEAD
 
 		System.out.println("Using shader " + shader); 
 
 		Cube c1 = createCube("Cube1", shader, 0.3f, 0.3f, 0.3f);
 		append(c1, head);
 		addPhysic(c1, new VectorImp(6,6,6));
+=======
+		Cube c1 = createCube("Cube1", shader, 1f);
+//		Cube c1 = createCube("Cube1", shader, 0.5f, 0.3f, 0.3f);
+		append(c1, head);
+//		transform(c1, vecmath.scaleMatrix(2, 2, 2));
+//		transform(c1, vecmath.translationMatrix(-1, 0.5f, 0));
+//		transform(c1, vecmath.translationMatrix(-1, 0.5f, 0));
+//		transform(c1, vecmath.scaleMatrix(2, 2, 2));
+//		transform(c1, vecmath.translationMatrix(1.5f, -1, 0));
+		simulateOnKey(c1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0, 0) ,ObjectTypes.CUBE);
+		simulateOnKey(c1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_E)), SimulateType.TRANSLATE, KeyMode.DOWN, new VectorImp(-0.01f, 0, 0) ,ObjectTypes.CUBE);
+//		addPhysic(c1, new VectorImp(0.00001f,0,0));
 
-		Cube c2 = createCube("Cube2", shader, 1.5f, 1.5f, 1.5f);
-		transform(c2, vecmath.translationMatrix(1, 0, 0));
-		append(c2, head);
+		
+		GroupNode g1 = createGroup("group");
+		append(g1,head);
+//		transform(g1, vecmath.translationMatrix(0, -1, 0));
+>>>>>>> refs/remotes/origin/test
 
+		announceFloor(floor);
+		transform(floor, vecmath.translationMatrix(0, -2f, 0));
+		addPhysicFloor(floor);
+		append(floor, g1);
+		
+		Cube c2 = createCube("Cube2", shader, 1.5f, 1.5f, 1.5f, 1f);
+//		transform(c2, vecmath.translationMatrix(-1.5f, 2, 0));
+//		transform(c2, vecmath.scaleMatrix(2f, 2f, 0));
+//		transform(c2, vecmath.translationMatrix(-2f, 2, 0));
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_R)), SimulateType.TRANSLATE, KeyMode.TOGGLE, new VectorImp(0.01f, 0, 0) ,ObjectTypes.CUBE);
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_E)), SimulateType.TRANSLATE, KeyMode.DOWN, new VectorImp(-0.01f, 0, 0) ,ObjectTypes.CUBE);
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_D)), SimulateType.TRANSLATE, KeyMode.DOWN, new VectorImp(0.0f, 0.01f, 0) ,ObjectTypes.CUBE);
+		simulateOnKey(c2, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0, 0) ,ObjectTypes.CUBE);
+//		transform(c2, vecmath.translationMatrix(1, 0, 0));
+		append(c2, g1);
+
+<<<<<<< HEAD
 		Pipe c3 = createPipe("Pipe!", shader, 0, 1, 30);
 		transform(c3, vecmath.translationMatrix(-1.5f, -1, 0));
 		append(c3, head);
@@ -64,7 +116,62 @@ public class App extends WorldState {
 		Plane floor = createPlane("Floor", shader, 20, 20);
 		transform(floor, vecmath.translationMatrix(0, -2f, 0));
 		append(floor, head);
+=======
+		Pipe c3 = createPipe("Pipe!", shader, 0, 1, 30, 1f);
+//		transform(c3, vecmath.translationMatrix(-1.5f, -1, 0));
+		append(c3, head);
+		
+//		Sphere c4 = createSphere("Shpere!", shader, 1f);
+//		transform(c4, vecmath.translationMatrix(-5f, 1f, 0));
+//		addPhysic(c4, new VectorImp(0.01f,0.01f,0));
+//		append(c4, head);
+		
+//		Sphere c8 = createSphere("Shpere3", shader, 3f);
+//		transform(c8, vecmath.translationMatrix(-5f, 0.5f, 0));
+//		addPhysic(c8, new VectorImp(0.0f,0.01f,0));
+//		append(c8, head);
+		
+		
+		Sphere c5 = createSphere("Shpere2", shader, 1f);
+		transform(c5, vecmath.translationMatrix(5f, 3f, 0));
+		addPhysic(c5, new VectorImp(0.0f,0.00f,0));
+		append(c5, head);
+>>>>>>> refs/remotes/origin/test
 
+		
+		Cube c6 = createCube("coinbla", shader, 1f);
+		transform(c6, vecmath.translationMatrix(0.6f,0,0.6f));
+		addToAi(c6);
+		append(c6, head);
+		
+		Sphere c7 = createSphere("car", shader, 1f);
+		transform(c7, vecmath.translationMatrix(0.2f, 0, 1f));
+		addToAi(c7);
+		append(c7, head);
+		
+		
+		
+//		ObjLoader testObj=createObject("ObjCube", shader, new File("obj/Cannon2.obj"), null, 1f);
+////		transform(testObj, vecmath.translationMatrix(6f, 0f, 0f));
+////		transform(testObj, vecmath.scaleMatrix(0.01f, 0.01f, 0.01f));
+//		transform(testObj, vecmath.translationMatrix(-3f, -2f, 5f));
+////		transform(testObj, vecmath.translationMatrix(-8f, 0f, 0f));
+//		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f) ,ObjectTypes.OBJECT);
+//		simulateOnKey(testObj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 1f, 0f) ,ObjectTypes.OBJECT);
+//		append(testObj, head);
+		
+//		ObjLoader sphere=createObject("objSphere", shader, new File("obj/Sphere.obj"), null, 1f);
+//		transform(sphere, vecmath.translationMatrix(4f, 0f, 0f));
+//		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_DOWN)), SimulateType.TRANSLATE, KeyMode.DOWN, new VectorImp(0.0f, 0.0f, 0.1f) ,ObjectTypes.CUBE);
+//		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_P)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0, 0) ,ObjectTypes.CUBE);
+//		append(sphere, head);
+		
+		ObjLoader objsphere=createObject("objSphere2", shader, new File("obj/Sphere.obj"), null, 1f);
+		transform(objsphere, vecmath.translationMatrix(4f, 0f, 0f));
+		addPhysic(objsphere, new VectorImp(0.0f,0.00f,0));
+		append(objsphere, head);
+		
+		doCanonBalls();
 	}
 
 	public static void main(String[] args) {
