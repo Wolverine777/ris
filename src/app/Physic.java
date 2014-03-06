@@ -132,7 +132,7 @@ public class Physic extends UntypedActor {
 		
 		getSender().tell(Message.DONE, self());
 		System.out.println("physic loop");
-		System.out.println("Impacts: " + impacts.toString());
+//		System.out.println("Impacts: " + impacts.toString());
 	}
 
 	private Node collisionObjects(Node n) {
@@ -140,12 +140,12 @@ public class Physic extends UntypedActor {
 		float radiuses = 0;
 		for (Node node : nodes.values()) {
 			if (!node.equals(n)) {
-				System.out.println("Center n: " + ((Shape) n).getCenter());
+//				System.out.println("Center n: " + ((Shape) n).getCenter());
 				distance = ((Shape) n).getCenter().sub(((Shape) node).getCenter()).length();
 				radiuses = (((Shape) n).getRadius() + ((Shape) node).getRadius());
-				System.out.println("Radius n: " + ((Shape) n).getRadius()
-						+ "Radius node: " + ((Shape) node).getRadius()
-						+ "distance1: " + distance + "radiuses1: " + radiuses);
+//				System.out.println("Radius n: " + ((Shape) n).getRadius()
+//						+ "Radius node: " + ((Shape) node).getRadius()
+//						+ "distance1: " + distance + "radiuses1: " + radiuses);
 				if (distance < radiuses) {
 //					System.out.println("distance2: " + distance + "radiuses2: "
 //							+ radiuses);
@@ -165,7 +165,7 @@ public class Physic extends UntypedActor {
 				
 		while(collisionGround(n)==0){
 			
-			System.out.println("Durchlauf Nr: " + durchlauf);
+//			System.out.println("Durchlauf Nr: " + durchlauf);
 			
 			n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
 			

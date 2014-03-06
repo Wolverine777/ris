@@ -9,6 +9,8 @@ import java.util.Set;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 
+import scala.annotation.meta.getter;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
@@ -77,6 +79,7 @@ public class Input extends UntypedActor {
             initialize();
         } else if (message instanceof RegisterKeys){
         	RegisterKeys rk=(RegisterKeys)message;
+        	System.out.println("input receive: " + rk.getKeys().toString() + getSender());
         	if(rk.isAdd())for(Integer i:rk.getKeys())keyObservers.put(i, getSender());
         	else for(Integer i:rk.getKeys())keyObservers.remove(i, getSender());
         }

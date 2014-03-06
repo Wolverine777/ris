@@ -21,6 +21,7 @@ import app.Types.ObjectTypes;
 import app.Types.SimulateType;
 import app.datatype.Level;
 import app.messages.Message;
+import app.messages.RegisterKeys;
 import app.nodes.GroupNode;
 import app.nodes.shapes.Cube;
 import app.nodes.shapes.ObjLoader;
@@ -141,6 +142,7 @@ public class App extends WorldState {
 		addPhysic(objsphere, new VectorImp(0.0f,0.00f,0));
 		append(objsphere, head);
 		
+		doCanonBalls();
 	}
 
 	public static void main(String[] args) {

@@ -152,7 +152,7 @@ public class Renderer extends UntypedActor {
 			}else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
 				NodeCreation nc=(NodeCreation) message;
 				Node newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
-				System.out.println("center objtest renderer: " + ((Shape) newNode).getCenter() + "Postion: " + newNode.getWorldTransform().getPosition());
+//				System.out.println("center objtest renderer: " + ((Shape) newNode).getCenter() + "Postion: " + newNode.getWorldTransform().getPosition());
 				nodes.put(newNode.id, newNode);
 			}
 

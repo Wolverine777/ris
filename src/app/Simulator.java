@@ -164,7 +164,7 @@ public class Simulator extends UntypedActor {
         		}else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
     				NodeCreation nc=(NodeCreation) message;
     				newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
-    				System.out.println("radius objtest simulator: " + ((Shape) newNode).getRadius());
+//    				System.out.println("radius objtest simulator: " + ((Shape) newNode).getRadius());
     				nodes.put(newNode.id, newNode);
         		} 
         		

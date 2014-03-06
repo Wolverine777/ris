@@ -1,12 +1,18 @@
 package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
+import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.lwjgl.input.Keyboard;
+
 
 import vecmath.Matrix;
 import vecmath.Vector;
@@ -33,6 +39,7 @@ import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
 import app.eventsystem.StartNodeModification;
 import app.messages.AiInitialization;
+import app.messages.KeyState;
 import app.messages.Message;
 import app.messages.RegisterKeys;
 import app.messages.PhysicInitialization;
@@ -41,6 +48,7 @@ import app.messages.RendererInitialized;
 import app.nodes.GroupNode;
 import app.nodes.Node;
 import app.nodes.camera.Camera;
+import app.nodes.shapes.Canon;
 import app.nodes.shapes.Cube;
 import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Pipe;
@@ -70,21 +78,35 @@ public abstract class WorldState extends UntypedActor{
 	private ActorRef input;
 	private ActorRef physic;
 	private ActorRef ai;
-
+	
+	
 	protected Node startNode;
 	protected Camera camera;
 	protected Shader shader;
 	protected Plane floor=new Plane("Floor", shader, 2, 2, 1.0f);
+	protected Canon canon = new Canon("Canon", shader, new File("obj/Sphere.obj"), null, 1.0f);
+	private Set<Integer> pressedKeys = new HashSet<Integer>();
+    private Set<Integer> toggeled=new HashSet<Integer>();
+    private float canonballnumber = 0;
 
 	private void loop() {
 
 		System.out.println("\nStarting new loop");
-
+		
+//		toggled? || toggeled.contains(Keyboard.KEY_SPACE)
+		System.out.println("pressed keys: " + pressedKeys);
+		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
+			
+			System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+			generateCanonBall();
+			
+		}
 		physic.tell(Message.LOOP, self());
 		ai.tell(Message.LOOP, self());
 		input.tell(Message.LOOP, self());
 		simulator.tell(Message.LOOP, self());
 		renderer.tell(Message.DISPLAY, self());
+		
 	}
 
 	@Override
@@ -146,6 +168,7 @@ public abstract class WorldState extends UntypedActor{
 			ai = getContext().actorOf(Props.create(Ai.class), "Ai");
 			unitState.put(ai, false);
 			
+			
 			observers.put(Events.NODE_CREATION, renderer);
 			observers.put(Events.NODE_MODIFICATION, renderer);
 			observers.put(Events.NODE_MODIFICATION, simulator);
@@ -164,6 +187,7 @@ public abstract class WorldState extends UntypedActor{
 			physic.tell(new PhysicInitialization(simulator), self());
 			input.tell(Message.INIT, self());
 			ai.tell(new AiInitialization(simulator, floor.getWorldTransform().getPosition(), floor.w2*2, floor.d2*2), self());
+			
 		} else if (message instanceof RendererInitialized) {
 			shader = ((RendererInitialized) message).shader;
 			
@@ -191,11 +215,17 @@ public abstract class WorldState extends UntypedActor{
 		} else if(message instanceof NodeDeletion){
 			
 			announce(message);
+		} if(message instanceof KeyState){
+        	pressedKeys.clear();
+        	toggeled.clear();
+        	pressedKeys.addAll(((KeyState)message).getPressedKeys());
+        	toggeled.addAll(((KeyState)message).getToggled());
 		}
 		
 	}
 
 	protected void initialize() {
+		
 	}
 
 	public <T> void announce(T event) {
@@ -592,5 +622,17 @@ public abstract class WorldState extends UntypedActor{
 		
 		
 		ai.tell(n, self());
+	}
+	
+	protected void doCanonBalls(){
+		input.tell(new RegisterKeys(new HashSet<Integer>(Arrays.asList(Keyboard.KEY_SPACE)), true), self());
+	}
+	
+	protected void generateCanonBall(){
+		Node cs = createSphere("CanonBall" + canonballnumber, shader, 1f);
+		transform(cs, vecmath.translationMatrix(-2, 2, 0) );
+		append(cs, startNode);
+		canonballnumber++;
+		
 	}
 }
