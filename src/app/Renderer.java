@@ -140,9 +140,8 @@ public class Renderer extends UntypedActor {
 			}else if (nc.type == ObjectTypes.COIN){
 				nodes.put(nc.getId(), nodeFactory.coin(nc.getId(), nc.shader, nc.sourceFile, nc.mass));
 			}else if(((NodeCreation) message).type == ObjectTypes.CANON){
-				NodeCreation nc=(NodeCreation) message;
 				Node newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
-				nodes.put(newNode.id, newNode);
+				nodes.put(newNode.getId(), newNode);
 			}
 
 		} else if (message instanceof CameraCreation) {

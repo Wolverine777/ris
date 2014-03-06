@@ -159,7 +159,7 @@ public class Simulator extends UntypedActor {
         		} else if(((NodeCreation) message).type == ObjectTypes.CANON){
     				NodeCreation nc=(NodeCreation) message;
     				newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
-    				nodes.put(newNode.id, newNode);
+    				nodes.put(newNode.getId(), newNode);
     			}
         		
         		else{
