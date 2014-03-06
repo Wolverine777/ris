@@ -358,7 +358,7 @@ public class ObjLoader extends Shape {
 		setRadius(radiustmp);
 		
 //		setRadius(Math.max(Math.max((Math.abs(xGroß - xKlein)),Math.abs(yGroß - yKlein)), Math.abs(zGroß - zKlein)));
-		 System.out.println("Radius für ObjLoader: " + super.id + " " + getRadius());
+		 System.out.println("Radius für ObjLoader: " + super.getId() + " " + getRadius());
 		
 //		System.out.println("Neues center für Cubezuerst: " + super.id + center.toString());
 	}

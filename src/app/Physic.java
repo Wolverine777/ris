@@ -6,14 +6,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.SingleSelectionModel;
-
 import vecmath.Matrix;
 import vecmath.Vector;
 import vecmath.vecmathimp.MatrixImp;
 import vecmath.vecmathimp.VectorImp;
-
-import com.google.common.collect.Sets.SetView;
 
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
@@ -27,7 +23,6 @@ import app.eventsystem.NodeModification;
 import app.eventsystem.PhysicModification;
 import app.messages.Message;
 import app.messages.PhysicInitialization;
-import app.messages.RendererInitialization;
 import app.messages.SingelSimulation;
 import app.nodes.Node;
 import app.nodes.shapes.Shape;
@@ -344,7 +339,7 @@ public class Physic extends UntypedActor {
 							.setRadius(((NodeCreation) message).radius);
 					System.out.println("center objtest physic: " + ((Shape) newNode).getCenter() + "Position: " + newNode.getWorldTransform().getPosition());
 				}
-				nodes.put(newNode.id, newNode);
+				nodes.put(newNode.getId(), newNode);
 			}
 		} else if (message instanceof NodeModification) {
 			// System.out.println("NODEMODIFICATION!!!!!");

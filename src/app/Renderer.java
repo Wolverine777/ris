@@ -31,7 +31,6 @@ import app.messages.RendererInitialization;
 import app.messages.RendererInitialized;
 import app.nodes.Node;
 import app.nodes.camera.Camera;
-import app.nodes.shapes.Shape;
 import app.shader.Shader;
 
 public class Renderer extends UntypedActor {

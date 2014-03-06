@@ -16,7 +16,6 @@ import org.lwjgl.input.Keyboard;
 
 import vecmath.Matrix;
 import vecmath.Vector;
-import vecmath.vecmathimp.VectorImp;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
@@ -549,8 +548,8 @@ public abstract class WorldState extends UntypedActor{
 	protected void addPhysic(ObjLoader obj, Vector impulse){
 		
 		NodeCreation n = new NodeCreation();
-		n.modelmatrix = (nodes.get(obj.id).getWorldTransform());
-        n.id = obj.id;
+		n.modelmatrix = (nodes.get(obj.getId()).getWorldTransform());
+        n.id = obj.getId();
         n.type = ObjectTypes.OBJECT;
         n.shader = shader;
         n.sourceFile= obj.getSourceFile();
@@ -562,7 +561,7 @@ public abstract class WorldState extends UntypedActor{
 		
 		physic.tell(n, self());
 
-		SimulateCreation sc = new SimulateCreation(obj.id, null, SimulateType.PHYSIC, null, null);
+		SimulateCreation sc = new SimulateCreation(obj.getId(), null, SimulateType.PHYSIC, null, null);
 		sc.modelmatrix = n.getModelmatrix();
 		sc.type = ObjectTypes.OBJECT;
 		sc.shader = shader;
@@ -621,37 +620,37 @@ public abstract class WorldState extends UntypedActor{
 		}
 	}
 	
-	protected void addToAi(Cube cube){
-		
-		
-		NodeCreation n = new NodeCreation();
-		n.modelmatrix = (nodes.get(cube.id).getWorldTransform());
-		n.id = cube.id;
-		n.type = ObjectTypes.CUBE;
-		n.shader = cube.getShader();
-		n.d = cube.getD2();
-		n.w = cube.getW2();
-	    n.h = cube.getH2();
-		n.center = cube.getCenter();
-		n.radius = cube.getRadius();
-		
-		ai.tell(n, self());
-	}
-	
-	protected void addToAi(Sphere sphere){
-		
-		
-		NodeCreation n = new NodeCreation();
-		n.modelmatrix = (nodes.get(sphere.id).getWorldTransform());
-		n.id = sphere.id;
-		n.type = ObjectTypes.SPHERE;
-		n.shader = sphere.getShader();
-		n.center = sphere.getCenter();
-		n.radius = sphere.getRadius();
-		
-		
-		ai.tell(n, self());
-	}
+//	protected void addToAi(Cube cube){
+//		
+//		
+//		NodeCreation n = new NodeCreation();
+//		n.modelmatrix = (nodes.get(cube.getId()).getWorldTransform());
+//		n.id = cube.getId();
+//		n.type = ObjectTypes.CUBE;
+//		n.shader = cube.getShader();
+//		n.d = cube.getD2();
+//		n.w = cube.getW2();
+//	    n.h = cube.getH2();
+//		n.center = cube.getCenter();
+//		n.radius = cube.getRadius();
+//		
+//		ai.tell(n, self());
+//	}
+//	
+//	protected void addToAi(Sphere sphere){
+//		
+//		
+//		NodeCreation n = new NodeCreation();
+//		n.modelmatrix = (nodes.get(sphere.getId()).getWorldTransform());
+//		n.id = sphere.getId();
+//		n.type = ObjectTypes.SPHERE;
+//		n.shader = sphere.getShader();
+//		n.center = sphere.getCenter();
+//		n.radius = sphere.getRadius();
+//		
+//		
+//		ai.tell(n, self());
+//	}
 	
 	protected void doCanonBalls(){
 		input.tell(new RegisterKeys(new HashSet<Integer>(Arrays.asList(Keyboard.KEY_SPACE)), true), self());

@@ -34,7 +34,6 @@ import app.messages.KeyState;
 import app.messages.Message;
 import app.messages.SingelSimulation;
 import app.nodes.Node;
-import app.nodes.shapes.Shape;
 import app.toolkit.StopWatch;
 
 public class Simulator extends UntypedActor {
@@ -145,7 +144,7 @@ public class Simulator extends UntypedActor {
         		} else if (((NodeCreation) message).type == ObjectTypes.CUBE) {
         			newNode = nodeFactory.cube(((NodeCreation) message).id, ((NodeCreation) message).shader, ((NodeCreation) message).w, ((NodeCreation) message).h,
     						((NodeCreation) message).d, ((NodeCreation) message).mass);
-        			nodes.put(newNode.id, newNode);
+        			nodes.put(newNode.getId(), newNode);
         		} else if (((NodeCreation) message).type == ObjectTypes.SPHERE) {
     				newNode = nodeFactory.sphere(((NodeCreation) message).id,
     						((NodeCreation) message).shader, ((NodeCreation) message).mass);

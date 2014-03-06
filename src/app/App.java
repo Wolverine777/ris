@@ -18,7 +18,6 @@ import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.SimulateType;
 import app.messages.Message;
-import app.messages.RegisterKeys;
 import app.nodes.GroupNode;
 import app.nodes.shapes.*;
 
@@ -100,12 +99,10 @@ public class App extends WorldState {
 		
 		Cube c6 = createCube("coinbla", shader, 1f);
 		transform(c6, vecmath.translationMatrix(0.6f,0,0.6f));
-		addToAi(c6);
 		append(c6, head);
 		
 		Sphere c7 = createSphere("car", shader, 1f);
 		transform(c7, vecmath.translationMatrix(0.2f, 0, 1f));
-		addToAi(c7);
 		append(c7, head);
 		
 		

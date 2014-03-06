@@ -8,8 +8,6 @@ import java.util.Set;
 
 import org.lwjgl.input.Keyboard;
 
-import scala.annotation.meta.getter;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
