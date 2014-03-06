@@ -31,6 +31,7 @@ import app.messages.RendererInitialization;
 import app.messages.RendererInitialized;
 import app.nodes.Node;
 import app.nodes.camera.Camera;
+import app.nodes.shapes.Shape;
 import app.shader.Shader;
 
 public class Renderer extends UntypedActor {
@@ -151,6 +152,7 @@ public class Renderer extends UntypedActor {
 			}else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
 				NodeCreation nc=(NodeCreation) message;
 				Node newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
+				System.out.println("center objtest renderer: " + ((Shape) newNode).getCenter() + "Postion: " + newNode.getWorldTransform().getPosition());
 				nodes.put(newNode.id, newNode);
 			}
 

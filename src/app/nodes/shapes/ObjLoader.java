@@ -11,6 +11,7 @@ import org.lwjgl.BufferUtils;
 
 import vecmath.Color;
 import vecmath.Vector;
+import vecmath.vecmathimp.VectorImp;
 import app.toolkit.BasicFunctions;
 import app.toolkit.Texture;
 import app.nodes.shapes.Vertex;
@@ -107,6 +108,7 @@ public class ObjLoader extends Shape {
 		normalData.rewind();
 		if (tex != null)
 			textureData.rewind();
+		findCenter();
 	}
 
 	private Vector[] getVecs(List<String> source, Vector[] points) {
@@ -274,6 +276,91 @@ public class ObjLoader extends Shape {
 			System.out.println("Face definition longer than 3");
 			return null;
 		}
+	}
+	
+	@Override
+	protected void findCenter(){
+		float xKlein = 0;
+		float xGroﬂ = 0;
+		float yKlein = 0;
+		float yGroﬂ = 0;
+		float zKlein = 0;
+		float zGroﬂ = 0;
+		float xKlein2 = 0;
+		float xGroﬂ2 = 0;
+		float yKlein2 = 0;
+		float yGroﬂ2 = 0;
+		float zKlein2 = 0;
+		float zGroﬂ2 = 0;
+		float radiustmp = 0;
+		float radiustmp2 = 0;
+		
+		for(Vertex v: vertices){
+			if(v.position.x() < xKlein){
+				xKlein = v.position.x();
+			}
+			if(v.position.x() > xGroﬂ){
+				xGroﬂ = v.position.x();
+			}
+			if(v.position.y() < yKlein){
+				yKlein = v.position.y();
+			}
+			if(v.position.y() > yGroﬂ){
+				yGroﬂ = v.position.y();
+			}
+			if(v.position.z() < zKlein){
+				zKlein = v.position.z();
+			}
+			if(v.position.z() > zGroﬂ){
+				zGroﬂ = v.position.z();
+			}			
+		}
+		
+		for(Vertex v: vertices3){
+			if(v.position.x() < xKlein2){
+				xKlein2 = v.position.x();
+			}
+			if(v.position.x() > xGroﬂ2){
+				xGroﬂ2 = v.position.x();
+			}
+			if(v.position.y() < yKlein2){
+				yKlein2 = v.position.y();
+			}
+			if(v.position.y() > yGroﬂ2){
+				yGroﬂ2 = v.position.y();
+			}
+			if(v.position.z() < zKlein2){
+				zKlein2 = v.position.z();
+			}
+			if(v.position.z() > zGroﬂ2){
+				zGroﬂ2 = v.position.z();
+			}			
+		}
+		xKlein = Math.min(xKlein, xKlein2);
+		xGroﬂ = Math.max(xGroﬂ, xGroﬂ2);
+		yKlein = Math.min(yKlein, yKlein2);
+		yGroﬂ = Math.max(yGroﬂ, yGroﬂ2);
+		zKlein = Math.min(zKlein, zKlein2);
+		zGroﬂ = Math.max(zGroﬂ, zGroﬂ2);
+		
+		
+		setCenter(new VectorImp((xGroﬂ + xKlein)/2, (yGroﬂ + yKlein)/2, (zGroﬂ + zKlein)/2));
+		
+		for(Vertex v: vertices){
+			radiustmp = Math.max(v.position.sub(getCenter()).length(),getRadius());
+		}
+		for(Vertex v: vertices3){
+			radiustmp2 = Math.max(v.position.sub(getCenter()).length(),getRadius());
+		}
+		
+		radiustmp = Math.max(radiustmp, radiustmp2);		
+		
+		setRadius(radiustmp);
+		
+//		setRadius(Math.max(Math.max((Math.abs(xGroﬂ - xKlein)),Math.abs(yGroﬂ - yKlein)), Math.abs(zGroﬂ - zKlein)));
+		 System.out.println("Radius f¸r ObjLoader: " + super.id + " " + getRadius());
+		
+//		System.out.println("Neues center f¸r Cubezuerst: " + super.id + center.toString());
 	}
 
 	public File getSourceFile() {

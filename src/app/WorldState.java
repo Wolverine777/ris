@@ -443,6 +443,17 @@ public abstract class WorldState extends UntypedActor{
 		SimulateCreation sc = new SimulateCreation(cube.id, null, SimulateType.PHYSIC, null, null);
 		sc.modelmatrix = n.getModelmatrix();
 		sc.type = ObjectTypes.CUBE;
+		sc.shader = cube.getShader();
+		sc.impulse = impulse;
+		sc.d = cube.getD2();
+		sc.w = cube.getW2();
+	    sc.h = cube.getH2();
+		sc.center = cube.getCenter();
+		sc.radius = cube.getRadius();
+		sc.mass = cube.getMass();
+		
+		
+		
 		simulator.tell(sc,self());
 			
 	}
@@ -466,9 +477,41 @@ public abstract class WorldState extends UntypedActor{
 //		sc.setSimulation(SimulateType.PHYSIC);
 		SimulateCreation sc = new SimulateCreation(sphere.id, null, SimulateType.PHYSIC, null, null);
 		sc.modelmatrix = n.getModelmatrix();
-		sc.type = ObjectTypes.CUBE;
+		sc.type = ObjectTypes.SPHERE;
+		sc.shader = sphere.getShader();
+		sc.impulse = impulse;
+		sc.center = sphere.getCenter();
+		sc.radius = sphere.getRadius();
+		sc.mass = sphere.getMass();
 		simulator.tell(sc,self());
 			
+	}
+	
+	protected void addPhysic(ObjLoader obj, Vector impulse){
+		
+		NodeCreation n = new NodeCreation();
+		n.modelmatrix = (nodes.get(obj.id).getWorldTransform());
+        n.id = obj.id;
+        n.type = ObjectTypes.OBJECT;
+        n.shader = shader;
+        n.sourceFile= obj.getSourceFile();
+        n.sourceTex= obj.getSourceTex();
+    	n.impulse = impulse;
+		n.center = obj.getCenter();
+		n.radius = obj.getRadius();
+		n.mass = obj.mass;
+		
+		physic.tell(n, self());
+
+		SimulateCreation sc = new SimulateCreation(obj.id, null, SimulateType.PHYSIC, null, null);
+		sc.modelmatrix = n.getModelmatrix();
+		sc.type = ObjectTypes.OBJECT;
+		sc.shader = shader;
+	    sc.sourceFile= obj.getSourceFile();
+	    sc.sourceTex= obj.getSourceTex();
+	    sc.mass = obj.mass;
+		simulator.tell(sc,self());
+		
 	}
 	
 	protected void addPhysicFloor(Plane plane){

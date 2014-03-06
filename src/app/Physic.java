@@ -59,6 +59,7 @@ public class Physic extends UntypedActor {
 				
 				n.setVelocity(n.getForce());
 				
+					
 				PhysicModification p = new PhysicModification();
 				p.id = n.id;
 				p.force = n.getForce();
@@ -139,12 +140,12 @@ public class Physic extends UntypedActor {
 		float radiuses = 0;
 		for (Node node : nodes.values()) {
 			if (!node.equals(n)) {
-//				System.out.println("Center n: " + ((Shape) n).getCenter());
+				System.out.println("Center n: " + ((Shape) n).getCenter());
 				distance = ((Shape) n).getCenter().sub(((Shape) node).getCenter()).length();
 				radiuses = (((Shape) n).getRadius() + ((Shape) node).getRadius());
-//				System.out.println("Radius n: " + ((Shape) n).getRadius()
-//						+ "Radius node: " + ((Shape) node).getRadius()
-//						+ "distance1: " + distance + "radiuses1: " + radiuses);
+				System.out.println("Radius n: " + ((Shape) n).getRadius()
+						+ "Radius node: " + ((Shape) node).getRadius()
+						+ "distance1: " + distance + "radiuses1: " + radiuses);
 				if (distance < radiuses) {
 //					System.out.println("distance2: " + distance + "radiuses2: "
 //							+ radiuses);
@@ -318,6 +319,32 @@ public class Physic extends UntypedActor {
 				}
 				nodes.put(newNode.id, newNode);
 				collisionGroundPosition(newNode.id, newNode2);
+			} else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
+				NodeCreation nc=(NodeCreation) message;
+				Node newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
+				
+				if ((((NodeCreation) message).impulse != null)) {
+					Vector impulse = (((NodeCreation) message).impulse);
+					float newx = impulse.x()/newNode.mass;
+					float newy = impulse.y()/newNode.mass;
+					float newz = impulse.z()/newNode.mass;
+					
+					VectorImp newimpulse = new VectorImp(newx, newy, newz);
+					newNode.setVelocity(newimpulse);
+				}
+				if ((((NodeCreation) message).modelmatrix != null)) {
+					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
+				}
+				if ((((NodeCreation) message).center != null)) {
+					((Shape) newNode)
+							.setCenter(((NodeCreation) message).center);
+				}
+				if ((((NodeCreation) message).radius != 0)) {
+					((Shape) newNode)
+							.setRadius(((NodeCreation) message).radius);
+					System.out.println("center objtest physic: " + ((Shape) newNode).getCenter() + "Position: " + newNode.getWorldTransform().getPosition());
+				}
+				nodes.put(newNode.id, newNode);
 			}
 		} else if (message instanceof NodeModification) {
 			// System.out.println("NODEMODIFICATION!!!!!");
