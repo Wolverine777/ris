@@ -7,5 +7,7 @@ public enum ObjectTypes {
 	SPHERE,
 	PLANE,
 	OBJECT,
+	CAR,
+	COIN,
 	CAMERA
 }

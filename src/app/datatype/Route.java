@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 public class Route {
 	
 	private int totalway = 0;
@@ -27,6 +28,14 @@ public class Route {
 		String out="Len:("+totalway+") Way: ";
 		for(LevelNode node:waypoints)out+="-->("+node.getPOS().x()+"/"+node.getPOS().z()+")";
 		return out;
+	}
+
+	public void setTotalway(int totalway) {
+		this.totalway = totalway;
+	}
+	
+	public void removeFirstPoint(){
+		waypoints.remove(0);
 	}
 	
 }

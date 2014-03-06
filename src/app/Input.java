@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.HashMultimap;

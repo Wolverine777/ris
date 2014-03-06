@@ -60,7 +60,7 @@ public class Physic extends UntypedActor {
 				n.setVelocity(n.getForce());
 				
 				PhysicModification p = new PhysicModification();
-				p.id = n.id;
+				p.id = n.getId();
 				p.force = n.getForce();
 				
 				simulator.tell(p, self());
@@ -88,7 +88,7 @@ public class Physic extends UntypedActor {
 				float differenceinfloor = collisionGround(n);
 //				float differenceinfloor = (float) Math.sqrt((float) Math.pow((n.getWorldTransform().getPosition().y() - floor.y()),2));
 				VectorImp vec = new VectorImp(0, differenceinfloor + 0.01f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
-				SingelSimulation ss = new SingelSimulation(n.id, SimulateType.TRANSLATE, vec, n.getWorldTransform());
+				SingelSimulation ss = new SingelSimulation(n.getId(), SimulateType.TRANSLATE, vec, n.getWorldTransform());
 //				Matrix modify=MatrixImp.translate(vec);
 //	    		n.updateWorldTransform(modify);
 //	    		getSender().tell(new NodeModification(n.id,modify), self());
@@ -96,7 +96,7 @@ public class Physic extends UntypedActor {
 				simulator.tell(ss, self());
 			
 				PhysicModification p1 = new PhysicModification();
-				p1.id = n.id;
+				p1.id = n.getId();
 				p1.force = n.getForce();
 				
 				
@@ -110,12 +110,12 @@ public class Physic extends UntypedActor {
 //				Node collision = collisionObjects(n);
 
 							
-				delete.ids.add(n.id);
+				delete.ids.add(n.getId());
 				
 
 			} else if(collisionGround(n) !=0 && collisionObjects(n) !=null){
 				
-				delete.ids.add(n.id);
+				delete.ids.add(n.getId());
 			}
 //			Vector impact = collisionGroundPosition(n);
 //			System.out.println("IMpact oben: " + impact.toString());
@@ -158,7 +158,7 @@ public class Physic extends UntypedActor {
 	private void collisionGroundPosition(String id, Node n){
 		
 		float durchlauf = 0;
-		System.out.println("collision ground posi: " + n.id);
+		System.out.println("collision ground posi: " + n.getId());
 		
 		
 				
@@ -252,7 +252,7 @@ public class Physic extends UntypedActor {
 			if (((NodeCreation) message).type == ObjectTypes.GROUP) {
 				Node newNode = nodeFactory
 						.groupNode(((NodeCreation) message).id);
-				nodes.put(newNode.id, newNode);
+				nodes.put(newNode.getId(), newNode);
 			} else if (((NodeCreation) message).type == ObjectTypes.CUBE) {
 
 				Node newNode = nodeFactory.cube(((NodeCreation) message).id,
@@ -279,7 +279,7 @@ public class Physic extends UntypedActor {
 					((Shape) newNode)
 							.setRadius(((NodeCreation) message).radius);
 				}
-				nodes.put(newNode.id, newNode);
+				nodes.put(newNode.getId(), newNode);
 			} else if (((NodeCreation) message).type == ObjectTypes.SPHERE) {
 
 				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
@@ -316,8 +316,8 @@ public class Physic extends UntypedActor {
 					((Shape) newNode2)
 							.setRadius(((NodeCreation) message).radius);
 				}
-				nodes.put(newNode.id, newNode);
-				collisionGroundPosition(newNode.id, newNode2);
+				nodes.put(newNode.getId(), newNode);
+				collisionGroundPosition(newNode.getId(), newNode2);
 			}
 		} else if (message instanceof NodeModification) {
 			// System.out.println("NODEMODIFICATION!!!!!");
@@ -350,7 +350,7 @@ public class Physic extends UntypedActor {
 				if(modify!=null){
 				for(Edge e: modify.getEdges()){
 					removeEdges.add(e);
-					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+//					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
 					
 				}
 				for(Edge e : removeEdges){

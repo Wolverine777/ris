@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import vecmath.Vector;
-import vecmath.vecmathimp.VectorImp;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import app.Types.ObjectTypes;
@@ -30,57 +29,53 @@ import app.messages.AiInitialization;
 import app.messages.Message;
 import app.messages.SingelSimulation;
 import app.nodes.Node;
-import app.nodes.shapes.Cube;
-import app.nodes.shapes.Shape;
+import app.nodes.shapes.Car;
+import app.nodes.shapes.Coin;
 
 public class Ai extends UntypedActor {
 
+	//for later implementation of changing routes because of ball is moving closer to floor.
+	private final int UPDATEFREQUENZ=10;
 	Level level;
-	private Map<String, Node> nodes = new HashMap<String, Node>();
-	
-	//TODO: Car das eine route hat und eine aktualisierungsfrequenz und pick up auslösen kann
-	private List<Node> bots=new LinkedList<Node>(){
-		private static final long serialVersionUID = 4808793150108855621L;
-		@Override
-		public boolean contains(Object o){
-			for(Node x:this)if(((Node)o).id.equals(x.id))return true;
-	        return false;
-		}
-	};
-	List<Node> flags=new LinkedList<Node>(){
-		private static final long serialVersionUID = 7233857901815694877L;
-		@Override
-		public boolean contains(Object o) {
-			for(Node x:this)if(((Node)o).id.equals(x.id))return true;
-	        return false;
-	    }
-	};
-	private Map<Node, Route> perfectway= new HashMap<Node, Route>();
+	private Map<String, Node> nonAiNodes = new HashMap<String, Node>();
+	private Map<String, Car> cars=new HashMap<String, Car>();
+	private Map<String, Coin> coins=new HashMap<String, Coin>();
 	ActorRef simulator;
 
 	private void initialize(Vector levelPosition, float width, float depth) {
-		System.out.println("initLevel"+levelPosition +"w: "+ width +"d: "+ depth);
+		System.out.println("Init Ai");
 		level=new Level(levelPosition, width, depth);
-		System.out.println(level.toString());
+//		for(Car car:cars.values()){
+//			Route r=findRoute(car);
+//			System.out.println("calced Route: "+r.toString());
+//			car.setWayToTarget(r);
+//			car.setUpdateFrequenz(UPDATEFREQUENZ);
+//		}
 		getSender().tell(Message.INITIALIZED, self());
 	}
 	
-	private void findRoute(Node bot){
-		LevelNode startNode= level.getLevelNode(getNearestNodeinLevel(bot));
-		LevelNode target = level.getLevelNode(getNearestNodeinLevel(findClosestCoin(bot))); 
-		
-		LinkedHashMap<LevelNode, AStarNodes> lookAt= new LinkedHashMap<LevelNode, AStarNodes>();
-		lookAt.put(startNode, new AStarNodes(startNode.lengthtoNode(target), 0, new LinkedList<LevelNode>()));
-		
-		List<LevelNode>path =new LinkedList<LevelNode>();
-		path.add(startNode);
-		
-		LinkedList<LevelNode> visit=new LinkedList<LevelNode>();
-		
-		perfectway.put(bot, aStar(path, lookAt, visit, target));
-		
-		lookAt.clear();
-		path.clear();
+	private Route findRoute(Node bot){
+		Node nextCoin=findClosestCoin(bot);
+		if(nextCoin!=null){
+			LevelNode startNode= level.getLevelNode(getNearestNodeinLevel(bot));
+			System.out.println("Target Coin: "+nextCoin);
+			LevelNode target = level.getLevelNode(getNearestNodeinLevel(nextCoin)); 
+			
+			LinkedHashMap<LevelNode, AStarNodes> lookAt= new LinkedHashMap<LevelNode, AStarNodes>();
+			lookAt.put(startNode, new AStarNodes(startNode.lengthtoNode(target), 0, new LinkedList<LevelNode>()));
+			
+			List<LevelNode>path =new LinkedList<LevelNode>();
+			path.add(startNode);
+			
+			LinkedList<LevelNode> visit=new LinkedList<LevelNode>();
+			
+			Route way=aStar(path, lookAt, visit, target);
+			lookAt.clear();
+			path.clear();
+			return way;
+		}else{
+			return null;
+		}
 	}
 	
 	private Route aStar(List<LevelNode> path, LinkedHashMap<LevelNode, AStarNodes> lookAt, List<LevelNode> visited, LevelNode target) {
@@ -111,6 +106,8 @@ public class Ai extends UntypedActor {
 			pathMin.add(min);
 			pathMin.addAll(lookAt.get(min).getPath());
 			if(min.equals(target)){
+				//start to move to the next, not to the nearestBase
+				pathMin.remove(pathMin.size()-1);
 				return new Route((int)lookAt.get(min).getLength(), pathMin);
 			}else{
 				return aStar(pathMin, lookAt, visited, target);
@@ -125,10 +122,11 @@ public class Ai extends UntypedActor {
 		return false;
 	}
 
-	private Node findClosestCoin(Node car) { //VectorImp
+	private Node findClosestCoin(Node car) {
 		float distance = -1;
 		Node nearest = null;
-		for (Node node : flags) { //nodes.values()
+		for (Node node : coins.values()) {
+			System.out.println("coins: "+node.getId());
 //			if (node instanceof Cube) {
 //				System.out.println("Node(Cube) findclosest: " + node.id);
 				float tempdistance = node.getWorldTransform().getPosition().sub(car.getWorldTransform().getPosition()).length();
@@ -146,33 +144,38 @@ public class Ai extends UntypedActor {
 	}
 
 	private void aiLoop() {
-
-//		System.out.println("Level size: " + level.getLevelPoints().size());
-		System.out.println(level.toString());
-		for (Node n : nodes.values()) {
-			System.out.println("NodeAI: " + n.id);
-//			findClosestCoin(n);
-			VectorImp closest = (VectorImp) getNearestNodeinLevel(n);
-			System.out.println("Nearest is: " + closest.toString());
+		int index=0;
+		if(!coins.isEmpty()){
+			for(Car car:cars.values()){
+				if(car.getWayToTarget()==null){
+					Route r=findRoute(car);
+					System.out.println("calced Route: "+r.toString());
+					car.setWayToTarget(r);
+					car.setUpdateFrequenz(UPDATEFREQUENZ);
+				}
+			}
+			for(Car car:cars.values()){
+				//next position in route(target) sub position
+				System.out.println("car: "+car.getId()+" pos: "+car.getPosition()+" "+car);
+				System.out.println(index+"next way pos: "+car.getNextWaypoint().getPOS());
+				index++;
+				if(car.getPosition().equals(car.getNextWaypoint().getPOS())){
+					System.out.println("Waypoint reached");
+					car.waypointReached();
+				}
+				if(car.getWayToTarget()!=null){
+					Vector vec=car.getVecToNextTarget();
+					System.out.println("move direction car: "+vec);
+					simulator.tell(new SingelSimulation(car.getId(), SimulateType.TRANSLATEFIX, vec, car.getWorldTransform()), self());
+//				if(car.getUpdateFrequenz()==0){
+//					car.setWayToTarget(findRoute(car));
+//					car.setUpdateFrequenz(UPDATEFREQUENZ);
+//				}
+				}
+			}
 		}
 		
-		LinkedHashMap<LevelNode, AStarNodes> lookAt= new LinkedHashMap<LevelNode, AStarNodes>();
-		LevelNode target = level.toArray()[0]; 
-		LevelNode startNode=level.toArray()[12]; 
-		lookAt.put(startNode, new AStarNodes(startNode.lengthtoNode(target), 0, new LinkedList<LevelNode>()));
-		System.out.println("StartNode: "+startNode.getPOS());
-		System.out.println("EndNode: "+target.getPOS());
-		List<LevelNode>path =new LinkedList<LevelNode>();
-		path.add(startNode);
-		LinkedList<LevelNode> visit=new LinkedList<LevelNode>();
-		System.out.println("lookat size vor dem call: " + lookAt.size());
-		Route r=aStar(path, lookAt, visit, target);
-//		System.out.println(r.toString());
-//		System.out.println(aStar(path, lookAt, new LinkedList<LevelNode>(), target).toString()); //warum?
-		lookAt.clear();
-		path.clear();
 		getSender().tell(Message.DONE, self());
-
 	}
 
 	@Override
@@ -186,80 +189,65 @@ public class Ai extends UntypedActor {
 			this.simulator = (init.getSimulator());
 			initialize(init.getCenterPosition(), init.getWidth(), init.getDepth());
 		} else if (message instanceof NodeCreation) {
-
-			if (((NodeCreation) message).type == ObjectTypes.GROUP) {
-				Node newNode = nodeFactory
-						.groupNode(((NodeCreation) message).id);
-				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == ObjectTypes.CUBE) {
-
-				Node newNode = nodeFactory.cube(((NodeCreation) message).id,
-						((NodeCreation) message).shader,
-						((NodeCreation) message).w, ((NodeCreation) message).h,
-						((NodeCreation) message).d,
-						((NodeCreation) message).mass);
-				if ((((NodeCreation) message).modelmatrix != null)) {
-					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
-				}
-				if ((((NodeCreation) message).center != null)) {
-					((Shape) newNode)
-							.setCenter(((NodeCreation) message).center);
-				}
-				if ((((NodeCreation) message).radius != 0)) {
-					((Shape) newNode)
-							.setRadius(((NodeCreation) message).radius);
-				}
-				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == ObjectTypes.SPHERE) {
-
-				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
-						((NodeCreation) message).shader,
-						((NodeCreation) message).mass);
-				if ((((NodeCreation) message).modelmatrix != null)) {
-					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
-				}
-				if ((((NodeCreation) message).center != null)) {
-					((Shape) newNode)
-							.setCenter(((NodeCreation) message).center);
-				}
-				if ((((NodeCreation) message).radius != 0)) {
-					((Shape) newNode)
-							.setRadius(((NodeCreation) message).radius);
-				}
-				nodes.put(newNode.id, newNode);
+			NodeCreation nc=(NodeCreation) message;
+			if (nc.type == ObjectTypes.GROUP) {
+				nonAiNodes.put(nc.id, nodeFactory.groupNode(nc.id));
+			} else if (nc.type == ObjectTypes.CUBE) {
+				nonAiNodes.put(nc.id, nodeFactory.cube(nc.id, nc.shader, nc.w, nc.h, nc.d, nc.mass));
+			} else if (nc.type == ObjectTypes.PIPE) {
+				nonAiNodes.put(nc.id, nodeFactory.pipe(nc.id, nc.shader, nc.r, nc.lats, nc.longs,nc.mass));
+			} else if (nc.type == ObjectTypes.SPHERE) {
+				nonAiNodes.put(nc.id, nodeFactory.sphere(nc.id, nc.shader, nc.mass));
+			} else if (nc.type == ObjectTypes.PLANE) {
+				nonAiNodes.put(nc.id, nodeFactory.plane(nc.id, nc.shader, nc.w, nc.d, nc.hight, nc.mass));
+			}else if(nc.type == ObjectTypes.OBJECT){
+				nonAiNodes.put(nc.id, nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
+			}else if(nc.type == ObjectTypes.CAR){
+				Car car=nodeFactory.car(nc.id, nc.shader, nc.sourceFile, nc.speed, nc.mass);
+				cars.put(nc.id, car);
+			}else if(nc.type == ObjectTypes.COIN){
+				coins.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.mass));
 			}
 		} else if(message instanceof NodeModification){
-			if(nodes.containsKey(((NodeModification) message).id)){
-        		Node modify = nodes.get(((NodeModification) message).id);
-        		if (((NodeModification) message).localMod != null){
-        			modify.updateWorldTransform(((NodeModification) message).localMod);
-        		}
-        	}
+			NodeModification nm=(NodeModification) message;
+			setNewMatrix(nonAiNodes.get(nm.id), nm);
+			setNewMatrix(cars.get(nm.id), nm);
+			setNewMatrix(coins.get(nm.id), nm);
 		} else if (message instanceof NodeDeletion){
 			NodeDeletion delete = (NodeDeletion)message;
 			for(String id: delete.ids){
-				Node modify = nodes.get(id);
-				ArrayList<Edge> removeEdges = new ArrayList<>(); 
-				if(modify!=null){
-				for(Edge e: modify.getEdges()){
-					removeEdges.add(e);
-					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
-					
-				}
-				for(Edge e : removeEdges){
-					modify.removeEdge(e);
-				}
-			
-				nodes.remove(modify);
-				}
+				if(deleteNode(nonAiNodes.get(id), delete))nonAiNodes.remove(id);
+				if(deleteNode(cars.get(id), delete))cars.remove(id);
+				if(deleteNode(coins.get(id), delete))coins.remove(id);
 			}
 		}
 			
-
+	}
+	
+	private void setNewMatrix(Node modify, NodeModification nm){
+		if(modify!=null && nm.localMod != null){
+			modify.updateWorldTransform(nm.localMod);
+		}
+	}
+	
+	private boolean deleteNode(Node modify, NodeDeletion nd){
+		boolean deleted=false;
+		if(modify!=null &&nd != null){
+			ArrayList<Edge> removeEdges = new ArrayList<>(); 
+			for(Edge e: modify.getEdges()){
+				removeEdges.add(e);
+			}
+			for(Edge e : removeEdges){
+				deleted=true;
+				modify.removeEdge(e);
+			}
+		}
+		return deleted;
 	}
 	
 	private Vector getNearestNodeinLevel(Node object){
 		Vector nearestVec = level.getNearestinLevel(object.getWorldTransform().getPosition());
+		//Tagetposition.sub(startPosition)
 //		Vector translate=(nearestVec.sub(object.getWorldTransform().getPosition()));
 //		if(!translate.equals(new VectorImp(0, 0, 0)))simulator.tell(new SingelSimulation(object.id, SimulateType.TRANSLATE, translate,object.getWorldTransform()), self());
 		return nearestVec;

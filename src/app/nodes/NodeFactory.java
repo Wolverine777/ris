@@ -5,6 +5,8 @@ import java.util.Map;
 
 import vecmath.Matrix;
 import app.nodes.camera.Camera;
+import app.nodes.shapes.Car;
+import app.nodes.shapes.Coin;
 import app.nodes.shapes.Cube;
 import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Pipe;
@@ -67,12 +69,20 @@ public class NodeFactory {
 		return s;
 	}
 	
-	public Plane plane(String id, Shader shader, float width, float depth, float mass) {
-		Plane p = new Plane(id, shader, width, depth, mass);
+	public Plane plane(String id, Shader shader, float width, float depth, float hight, float mass) {
+		Plane p = new Plane(id, shader, width, depth, hight, mass);
 		return p;
 	}
 	
 	public ObjLoader obj(String id, Shader shader, File sourceFile, File sourceTex, float mass){
 		return new ObjLoader(id, shader, sourceFile, sourceTex, mass);
+	}
+	
+	public Coin coin(String id, Shader shader, File sourceFile, float mass){
+		return new Coin(id, shader, sourceFile, mass);
+	}
+	
+	public Car car(String id, Shader shader, File sourceFile, float speed, float mass){
+		return new Car(id, shader, sourceFile, speed, mass);
 	}
 }

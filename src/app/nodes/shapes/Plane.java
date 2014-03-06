@@ -17,17 +17,19 @@ public class Plane extends Shape {
 	// Width and depth of the plane divided by 2.
 	public float w2;
 	public float d2;
+	private float hight;
 
 	public Plane(String id, Shader shader, float mass) {
-		this(id, shader, 10f, 10f, mass);
+		this(id, shader, 10f, 10f, 3f, mass);
 	}
 
-	public Plane(String id, Shader shader, float w, float d, float mass) {
-		this(id, shader, w, d, null, mass);
+	public Plane(String id, Shader shader, float w, float d, float hight, float mass) {
+		this(id, shader, w, d, hight, null, mass);
 	}
 
-	public Plane(String id, Shader shader, float w, float d, String sourceTex, float mass) {
+	public Plane(String id, Shader shader, float w, float d, float hight, String sourceTex, float mass) {
 		super(id, shader,mass);
+		this.hight=hight;
 		w2 = w / 2;
 		d2 = d / 2;
 
@@ -43,6 +45,7 @@ public class Plane extends Shape {
 
 	private void setup() {
 
+		updateWorldTransform(vecmath.translationMatrix(0, hight, 0));
 		Color[] c = { col(.4f, .7f, .8f), col(1, 0, 0), col(1, 1, 0),
 				col(0, 1, 0) };
 
@@ -86,5 +89,13 @@ public class Plane extends Shape {
 
 	public float getD() {
 		return d2*2;
+	}
+	
+	public float getGround(){
+		return getWorldTransform().getPosition().y();
+	}
+
+	public float getHight() {
+		return hight;
 	}
 }

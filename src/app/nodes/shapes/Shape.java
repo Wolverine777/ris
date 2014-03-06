@@ -132,7 +132,7 @@ public abstract class Shape extends Node {
 		}
 		
 //		setRadius(Math.max(Math.max((Math.abs(xGroß - xKlein)),Math.abs(yGroß - yKlein)), Math.abs(zGroß - zKlein)));
-		 System.out.println("Radius für: " + super.id + " " + radius);
+		 System.out.println("Radius für: " + super.getId() + " " + radius);
 		
 //		System.out.println("Neues center für Cubezuerst: " + super.id + center.toString());
 	}

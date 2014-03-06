@@ -44,7 +44,8 @@ public class Renderer extends UntypedActor {
 	private Shader shader;
 	private Node start;
 	private Camera camera;
-//	private Float medTime=0f;
+
+	// private Float medTime=0f;
 
 	private void initialize() {
 		try {
@@ -105,7 +106,8 @@ public class Renderer extends UntypedActor {
 		getSender().tell(Message.DONE, self());
 
 		if (Display.isCloseRequested()) {
-//			System.out.println("Average ms took:"+medTime); //TODO: nullpointer
+			// System.out.println("Average ms took:"+medTime); //TODO:
+			// nullpointer
 			Display.destroy();
 			context().system().stop(getSender());
 			context().system().shutdown();
@@ -120,38 +122,23 @@ public class Renderer extends UntypedActor {
 		} else if (message instanceof RendererInitialization) {
 			initialize();
 		} else if (message instanceof NodeCreation) {
-			if (((NodeCreation) message).type == ObjectTypes.GROUP) {
-				Node newNode = nodeFactory
-						.groupNode(((NodeCreation) message).id);
-				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == ObjectTypes.CUBE) {
-
-				Node newNode = nodeFactory.cube(((NodeCreation) message).id,
-						((NodeCreation) message).shader,
-						((NodeCreation) message).w, ((NodeCreation) message).h,
-						((NodeCreation) message).d, ((NodeCreation) message).mass);
-				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == ObjectTypes.PIPE) {
-				Node newNode = nodeFactory.pipe(((NodeCreation) message).id,
-						((NodeCreation) message).shader,
-						((NodeCreation) message).r,
-						((NodeCreation) message).lats,
-						((NodeCreation) message).longs,((NodeCreation) message).mass);
-				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == ObjectTypes.SPHERE) {
-				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
-						((NodeCreation) message).shader, ((NodeCreation) message).mass);
-				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == ObjectTypes.PLANE) {
-				Node newNode = nodeFactory.plane(((NodeCreation) message).id,
-						((NodeCreation) message).shader,
-						((NodeCreation) message).w, ((NodeCreation) message).d, ((NodeCreation) message).mass);
-				System.out.println("renderer mass: " + newNode.mass);
-				nodes.put(newNode.id, newNode);
-			}else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
-				NodeCreation nc=(NodeCreation) message;
-				Node newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
-				nodes.put(newNode.id, newNode);
+			NodeCreation nc = (NodeCreation) message;
+			if (nc.type == ObjectTypes.GROUP) {
+				nodes.put(nc.getId(), nodeFactory.groupNode(nc.id));
+			} else if (nc.type == ObjectTypes.CUBE) {
+				nodes.put(nc.getId(), nodeFactory.cube(nc.id, nc.shader, nc.w, nc.h,nc.d, nc.mass));
+			} else if (nc.type == ObjectTypes.PIPE) {
+				nodes.put(nc.getId(), nodeFactory.pipe(nc.id, nc.shader, nc.r,nc.lats, nc.longs, nc.mass));
+			} else if (nc.type == ObjectTypes.SPHERE) {
+				nodes.put(nc.getId(), nodeFactory.sphere(nc.id, nc.shader, nc.mass));
+			} else if (nc.type == ObjectTypes.PLANE) {
+				nodes.put(nc.getId(), nodeFactory.plane(nc.id, nc.shader, nc.w, nc.d, nc.hight, nc.mass));
+			} else if (nc.type == ObjectTypes.OBJECT) {
+				nodes.put(nc.getId(), nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
+			}else if (nc.type == ObjectTypes.CAR){
+				nodes.put(nc.getId(), nodeFactory.car(nc.getId(), nc.shader, nc.sourceFile, nc.speed, nc.mass));
+			}else if (nc.type == ObjectTypes.COIN){
+				nodes.put(nc.getId(), nodeFactory.coin(nc.getId(), nc.shader, nc.sourceFile, nc.mass));
 			}
 
 		} else if (message instanceof CameraCreation) {
@@ -161,10 +148,11 @@ public class Renderer extends UntypedActor {
 			Node modify = nodes.get(((NodeModification) message).id);
 
 			if (((NodeModification) message).localMod != null) {
-//				 modify.setLocalTransform(((NodeModification) message).localMod);
-//				 modify.updateWorldTransform();
+				// modify.setLocalTransform(((NodeModification)
+				// message).localMod);
+				// modify.updateWorldTransform();
 				modify.updateWorldTransform(((NodeModification) message).localMod);
-				
+
 				// modify.setLocalTransform(modify.getWorldTransform());
 			}
 			if (((NodeModification) message).appendTo != null) {
@@ -174,28 +162,28 @@ public class Renderer extends UntypedActor {
 		} else if (message instanceof StartNodeModification) {
 			start = nodes.get(((StartNodeModification) message).id);
 
-		} else if (message instanceof NodeDeletion){
-			NodeDeletion delete = (NodeDeletion)message;
-			for(String id: delete.ids){
+		} else if (message instanceof NodeDeletion) {
+			NodeDeletion delete = (NodeDeletion) message;
+			for (String id : delete.ids) {
 				Node modify = nodes.get(id);
-				ArrayList<Edge> removeEdges = new ArrayList<>(); 
-				if(modify!=null){
-				for(Edge e: modify.getEdges()){
-					removeEdges.add(e);
-					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
-					
-				}
-				for(Edge e : removeEdges){
-					modify.removeEdge(e);
-				}
-			
-				nodes.remove(modify);
+				ArrayList<Edge> removeEdges = new ArrayList<>();
+				if (modify != null) {
+					for (Edge e : modify.getEdges()) {
+						removeEdges.add(e);
+						// nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+
+					}
+					for (Edge e : removeEdges) {
+						modify.removeEdge(e);
+					}
+
+					nodes.remove(modify);
 				}
 			}
 		}
-//		else if(message instanceof Float){
-//			if(medTime==0)medTime=(Float)message;
-//			else medTime=(medTime+(Float)message)/2;
-//		}
+		// else if(message instanceof Float){
+		// if(medTime==0)medTime=(Float)message;
+		// else medTime=(medTime+(Float)message)/2;
+		// }
 	}
 }

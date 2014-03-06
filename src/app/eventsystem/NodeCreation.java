@@ -16,7 +16,7 @@ public class NodeCreation {
 	
 	public Vector impulse;
 	
-	public float w, h, d, r;
+	public float w, h, d, r, hight;
 	
 	public int lats, longs;
 	
@@ -27,10 +27,15 @@ public class NodeCreation {
 	public float radius;
 	
 	public float mass;
+	
+	public float speed;
 
 	public Matrix getModelmatrix() {
 		return modelmatrix;
 	}
-	
+
+	public String getId() {
+		return id;
+	}
 	
 }

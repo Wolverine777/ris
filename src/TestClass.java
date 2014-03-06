@@ -48,8 +48,8 @@ public class TestClass {
 			private static final long serialVersionUID = 7233857901815694877L;
 			public boolean contains(Object o) {
 				for(Node x:this){
-					System.out.println(x.id);
-					if(((Node)o).id.equals(x.id))return true;
+					System.out.println(x.getId());
+					if(((Node)o).getId().equals(x.getId()))return true;
 				}
 		        return false;
 		    }

@@ -42,8 +42,8 @@ public class ObjLoader extends Shape {
 		this(id, shader, new File("obj/cube.obj"), mass);
 	}
 
-	public ObjLoader(String id, Shader shader, File sourcePath, float mass) {
-		this(id, shader, sourcePath, null, mass);
+	public ObjLoader(String id, Shader shader, File sourceFile, float mass) {
+		this(id, shader, sourceFile, null, mass);
 	}
 
 	public ObjLoader(String id, Shader shader, File sourceFile, File sourceTex, float mass) {

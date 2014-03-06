@@ -17,6 +17,7 @@ import vecmath.vecmathimp.MatrixImp;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
+import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import app.Types.KeyMode;
 import app.Types.ObjectTypes;
@@ -44,6 +45,8 @@ public class Simulator extends UntypedActor {
 	private float angle = 0;
 	private StopWatch sw=new StopWatch();
 	private float elapsed=0;
+	//TODO:was besseres überlegen, also simulator die App zu geben?
+	private ActorRef woldState;
     
     private void initialize() {
         getSender().tell(Message.INITIALIZED, self());
@@ -78,31 +81,28 @@ public class Simulator extends UntypedActor {
     private void doSimulation(Node node, SimulateType type, Vector vec){
     	if(type==SimulateType.ROTATE){
     		angle += elapsed *(vec.length()*90);
-//    		angle= 0.5f;
-//    		node.setLocalTransform(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle));
-//    		node.updateWorldTransform();
     		Vector v=node.getWorldTransform().getPosition();
     		
     		Matrix modify=MatrixImp.translate(v.x(),v.y(),v.z()).mult(vecmath.rotationMatrix(vec.x(), vec.y(),vec.z(), angle).mult(MatrixImp.translate(-v.x(),-v.y(),-v.z())));
     		node.updateWorldTransform(modify);
 			angle = 0;
-			getSender().tell(new NodeModification(node.id,modify), self());
-			//möglich: alle matritzen für einen object aufmultiplizeiren und dann schicken. 
+			woldState.tell(new NodeModification(node.getId(),modify), self());
     	}
     	else if(type==SimulateType.TRANSLATE){
-//    		node.setLocalTransform(MatrixImp.translate(vec));
-//    		node.updateWorldTransform();
+    		Matrix modify=MatrixImp.translate(vec.mult(elapsed));
+    		node.updateWorldTransform(modify);
+    		woldState.tell(new NodeModification(node.getId(),/*node.getWorldTransform()*/modify), self());
+    	}
+    	else if(type==SimulateType.TRANSLATEFIX){
     		Matrix modify=MatrixImp.translate(vec);
     		node.updateWorldTransform(modify);
-    		getSender().tell(new NodeModification(node.id,/*node.getWorldTransform()*/modify), self());
+    		woldState.tell(new NodeModification(node.getId(),modify), self());
     	}
     	else if(type==SimulateType.PHYSIC){
     		if(node.force != null){
-//    			node.setLocalTransform(MatrixImp.translate(vec));
-//    			node.updateWorldTransform();
     		Matrix modify=MatrixImp.translate(node.force.mult((elapsed*60)));
     		node.updateWorldTransform(modify);
-    		getSender().tell(new NodeModification(node.id,modify), self());
+    		woldState.tell(new NodeModification(node.getId(),modify), self());
     		node.force=null;
     	    }
     	}
@@ -115,6 +115,7 @@ public class Simulator extends UntypedActor {
         	System.out.println("simulation loop");
             simulate();
         } else if (message == Message.INIT) {
+        	woldState=getSender();
             initialize();
         } else if(message instanceof KeyState){
         	pressedKeys.clear();
@@ -127,39 +128,30 @@ public class Simulator extends UntypedActor {
         	if(nodes.containsKey(((NodeModification) message).id)){
         		Node modify = nodes.get(((NodeModification) message).id);
         		if (((NodeModification) message).localMod != null) {
-//        			 modify.setLocalTransform(((NodeModification) message).localMod);
-//    				 modify.updateWorldTransform();
     				 modify.updateWorldTransform(((NodeModification) message).localMod);
         		}
-//        		if (((NodeModification) message).appendTo != null) {
-//        			modify.appendTo(nodes.get(((NodeModification) message).appendTo));
-//        		}//cause error on run, delets simulations
         	}
         } 
-//        else if (message instanceof StartNodeModification) {
-//        	Node start = nodes.get(((StartNodeModification) message).id);
-//        }
         else if(message instanceof SimulateCreation){
         	SimulateCreation sc=(SimulateCreation)message;
         	Node newNode=null;
         	if(!nodes.containsKey(sc.id)){
-        		System.out.println("jashdlhwidaljhdlahs"+sc.id);
         		//TODO: ein Type reicht nur ein Shape, von den objekten wird nur id und woldtrafo benoetigt.
         		//TODO: Generics?
         		if (((NodeCreation) message).type == ObjectTypes.GROUP) {
         			newNode = nodeFactory.groupNode(((NodeCreation) message).id);
-        			nodes.put(newNode.id, newNode);
+        			nodes.put(newNode.getId(), newNode);
         		} else if (((NodeCreation) message).type == ObjectTypes.CUBE) {
         			newNode = nodeFactory.cube(((NodeCreation) message).id, ((NodeCreation) message).shader, ((NodeCreation) message).w, ((NodeCreation) message).h,
     						((NodeCreation) message).d, ((NodeCreation) message).mass);
-        			nodes.put(newNode.id, newNode);
+        			nodes.put(newNode.getId(), newNode);
         		}else if(((NodeCreation) message).type == ObjectTypes.CAMERA){
         			newNode = nodeFactory.camera(((CameraCreation) message).id);
         			nodes.put(((CameraCreation) message).id, newNode);
         		}else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
     				NodeCreation nc=(NodeCreation) message;
     				newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
-    				nodes.put(newNode.id, newNode);
+    				nodes.put(newNode.getId(), newNode);
         		}
         		
         		else{
@@ -168,13 +160,9 @@ public class Simulator extends UntypedActor {
         	}
         	newNode=nodes.get(sc.id);
         	if(sc.getSimulation()!=SimulateType.NONE){
-//        		System.out.println("next simulation" + simulations.toString());
-//        		System.out.println("haaaaaaaaaaaaaaaaaaaaaaaaaaaaaalllllllllllllllllllooooooooo\n"+newNode.id+sc.getSimulation()+"\n"+"local\n"+newNode.getLocalTransform()+"world\n"+newNode.getWorldTransform()+"keys"+sc.getKeys());
         		simulations.put(newNode, new KeyDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));
-//        		System.out.println("last simulation" + simulations.toString());
         		newNode.setLocalTransform(sc.modelmatrix);
-        		newNode.updateWorldTransform(); //TODO: Node klasse fixen.... was geht denn hier
-//        		System.out.println("simulations\n"+simulations.get(newNode).getVector()+"\n"+simulations.isEmpty()+sc.getSimulation());
+        		newNode.updateWorldTransform();
         		
         	}else{
 //        		simulations.remove(newNode);
@@ -200,9 +188,10 @@ public class Simulator extends UntypedActor {
         	SingelSimulation simulation=(SingelSimulation)message;
         	if(nodes.containsKey(simulation.getNodeId()))doSimulation(nodes.get(simulation.getNodeId()), simulation.getType(), simulation.getVec());
         	else{
-        		nodes.put(simulation.getNodeId(), nodeFactory.groupNode(simulation.getNodeId(), simulation.getModelMatrix()));
-        		doSimulation(nodes.get(simulation.getNodeId()), simulation.getType(), simulation.getVec());
-        		nodes.remove(simulation.getNodeId());
+        		doSimulation(nodeFactory.groupNode(simulation.getNodeId(), simulation.getModelMatrix()), simulation.getType(), simulation.getVec());
+//        		nodes.put(simulation.getNodeId(), nodeFactory.groupNode(simulation.getNodeId(), simulation.getModelMatrix()));
+//        		doSimulation(nodes.get(simulation.getNodeId()), simulation.getType(), simulation.getVec());
+//        		nodes.remove(simulation.getNodeId());
         	}
         }  else if (message instanceof NodeDeletion){
         	NodeDeletion delete = (NodeDeletion)message;
@@ -212,7 +201,7 @@ public class Simulator extends UntypedActor {
 				if(modify!=null){
 				for(Edge e: modify.getEdges()){
 					removeEdges.add(e);
-					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+//					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
 					
 				}
 				for(Edge e : removeEdges){

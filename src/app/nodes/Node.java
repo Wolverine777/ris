@@ -14,7 +14,7 @@ import app.edges.Edge;
 public abstract class Node {
     private Matrix modelMatrix, worldTrafo;
     protected List<Edge> edges = new ArrayList<Edge>();
-    public String id;
+    private String id;
     public Vector velocity;
     public Vector acceleration;
     public Vector force;
@@ -69,7 +69,7 @@ public abstract class Node {
     }
 
     public void removeEdge(Edge e) {
-        edges.remove(e);
+        if(edges.remove(e))e.getOtherNode(this).removeEdge(e);
     }
 
     public Edge appendTo(Node n) {
@@ -122,4 +122,8 @@ public abstract class Node {
 	}
 
 	public abstract void display(Matrix m);
+
+	public String getId() {
+		return id;
+	}
 }

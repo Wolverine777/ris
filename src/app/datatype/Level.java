@@ -26,6 +26,7 @@ public class Level {
 	}
 	
 	private void makeLevel(Vector centerPosition, float width, float depth){
+		System.out.println("level center vec: "+centerPosition);
 		levelPoints = HashBasedTable.create((int)(width*GRIDREFACTOR),(int)(depth*GRIDREFACTOR));
 		for(float x=centerPosition.x()-(width/2)*GRIDREFACTOR; x<=centerPosition.x()+(width/2)*GRIDREFACTOR; x++){
 			for(float z=centerPosition.z()-(depth/2)*GRIDREFACTOR; z<=centerPosition.z()+(depth/2)*GRIDREFACTOR; z++){
@@ -91,11 +92,18 @@ public class Level {
 	private Float getNearest(Float posVal, boolean xOrz){
 		Float max=0.0F,min=0.0F;
 		if(xOrz){
-			NavigableSet<Float> xValues = new TreeSet<Float>(levelPoints.rowKeySet());
+			NavigableSet<Float> xValues = new TreeSet<Float>();
+			//Erzeugt Set mit nur Positionswerten die nicht geblockt sind(>0)
+			for(Cell<Float, Float, LevelNode> c:levelPoints.cellSet()){
+				if(c.getValue().getVal()>0)xValues.add(c.getRowKey());
+			}
 			max= xValues.ceiling(posVal);
 			min= xValues.floor(posVal);
 		}else{
-			NavigableSet<Float> zValues = new TreeSet<Float>(levelPoints.columnKeySet());
+			NavigableSet<Float> zValues = new TreeSet<Float>();
+			for(Cell<Float, Float, LevelNode> c:levelPoints.cellSet()){
+				if(c.getValue().getVal()>0)zValues.add(c.getColumnKey());
+			}
 			max= zValues.ceiling(posVal);
 			min= zValues.floor(posVal);
 		}

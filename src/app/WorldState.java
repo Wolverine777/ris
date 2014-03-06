@@ -23,7 +23,6 @@ import app.Types.Events;
 import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.SimulateType;
-import app.datatype.Level;
 import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.FloorCreation;
@@ -41,13 +40,7 @@ import app.messages.RendererInitialized;
 import app.nodes.GroupNode;
 import app.nodes.Node;
 import app.nodes.camera.Camera;
-import app.nodes.shapes.Cube;
-import app.nodes.shapes.ObjLoader;
-import app.nodes.shapes.Pipe;
-import app.nodes.shapes.Plane;
-import app.nodes.shapes.Shape;
-import app.nodes.shapes.Sphere;
-import app.nodes.shapes.Torus;
+import app.nodes.shapes.*;
 import app.shader.Shader;
 import app.toolkit.StopWatch;
 
@@ -74,7 +67,7 @@ public abstract class WorldState extends UntypedActor{
 	protected Node startNode;
 	protected Camera camera;
 	protected Shader shader;
-	protected Plane floor=new Plane("Floor", shader, 2, 2, 1.0f);
+	protected Plane floor=new Plane("Floor", shader, 2, 2, -2.0f, 1.0f);
 
 	private void loop() {
 
@@ -147,6 +140,7 @@ public abstract class WorldState extends UntypedActor{
 			unitState.put(ai, false);
 			
 			observers.put(Events.NODE_CREATION, renderer);
+			observers.put(Events.NODE_CREATION, ai);
 			observers.put(Events.NODE_MODIFICATION, renderer);
 			observers.put(Events.NODE_MODIFICATION, simulator);
 			observers.put(Events.NODE_MODIFICATION, physic);
@@ -222,7 +216,7 @@ public abstract class WorldState extends UntypedActor{
 				if(modify!=null){
 				for(Edge e: modify.getEdges()){
 					removeEdges.add(e);
-					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+//					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
 					
 				}
 				for(Edge e : removeEdges){
@@ -242,19 +236,19 @@ public abstract class WorldState extends UntypedActor{
 
 	protected void setCamera(Camera cam) {
 		camera = cam;
-		nodes.put(cam.id, cam);
+		nodes.put(cam.getId(), cam);
 		
 		CameraCreation cc = new CameraCreation();
-		cc.id = cam.id;
+		cc.id = cam.getId();
 		announce(cc);
 	}
 	
 	protected void setStart(GroupNode n) {
 		startNode = n;
-		nodes.put(n.id, n);
+		nodes.put(n.getId(), n);
 		
 		StartNodeModification snm = new StartNodeModification();
-		snm.id = n.id;
+		snm.id = n.getId();
 		announce(snm);
 	}
 	
@@ -262,7 +256,7 @@ public abstract class WorldState extends UntypedActor{
 		n.updateWorldTransform(m);
 		
 		NodeModification nm = new NodeModification();
-		nm.id = n.id;
+		nm.id = n.getId();
 //		nm.localMod = n.getWorldTransform();
 		nm.localMod = m;
 		announce(nm);
@@ -272,10 +266,10 @@ public abstract class WorldState extends UntypedActor{
 		nodeAppend.appendTo(toNode);
 		
 		NodeModification nm = new NodeModification();
-		nm.id = nodeAppend.id;
-		nm.appendTo = toNode.id;
+		nm.id = nodeAppend.getId();
+		nm.appendTo = toNode.getId();
 		
-		System.out.println("__ Appending " + nodeAppend.id + " to " + toNode.id);
+		System.out.println("__ Appending " + nodeAppend.getId() + " to " + toNode.getId());
 		
 		
 		announce(nm);
@@ -353,8 +347,8 @@ public abstract class WorldState extends UntypedActor{
         return sphere;
 	}
 	
-	protected Plane createPlane(String id, Shader shader, float width, float depth, float mass) {
-		Plane plane = nodeFactory.plane(id, shader, width, depth, mass);
+	protected Plane createPlane(String id, Shader shader, float width, float depth, float hight, float mass) {
+		Plane plane = nodeFactory.plane(id, shader, width, depth, hight, mass);
 		nodes.put(id, plane);
 		
 		NodeCreation n = new NodeCreation();
@@ -362,6 +356,7 @@ public abstract class WorldState extends UntypedActor{
         n.type = ObjectTypes.PLANE;
         n.shader = shader;
         n.mass = mass;
+        n.hight= hight;
         
         n.w = width;
         n.d = depth;
@@ -371,13 +366,14 @@ public abstract class WorldState extends UntypedActor{
 	}
 	
 	protected void announceFloor(Plane floor) {
-		nodes.put(floor.id, floor);
+		nodes.put(floor.getId(), floor);
 		
 		NodeCreation n = new NodeCreation();
-        n.id = floor.id;
+        n.id = floor.getId();
         n.type = ObjectTypes.PLANE;
         n.shader = shader;
         n.mass = floor.getMass();
+        n.hight = floor.getHight();
         
         n.w = floor.getW();
         n.d = floor.getD();
@@ -401,11 +397,44 @@ public abstract class WorldState extends UntypedActor{
         
         return obj;
 	}
+	
+	protected Car createCar(String id, Shader shader, File sourceFile, float speed, float mass){
+		Car car = nodeFactory.car(id, shader, sourceFile, speed, mass);
+		nodes.put(id, car);
+		
+		NodeCreation n = new NodeCreation();
+        n.id = id;
+        n.type = ObjectTypes.CAR;
+        n.shader = shader;
+        n.sourceFile=sourceFile;
+        n.speed=speed;
+        n.mass = mass;
+        
+        announce(n);
+        
+        return car;
+	}
+	
+	protected Coin createCoin(String id, Shader shader, File sourceFile, float mass){
+		Coin coin = nodeFactory.coin(id, shader, sourceFile, mass);
+		nodes.put(id, coin);
+		
+		NodeCreation n = new NodeCreation();
+        n.id = id;
+        n.type = ObjectTypes.COIN;
+        n.shader = shader;
+        n.sourceFile=sourceFile;
+        n.mass = mass;
+        
+        announce(n);
+        
+        return coin;
+	}
 
 	protected void addPhysic(Cube cube){
 		
 		NodeCreation n = new NodeCreation();
-		n.id = cube.id;
+		n.id = cube.getId();
 		n.type = ObjectTypes.CUBE;
 		n.shader = cube.getShader();
 		n.d = cube.getD2();
@@ -420,12 +449,13 @@ public abstract class WorldState extends UntypedActor{
 			
 	}
 	
+	//TODO: add Psysic und ai in create.. integrieren
 	protected void addPhysic(Cube cube, Vector impulse){
 		
 				
 		NodeCreation n = new NodeCreation();
-		n.modelmatrix = (nodes.get(cube.id).getWorldTransform());
-		n.id = cube.id;
+		n.modelmatrix = (nodes.get(cube.getId()).getWorldTransform());
+		n.id = cube.getId();
 		n.type = ObjectTypes.CUBE;
 		n.shader = cube.getShader();
 		n.impulse = impulse;
@@ -440,7 +470,7 @@ public abstract class WorldState extends UntypedActor{
 		physic.tell(n, self());
 //		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?
 //		sc.setSimulation(SimulateType.PHYSIC);
-		SimulateCreation sc = new SimulateCreation(cube.id, null, SimulateType.PHYSIC, null, null);
+		SimulateCreation sc = new SimulateCreation(cube.getId(), null, SimulateType.PHYSIC, null, null);
 		sc.modelmatrix = n.getModelmatrix();
 		sc.type = ObjectTypes.CUBE;
 		simulator.tell(sc,self());
@@ -451,8 +481,8 @@ public abstract class WorldState extends UntypedActor{
 		
 		
 		NodeCreation n = new NodeCreation();
-		n.modelmatrix = (nodes.get(sphere.id).getWorldTransform());
-		n.id = sphere.id;
+		n.modelmatrix = (nodes.get(sphere.getId()).getWorldTransform());
+		n.id = sphere.getId();
 		n.type = ObjectTypes.SPHERE;
 		n.shader = sphere.getShader();
 		n.impulse = impulse;
@@ -464,7 +494,7 @@ public abstract class WorldState extends UntypedActor{
 		physic.tell(n, self());
 //		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?
 //		sc.setSimulation(SimulateType.PHYSIC);
-		SimulateCreation sc = new SimulateCreation(sphere.id, null, SimulateType.PHYSIC, null, null);
+		SimulateCreation sc = new SimulateCreation(sphere.getId(), null, SimulateType.PHYSIC, null, null);
 		sc.modelmatrix = n.getModelmatrix();
 		sc.type = ObjectTypes.CUBE;
 		simulator.tell(sc,self());
@@ -483,7 +513,7 @@ public abstract class WorldState extends UntypedActor{
 	}
 	
 	protected void simulateOnKey(Node object, Set<Integer> keys, SimulateType simulation, KeyMode mode, Vector vec, ObjectTypes type){ //TODO:better solution for type
-		SimulateCreation sc=new SimulateCreation(object.id, keys, simulation, mode, vec);
+		SimulateCreation sc=new SimulateCreation(object.getId(), keys, simulation, mode, vec);
 		sc.type=type;
 		sc.modelmatrix=object.getWorldTransform();
 		if(object instanceof Shape){
@@ -519,35 +549,35 @@ public abstract class WorldState extends UntypedActor{
 		}
 	}
 	
-	protected void addToAi(Cube cube){
-		
-		
-		NodeCreation n = new NodeCreation();
-		n.modelmatrix = (nodes.get(cube.id).getWorldTransform());
-		n.id = cube.id;
-		n.type = ObjectTypes.CUBE;
-		n.shader = cube.getShader();
-		n.d = cube.getD2();
-		n.w = cube.getW2();
-	    n.h = cube.getH2();
-		n.center = cube.getCenter();
-		n.radius = cube.getRadius();
-		
-		ai.tell(n, self());
-	}
-	
-	protected void addToAi(Sphere sphere){
-		
-		
-		NodeCreation n = new NodeCreation();
-		n.modelmatrix = (nodes.get(sphere.id).getWorldTransform());
-		n.id = sphere.id;
-		n.type = ObjectTypes.SPHERE;
-		n.shader = sphere.getShader();
-		n.center = sphere.getCenter();
-		n.radius = sphere.getRadius();
-		
-		
-		ai.tell(n, self());
-	}
+//	protected void addToAi(Cube cube){
+//		
+//		
+//		NodeCreation n = new NodeCreation();
+//		n.modelmatrix = (nodes.get(cube.getId()).getWorldTransform());
+//		n.id = cube.getId();
+//		n.type = ObjectTypes.CUBE;
+//		n.shader = cube.getShader();
+//		n.d = cube.getD2();
+//		n.w = cube.getW2();
+//	    n.h = cube.getH2();
+//		n.center = cube.getCenter();
+//		n.radius = cube.getRadius();
+//		
+//		ai.tell(n, self());
+//	}
+//	
+//	protected void addToAi(Sphere sphere){
+//		
+//		
+//		NodeCreation n = new NodeCreation();
+//		n.modelmatrix = (nodes.get(sphere.getId()).getWorldTransform());
+//		n.id = sphere.getId();
+//		n.type = ObjectTypes.SPHERE;
+//		n.shader = sphere.getShader();
+//		n.center = sphere.getCenter();
+//		n.radius = sphere.getRadius();
+//		
+//		
+//		ai.tell(n, self());
+//	}
 }
