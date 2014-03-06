@@ -1,16 +1,15 @@
 package app.nodes;
 
-import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
-import vecmath.Matrix;
 import app.nodes.camera.Camera;
 import app.nodes.shapes.Cube;
-import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Pipe;
 import app.nodes.shapes.Plane;
 import app.nodes.shapes.Sphere;
 import app.shader.Shader;
+import app.vecmath.Matrix;
 
 /**
  * Creates and keeps track of created nodes for easy modification
@@ -47,22 +46,21 @@ public class NodeFactory {
 		return n;
 	}
 	
-	public Cube cube(String id, Shader shader, float mass) {
-		Cube n = new Cube(id, shader, mass);
+	public Cube cube(String id, Shader shader) {
+		Cube n = new Cube(id, shader);
 		return n;
 	}
 
-	public Cube cube(String id, Shader shader, float w, float h, float d, float mass) {
-		Cube n = new Cube(id, shader, w, h, d, mass);
+	public Cube cube(String id, Shader shader, float w, float h, float d) {
+		Cube n = new Cube(id, shader, w, h, d);
 		return n;
 	}
 	
-	public Pipe pipe(String id, Shader shader, float r, int lats, int longs, float mass) {
-		Pipe p = new Pipe(id, shader, r, lats, longs, mass);
+	public Pipe pipe(String id, Shader shader, float r, int lats, int longs) {
+		Pipe p = new Pipe(id, shader, r, lats, longs);
 		return p;
 	}
 	
-<<<<<<< HEAD
 	public Sphere sphere(String id, Shader shader) {
 		Sphere s = new Sphere(id, shader);
 		return s;
@@ -72,19 +70,4 @@ public class NodeFactory {
 		Plane p = new Plane(id, shader, width, depth);
 		return p;
 	}
-=======
-	public Sphere sphere(String id, Shader shader, float mass) {
-		Sphere s = new Sphere(id, shader, mass);
-		return s;
-	}
-	
-	public Plane plane(String id, Shader shader, float width, float depth, float mass) {
-		Plane p = new Plane(id, shader, width, depth, mass);
-		return p;
-	}
-	
-	public ObjLoader obj(String id, Shader shader, File sourceFile, File sourceTex, float mass){
-		return new ObjLoader(id, shader, sourceFile, sourceTex, mass);
-	}
->>>>>>> refs/remotes/origin/test
 }

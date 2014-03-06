@@ -1,7 +1,6 @@
 package app.nodes.shapes;
 
 import java.io.File;
-<<<<<<< HEAD
 import app.nodes.shapes.Texture;
 import org.lwjgl.BufferUtils;
 import app.shader.Shader;
@@ -9,23 +8,10 @@ import app.vecmath.Color;
 import app.vecmath.Vector;
 import static app.nodes.shapes.Vertex.*;
 import static app.vecmathimp.FactoryDefault.vecmath;
-=======
-
-import app.nodes.shapes.Texture;
-
-import org.lwjgl.BufferUtils;
-
-import vecmath.Color;
-import vecmath.Vector;
-import app.shader.Shader;
-import static app.nodes.shapes.Vertex.*;
-import static vecmath.vecmathimp.FactoryDefault.vecmath;
->>>>>>> refs/remotes/origin/test
 
 public class Plane extends Shape {
 
 	// Width and depth of the plane divided by 2.
-<<<<<<< HEAD
 	private float w2;
 	private float d2;
 
@@ -39,21 +25,6 @@ public class Plane extends Shape {
 
 	public Plane(String id, Shader shader, float w, float d, String sourceTex) {
 		super(id, shader);
-=======
-	public float w2;
-	public float d2;
-
-	public Plane(String id, Shader shader, float mass) {
-		this(id, shader, 10f, 10f, mass);
-	}
-
-	public Plane(String id, Shader shader, float w, float d, float mass) {
-		this(id, shader, w, d, null, mass);
-	}
-
-	public Plane(String id, Shader shader, float w, float d, String sourceTex, float mass) {
-		super(id, shader,mass);
->>>>>>> refs/remotes/origin/test
 		w2 = w / 2;
 		d2 = d / 2;
 
@@ -106,14 +77,4 @@ public class Plane extends Shape {
 		colorData.rewind();
 		normalData.rewind();
 	}
-<<<<<<< HEAD
-=======
-	public float getW() {
-		return w2*2;
-	}
-
-	public float getD() {
-		return d2*2;
-	}
->>>>>>> refs/remotes/origin/test
 }

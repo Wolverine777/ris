@@ -4,14 +4,14 @@
  *******************************************************************************/
 package app.toolkit;
 
+import static app.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
-import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import vecmath.Matrix;
+import app.vecmath.Matrix;
 
 
 //Select the factory we want to use.

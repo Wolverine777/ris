@@ -5,7 +5,7 @@
 package app.toolkit;
 
 import static org.lwjgl.opengl.GL20.glUniform3f;
-import vecmath.Vector;
+import app.vecmath.Vector;
 
 /**
  * Encapsulate the transfer of vector values from the OpenGL application to an

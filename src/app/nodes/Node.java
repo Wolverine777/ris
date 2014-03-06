@@ -5,31 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import vecmath.Matrix;
-import vecmath.Vector;
-import vecmath.vecmathimp.FactoryDefault;
 import app.edges.DefaultEdge;
 import app.edges.Edge;
-<<<<<<< HEAD
 import app.vecmath.Matrix;
 import app.vecmath.Vector;
 import app.vecmathimp.FactoryDefault;
 import app.vecmathimp.VectorImp;
-=======
->>>>>>> refs/remotes/origin/test
 
 public abstract class Node {
     private Matrix modelMatrix, worldTrafo;
     protected List<Edge> edges = new ArrayList<Edge>();
     public String id;
     public Vector velocity;
-<<<<<<< HEAD
-=======
-    public Vector acceleration;
-    public Vector force;
-	public Vector impulse;
-	public float mass;
->>>>>>> refs/remotes/origin/test
 
     public Matrix getWorldTransform() {
         return worldTrafo;
@@ -37,11 +24,6 @@ public abstract class Node {
 
     protected Node(String id) {
     	this.id = id;
-<<<<<<< HEAD
-=======
-    	setLocalTransform(FactoryDefault.vecmath.identityMatrix());
-    	updateWorldTransform();
->>>>>>> refs/remotes/origin/test
     	   }
 
     protected Node(String id, Matrix modelMatrix) {
@@ -100,8 +82,7 @@ public abstract class Node {
     public Edge append(Node n, Map<String, String> data) {
         return new DefaultEdge(this, n, data);
     }
-    
-   
+
     public Map<String, String> getData(Node n) {
         for (Edge e : edges) {
             if (e.getOtherNode(this) == n) return e.getData();
@@ -118,26 +99,6 @@ public abstract class Node {
 	public void setVelocity(Vector velocity) {
 		this.velocity = velocity;
 	}
-<<<<<<< HEAD
 
 	public abstract void display();
-=======
-	public Vector getForce() {
-		return force;
-	}
-
-	public void setForce(Vector force) {
-		this.force = force;
-	}
-	
-	public List<Edge> getEdges() {
-		return edges;
-	}
-	
-	public float getMass() {
-		return mass;
-	}
-
-	public abstract void display(Matrix m);
->>>>>>> refs/remotes/origin/test
 }

@@ -1,14 +1,15 @@
 package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
+import static app.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glViewport;
-import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.LWJGLException;
@@ -17,22 +18,19 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
-import vecmath.Matrix;
 import akka.actor.UntypedActor;
-import app.Types.ObjectTypes;
-import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
-import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
 import app.eventsystem.StartNodeModification;
+import app.eventsystem.Types;
 import app.messages.Message;
 import app.messages.RendererInitialization;
 import app.messages.RendererInitialized;
 import app.nodes.Node;
 import app.nodes.camera.Camera;
-import app.nodes.shapes.Shape;
 import app.shader.Shader;
+import app.vecmath.Matrix;
 
 public class Renderer extends UntypedActor {
 	private static final int width = 640;
@@ -45,7 +43,6 @@ public class Renderer extends UntypedActor {
 	private Shader shader;
 	private Node start;
 	private Camera camera;
-//	private Float medTime=0f;
 
 	private void initialize() {
 		try {
@@ -98,7 +95,7 @@ public class Renderer extends UntypedActor {
 		Shader.setProjectionMatrix(projectionMatrix);
 
 		camera.activate();
-		start.display(start.getWorldTransform());
+		start.display();
 
 		Display.setTitle("App");
 		Display.update();
@@ -106,13 +103,7 @@ public class Renderer extends UntypedActor {
 		getSender().tell(Message.DONE, self());
 
 		if (Display.isCloseRequested()) {
-<<<<<<< HEAD
 			Display.destroy();
-=======
-//			System.out.println("Average ms took:"+medTime); //TODO: nullpointer
-			Display.destroy();
-			context().system().stop(getSender());
->>>>>>> refs/remotes/origin/test
 			context().system().shutdown();
 		}
 
@@ -125,38 +116,28 @@ public class Renderer extends UntypedActor {
 		} else if (message instanceof RendererInitialization) {
 			initialize();
 		} else if (message instanceof NodeCreation) {
-			if (((NodeCreation) message).type == ObjectTypes.GROUP) {
+			System.out.println("NodeCreation");
+
+			if (((NodeCreation) message).type == Types.GROUP) {
 				Node newNode = nodeFactory
 						.groupNode(((NodeCreation) message).id);
 				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == ObjectTypes.CUBE) {
+			} else if (((NodeCreation) message).type == Types.CUBE) {
+
+				System.out.println("Shadering cube with "
+						+ ((NodeCreation) message).shader);
 
 				Node newNode = nodeFactory.cube(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
 						((NodeCreation) message).w, ((NodeCreation) message).h,
-						((NodeCreation) message).d, ((NodeCreation) message).mass);
+						((NodeCreation) message).d);
 				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == ObjectTypes.PIPE) {
+			} else if (((NodeCreation) message).type == Types.PIPE) {
 				Node newNode = nodeFactory.pipe(((NodeCreation) message).id,
 						((NodeCreation) message).shader,
 						((NodeCreation) message).r,
 						((NodeCreation) message).lats,
-						((NodeCreation) message).longs,((NodeCreation) message).mass);
-				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == ObjectTypes.SPHERE) {
-				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
-						((NodeCreation) message).shader, ((NodeCreation) message).mass);
-				nodes.put(newNode.id, newNode);
-			} else if (((NodeCreation) message).type == ObjectTypes.PLANE) {
-				Node newNode = nodeFactory.plane(((NodeCreation) message).id,
-						((NodeCreation) message).shader,
-						((NodeCreation) message).w, ((NodeCreation) message).d, ((NodeCreation) message).mass);
-				System.out.println("renderer mass: " + newNode.mass);
-				nodes.put(newNode.id, newNode);
-			}else if(((NodeCreation) message).type == ObjectTypes.OBJECT){
-				NodeCreation nc=(NodeCreation) message;
-				Node newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
-//				System.out.println("center objtest renderer: " + ((Shape) newNode).getCenter() + "Postion: " + newNode.getWorldTransform().getPosition());
+						((NodeCreation) message).longs);
 				nodes.put(newNode.id, newNode);
 			} else if (((NodeCreation) message).type == Types.SPHERE) {
 				Node newNode = nodeFactory.sphere(((NodeCreation) message).id,
@@ -170,47 +151,40 @@ public class Renderer extends UntypedActor {
 			}
 
 		} else if (message instanceof CameraCreation) {
+			System.out.println("CameraCreation");
+
 			camera = nodeFactory.camera(((CameraCreation) message).id);
 			nodes.put(((CameraCreation) message).id, camera);
+
 		} else if (message instanceof NodeModification) {
+			System.out.println("NodeModification");
+
+			System.out.println("Nodes " + nodes);
+			System.out.println("Accesing " + ((NodeModification) message).id);
+
 			Node modify = nodes.get(((NodeModification) message).id);
 
 			if (((NodeModification) message).localMod != null) {
-//				 modify.setLocalTransform(((NodeModification) message).localMod);
-//				 modify.updateWorldTransform();
+				// modify.setLocalTransform(((NodeModification)
+				// message).localMod);
 				modify.updateWorldTransform(((NodeModification) message).localMod);
-				
 				// modify.setLocalTransform(modify.getWorldTransform());
 			}
 			if (((NodeModification) message).appendTo != null) {
+
+				System.out.println("Appending "
+						+ ((NodeModification) message).id + " to "
+						+ ((NodeModification) message).appendTo);
+
 				modify.appendTo(nodes
 						.get(((NodeModification) message).appendTo));
 			}
+
 		} else if (message instanceof StartNodeModification) {
+			System.out.println("StartNodeModification");
+
 			start = nodes.get(((StartNodeModification) message).id);
 
-		} else if (message instanceof NodeDeletion){
-			NodeDeletion delete = (NodeDeletion)message;
-			for(String id: delete.ids){
-				Node modify = nodes.get(id);
-				ArrayList<Edge> removeEdges = new ArrayList<>(); 
-				if(modify!=null){
-				for(Edge e: modify.getEdges()){
-					removeEdges.add(e);
-					nodes.get(e.getOtherNode(modify).id).removeEdge(e);
-					
-				}
-				for(Edge e : removeEdges){
-					modify.removeEdge(e);
-				}
-			
-				nodes.remove(modify);
-				}
-			}
 		}
-//		else if(message instanceof Float){
-//			if(medTime==0)medTime=(Float)message;
-//			else medTime=(medTime+(Float)message)/2;
-//		}
 	}
 }

@@ -1,9 +1,8 @@
 package app.nodes.camera;
 
-import vecmath.Matrix;
-import vecmath.vecmathimp.FactoryDefault;
 import app.nodes.Node;
 import app.shader.Shader;
+import app.vecmathimp.FactoryDefault;
 
 public class Camera extends Node {
 	public Camera(String id){
@@ -11,7 +10,7 @@ public class Camera extends Node {
 	}
 	
 	@Override
-	public void display(Matrix m) {
+	public void display() {
 	}
 	
 	public void activate(){

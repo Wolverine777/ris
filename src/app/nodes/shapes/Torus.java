@@ -1,29 +1,17 @@
 package app.nodes.shapes;
 
 import static app.nodes.shapes.Vertex.*;
-<<<<<<< HEAD
 import static app.vecmathimp.FactoryDefault.vecmath;
-=======
-import static vecmath.vecmathimp.FactoryDefault.vecmath;
->>>>>>> refs/remotes/origin/test
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.shader.Shader;
-<<<<<<< HEAD
 import app.vecmath.Vector;
-=======
->>>>>>> refs/remotes/origin/test
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-<<<<<<< HEAD
-=======
-import vecmath.Vector;
-
->>>>>>> refs/remotes/origin/test
 /**
  * Torus (the donut-ish thing)
  * 
@@ -39,10 +27,6 @@ public class Torus extends Shape {
 	// Smoothness
 	float uStep;
 	float vStep;
-<<<<<<< HEAD
-=======
-	float uS, vS;
->>>>>>> refs/remotes/origin/test
 
 	private Vertex[] vertices;
 
@@ -50,7 +34,6 @@ public class Torus extends Shape {
 	private List<Vertex> vL = new ArrayList<Vertex>();
 	private Vector[] nL;
 
-<<<<<<< HEAD
 	public Torus(String id, Shader shader) {
 		this(id, shader, 2f, 1f, 12, 12, true);
 	}
@@ -62,19 +45,6 @@ public class Torus extends Shape {
 	public Torus(String id, Shader shader, float rCenter, float rTube,
 			float uS, float vS, boolean useNormals) {
 		super(id, shader);
-=======
-	public Torus(String id, Shader shader, float mass) {
-		this(id, shader, 2f, 1f, 12, 12, true, mass);
-	}
-
-	public Torus(String id, Shader shader, float rCenter, float rTube, float mass) {
-		this(id, shader, rCenter, rTube, 12, 12, true, mass);
-	}
-
-	public Torus(String id, Shader shader, float rCenter, float rTube,
-			float uS, float vS, boolean useNormals, float mass) {
-		super(id, shader, mass);
->>>>>>> refs/remotes/origin/test
 		
 		mode = GL11.GL_QUAD_STRIP;
 		
@@ -160,15 +130,4 @@ public class Torus extends Shape {
 			}
 		}
 	}
-<<<<<<< HEAD
-=======
-	
-	public float getuS() {
-		return uS;
-	}
-
-	public float getvS() {
-		return vS;
-	}
->>>>>>> refs/remotes/origin/test
 }

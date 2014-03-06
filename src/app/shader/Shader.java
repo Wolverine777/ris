@@ -9,15 +9,17 @@ import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.util.LinkedList;
 
 import org.lwjgl.opengl.GL20;
 
-import vecmath.Matrix;
-import vecmath.vecmathimp.FactoryDefault;
-import app.toolkit.BasicFunctions;
 import app.toolkit.MatrixUniform;
 import app.toolkit.Util;
+import app.vecmath.Matrix;
+import app.vecmathimp.FactoryDefault;
 
 public class Shader {
 	private static Matrix viewMatrix = FactoryDefault.vecmath.identityMatrix();
@@ -90,14 +92,14 @@ public class Shader {
 	public static int normalAttribIdx = 2;
 	
 	public Shader(){
-		vsSource =BasicFunctions.readFile(new File("src/app/shadercode/basicVertex.txt"));
-		fsSource = BasicFunctions.readFile(new File("src/app/shadercode/basicFragment.txt"));
+		vsSource =readFile(new File("src/app/shadercode/basicVertex.txt"));
+		fsSource = readFile(new File("src/app/shadercode/basicFragment.txt"));
 		init();
 	}
 	
 	public Shader(File vertexShader, File fragmentShader){
-		vsSource =BasicFunctions.readFile(vertexShader);
-		fsSource = BasicFunctions.readFile(fragmentShader);
+		vsSource =readFile(vertexShader);
+		fsSource = readFile(fragmentShader);
 		init();
 	}
 	
@@ -136,5 +138,21 @@ public class Shader {
 		viewMatrixUniform = new MatrixUniform(program, "viewMatrix");
 		projectionMatrixUniform = new MatrixUniform(program, "projectionMatrix");
 	}
-	
+	private String[] readFile(File f){
+		LinkedList<String> lines=new LinkedList<String>();
+	    try {
+	    	BufferedReader br = new BufferedReader(new FileReader(f));
+	        String line = br.readLine();
+	        
+	        while (line != null) {
+	        	lines.add(line);
+	        	lines.add("\n");
+	            line = br.readLine();
+	        }
+	        br.close();
+	    }catch(Exception e){
+	    	System.out.println(e.getMessage());
+	    }
+		return lines.toArray(new String[0]);
+	}
 }
