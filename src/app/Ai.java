@@ -208,6 +208,9 @@ public class Ai extends UntypedActor {
 				cars.put(nc.id, car);
 			}else if(nc.type == ObjectTypes.COIN){
 				coins.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.mass));
+			}else if(((NodeCreation) message).type == ObjectTypes.CANON){
+				Node newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
+				nonAiNodes.put(newNode.getId(), newNode);
 			}
 		} else if(message instanceof NodeModification){
 			NodeModification nm=(NodeModification) message;

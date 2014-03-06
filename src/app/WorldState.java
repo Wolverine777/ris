@@ -75,7 +75,7 @@ public abstract class WorldState extends UntypedActor{
 	protected Camera camera;
 	protected Shader shader;
 	protected Plane floor=new Plane("Floor", shader, 2, 2, -2.0f, 1.0f);
-	protected Canon canon = new Canon("Canon", shader, new File("obj/Sphere.obj"), null, 1.0f);
+//	protected Canon canon;
 	private Set<Integer> pressedKeys = new HashSet<Integer>();
     private Set<Integer> toggeled=new HashSet<Integer>();
     private float canonballnumber = 0;
@@ -236,6 +236,14 @@ public abstract class WorldState extends UntypedActor{
 					observer.tell(event, self()); 
 				}
 			}
+			if(event instanceof NodeModification){
+				if(((NodeModification) event).id.equals("Canon")){
+					Node modify = nodes.get(((NodeModification) event).id);
+					if (((NodeModification) event).localMod != null) {
+						modify.updateWorldTransform(((NodeModification) event).localMod);
+					}
+				}
+			}
 		} else if (event instanceof NodeDeletion){
 			NodeDeletion delete = (NodeDeletion)event;
 			for(String id: delete.ids){
@@ -375,6 +383,38 @@ public abstract class WorldState extends UntypedActor{
         return sphere;
 	}
 	
+	protected Canon createCanon(String id, Shader shader, File sourceFile, float mass){
+		Canon canon = nodeFactory.canon(id, shader, sourceFile, mass);
+		nodes.put(id, canon);
+		
+		NodeCreation n = new NodeCreation();
+		n.id = id;
+	    n.type = ObjectTypes.CANON;
+	    n.shader = shader;
+	    n.sourceFile = sourceFile;
+	    n.mass = mass;
+	    
+
+	    announce(n);
+	    return canon;
+	}
+	
+	protected Canon createCanon(String id, Shader shader, File sourceFile,File sourceTex, float mass){
+		Canon canon = nodeFactory.canon(id, shader, sourceFile, sourceTex, mass);
+		nodes.put(id, canon);
+		
+		NodeCreation n = new NodeCreation();
+		n.id = id;
+	    n.type = ObjectTypes.CANON;
+	    n.shader = shader;
+	    n.sourceFile = sourceFile;
+	    n.mass = mass;
+	    
+
+	    announce(n);
+	    return canon;
+	}
+	
 	protected Plane createPlane(String id, Shader shader, float width, float depth, float hight, float mass) {
 		Plane plane = nodeFactory.plane(id, shader, width, depth, hight, mass);
 		nodes.put(id, plane);
@@ -409,6 +449,7 @@ public abstract class WorldState extends UntypedActor{
         announce(n);
 	}
 	
+
 	protected ObjLoader createObject(String id, Shader shader, File sourceFile, File sourceTex, float mass) {
 		ObjLoader obj = nodeFactory.obj(id, shader, sourceFile, sourceTex, mass);
 		nodes.put(id, obj);
@@ -657,8 +698,10 @@ public abstract class WorldState extends UntypedActor{
 	}
 	
 	protected void generateCanonBall(){
+		Node canon = nodes.get("Canon");
 		Node cs = createSphere("CanonBall" + canonballnumber, shader, 1f);
-		transform(cs, vecmath.translationMatrix(-2, 2, 0) );
+		transform(cs, vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
+		transform(cs, vecmath.translationMatrix(((Canon) canon).getSpawn()));
 		append(cs, startNode);
 		canonballnumber++;
 		
