@@ -154,7 +154,7 @@ public class Physic extends UntypedActor {
 	private void collisionGroundPosition(String id, Node n){
 		
 		float durchlauf = 0;
-		System.out.println("collision ground posi: " + n.getId());
+//		System.out.println("collision ground posi: " + n.getId());
 		
 		
 				

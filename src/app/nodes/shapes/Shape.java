@@ -132,7 +132,7 @@ public abstract class Shape extends Node {
 		}
 		
 //		setRadius(Math.max(Math.max((Math.abs(xGroß - xKlein)),Math.abs(yGroß - yKlein)), Math.abs(zGroß - zKlein)));
-		 System.out.println("Radius für: " + super.getId() + " " + radius);
+//		 System.out.println("Radius für: " + super.getId() + " " + radius);
 		
 //		System.out.println("Neues center für Cubezuerst: " + super.id + center.toString());
 	}
@@ -141,7 +141,8 @@ public abstract class Shape extends Node {
 	public void updateWorldTransform(Matrix previousTrafo){
 		super.updateWorldTransform(previousTrafo);
 	    center = previousTrafo.mult(MatrixImp.translate(center)).getPosition();
-	    System.out.println("Neues center: " + super.getId() + center.toString());
+	    
+//	    System.out.println("Neues center: " + super.getId() + center.toString());
 //	    System.out.println("Radius für Cube: " + super.id + radius);
 	}
 	

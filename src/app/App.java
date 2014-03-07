@@ -72,6 +72,7 @@ public class App extends WorldState {
 		Canon canon = createCanon("Canon", shader, new File("obj/Cannon2.obj"), null, 1.0f);
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f) ,ObjectTypes.OBJECT);
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 1f, 0f) ,ObjectTypes.OBJECT);
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_X)), SimulateType.ROTATE, KeyMode.TOGGLE, new VectorImp(0f, 1f, 0f) ,ObjectTypes.OBJECT);
 		append(canon, head);
 		
 //		Cube c2 = createCube("Cube2", shader, 1.5f, 1.5f, 1.5f, 1f);
