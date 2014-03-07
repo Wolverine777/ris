@@ -79,17 +79,21 @@ public abstract class WorldState extends UntypedActor{
 	private Set<Integer> pressedKeys = new HashSet<Integer>();
     private Set<Integer> toggeled=new HashSet<Integer>();
     private float canonballnumber = 0;
+    private float amountOfSpheres=0;
 
 	private void loop() {
 
 		System.out.println("\nStarting new loop");
 		
-//		toggled? || toggeled.contains(Keyboard.KEY_SPACE)
-//		System.out.println("pressed keys: " + pressedKeys);
+
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
 			
-//			System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
-//			generateCanonBall();
+			if(amountOfSpheres%10==0){
+				System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+				generateCanonBall();
+				
+			}
+			amountOfSpheres++;
 			
 		}
 		physic.tell(Message.LOOP, self());
@@ -698,10 +702,11 @@ public abstract class WorldState extends UntypedActor{
 	}
 	
 	protected void generateCanonBall(){
+		float scaleFactor=0.5f;
 		Node canon = nodes.get("Canon");
 		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, 1f);
-		transform(cs, vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
-		cs.setRadius(cs.getRadius()* 0.5f);
+		transform(cs, vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor));
+		cs.setRadius(cs.getRadius()* scaleFactor);
 		transform(cs, vecmath.translationMatrix(((Canon) canon).getSpawn()));
 		addPhysic(cs, ((Canon)canon).getDirection().mult(0.01f));
 		append(cs, startNode);
