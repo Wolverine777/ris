@@ -14,9 +14,10 @@ import app.shader.Shader;
 
 public class Car extends ObjLoader {
 	private Route wayToTarget;
-	private int updateFrequenz=0;
 	private double speed;
 	private Vector directionToNextTarget;
+	//for later implementation of changing routes because of ball is moving closer to floor.
+	private int updateFrequenz=0;
 
 	public Car(String id, Shader shader, double speed, float mass) {
 		super(id, shader, mass);
@@ -70,7 +71,7 @@ public class Car extends ObjLoader {
 	
 	public Vector getVecToNextTarget() {
 		updateFrequenz--;
-		System.out.println("translation direction to next:"+ directionToNextTarget);
+		System.out.println("pos way:"+getNextWaypoint().getPOS()+" poss car:"+getWorldTransform().getPosition());
 		return directionToNextTarget.mult((float) speed);
 	}	
 	
@@ -78,4 +79,8 @@ public class Car extends ObjLoader {
 		return getWorldTransform().getPosition();
 	}
 	
+	public LevelNode getFinalTarget(){
+		if(wayToTarget!=null)return wayToTarget.getLastWaypoint();
+		return null;
+	}
 }

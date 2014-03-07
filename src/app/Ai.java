@@ -16,7 +16,6 @@ import vecmath.Vector;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import app.Types.ObjectTypes;
-import app.Types.SimulateType;
 import app.datatype.AStarNodes;
 import app.datatype.Level;
 import app.datatype.LevelNode;
@@ -25,17 +24,15 @@ import app.edges.Edge;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
+import app.eventsystem.SimulateCreation;
 import app.messages.AiInitialization;
 import app.messages.Message;
-import app.messages.SingelSimulation;
 import app.nodes.Node;
 import app.nodes.shapes.Car;
 import app.nodes.shapes.Coin;
 
 public class Ai extends UntypedActor {
 
-	//for later implementation of changing routes because of ball is moving closer to floor.
-	private final int UPDATEFREQUENZ=10;
 	Level level;
 	private Map<String, Node> nonAiNodes = new HashMap<String, Node>();
 	private Map<String, Car> cars=new HashMap<String, Car>();
@@ -45,12 +42,6 @@ public class Ai extends UntypedActor {
 	private void initialize(Vector levelPosition, float width, float depth) {
 		System.out.println("Init Ai");
 		level=new Level(levelPosition, width, depth);
-//		for(Car car:cars.values()){
-//			Route r=findRoute(car);
-//			System.out.println("calced Route: "+r.toString());
-//			car.setWayToTarget(r);
-//			car.setUpdateFrequenz(UPDATEFREQUENZ);
-//		}
 		getSender().tell(Message.INITIALIZED, self());
 	}
 	
@@ -145,35 +136,45 @@ public class Ai extends UntypedActor {
 
 	private void aiLoop() {
 		System.out.println("Ai Loop");
-		int index=0;
 		if(!coins.isEmpty()){
 			for(Car car:cars.values()){
-				if(car.getWayToTarget()==null){
+				if(car.getFinalTarget()==null){
 					Route r=findRoute(car);
 					System.out.println("calced Route: "+r.toString());
 					car.setWayToTarget(r);
-					car.setUpdateFrequenz(UPDATEFREQUENZ);
+					simulator.tell(new SimulateCreation(car.getId(), r), self());
+				}else{
+					if(car.getPosition().equals(car.getFinalTarget().getPOS())){
+						Route r=findRoute(car);
+						System.out.println("calced Route: "+r.toString());
+						car.setWayToTarget(r);
+						simulator.tell(new SimulateCreation(car.getId(), r), self());
+					}
 				}
-			}
-			for(Car car:cars.values()){
-				//next position in route(target) sub position
-				System.out.println("car: "+car.getId()+" pos: "+car.getPosition()+" "+car);
-				System.out.println(index+"next way pos: "+car.getNextWaypoint().getPOS());
-				index++;
-				if(car.getPosition().equals(car.getNextWaypoint().getPOS())){
-					System.out.println("Waypoint reached");
-					car.waypointReached();
-				}
-				if(car.getWayToTarget()!=null){
-					Vector vec=car.getVecToNextTarget();
-					System.out.println("move direction car: "+vec);
-					simulator.tell(new SingelSimulation(car.getId(), SimulateType.TRANSLATEFIX, vec, car.getWorldTransform()), self());
-//				if(car.getUpdateFrequenz()==0){
-//					car.setWayToTarget(findRoute(car));
+//				if(car.getWayToTarget()==null){
+//					Route r=findRoute(car);
+//					System.out.println("calced Route: "+r.toString());
+//					car.setWayToTarget(r);
 //					car.setUpdateFrequenz(UPDATEFREQUENZ);
 //				}
-				}
 			}
+//			for(Car car:cars.values()){
+//				//next position in route(target) sub position
+//				System.out.println("car: "+car.getId()+" pos: "+car.getPosition());
+//				System.out.println("next way pos: "+car.getNextWaypoint().getPOS());
+//				if(car.getPosition().equals(car.getNextWaypoint().getPOS())){
+//					System.out.println("Waypoint reached");
+//					car.waypointReached();
+//				}
+//				if(car.getWayToTarget()!=null){
+//					Vector vec=car.getVecToNextTarget();
+////					simulator.tell(new SingelSimulation(car.getId(), SimulateType.TRANSLATEFIX, vec, car.getWorldTransform()), self());
+////				if(car.getUpdateFrequenz()==0){
+////					car.setWayToTarget(findRoute(car));
+////					car.setUpdateFrequenz(UPDATEFREQUENZ);
+////				}
+//				}
+//			}
 		}
 		
 		getSender().tell(Message.DONE, self());
@@ -182,8 +183,6 @@ public class Ai extends UntypedActor {
 	@Override
 	public void onReceive(Object message) throws Exception {
 		if (message == Message.LOOP) {
-			System.out.println("ai loop");
-			getSender().tell(Message.DONE, self());
 			aiLoop();
 		} else if (message instanceof AiInitialization) {
 			AiInitialization init= (AiInitialization) message;
@@ -215,7 +214,11 @@ public class Ai extends UntypedActor {
 		} else if(message instanceof NodeModification){
 			NodeModification nm=(NodeModification) message;
 			setNewMatrix(nonAiNodes.get(nm.id), nm);
-			setNewMatrix(cars.get(nm.id), nm);
+			if(cars.get(nm.id)!=null){
+				System.out.println("Nodemodification ai:\nmatrix alt car: \n"+cars.get(nm.id).getWorldTransform()+ "transformationsmatrix: \n"+nm.localMod);
+				setNewMatrix(cars.get(nm.id), nm);
+				System.out.println("matrix neu car: \n"+cars.get(nm.id).getWorldTransform());
+			}
 			setNewMatrix(coins.get(nm.id), nm);
 		} else if (message instanceof NodeDeletion){
 			NodeDeletion delete = (NodeDeletion)message;

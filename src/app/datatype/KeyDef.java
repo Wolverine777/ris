@@ -16,6 +16,7 @@ public class KeyDef {
 	private Set<Integer> keys;
 	private KeyMode mode;
 	private Vector vector;
+	private Route way;
 	
 
 	public KeyDef(SimulateType type, Set<Integer> keys, KeyMode mode){
@@ -29,6 +30,11 @@ public class KeyDef {
 		this.keys=keys;
 		this.mode=mode;
 		this.vector=vec;
+	}
+	
+	public KeyDef(SimulateType type, Route way){
+		this(type, null, null);
+		this.way=way;
 	}
 
 
@@ -52,6 +58,10 @@ public class KeyDef {
 
 	public void setVector(Vector vec) {
 		this.vector = vec;
+	}
+
+	public Route getWay() {
+		return way;
 	}
 	
 }

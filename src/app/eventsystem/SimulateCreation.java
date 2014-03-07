@@ -4,13 +4,16 @@ import java.util.Set;
 
 import vecmath.Vector;
 import app.Types.KeyMode;
+import app.Types.ObjectTypes;
 import app.Types.SimulateType;
+import app.datatype.Route;
 
 public class SimulateCreation extends NodeCreation {
 	private Set<Integer> keys;
 	private SimulateType simulation;
 	private KeyMode mode;
 	private Vector vector;
+	private Route way;
 
 	// TODO: add modelmatrix as params, can be null
 
@@ -21,9 +24,11 @@ public class SimulateCreation extends NodeCreation {
 		this.mode = mode;
 		this.vector=vec;
 	}
-
-	public void setSimulation(SimulateType simulation) {
-		this.simulation = simulation;
+	
+	public SimulateCreation(String objectId, Route way){
+		this(objectId,null, SimulateType.DRIVE, null, null);
+		if(way!=null)this.way=way.clone();
+		type=ObjectTypes.CAR;
 	}
 
 	public String getObjectId() {
@@ -45,6 +50,9 @@ public class SimulateCreation extends NodeCreation {
 	public Vector getVector() {
 		return vector;
 	}
-	
 
+	public Route getWay() {
+		return way;
+	}
+	
 }

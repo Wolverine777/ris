@@ -11,6 +11,7 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import vecmath.Vector;
+import vecmath.vecmathimp.MatrixImp;
 import vecmath.vecmathimp.VectorImp;
 import app.Renderer;
 import app.datatype.AStarNodes;
@@ -42,8 +43,29 @@ public class TestClass {
 		ro=ro/100;
 //		System.out.println(ro);
 		TestClass tc=new TestClass();
-		tc.testMin();
+//		tc.testMin();
+		tc.floatTest();
 		
+	}
+	
+	private void floatTest(){
+		float x=100;
+		float y=0;
+		MatrixImp m= (MatrixImp) MatrixImp.identity;
+		VectorImp v=new VectorImp(1.0f, 0.0f, 0.0f);
+		
+		for(x=100;x>0;x--){
+			System.out.println(m.mult(MatrixImp.translate(v)).getPosition());
+			Vector sub=m.getPosition().sub(v);
+			System.out.println(sub.x()+" "+sub.y()+" "+sub.z());
+			for(y=0;y<100;y++){
+//				System.out.print((x-y)+"; ");
+			}
+			System.out.println();
+		}
+	}
+	
+	private void testListcontains(){
 		List<Node> flags=new LinkedList<Node>(){
 			private static final long serialVersionUID = 7233857901815694877L;
 			public boolean contains(Object o) {
@@ -60,7 +82,7 @@ public class TestClass {
 		System.out.println("contains: "+flags.contains(new GroupNode("test3")));
 	}
 	
-	public void testMin(){
+	private void testMin(){
 		Map<LevelNode, AStarNodes> visited=new LinkedHashMap<LevelNode, AStarNodes>();
 		visited.put(new LevelNode(new VectorImp(0, 0, 0)), new AStarNodes(2, 0, new LinkedList<LevelNode>()));
 		visited.put(new LevelNode(new VectorImp(0, 0, 0)), new AStarNodes(10, 0, new LinkedList<LevelNode>()));

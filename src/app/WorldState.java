@@ -104,7 +104,7 @@ public abstract class WorldState extends UntypedActor{
 	public void onReceive(Object message) throws Exception {
 		if (message == Message.DONE) {
 			unitState.put(getSender(), true);
-
+			System.out.println("Done: "+getSender());
 			if (!unitState.containsValue(false)) {
 				for (Map.Entry<ActorRef, Boolean> entry : unitState.entrySet()) {
 					entry.setValue(false);
@@ -146,6 +146,9 @@ public abstract class WorldState extends UntypedActor{
 							"akka.actor.fixed-thread-dispatcher"), "Renderer");
 			unitState.put(renderer, false);
 
+			ai = getContext().actorOf(Props.create(Ai.class), "Ai");
+			unitState.put(ai, false);
+			
 			simulator = getContext().actorOf(Props.create(Simulator.class),
 					"Simulator");
 			unitState.put(simulator, false);
@@ -156,12 +159,10 @@ public abstract class WorldState extends UntypedActor{
 			physic = getContext().actorOf(Props.create(Physic.class), "Physic");
 			unitState.put(physic, false);
 			
-			ai = getContext().actorOf(Props.create(Ai.class), "Ai");
-			unitState.put(ai, false);
-			
 			
 			observers.put(Events.NODE_CREATION, renderer);
 			observers.put(Events.NODE_CREATION, ai);
+			observers.put(Events.NODE_CREATION, simulator);
 			observers.put(Events.NODE_MODIFICATION, renderer);
 			observers.put(Events.NODE_MODIFICATION, simulator);
 			observers.put(Events.NODE_MODIFICATION, physic);
@@ -471,8 +472,7 @@ public abstract class WorldState extends UntypedActor{
 		Car car = nodeFactory.car(id, shader, sourceFile, speed, mass);
 		nodes.put(id, car);
 		
-		NodeCreation n = new NodeCreation();
-        n.id = id;
+		SimulateCreation n = new SimulateCreation(id,null);
         n.type = ObjectTypes.CAR;
         n.shader = shader;
         n.sourceFile=sourceFile;

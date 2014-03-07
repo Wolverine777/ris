@@ -45,6 +45,7 @@ public class Physic extends UntypedActor {
 	}
 
 	public void physic() {
+		System.out.println("physic loop");
 		elapsed = zeit.elapsed();
 		NodeDeletion delete = new NodeDeletion();
 		for (Node n : nodes.values()) {
@@ -126,7 +127,6 @@ public class Physic extends UntypedActor {
 		}
 		
 		getSender().tell(Message.DONE, self());
-		System.out.println("physic loop");
 //		System.out.println("Impacts: " + impacts.toString());
 	}
 

@@ -1,5 +1,5 @@
 package app.Types;
 
 public enum SimulateType {
-	NONE, ROTATE, TRANSLATE, PHYSIC, TRANSLATEFIX
+	NONE, ROTATE, TRANSLATE, PHYSIC, TRANSLATEFIX, DRIVE
 }
