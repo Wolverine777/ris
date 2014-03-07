@@ -43,7 +43,7 @@ public class KeyState implements State {
 	public void addPressedKey(Integer pressedKey){
 		this.pressedKeys.add(pressedKey);
 	}
-	
+		
 	public void addToggl(Integer toggl){
 		this.toggled.add(toggl);
 	}

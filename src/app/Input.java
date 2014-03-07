@@ -37,21 +37,29 @@ public class Input extends UntypedActor {
 
     Set<Integer> pressedKeys = new HashSet<Integer>();
     Set<Integer> toggled = new HashSet<Integer>();
+    Set<Integer> pressedKeystmp = new HashSet<Integer>();
+    
     private void run() {
+    	pressedKeystmp.clear();
+    	pressedKeystmp.addAll(pressedKeys);
 		while(Keyboard.next()) {
 			int k = Keyboard.getEventKey();
+			System.out.println("Key: " + k + "Pressed");
 			if (Keyboard.getEventKeyState()) {
 				pressedKeys.add(k);
+				pressedKeystmp.add(k);
 				if(toggled.contains(k))toggled.remove(k);
 				else toggled.add(k);
 			}else {
+				System.out.println("Ich möchte diesen key releasen: " + k);
 				pressedKeys.remove(k);
 			}
 		}
+//		System.out.println("pressed keys: " + pressedKeys + "tmp keys: " + pressedKeystmp);
 		
 		Map<ActorRef, KeyState> outcome = new HashMap<ActorRef, KeyState>();
 		for(Integer obsKey:keyObservers.keySet()){
-			if(pressedKeys.contains(obsKey)||toggled.contains(obsKey)){
+			if(pressedKeystmp.contains(obsKey)){
 				for(ActorRef actor:keyObservers.get(obsKey)){
 					KeyState ks=new KeyState();
 					if(outcome.containsKey(actor))ks=outcome.get(actor);
@@ -61,6 +69,20 @@ public class Input extends UntypedActor {
 				}
 			}
 		}
+		
+//		for(Integer obsKey:keyObservers.keySet()){
+//			if(pressedKeys.contains(obsKey)||toggled.contains(obsKey)){
+//				for(ActorRef actor:keyObservers.get(obsKey)){
+//					KeyState ks=new KeyState();
+//					if(outcome.containsKey(actor))ks=outcome.get(actor);
+//					if(pressedKeys.contains(obsKey))ks.addPressedKey(obsKey);
+//					if(toggled.contains(obsKey))ks.addToggl(obsKey);
+//					outcome.put(actor, ks);
+//				}
+//			}
+//		}
+		
+
 		
 		for(Entry<ActorRef, KeyState> out:outcome.entrySet())out.getKey().tell(out.getValue(), self());
 		

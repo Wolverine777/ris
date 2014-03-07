@@ -85,11 +85,11 @@ public abstract class WorldState extends UntypedActor{
 		System.out.println("\nStarting new loop");
 		
 //		toggled? || toggeled.contains(Keyboard.KEY_SPACE)
-		System.out.println("pressed keys: " + pressedKeys);
+//		System.out.println("pressed keys: " + pressedKeys);
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
 			
-			System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
-			generateCanonBall();
+//			System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+//			generateCanonBall();
 			
 		}
 		physic.tell(Message.LOOP, self());
@@ -699,10 +699,13 @@ public abstract class WorldState extends UntypedActor{
 	
 	protected void generateCanonBall(){
 		Node canon = nodes.get("Canon");
-		Node cs = createSphere("CanonBall" + canonballnumber, shader, 1f);
+		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, 1f);
 		transform(cs, vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
+		cs.setRadius(cs.getRadius()* 0.5f);
 		transform(cs, vecmath.translationMatrix(((Canon) canon).getSpawn()));
+		addPhysic(cs, ((Canon)canon).getDirection().mult(0.01f));
 		append(cs, startNode);
+//		System.out.println("Sphere Id: " + cs.getId() + "Radius SPhere: " + cs.getRadius());
 		canonballnumber++;
 		
 	}
