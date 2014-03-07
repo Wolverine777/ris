@@ -1,8 +1,9 @@
 package app.datatype;
 
-import java.util.List;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.NavigableSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 import vecmath.Vector;
@@ -61,12 +62,29 @@ public class Level {
 		}
 	}
 	
-	public void setSpaceWeigth(List<Vector> positions, int multiplier){
-		for(Vector vec:positions) levelPoints.get(vec.x(), vec.z()).multEdgesVal(multiplier);
+	private void setWeigth(Set<LevelNode> positions, int multiplier){
+		for(LevelNode node:positions) levelPoints.get(node.getPOS().x(), node.getPOS().z()).multEdgesVal(multiplier);
 	}
 	
-	public void setSpaceBlocked(List<Vector> positions){
-		for(Vector vec:positions) levelPoints.get(vec.x(), vec.z()).multEdgesVal(-1);
+	public void setSpaceBlocked(LevelNode from, LevelNode to){
+		NavigableSet<LevelNode> nodes = new TreeSet<LevelNode>(new Comparator<LevelNode>() {
+			@Override
+			public int compare(LevelNode o1, LevelNode o2) {
+				return Double.compare((o1.getPOS().x()+o1.getPOS().z()), (o2.getPOS().x()+o2.getPOS().z()));
+			}
+		});
+		//TODO: Add filter for already fields with -1
+		setWeigth(new TreeSet<LevelNode>(nodes.subSet(from, true, to, true)), -1);
+	}
+	
+	public void setSpace(LevelNode from, LevelNode to, int value){
+		NavigableSet<LevelNode> nodes = new TreeSet<LevelNode>(new Comparator<LevelNode>() {
+			@Override
+			public int compare(LevelNode o1, LevelNode o2) {
+				return Double.compare((o1.getPOS().x()+o1.getPOS().z()), (o2.getPOS().x()+o2.getPOS().z()));
+			}
+		});
+		setWeigth(new TreeSet<LevelNode>(nodes.subSet(from, true, to, true)), value);
 	}
 	
 	public String toString(){
@@ -89,6 +107,7 @@ public class Level {
 		return new VectorImp(getNearest(position.x(),true), position.y(), getNearest(position.z(),false));
 	}
 	
+	//TODO: methode für nächste aber überschätzen also kleiner nicht beachten
 	private Float getNearest(Float posVal, boolean xOrz){
 		Float max=0.0F,min=0.0F;
 		if(xOrz){
@@ -129,5 +148,17 @@ public class Level {
 	
 	public LevelNode[] toArray(){
 		return levelPoints.values().toArray(new LevelNode[0]); 
+	}
+	
+	public Vector maxBorder(){
+		NavigableSet<Float> xValues = new TreeSet<Float>(levelPoints.rowKeySet());
+		NavigableSet<Float> zValues = new TreeSet<Float>(levelPoints.columnKeySet());
+		return new VectorImp(xValues.last(), 0, zValues.last());
+	}
+	
+	public Vector minBorder(){
+		NavigableSet<Float> xValues = new TreeSet<Float>(levelPoints.rowKeySet());
+		NavigableSet<Float> zValues = new TreeSet<Float>(levelPoints.columnKeySet());
+		return new VectorImp(xValues.first(), 0, zValues.first());
 	}
 }

@@ -30,6 +30,7 @@ import app.messages.Message;
 import app.nodes.Node;
 import app.nodes.shapes.Car;
 import app.nodes.shapes.Coin;
+import app.nodes.shapes.Shape;
 
 public class Ai extends UntypedActor {
 
@@ -132,6 +133,24 @@ public class Ai extends UntypedActor {
 //		System.out.println("closestlevelNode: " + closestlevelnode);
 //		return closestlevelnode;
 		return nearest;
+	}
+	
+	private void setBlocked(Shape object){
+		//innerhalb vom level
+		inLevel(object.getCenter(), object.getRadius());
+		//
+		inLevel(object.getCenter(), 0);
+	}
+	
+	//problem with object bigger than the level
+	private boolean inLevel(Vector center, float rad){
+		Vector max=level.maxBorder(), min=level.minBorder();
+		float maxX=max.x(), maxZ=max.z(), minX=min.x(), minZ=min.z();
+		if(center.x()+rad>minX&&center.x()-rad<maxX&&center.z()+rad>minZ&&center.z()-rad<maxZ){
+			//inlevel
+			return true;
+		}
+		return false;
 	}
 
 	private void aiLoop() {
