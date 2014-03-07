@@ -1,0 +1,49 @@
+ Wir haben folgendes Level:
+ 1.0/ 1.0(1);  1.0/ 0.5(1);  1.0/ 0.0(1);  1.0/-0.5(1);  1.0/-1.0(1); 
+ 0.5/ 1.0(1);  0.5/ 0.5(1);  0.5/ 0.0(1);  0.5/-0.5(1);  0.5/-1.0(1); 
+ 0.0/ 1.0(1);  0.0/ 0.5(1);  0.0/ 0.0(1);  0.0/-0.5(1);  0.0/-1.0(1); 
+-0.5/ 1.0(1); -0.5/ 0.5(1); -0.5/ 0.0(1); -0.5/-0.5(1); -0.5/-1.0(1); 
+-1.0/ 1.0(1); -1.0/ 0.5(1); -1.0/ 0.0(1); -1.0/-0.5(1); -1.0/-1.0(1); 
+
+wir haben diese 2 objecte
+	car (start object): -0.5/-0.5
+	coin (ziel): 0.5/ 0.0
+
+erster durchlauf: (keine route vorhanden also route berechnen)
+	calced Route: Len:(3) Way: -->(0.0/-0.5)-->(0.5/-0.5)-->(0.5/0.0)
+(nach erstem mal route berechnen, richtungsvektor berechnen wohin bewegt werden soll)
+	direction calc: (-0.5, -2.0, -0.5)-->(0.0, -2.0, -0.5)=(0.5, 0.0, 0.0)
+(position auto)
+	Car1 pos: (-0.5, -2.0, -0.5)
+(nächster wegpunkt der erreicht werden soll)
+	next way pos: (0.0, -2.0, -0.5)
+(vector um den car verschoben werden soll, mit speed-variable multipliziert, hier 0,2 also 0,5*0,2=0,1)
+	move direction car: (0.1, 0.0, 0.0)
+(ai recieved die NodeModification mit der verschiebung des cars vom simulator)
+	matrix alt car: 
+	[ +0,5000 +0,0000 +0,0000 -0,5000 ]
+	[ +0,0000 +0,5000 +0,0000 -2,0000 ]
+	[ +0,0000 +0,0000 +0,5000 -0,5000 ]
+	[ +0,0000 +0,0000 +0,0000 +1,0000 ]
+	transformationsmatrix: 
+	[ +1,0000 +0,0000 +0,0000 +0,1000 ]
+	[ +0,0000 +1,0000 +0,0000 +0,0000 ]
+	[ +0,0000 +0,0000 +1,0000 +0,0000 ]
+	[ +0,0000 +0,0000 +0,0000 +1,0000 ]
+	matrix neu car: 
+	[ +0,5000 +0,0000 +0,0000 -0,4000 ]
+	[ +0,0000 +0,5000 +0,0000 -2,0000 ]
+	[ +0,0000 +0,0000 +0,5000 -0,5000 ]
+	[ +0,0000 +0,0000 +0,0000 +1,0000 ]
+	
+nächster loop
+	poss car:(-0.4, -2.0, -0.5)
+nächster loop
+	poss car:(-0.3, -2.0, -0.5)
+nächster loop
+	poss car:(-0.20000002, -2.0, -0.5)
+ab hier ist auf einmal ein minimaler wert am ende hinzugekommen, obwohl der verschiebungsvektor erst neu berechnet wird, wenn der nächste wegpunkt erreicht ist(0.0, -2.0, -0.5) 
+also ist der Vector konstant (0.1, 0.0, 0.0) dieser vektor wird an folgende matrix übergeben 'Matrix modify = MatrixImp.translate(vec);', diese wird mit der matrix des objects multipliziert.
+
+nächster loop
+	poss car:(-0.10000002, -2.0, -0.5)
