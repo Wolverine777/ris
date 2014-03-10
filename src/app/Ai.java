@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import vecmath.Vector;
+import vecmath.vecmathimp.VectorImp;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import app.Types.ObjectTypes;
@@ -135,22 +136,53 @@ public class Ai extends UntypedActor {
 		return nearest;
 	}
 	
-	private void setBlocked(Shape object){
-		//innerhalb vom level
-		inLevel(object.getCenter(), object.getRadius());
-		//
-		inLevel(object.getCenter(), 0);
+	private void setBlocked(Shape object, boolean setBlock){
+		int inLevel=inLevel(object.getCenter(), object.getRadius());
+		if(inLevel>=0){
+			Vector max=object.getCenter().add(new VectorImp(object.getRadius(), 0, object.getRadius()));
+			Vector min=object.getCenter().sub(new VectorImp(object.getRadius(), 0, object.getRadius()));
+			if(inLevel==0){
+				//partially
+				if(inLevel(max,0)<0){
+					Vector maxBorder=level.maxBorder();
+					//top right (max) out->adjust z
+					max=max.sub(new VectorImp(0, 0, (max.z()-maxBorder.z())));
+					if(inLevel(max, 0)<0){
+						//still out--> adjust x
+						max=max.sub(new VectorImp((max.x()-maxBorder.x()), 0, 0));
+					}
+				}
+				if(inLevel(min,0)<0){
+					Vector minBorder=level.minBorder();
+					//lower left (min) out->adjust z
+					min=min.sub(new VectorImp(0, 0, (min.z()-minBorder.z())));
+					if(inLevel(min, 0)<0){
+						min=min.sub(new VectorImp((min.x()-minBorder.x()), 0, 0));
+					}
+				}
+			}
+			if(setBlock)level.setBlocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
+			else level.setUnblocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
+		}
 	}
 	
-	//problem with object bigger than the level
-	private boolean inLevel(Vector center, float rad){
+	/**
+	 * Shows whether an object is in or partially in the Level
+	 * @param center Center Vector of the Object
+	 * @param rad radius of the Object
+	 * @return -1 if the Object is complete out or bigger than the level, 0 if partially in, 1 if the object is completely in.
+	 */
+	private int inLevel(Vector center, float rad){
 		Vector max=level.maxBorder(), min=level.minBorder();
 		float maxX=max.x(), maxZ=max.z(), minX=min.x(), minZ=min.z();
-		if(center.x()+rad>minX&&center.x()-rad<maxX&&center.z()+rad>minZ&&center.z()-rad<maxZ){
-			//inlevel
-			return true;
+		if(center.x()+rad<=maxX||center.x()-rad>=minX||center.z()+rad<=maxZ||center.z()-rad>=minZ){
+			if(center.x()+rad<=maxX&&center.x()-rad>=minX&&center.z()+rad<=maxZ&&center.z()-rad>=minZ){
+				//inlevel
+				return 1;
+			}
+			return 0;
 		}
-		return false;
+		return -1;
 	}
 
 	private void aiLoop() {
