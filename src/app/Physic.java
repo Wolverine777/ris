@@ -65,39 +65,47 @@ public class Physic extends UntypedActor {
 			} else if (collisionGround(n) != 0
 					&& collisionObjects(n) == null) {
 				
+//				if(((Shape)n).getLifetimeCounter() > 0) {
+					
+					System.out.println("lifetimecounter: " + ((Shape)n).getLifetimeCounter());
+					((Shape)n).setLifetimeCounter(((Shape)n).getLifetimeCounter()-1);
+					VectorImp opposite = oppositeDirectionGround(n);
+					n.setVelocity(opposite);
+					VectorImp reduce = reduceVelocityGround(n, 0.9f);
+					n.setVelocity(reduce);
+					// TODO Erdanziehungskraft m*g?
+	//				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
+					// TODO Masse einabauen, dann impuls setzen und dann velocity
+					n.setForce(n.getVelocity());
+					n.setVelocity(n.getForce());
+	//				
+					/*TODO: nicht mehr verschieben, ansonsten SingelSimulation
+					 *  Oder Map mit Nodes,Matrix und nur intern verschieben, damit collision nix mehr erkennt und den richtingen verschiebungsvektor setzt, 
+					 *  danach bei nModifikation recive aus der map die matrix holen, damit interne raprä. mit anderen actors gleich bleibt
+					 *  vorteil, interne verschiebung nicht sichtbar. also sieht man nur die kugel in das andere object rein gehen, aber danach auch wieder raus
+					 */
+					
+					float differenceinfloor = collisionGround(n);
+	//				float differenceinfloor = (float) Math.sqrt((float) Math.pow((n.getWorldTransform().getPosition().y() - floor.y()),2));
+					VectorImp vec = new VectorImp(0, differenceinfloor + 0.01f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
+					SingelSimulation ss = new SingelSimulation(n.getId(), SimulateType.DRIVE, vec, n.getWorldTransform());
+	//				Matrix modify=MatrixImp.translate(vec);
+	//	    		n.updateWorldTransform(modify);
+	//	    		getSender().tell(new NodeModification(n.id,modify), self());
+					
+					simulator.tell(ss, self());
 				
-				VectorImp opposite = oppositeDirectionGround(n);
-				n.setVelocity(opposite);
-				VectorImp reduce = halfVelocityGround(n);
-				n.setVelocity(reduce);
-				// TODO Erdanziehungskraft m*g?
-//				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
-				// TODO Masse einabauen, dann impuls setzen und dann velocity
-				n.setForce(n.getVelocity());
-				n.setVelocity(n.getForce());
-//				
-				/*TODO: nicht mehr verschieben, ansonsten SingelSimulation
-				 *  Oder Map mit Nodes,Matrix und nur intern verschieben, damit collision nix mehr erkennt und den richtingen verschiebungsvektor setzt, 
-				 *  danach bei nModifikation recive aus der map die matrix holen, damit interne raprä. mit anderen actors gleich bleibt
-				 *  vorteil, interne verschiebung nicht sichtbar. also sieht man nur die kugel in das andere object rein gehen, aber danach auch wieder raus
-				 */
-				
-				float differenceinfloor = collisionGround(n);
-//				float differenceinfloor = (float) Math.sqrt((float) Math.pow((n.getWorldTransform().getPosition().y() - floor.y()),2));
-				VectorImp vec = new VectorImp(0, differenceinfloor + 0.01f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
-				SingelSimulation ss = new SingelSimulation(n.getId(), SimulateType.TRANSLATE, vec, n.getWorldTransform());
-//				Matrix modify=MatrixImp.translate(vec);
-//	    		n.updateWorldTransform(modify);
-//	    		getSender().tell(new NodeModification(n.id,modify), self());
-				
-				simulator.tell(ss, self());
-			
-				PhysicModification p1 = new PhysicModification();
-				p1.id = n.getId();
-				p1.force = n.getForce();
-				
-				
-				simulator.tell(p1, self());				
+					PhysicModification p1 = new PhysicModification();
+					p1.id = n.getId();
+					p1.force = n.getForce();
+					
+					
+					simulator.tell(p1, self());	
+//				}
+//				else{
+//					System.out.println("lifetimecounter unten: " + ((Shape)n).getLifetimeCounter());
+//					delete.ids.add(n.getId());
+//				}
 				
 
 			} else if (collisionGround(n) == 0
@@ -224,13 +232,13 @@ public class Physic extends UntypedActor {
 		
 	}
 	
-	private VectorImp halfVelocityGround(Node n){
+	private VectorImp reduceVelocityGround(Node n, Float reduceBy){
 		
 		float x = n.getVelocity().x();
 		float y = n.getVelocity().y();
 		float z = n.getVelocity().z();
 		
-		y = 0.8f *y;
+		y = reduceBy *y;
 		
 		VectorImp newVelo = new VectorImp(x, y, z);
 		

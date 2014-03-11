@@ -708,7 +708,7 @@ public abstract class WorldState extends UntypedActor{
 		transform(cs, vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor));
 		cs.setRadius(cs.getRadius()* scaleFactor);
 		transform(cs, vecmath.translationMatrix(((Canon) canon).getSpawn()));
-		addPhysic(cs, ((Canon)canon).getDirection().mult(0.01f));
+		addPhysic(cs, ((Canon)canon).getDirection().mult(0.03f));
 		append(cs, startNode);
 //		System.out.println("Sphere Id: " + cs.getId() + "Radius SPhere: " + cs.getRadius());
 		canonballnumber++;

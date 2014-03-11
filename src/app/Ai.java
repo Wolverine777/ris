@@ -266,9 +266,9 @@ public class Ai extends UntypedActor {
 			NodeModification nm=(NodeModification) message;
 			setNewMatrix(nonAiNodes.get(nm.id), nm);
 			if(cars.get(nm.id)!=null){
-				System.out.println("Nodemodification ai:\nmatrix alt car: \n"+cars.get(nm.id).getWorldTransform()+ "transformationsmatrix: \n"+nm.localMod);
+//				System.out.println("Nodemodification ai:\nmatrix alt car: \n"+cars.get(nm.id).getWorldTransform()+ "transformationsmatrix: \n"+nm.localMod);
 				setNewMatrix(cars.get(nm.id), nm);
-				System.out.println("matrix neu car: \n"+cars.get(nm.id).getWorldTransform());
+//				System.out.println("matrix neu car: \n"+cars.get(nm.id).getWorldTransform());
 			}
 			setNewMatrix(coins.get(nm.id), nm);
 		} else if (message instanceof NodeDeletion){
