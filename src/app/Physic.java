@@ -34,7 +34,7 @@ public class Physic extends UntypedActor {
 	private Map<String, Vector> impacts = new HashMap<String, Vector>();
 	ActorRef simulator;
 	private StopWatch zeit = new StopWatch();
-	private Vector ground = new VectorImp(0f, -0.001f, 0f);
+	private Vector ground = new VectorImp(0f, -0.005f, 0f);
 	private float elapsed = 0;
 	private Vector floor;
 
@@ -65,7 +65,7 @@ public class Physic extends UntypedActor {
 			} else if (collisionGround(n) != 0
 					&& collisionObjects(n) == null) {
 				
-//				if(((Shape)n).getLifetimeCounter() > 0) {
+				if(((Shape)n).getLifetimeCounter() > 0) {
 					
 					System.out.println("lifetimecounter: " + ((Shape)n).getLifetimeCounter());
 					((Shape)n).setLifetimeCounter(((Shape)n).getLifetimeCounter()-1);
@@ -87,7 +87,7 @@ public class Physic extends UntypedActor {
 					
 					float differenceinfloor = collisionGround(n);
 	//				float differenceinfloor = (float) Math.sqrt((float) Math.pow((n.getWorldTransform().getPosition().y() - floor.y()),2));
-					VectorImp vec = new VectorImp(0, differenceinfloor + 0.01f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
+					VectorImp vec = new VectorImp(0, differenceinfloor + 0.05f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
 					SingelSimulation ss = new SingelSimulation(n.getId(), SimulateType.DRIVE, vec, n.getWorldTransform());
 	//				Matrix modify=MatrixImp.translate(vec);
 	//	    		n.updateWorldTransform(modify);
@@ -101,11 +101,11 @@ public class Physic extends UntypedActor {
 					
 					
 					simulator.tell(p1, self());	
-//				}
-//				else{
-//					System.out.println("lifetimecounter unten: " + ((Shape)n).getLifetimeCounter());
-//					delete.ids.add(n.getId());
-//				}
+				}
+				else{
+					System.out.println("lifetimecounter unten: " + ((Shape)n).getLifetimeCounter());
+					delete.ids.add(n.getId());
+				}
 				
 
 			} else if (collisionGround(n) == 0
