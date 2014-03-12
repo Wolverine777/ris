@@ -14,6 +14,7 @@ import java.util.Set;
 import org.lwjgl.input.Keyboard;
 
 
+
 import vecmath.Matrix;
 import vecmath.Vector;
 
@@ -27,6 +28,7 @@ import akka.actor.UntypedActor;
 import app.Types.Events;
 import app.Types.KeyMode;
 import app.Types.ObjectTypes;
+import app.Types.PhysicType;
 import app.Types.SimulateType;
 import app.edges.Edge;
 import app.eventsystem.CameraCreation;
@@ -504,7 +506,7 @@ public abstract class WorldState extends UntypedActor{
         return coin;
 	}
 
-	protected void addPhysic(Cube cube){
+	protected void addPhysic(Cube cube, PhysicType physicType){
 		
 		NodeCreation n = new NodeCreation();
 		n.id = cube.getId();
@@ -516,6 +518,7 @@ public abstract class WorldState extends UntypedActor{
 	    n.center = cube.getCenter();
 		n.radius = cube.getRadius();
 		n.mass = cube.getMass();
+		n.physicType = physicType;
 	    
 		
 		physic.tell(n, self());
@@ -523,7 +526,7 @@ public abstract class WorldState extends UntypedActor{
 	}
 	
 	//TODO: add Psysic und ai in create.. integrieren
-	protected void addPhysic(Cube cube, Vector impulse){
+	protected void addPhysic(Cube cube, Vector impulse, PhysicType physicType){
 		
 				
 		NodeCreation n = new NodeCreation();
@@ -538,6 +541,7 @@ public abstract class WorldState extends UntypedActor{
 		n.center = cube.getCenter();
 		n.radius = cube.getRadius();
 		n.mass = cube.getMass();
+		n.physicType = physicType;
 		
 		//TODO: sinnvolle kapselung announcePhysic
 		physic.tell(n, self());
@@ -561,7 +565,7 @@ public abstract class WorldState extends UntypedActor{
 			
 	}
 	
-	protected void addPhysic(Sphere sphere, Vector impulse){
+	protected void addPhysic(Sphere sphere, Vector impulse, PhysicType physicType){
 		
 		
 		NodeCreation n = new NodeCreation();
@@ -573,6 +577,7 @@ public abstract class WorldState extends UntypedActor{
 		n.center = sphere.getCenter();
 		n.radius = sphere.getRadius();
 		n.mass = sphere.getMass();
+		n.physicType = physicType;
 		
 		
 		physic.tell(n, self());
@@ -590,7 +595,7 @@ public abstract class WorldState extends UntypedActor{
 			
 	}
 	
-	protected void addPhysic(ObjLoader obj, Vector impulse){
+	protected void addPhysic(ObjLoader obj, Vector impulse, PhysicType physicType){
 		
 		NodeCreation n = new NodeCreation();
 		n.modelmatrix = (nodes.get(obj.getId()).getWorldTransform());
@@ -603,6 +608,7 @@ public abstract class WorldState extends UntypedActor{
 		n.center = obj.getCenter();
 		n.radius = obj.getRadius();
 		n.mass = obj.mass;
+		n.physicType = physicType;
 		
 		physic.tell(n, self());
 
@@ -708,7 +714,7 @@ public abstract class WorldState extends UntypedActor{
 		transform(cs, vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor));
 		cs.setRadius(cs.getRadius()* scaleFactor);
 		transform(cs, vecmath.translationMatrix(((Canon) canon).getSpawn()));
-		addPhysic(cs, ((Canon)canon).getDirection().mult(0.03f));
+		addPhysic(cs, ((Canon)canon).getDirection().mult(0.03f), PhysicType.Physic_complete);
 		append(cs, startNode);
 		System.out.println("sphere speed: " + ((Canon)canon).getDirection().mult(0.03f));
 //		System.out.println("Sphere Id: " + cs.getId() + "Radius SPhere: " + cs.getRadius());

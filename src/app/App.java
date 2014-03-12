@@ -16,6 +16,7 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import app.Types.KeyMode;
 import app.Types.ObjectTypes;
+import app.Types.PhysicType;
 import app.Types.SimulateType;
 import app.messages.Message;
 import app.nodes.GroupNode;
@@ -146,7 +147,7 @@ public class App extends WorldState {
 
 		ObjLoader objsphere=createObject("objSphere2", shader, new File("obj/Sphere.obj"), null, 1f);
 		transform(objsphere, vecmath.translationMatrix(4f, 0f, 0f));
-		addPhysic(objsphere, new VectorImp(0.0f,-0.01f,0));
+		addPhysic(objsphere, new VectorImp(0.0f,-0.01f,0), PhysicType.Collision_only);
 		append(objsphere, head);
 		
 		doCanonBalls();

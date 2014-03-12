@@ -5,6 +5,7 @@ import java.io.File;
 import vecmath.Matrix;
 import vecmath.Vector;
 import app.Types.ObjectTypes;
+import app.Types.PhysicType;
 import app.shader.Shader;
 
 public class NodeCreation {
@@ -29,6 +30,8 @@ public class NodeCreation {
 	public float mass;
 	
 	public float speed;
+	
+	public PhysicType physicType;
 
 	public Matrix getModelmatrix() {
 		return modelmatrix;
