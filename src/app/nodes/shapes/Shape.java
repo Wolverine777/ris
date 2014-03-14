@@ -34,6 +34,7 @@ public abstract class Shape extends Node {
 	protected int mode = GL11.GL_QUADS;
 	protected Vector center = new VectorImp(0,0,0);
 	protected float radius;
+	protected float lifetimeCounter = 2;
 
 	public Shape(String id, Shader shader, float mass) {
 		super(id, FactoryDefault.vecmath.identityMatrix());
@@ -166,5 +167,15 @@ public abstract class Shape extends Node {
 	public void setRadius(float radius) {
 		this.radius = radius;
 	}
+
+	public float getLifetimeCounter() {
+		return lifetimeCounter;
+	}
+
+	public void setLifetimeCounter(float lifetimeCounter) {
+		this.lifetimeCounter = lifetimeCounter;
+	}
+	
+	
 	
 }
