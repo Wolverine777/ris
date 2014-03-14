@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import vecmath.Vector;
@@ -12,6 +13,7 @@ import vecmath.vecmathimp.VectorImp;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
+import com.google.common.collect.TreeBasedTable;
 
 /**
  * @author Benjamin Reemts
@@ -28,9 +30,12 @@ public class Level {
 	
 	private void makeLevel(Vector centerPosition, float width, float depth){
 		System.out.println("level center vec: "+centerPosition);
-		levelPoints = HashBasedTable.create((int)(width*GRIDREFACTOR),(int)(depth*GRIDREFACTOR));
+		//TODO: test big tabels with many values. Tree used bacause hash lose order
+		levelPoints = TreeBasedTable.create();
+//		levelPoints = HashBasedTable.create((int)(width*GRIDREFACTOR),(int)(depth*GRIDREFACTOR));
 		for(float x=centerPosition.x()-(width/2)*GRIDREFACTOR; x<=centerPosition.x()+(width/2)*GRIDREFACTOR; x++){
 			for(float z=centerPosition.z()-(depth/2)*GRIDREFACTOR; z<=centerPosition.z()+(depth/2)*GRIDREFACTOR; z++){
+//				System.out.print(x+"/"+z+" ");
 				levelPoints.put(x/GRIDREFACTOR, z/GRIDREFACTOR, new LevelNode(new VectorImp(x/GRIDREFACTOR, centerPosition.y(), z/GRIDREFACTOR)));
 			}
 		}
@@ -65,24 +70,50 @@ public class Level {
 		for(LevelNode node:positions) levelPoints.get(node.getPOS().x(), node.getPOS().z()).multEdgesVal(multiplier);
 	}
 	
-	private void manageBlocked(LevelNode from, LevelNode to, boolean block){
-		NavigableSet<LevelNode> nodes = new TreeSet<LevelNode>(new Comparator<LevelNode>() {
+	private void manageBlocked(LevelNode from, LevelNode toElement, boolean block){
+		NavigableSet<LevelNode> nodes = new TreeSet<LevelNode>(){
+			private static final long serialVersionUID = -2688655624601261964L;
 			@Override
-			public int compare(LevelNode o1, LevelNode o2) {
-				return Double.compare((o1.getPOS().x()+o1.getPOS().z()), (o2.getPOS().x()+o2.getPOS().z()));
+			public SortedSet<LevelNode> subSet(LevelNode fromElement, LevelNode toElement) {
+				SortedSet<LevelNode> reSub=new TreeSet<LevelNode>();
+				float maxX=toElement.getPOS().x(), minX=fromElement.getPOS().x();
+				float maxZ=toElement.getPOS().z(), minZ=fromElement.getPOS().z();
+				for(LevelNode lNode:this){
+					float x=lNode.getPOS().x(), z=lNode.getPOS().z();
+					if(x>=minX&&x<=maxX){
+						if(z>=minZ&&z<=maxZ){
+							reSub.add(lNode);
+						}
+					}
+				}
+				return reSub;
 			}
-		});
+		};
 		Set<LevelNode> sub=new TreeSet<LevelNode>();
+		//TODO: prüfen ob in sub immer noch sortiert
 		if(block){
-			//Erzeugt Set mit nur Positionswerten die nicht geblockt sind(>0)
-			for(LevelNode levelNode:levelPoints.values()){
-				if(levelNode.getVal()>0)nodes.add(levelNode);
+			nodes.addAll(levelPoints.values());
+			//Erzeugt Set mit nur Positionswerten die nicht geblockt sind(>0) TODO: ueberschneidungen
+//			for(LevelNode levelNode:levelPoints.values()){
+//				if(levelNode.getVal()>0)nodes.add(levelNode);
+//			}
+			sub=nodes.subSet(from, toElement);
+			System.out.println("from: "+from.getPOS().toString()+" to: "+toElement.getPOS().toString());
+			System.out.println("block nodes:");
+			for(LevelNode n:sub){
+				System.out.print(n.getPOS().toString());
 			}
-			sub=nodes.subSet(from, true, to, true);
+			System.out.println();
 		}else{
 //			Set<LevelNode> blocked=new TreeSet<LevelNode>();
 			nodes.addAll(levelPoints.values());
-			sub=nodes.subSet(from, true, to, true);
+			sub=nodes.subSet(from, toElement);
+			System.out.println("from: "+from.getPOS().toString()+" to: "+toElement.getPOS().toString());
+			System.out.println("unblock nodes");
+			for(LevelNode n:sub){
+				System.out.print(n.getPOS().toString());
+			}
+			System.out.println();
 //			for(LevelNode levelNode:levelPoints.values()){
 //				if(levelNode.getVal()<0&&blocked.contains(levelNode)){
 //					//TODO: Wenn ueberschneidungen, unterscheiden welche Nodes nicht -1 gesetzt werden muessen, weil sie noch von einem andern Objekt geblockt werden
@@ -91,6 +122,7 @@ public class Level {
 		}
 		setWeigth(sub, -1);
 	}
+	
 	public void setBlocked(LevelNode from, LevelNode to){
 		if(from!=null&&to!=null)manageBlocked(from, to, true);
 	}
@@ -117,6 +149,7 @@ public class Level {
 		}
 	}
 	
+	@Override
 	public String toString(){
 		String out="";
 		for(Float row:levelPoints.rowMap().keySet()){
@@ -132,8 +165,14 @@ public class Level {
 		return out;
 	}
 	
+	/**
+	 * @param position
+	 * @return the position of the nearest LevelNode, null if there is no unblocked LevelNode
+	 */
 	public Vector getNearestinLevel(Vector position){
-		return new VectorImp(getNearest(position.x(),true, false, 0), position.y(), getNearest(position.z(),false, false,0));
+		Float x=getNearest(position.x(),true, false, 0),z=getNearest(position.z(),false, false,0);
+		if(x!=null&&z!=null)return new VectorImp(x, position.y(), z);
+		return null;
 	}
 	
 	public LevelNode getBiggerPosInLevel(Vector position, boolean higher){

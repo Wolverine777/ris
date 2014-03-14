@@ -7,12 +7,15 @@ import java.util.Map;
 
 import vecmath.Vector;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Coordinate.DimensionalComparator;
+
 /**
  * @author Benjamin Reemts
  * 
  */
 
-public class LevelNode {
+public class LevelNode implements Comparable<LevelNode> {
 	private static final int BASEVAL = 1;
 	private final Vector POS;
 	private int val=1;
@@ -74,5 +77,29 @@ public class LevelNode {
 //		System.out.println("länge von "+ POS+" bis "+ target.getPOS()+" :"+ Math.sqrt((Math.pow((target.getPOS().x()-POS.x()), 2)+Math.pow((target.getPOS().z()-POS.z()), 2))));
 		return Math.sqrt((Math.pow((target.getPOS().x()-POS.x()), 2)+Math.pow((target.getPOS().z()-POS.z()), 2)));
 	}
+
+	@Override
+	public int hashCode() {
+		return getPOS().hashCode()*457;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof LevelNode) {
+			LevelNode lNode = (LevelNode) obj;
+			if(lNode.POS.equals(getPOS())){
+				return true;
+			}
+		}
+		return false;
+	}
 	
+	public Coordinate getCoordinate(){
+		return new Coordinate(getPOS().x(), getPOS().z());
+	}
+
+	@Override
+	public int compareTo(LevelNode o) {
+		return new DimensionalComparator(2).compare(getCoordinate(), o.getCoordinate());
+	}
 }

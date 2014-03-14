@@ -108,7 +108,7 @@ public abstract class WorldState extends UntypedActor{
 	public void onReceive(Object message) throws Exception {
 		if (message == Message.DONE) {
 			unitState.put(getSender(), true);
-			System.out.println("Done: "+getSender());
+//			System.out.println("Done: "+getSender());
 			if (!unitState.containsValue(false)) {
 				for (Map.Entry<ActorRef, Boolean> entry : unitState.entrySet()) {
 					entry.setValue(false);

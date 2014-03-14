@@ -39,7 +39,14 @@ public class Route {
 	}
 	
 	public LevelNode getLastWaypoint(){
-		return waypoints.get(waypoints.size()-1);
+		int size=waypoints.size();
+		if(size>0)return waypoints.get(size-1);
+		return null;
+	}
+	
+	public LevelNode getFirstWaypoint(){
+		if(waypoints!=null&&!waypoints.isEmpty())return waypoints.get(0);
+		return null;
 	}
 	
 	@Override

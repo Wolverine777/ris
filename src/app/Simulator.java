@@ -61,16 +61,18 @@ public class Simulator extends UntypedActor {
 				if(entry.getValue().getVector()!=null){
 					doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
 				}else{
-					if(entry.getKey() instanceof Car){
+					if(entry.getKey() instanceof Car&&entry.getValue().getType()==SimulateType.DRIVE){
 						Car car=(Car) entry.getKey();
-						if(car.getPosition().equals(car.getNextWaypoint().getPOS())&&car.getWayToTarget()!=null){
-							System.out.println("Waypoint reached");
-							car.waypointReached();
-						}
 						if(car.getWayToTarget()!=null){
-							Vector vec=car.getVecToNextTarget();
+							if(car.getPosition().equals(car.getNextWaypoint().getPOS())){
+								System.out.println("Waypoint reached");
+								car.waypointReached();
+							}
+							if(car.getWayToTarget()!=null){
+								Vector vec=car.getVecToNextTarget();
 							System.out.println("move direction car: "+vec);
-							doSimulation(car, SimulateType.DRIVE, vec);
+								doSimulation(car, SimulateType.DRIVE, vec);
+							}
 						}
 					}
 				}
@@ -143,8 +145,8 @@ public class Simulator extends UntypedActor {
 			pressedKeys.addAll(((KeyState) message).getPressedKeys());
 			toggeled.addAll(((KeyState) message).getToggled());
 		} else if (message instanceof NodeModification) {
-			System.out.println("Nodes " + nodes);
-			System.out.println("Accesing " + ((NodeModification) message).id);
+//			System.out.println("Nodes " + nodes);
+//			System.out.println("Accesing " + ((NodeModification) message).id);
 			if (nodes.containsKey(((NodeModification) message).id)) {
 				Node modify = nodes.get(((NodeModification) message).id);
 				if (((NodeModification) message).localMod != null) {
@@ -183,6 +185,7 @@ public class Simulator extends UntypedActor {
 			}
 			newNode = nodes.get(sc.id);
 			if (sc.getSimulation() == SimulateType.NONE) {
+				//TODO: only remove one keyDef
 				for (KeyDef kd : simulations.get(newNode)) {
 					if (kd.getKeys().containsAll(sc.getKeys()) && kd.getMode() == sc.getMode()) {
 						simulations.remove(newNode, kd);
@@ -190,8 +193,10 @@ public class Simulator extends UntypedActor {
 				}
 
 			} else if (sc.getSimulation() == SimulateType.DRIVE) {
-				if (sc.getWay() != null && newNode instanceof Car) {
+				if (newNode instanceof Car) {
+					simulations.removeAll(newNode);
 					simulations.put(newNode, new KeyDef(sc.getSimulation(), sc.getWay()));
+					System.out.println("simulator setway:"+sc.getWay());
 					((Car)newNode).setWayToTarget(sc.getWay());
 				}
 			} else {
