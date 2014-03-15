@@ -137,13 +137,14 @@ public class Physic extends UntypedActor {
 						if(colwith instanceof Coin && collision.size()==1){
 							delete.ids.remove(n.getId());
 						}
-						
 					}
-				
+				}
+				if(n instanceof Coin){
+//					simulator.tell(msg, sender);
 				}
 
 							
-				delete.ids.add(n.getId());
+//				delete.ids.add(n.getId());
 				
 
 			} else if(collisionGround(n) !=0 && !collisionObjects(n).isEmpty()){
@@ -437,7 +438,69 @@ public class Physic extends UntypedActor {
 				if(((NodeCreation) message).physicType == PhysicType.Collision_only){
 					nodesCollisionOnly.put(newNode.getId(), newNode);
 				}
-			}
+			} else if(((NodeCreation) message).type == ObjectTypes.CAR){
+				NodeCreation nc=(NodeCreation) message;
+				Node newNode = nodeFactory.car(nc.id, nc.shader, nc.sourceFile, nc.speed, nc.mass);
+				
+				if ((((NodeCreation) message).impulse != null)) {
+					Vector impulse = (((NodeCreation) message).impulse);
+					float newx = impulse.x()/newNode.mass;
+					float newy = impulse.y()/newNode.mass;
+					float newz = impulse.z()/newNode.mass;
+					
+					VectorImp newimpulse = new VectorImp(newx, newy, newz);
+					newNode.setVelocity(newimpulse);
+				}
+				if ((((NodeCreation) message).modelmatrix != null)) {
+					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
+				}
+				if ((((NodeCreation) message).center != null)) {
+					((Shape) newNode)
+							.setCenter(((NodeCreation) message).center);
+				}
+				if ((((NodeCreation) message).radius != 0)) {
+					((Shape) newNode)
+							.setRadius(((NodeCreation) message).radius);
+				}
+				if(((NodeCreation) message).physicType == PhysicType.Physic_complete){
+					
+					nodes.put(newNode.getId(), newNode);
+				}
+				if(((NodeCreation) message).physicType == PhysicType.Collision_only){
+					nodesCollisionOnly.put(newNode.getId(), newNode);
+				}
+			} else if(((NodeCreation) message).type == ObjectTypes.COIN){
+				NodeCreation nc=(NodeCreation) message;
+				Node newNode = nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.mass);
+				
+				if ((((NodeCreation) message).impulse != null)) {
+					Vector impulse = (((NodeCreation) message).impulse);
+					float newx = impulse.x()/newNode.mass;
+					float newy = impulse.y()/newNode.mass;
+					float newz = impulse.z()/newNode.mass;
+					
+					VectorImp newimpulse = new VectorImp(newx, newy, newz);
+					newNode.setVelocity(newimpulse);
+				}
+				if ((((NodeCreation) message).modelmatrix != null)) {
+					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
+				}
+				if ((((NodeCreation) message).center != null)) {
+					((Shape) newNode)
+							.setCenter(((NodeCreation) message).center);
+				}
+				if ((((NodeCreation) message).radius != 0)) {
+					((Shape) newNode)
+							.setRadius(((NodeCreation) message).radius);
+				}
+				if(((NodeCreation) message).physicType == PhysicType.Physic_complete){
+					
+					nodes.put(newNode.getId(), newNode);
+				}
+				if(((NodeCreation) message).physicType == PhysicType.Collision_only){
+					nodesCollisionOnly.put(newNode.getId(), newNode);
+				}
+			} 
 		} else if (message instanceof NodeModification) {
 			// System.out.println("NODEMODIFICATION!!!!!");
 			if (nodes.containsKey(((NodeModification) message).id)) {

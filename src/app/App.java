@@ -113,7 +113,7 @@ public class App extends WorldState {
 
 		ObjLoader objsphere=createObject("objSphere2", shader, new File("obj/Sphere.obj"), null, 1f);
 		transform(objsphere, vecmath.translationMatrix(4f, 0f, 0f));
-		addPhysic(objsphere, new VectorImp(0.0f,-0.01f,0), PhysicType.Collision_only);
+		addPhysic(objsphere, new VectorImp(0,0,0), PhysicType.Collision_only);
 		append(objsphere, head);
 		
 		doCanonBalls();
