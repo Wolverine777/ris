@@ -34,9 +34,11 @@ public class Physic extends UntypedActor {
 	private Map<String, Node> nodesCollisionOnly = new HashMap<String, Node>();
 	private Map<String, Vector> impacts = new HashMap<String, Vector>();
 	ActorRef simulator;
+	ActorRef ai;
 	private StopWatch zeit = new StopWatch();
 	private Vector ground = new VectorImp(0f, -0.005f, 0f);
 	private float elapsed = 0;
+	private float elapsedCounter = 1;
 	private Vector floor;
 
 	private void initialize() {
@@ -47,7 +49,12 @@ public class Physic extends UntypedActor {
 
 	public void physic() {
 		System.out.println("physic loop");
-		elapsed = zeit.elapsed();
+		if(elapsedCounter == 1){
+			elapsed = 0;
+			elapsedCounter++;
+		}
+	
+		elapsed = (elapsed + zeit.elapsed())/elapsedCounter;
 		NodeDeletion delete = new NodeDeletion();
 		for (Node n : nodes.values()) {
 			if (collisionGround(n) == 0 && collisionObjects(n) == null) {
@@ -209,8 +216,15 @@ public class Physic extends UntypedActor {
     		durchlauf++;
 		}
 		VectorImp impact = new VectorImp(n.getWorldTransform().getPosition().x(), floor.y(), n.getWorldTransform().getPosition().z());
-				
+		
+		System.out.println("Aufprallort: " + n.getId() + impact + "Elapsed: " + elapsed);
 		impacts.put(id, impact);
+		
+		PhysicModification tellAi = new PhysicModification();
+		tellAi.force = impact;
+		tellAi.id = id;
+		ai.tell(tellAi, self());
+		
 		
 	}
 	
@@ -279,6 +293,7 @@ public class Physic extends UntypedActor {
 			physic();
 		} else if (message instanceof PhysicInitialization) {
 			this.simulator = (((PhysicInitialization) message).simulator);
+			this.ai = (((PhysicInitialization) message).ai);
 			initialize();
 		} else if (message instanceof NodeCreation) {
 			
