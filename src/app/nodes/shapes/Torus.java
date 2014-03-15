@@ -29,6 +29,7 @@ public class Torus extends Shape {
 	float uStep;
 	float vStep;
 	float uS, vS;
+	boolean useNormals;
 
 	private Vertex[] vertices;
 
@@ -47,12 +48,13 @@ public class Torus extends Shape {
 	public Torus(String id, Shader shader, float rCenter, float rTube,
 			float uS, float vS, boolean useNormals, float mass) {
 		super(id, shader, mass);
-		
+		this.useNormals=useNormals;
 		mode = GL11.GL_QUAD_STRIP;
 		
 		this.rCenter = rCenter;
 		this.rTube = rTube;
-
+		this.vS=vS;
+		this.uS=uS;
 		uStep = (float) Math.PI / uS;
 		vStep = (float) Math.PI / vS;
 
@@ -139,5 +141,10 @@ public class Torus extends Shape {
 
 	public float getvS() {
 		return vS;
+	}
+
+	@Override
+	public Shape clone() {
+		return new Torus(new String(getId()), shader, rCenter, rTube, uS, vS, useNormals, mass);
 	}
 }

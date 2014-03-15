@@ -18,6 +18,7 @@ public class Plane extends Shape {
 	public float w2;
 	public float d2;
 	private float hight;
+	private String sourceTex;
 
 	public Plane(String id, Shader shader, float mass) {
 		this(id, shader, 10f, 10f, 3f, mass);
@@ -30,6 +31,7 @@ public class Plane extends Shape {
 	public Plane(String id, Shader shader, float w, float d, float hight, String sourceTex, float mass) {
 		super(id, shader,mass);
 		this.hight=hight;
+		this.sourceTex=sourceTex;
 		w2 = w / 2;
 		d2 = d / 2;
 
@@ -97,5 +99,10 @@ public class Plane extends Shape {
 
 	public float getHight() {
 		return hight;
+	}
+
+	@Override
+	public Shape clone() {
+		return new Plane(new String(getId()), shader, w2*2, d2*2, hight, new String(sourceTex), mass);
 	}
 }

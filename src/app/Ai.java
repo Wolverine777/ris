@@ -25,6 +25,7 @@ import app.edges.Edge;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
+import app.eventsystem.PhysicModification;
 import app.eventsystem.SimulateCreation;
 import app.messages.AiInitialization;
 import app.messages.Message;
@@ -39,6 +40,7 @@ public class Ai extends UntypedActor {
 	private Map<String, Node> nonAiNodes = new HashMap<String, Node>();
 	private Map<String, Car> cars=new HashMap<String, Car>();
 	private Map<String, Coin> coins=new HashMap<String, Coin>();
+	private Map<String, Shape> impacts=new HashMap<String, Shape>();
 	ActorRef simulator;
 
 	private void initialize(Vector levelPosition, float width, float depth) {
@@ -47,7 +49,7 @@ public class Ai extends UntypedActor {
 		getSender().tell(Message.INITIALIZED, self());
 	}
 	
-	private Route findRoute(Car car){
+	private void calcRoute(Car car){
 		//TODO: einbauen, dass Coins die schon Target sind geblockt werden und ein Anderes auto bekommt( fincloesestcoin eine liste übergeben)
 		Coin nextCoin=findClosestCoin(car);
 		boolean routeStillGood=false;
@@ -80,15 +82,19 @@ public class Ai extends UntypedActor {
 					car.setTarget(nextCoin);
 					System.out.println("Level: "+level.toString());
 					System.out.println("ai setway: "+way);
-//				car.setWayToTarget(way);
+					car.setWayToTarget(way);
+					simulator.tell(new SimulateCreation(car.getId(), way), self());
 					lookAt.clear();
 					path.clear();
-					return way;
+//					return way;
 				}
 			}
-			
+		}else if(nextCoin==null){
+			car.setTarget(nextCoin);
+			car.setWayToTarget(null);
+			simulator.tell(new SimulateCreation(car.getId(), null), self());
 		}
-		return null;
+//		return null;
 	}
 	
 	private Coin findClosestCoin(Car car) {
@@ -200,35 +206,23 @@ public class Ai extends UntypedActor {
 	 * @return -1 if the Object is complete out or bigger than the level, 0 if partially in, 1 if the object is completely in.
 	 */
 	private int inLevel(Vector center, float rad){
-		//TODO: move to level border global
-		Vector max=level.maxBorder(), min=level.minBorder();
-		float maxX=max.x(), maxZ=max.z(), minX=min.x(), minZ=min.z();
-		if(center.x()+rad>maxX||center.x()-rad<minX||center.z()+rad>maxZ||center.z()-rad<minZ){
-			//one side out
-			
-			if(center.x()-rad>maxX)return -1;
-			if(center.x()+rad<minX)return -1;
-			if(center.z()-rad>maxZ)return -1;
-			if(center.z()+rad<minZ)return -1;
-			return 0;
+		float maxHight=level.getHight();
+		for(Car car:cars.values()){
+			float tmpHight=car.getCenter().y()+car.getRadius();
+			if(tmpHight>maxHight)maxHight=tmpHight;
 		}
-		return 1;
-//		if(center.x()+rad<=maxX||center.x()-rad>=minX||center.z()+rad<=maxZ||center.z()-rad>=minZ){
-//			if(center.x()+rad<=maxX&&center.x()-rad>=minX&&center.z()+rad<=maxZ&&center.z()-rad>=minZ){
-//				//inlevel
-//				return 1;
-//			}
-//			return 0;
-//		}
-//		return -1;
+		if(center.y()-rad<=maxHight){
+			return level.inLevel(center, rad);
+		}
+		return -1;
 	}
 
 	private void calcNewRouts(){
 		if(!coins.isEmpty()){
 			for(Car car:cars.values()){
-				Route r=findRoute(car);
-				car.setWayToTarget(r);
-				simulator.tell(new SimulateCreation(car.getId(), r), self());
+				calcRoute(car);
+//				car.setWayToTarget(r);
+//				simulator.tell(new SimulateCreation(car.getId(), r), self());
 			}
 		}
 	}
@@ -238,15 +232,15 @@ public class Ai extends UntypedActor {
 		if(!coins.isEmpty()){
 			for(Car car:cars.values()){
 				if(car.getFinalTarget()==null){
-					Route r=findRoute(car);
-					car.setWayToTarget(r);
-					simulator.tell(new SimulateCreation(car.getId(), r), self());
+					calcRoute(car);
+//					car.setWayToTarget(r);
+//					simulator.tell(new SimulateCreation(car.getId(), r), self());
 				}else{
 					if(car.getPosition().equals(car.getFinalTarget().getPOS())){
-						Route r=findRoute(car);
-						System.out.println("calced Route: "+r.toString());
+						calcRoute(car);
+//						System.out.println("calced Route: "+r.toString());
 //						car.setWayToTarget(r);
-						simulator.tell(new SimulateCreation(car.getId(), r), self());
+//						simulator.tell(new SimulateCreation(car.getId(), r), self());
 					}
 				}
 //				if(car.getWayToTarget()==null){
@@ -289,6 +283,7 @@ public class Ai extends UntypedActor {
 			initialize(init.getCenterPosition(), init.getWidth(), init.getDepth());
 		} else if (message instanceof NodeCreation) {
 			NodeCreation nc=(NodeCreation) message;
+			//TODO: delete Groupnode?
 			if (nc.type == ObjectTypes.GROUP) {
 				nonAiNodes.put(nc.id, nodeFactory.groupNode(nc.id));
 			} else if (nc.type == ObjectTypes.CUBE) {
@@ -346,6 +341,18 @@ public class Ai extends UntypedActor {
 				}
 				if(deleteNode(cars.get(id), delete))cars.remove(id);
 				if(deleteNode(coins.get(id), delete))coins.remove(id);
+				if(impacts.containsKey(id)){
+					setBlocked(impacts.get(id), false);
+					impacts.remove(id);
+				}
+			}
+		}else if(message instanceof PhysicModification){
+			PhysicModification pm=(PhysicModification)message;
+			if(nonAiNodes.get(pm.id) instanceof Shape&&nonAiNodes.get(pm.id) != null){
+				Shape s=((Shape) nonAiNodes.get(pm.id)).clone();
+				s.setCenter(pm.force);
+				setBlocked(s, true);
+				impacts.put(pm.id, s);
 			}
 		}
 			

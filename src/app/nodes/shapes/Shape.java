@@ -45,8 +45,6 @@ public abstract class Shape extends Node {
 	}
 	
 	
-	
-
 	public void display(Matrix m) {
 
 		shader.activate();
@@ -176,6 +174,6 @@ public abstract class Shape extends Node {
 		this.lifetimeCounter = lifetimeCounter;
 	}
 	
-	
-	
+	@Override
+	public abstract Shape clone();
 }

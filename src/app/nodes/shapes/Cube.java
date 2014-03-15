@@ -30,6 +30,7 @@ public class Cube extends Shape {
 	private float w2;
 	private float h2;
 	private float d2;
+	private String sourceTex;
 	
 
 	public Cube(String id, Shader shader, float mass) {
@@ -46,7 +47,7 @@ public class Cube extends Shape {
 		w2 = w / 2;
 		h2 = h / 2;
 		d2 = d / 2;
-		
+		this.sourceTex=sourceTex;
 		
 		
 //		// TODO noch eine sinnvolle Zahl drauf addieren um rechtzeitig kollision zu erkennen
@@ -175,6 +176,9 @@ public class Cube extends Shape {
 	public float getD2() {
 		return d2*2;
 	}
-	
-	
+
+	@Override
+	public Shape clone() {
+		return new Cube(new String(getId()), shader, w2*2, h2*2, d2*2, new String(sourceTex), mass);
+	}
 }

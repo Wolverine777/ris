@@ -281,4 +281,10 @@ public class Sphere extends Shape {
 			};
 		}
 	}
+
+
+	@Override
+	public Shape clone() {
+		return new Sphere(new String(getId()), shader, DIVISIONS);
+	}
 }

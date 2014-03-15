@@ -370,4 +370,9 @@ public class ObjLoader extends Shape {
 	public File getSourceTex() {
 		return sourceTex;
 	}
+
+	@Override
+	public Shape clone() {
+		return new ObjLoader(new String(getId()), shader, sourceFile, sourceTex, mass);
+	}
 }

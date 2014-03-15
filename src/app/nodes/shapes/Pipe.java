@@ -82,4 +82,9 @@ public class Pipe extends Shape {
 		colorData.rewind();
 	}
 
+	@Override
+	public Shape clone() {
+		return new Pipe(new String(getId()), shader, r, lats, longs, mass);
+	}
+
 }

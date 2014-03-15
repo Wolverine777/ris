@@ -23,9 +23,13 @@ import com.google.common.collect.TreeBasedTable;
 public class Level {
 	private final float GRIDREFACTOR=2.f; 
 	private Table<Float, Float, LevelNode> levelPoints;
-	
+	private final float hight;
+	private Vector max, min;
 	public Level(Vector centerPosition, float width, float depth){
 		makeLevel(centerPosition, width, depth);
+		hight=centerPosition.y();
+		max=maxBorder(); 
+		min=minBorder();
 	}
 	
 	private void makeLevel(Vector centerPosition, float width, float depth){
@@ -255,5 +259,23 @@ public class Level {
 		NavigableSet<Float> xValues = new TreeSet<Float>(levelPoints.rowKeySet());
 		NavigableSet<Float> zValues = new TreeSet<Float>(levelPoints.columnKeySet());
 		return new VectorImp(xValues.first(), 0, zValues.first());
+	}
+
+	public float getHight() {
+		return hight;
+	}
+	
+	public int inLevel(Vector center, float rad){
+		float maxX=max.x(), maxZ=max.z(), minX=min.x(), minZ=min.z();
+		if(center.x()+rad>maxX||center.x()-rad<minX||center.z()+rad>maxZ||center.z()-rad<minZ){
+			//one side out
+			
+			if(center.x()-rad>maxX)return -1;
+			if(center.x()+rad<minX)return -1;
+			if(center.z()-rad>maxZ)return -1;
+			if(center.z()+rad<minZ)return -1;
+			return 0;
+		}
+		return 1;
 	}
 }
