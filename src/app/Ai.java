@@ -83,7 +83,7 @@ public class Ai extends UntypedActor {
 					System.out.println("Level: "+level.toString());
 					System.out.println("ai setway: "+way);
 					car.setWayToTarget(way);
-					simulator.tell(new SimulateCreation(car.getId(), way), self());
+					simulator.tell(new SimulateCreation(car.getId(), way, nextCoin.getId()), self());
 					lookAt.clear();
 					path.clear();
 //					return way;
@@ -92,7 +92,7 @@ public class Ai extends UntypedActor {
 		}else if(nextCoin==null){
 			car.setTarget(nextCoin);
 			car.setWayToTarget(null);
-			simulator.tell(new SimulateCreation(car.getId(), null), self());
+			simulator.tell(new SimulateCreation(car.getId(), null, null), self());
 		}
 //		return null;
 	}
@@ -348,9 +348,9 @@ public class Ai extends UntypedActor {
 				removeEdges.add(e);
 			}
 			for(Edge e : removeEdges){
-				deleted=true;
 				modify.removeEdge(e);
 			}
+			deleted=true;
 		}
 		return deleted;
 	}

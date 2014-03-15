@@ -6,6 +6,8 @@ import static vecmath.vecmathimp.FactoryDefault.vecmath;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -73,11 +75,19 @@ public class Simulator extends UntypedActor {
 //								System.out.println("move direction car: "+vec);
 //								doSimulation(car, SimulateType.DRIVE, vec);
 //							}
-							car.multElapsed(elapsed);
-							Vector vec=car.getVecToNextTarget();
+							Vector vec=car.getVecToNextTarget(elapsed);
 							if(vec!=null){
 								System.out.println("move direction car: "+vec);
 								doSimulation(car, SimulateType.DRIVE, vec);
+							}
+							System.out.println("waytoTarget:"+car.getWayToTarget());
+						}else{
+							if(car.getTarget()!=null){
+								System.out.println("Target in sim:"+car.getTarget().getId());
+								List<String> list=new LinkedList<String>();
+								list.add(car.getTarget().getId());
+								woldState.tell(new NodeDeletion(list), getSelf());
+								System.out.println("node del");
 							}
 						}
 					}
@@ -202,8 +212,9 @@ public class Simulator extends UntypedActor {
 				if (newNode instanceof Car) {
 					simulations.removeAll(newNode);
 					simulations.put(newNode, new KeyDef(sc.getSimulation(), sc.getWay()));
-					System.out.println("simulator setway:"+sc.getWay());
+//					System.out.println("simulator setway:"+sc.getWay());
 					((Car)newNode).setWayToTarget(sc.getWay());
+					((Car)newNode).setTarget(nodeFactory.coin(sc.getTargetId(), sc.shader, null, 1));
 				}
 			} else {
 				simulations.put(newNode, new KeyDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));
@@ -244,12 +255,10 @@ public class Simulator extends UntypedActor {
 					for (Edge e : modify.getEdges()) {
 						removeEdges.add(e);
 						// nodes.get(e.getOtherNode(modify).id).removeEdge(e);
-
 					}
 					for (Edge e : removeEdges) {
 						modify.removeEdge(e);
 					}
-
 					nodes.remove(modify);
 				}
 			}

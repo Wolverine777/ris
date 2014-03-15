@@ -483,7 +483,7 @@ public abstract class WorldState extends UntypedActor{
 		Car car = nodeFactory.car(id, shader, sourceFile, speed, mass);
 		nodes.put(id, car);
 		
-		SimulateCreation n = new SimulateCreation(id,null);
+		SimulateCreation n = new SimulateCreation(id,null, null);
         n.type = ObjectTypes.CAR;
         n.shader = shader;
         n.sourceFile=sourceFile;

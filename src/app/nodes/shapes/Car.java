@@ -74,7 +74,7 @@ public class Car extends ObjLoader {
 	
 	private void calcDirection(){
 		Vector v=getNextWaypoint().getPOS().sub(getWorldTransform().getPosition());
-		this.timesToMove=1/this.speed*1000;
+		this.timesToMove=1/this.speed;
 		this.elapsed=1;
 		int pos=1000000;
 		directionToNextTarget=new VectorImp(((float)Math.round((v.x()*pos)))/pos, ((float)Math.round((v.y()*pos)))/pos, ((float)Math.round((v.z()*pos)))/pos);
@@ -97,7 +97,7 @@ public class Car extends ObjLoader {
 		return speed;
 	}
 	
-	public Vector getVecToNextTarget() {
+	public Vector getVecToNextTarget(float elapsed) {
 		updateFrequenz--;
 //		System.out.println("pos way:"+getNextWaypoint().getPOS()+" poss car:"+getWorldTransform().getPosition());
 		if(timesToMove==0){
@@ -105,7 +105,9 @@ public class Car extends ObjLoader {
 			waypointReached();
 		}
 		if(directionToNextTarget.equals(new VectorImp(0, 0, 0)))return null;
-		return directionToNextTarget.mult((float) (speed/1000*moveTime()));
+		Vector vec=directionToNextTarget.mult((float) ((speed*moveTime())/elapsed));
+		this.elapsed=elapsed;
+		return vec; 
 	}	
 	
 	public Vector getPosition(){
@@ -134,13 +136,5 @@ public class Car extends ObjLoader {
 			}
 		}
 		return 0;
-	}
-	
-	public void multElapsed(float elapsed){
-		if(this.elapsed>0){
-		}
-		this.timesToMove*=this.elapsed;
-		this.timesToMove/=elapsed;
-		this.elapsed=elapsed;
-	}
+	}	
 }
