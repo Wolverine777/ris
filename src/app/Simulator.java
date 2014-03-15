@@ -82,13 +82,13 @@ public class Simulator extends UntypedActor {
 							}
 							System.out.println("waytoTarget:"+car.getWayToTarget());
 						}else{
-							if(car.getTarget()!=null){
-								System.out.println("Target in sim:"+car.getTarget().getId());
-								List<String> list=new LinkedList<String>();
-								list.add(car.getTarget().getId());
-								woldState.tell(new NodeDeletion(list), getSelf());
-								System.out.println("node del");
-							}
+//							if(car.getTarget()!=null){
+//								System.out.println("Target in sim:"+car.getTarget().getId());
+//								List<String> list=new LinkedList<String>();
+//								list.add(car.getTarget().getId());
+//								woldState.tell(new NodeDeletion(list), getSelf());
+//								System.out.println("node del");
+//							}
 						}
 					}
 				}

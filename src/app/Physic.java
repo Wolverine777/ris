@@ -150,7 +150,20 @@ public class Physic extends UntypedActor {
 			} else if(collisionGround(n) !=0 && !collisionObjects(n).isEmpty()){
 				
 				delete.ids.add(n.getId());
-			}
+				
+					if(n instanceof Car || n instanceof Sphere || n instanceof Cube || n instanceof ObjLoader){
+					
+						ArrayList<Node> collision = new ArrayList<>(collisionObjects(n));
+						for(Node colwith : collision){
+							if(colwith instanceof Coin && collision.size()==1){
+							delete.ids.remove(n.getId());
+							}
+						}
+					}
+					if(n instanceof Coin){
+//						simulator.tell(msg, sender);
+					}
+				}
 //			Vector impact = collisionGroundPosition(n);
 //			System.out.println("IMpact oben: " + impact.toString());
 		}
@@ -158,6 +171,19 @@ public class Physic extends UntypedActor {
 		for (Node n : nodesCollisionOnly.values()) {
 			if(!collisionObjects(n).isEmpty() ){
 				delete.ids.add(n.getId());
+					
+				if(n instanceof Car || n instanceof Sphere || n instanceof Cube || n instanceof ObjLoader){
+						
+					ArrayList<Node> collision = new ArrayList<>(collisionObjects(n));
+					for(Node colwith : collision){
+						if(colwith instanceof Coin && collision.size()==1){
+							delete.ids.remove(n.getId());
+						}
+					}
+				}
+				if(n instanceof Coin){
+	//				simulator.tell(msg, sender);
+				}
 				
 			}
 			
