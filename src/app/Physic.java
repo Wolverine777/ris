@@ -37,6 +37,7 @@ public class Physic extends UntypedActor {
 	ActorRef ai;
 	private StopWatch zeit = new StopWatch();
 	private Vector ground = new VectorImp(0f, -0.005f, 0f);
+	private float elapsedaverage = 0;
 	private float elapsed = 0;
 	private float elapsedCounter = 1;
 	private Vector floor;
@@ -44,17 +45,18 @@ public class Physic extends UntypedActor {
 	private void initialize() {
 		getSender().tell(Message.INITIALIZED, self());
 		System.out.println("Physic initialised");
-		elapsed = zeit.elapsed();
+		elapsedaverage = zeit.elapsed();
 	}
 
 	public void physic() {
 		System.out.println("physic loop");
 		if(elapsedCounter == 1){
-			elapsed = 0;
+			elapsedaverage = 0;
 			elapsedCounter++;
 		}
 	
-		elapsed = (elapsed + zeit.elapsed())/elapsedCounter;
+		elapsedaverage = (elapsed + zeit.elapsed())/elapsedCounter;
+		elapsed = zeit.elapsed();
 		NodeDeletion delete = new NodeDeletion();
 		for (Node n : nodes.values()) {
 			if (collisionGround(n) == 0 && collisionObjects(n) == null) {
@@ -206,7 +208,7 @@ public class Physic extends UntypedActor {
 			
 //			System.out.println("Durchlauf Nr: " + durchlauf);
 			
-			n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
+			n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsedaverage, 0))));
 			
 			n.setVelocity(n.getForce());
 			
@@ -217,7 +219,7 @@ public class Physic extends UntypedActor {
 		}
 		VectorImp impact = new VectorImp(n.getWorldTransform().getPosition().x(), floor.y(), n.getWorldTransform().getPosition().z());
 		
-		System.out.println("Aufprallort: " + n.getId() + impact + "Elapsed: " + elapsed);
+		System.out.println("Aufprallort: " + n.getId() + impact + "Elapsed: " + elapsedaverage);
 		impacts.put(id, impact);
 		
 		PhysicModification tellAi = new PhysicModification();
