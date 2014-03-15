@@ -27,7 +27,7 @@ public class Canon extends ObjLoader {
 	public void updateWorldTransform(Matrix previousTrafo){
 		super.updateWorldTransform(previousTrafo);
 //		System.out.println("update world transform canon: " + spawn.toString());
-		direction = previousTrafo.mult(MatrixImp.translate(direction)).getPosition();
+		direction = previousTrafo.getRotation().mult(MatrixImp.translate(direction)).getPosition();
 		spawn = previousTrafo.mult(MatrixImp.translate(spawn)).getPosition();
 //		System.out.println("update world transform canon danach: " + spawn.toString());
 	}
