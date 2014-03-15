@@ -64,13 +64,19 @@ public class Simulator extends UntypedActor {
 					if(entry.getKey() instanceof Car&&entry.getValue().getType()==SimulateType.DRIVE){
 						Car car=(Car) entry.getKey();
 						if(car.getWayToTarget()!=null){
-							if(car.getPosition().equals(car.getNextWaypoint().getPOS())){
-								System.out.println("Waypoint reached");
-								car.waypointReached();
-							}
-							if(car.getWayToTarget()!=null){
-								Vector vec=car.getVecToNextTarget();
-							System.out.println("move direction car: "+vec);
+//							if(car.getPosition().equals(car.getNextWaypoint().getPOS())){
+//								System.out.println("Waypoint reached");
+//								car.waypointReached();
+//							}
+//							if(car.getWayToTarget()!=null){
+//								Vector vec=car.getVecToNextTarget();
+//								System.out.println("move direction car: "+vec);
+//								doSimulation(car, SimulateType.DRIVE, vec);
+//							}
+							car.multElapsed(elapsed);
+							Vector vec=car.getVecToNextTarget();
+							if(vec!=null){
+								System.out.println("move direction car: "+vec);
 								doSimulation(car, SimulateType.DRIVE, vec);
 							}
 						}
@@ -117,7 +123,7 @@ public class Simulator extends UntypedActor {
 			node.updateWorldTransform(modify);
 			woldState.tell(new NodeModification(node.getId(),modify), self());
 		} else if (type == SimulateType.DRIVE) {
-			Matrix modify = MatrixImp.translate(vec);
+			Matrix modify = MatrixImp.translate(vec.mult(elapsed));
 			node.updateWorldTransform(modify);
 			woldState.tell(new NodeModification(node.getId(), modify), self());
 		} else if (type == SimulateType.PHYSIC) {
@@ -127,7 +133,7 @@ public class Simulator extends UntypedActor {
 				woldState.tell(new NodeModification(node.getId(), modify), self());
 				node.force = null;
 			}
-		}
+		} 
 		// st end nodemodification
 	}
 

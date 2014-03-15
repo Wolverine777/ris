@@ -17,9 +17,11 @@ public class Car extends ObjLoader {
 	private Route wayToTarget;
 	private double speed;
 	private Vector directionToNextTarget;
+	private double timesToMove=-1;
 	//for later implementation of changing routes because of ball is moving closer to floor.
 	private int updateFrequenz=0;
 	private Coin target=null;
+	private float elapsed=1;
 
 	public Car(String id, Shader shader, double speed, float mass) {
 		super(id, shader, mass);
@@ -43,9 +45,10 @@ public class Car extends ObjLoader {
 			Vector dir=getWorldTransform().getPosition();
 			Vector toNext=getNextWaypoint().getPOS();
 			System.out.println("direction calc: "+dir+"-->"+toNext+"="+getNextWaypoint().getPOS().sub(getWorldTransform().getPosition()));
-			directionToNextTarget=getNextWaypoint().getPOS().sub(getWorldTransform().getPosition());
+			calcDirection();
 		}else{
 			directionToNextTarget=new VectorImp(0, 0, 0);
+			this.timesToMove=-1;
 		}
 	}
 	
@@ -62,10 +65,19 @@ public class Car extends ObjLoader {
 		this.wayToTarget.removeFirstPoint();
 		if(this.wayToTarget.getWaypoints().isEmpty()){
 			this.wayToTarget=null;
+			this.timesToMove=-1;
+			directionToNextTarget=new VectorImp(0, 0, 0);
 		}else{
-			directionToNextTarget=getNextWaypoint().getPOS().sub(getWorldTransform().getPosition());
-			System.out.println(" now: "+wayToTarget.toString());
+			calcDirection();
 		}
+	}
+	
+	private void calcDirection(){
+		Vector v=getNextWaypoint().getPOS().sub(getWorldTransform().getPosition());
+		this.timesToMove=1/this.speed*1000;
+		this.elapsed=1;
+		int pos=1000000;
+		directionToNextTarget=new VectorImp(((float)Math.round((v.x()*pos)))/pos, ((float)Math.round((v.y()*pos)))/pos, ((float)Math.round((v.z()*pos)))/pos);
 	}
 	
 	public LevelNode getNextWaypoint(){
@@ -88,23 +100,47 @@ public class Car extends ObjLoader {
 	public Vector getVecToNextTarget() {
 		updateFrequenz--;
 //		System.out.println("pos way:"+getNextWaypoint().getPOS()+" poss car:"+getWorldTransform().getPosition());
-		return directionToNextTarget.mult((float) speed/1000);
+		if(timesToMove==0){
+			System.out.println("reached");
+			waypointReached();
+		}
+		if(directionToNextTarget.equals(new VectorImp(0, 0, 0)))return null;
+		return directionToNextTarget.mult((float) (speed/1000*moveTime()));
 	}	
 	
 	public Vector getPosition(){
 		return getWorldTransform().getPosition();
 	}
 	
-	public LevelNode getFinalTarget(){
-		if(wayToTarget!=null)return wayToTarget.getLastWaypoint();
-		return null;
-	}
-
 	public Coin getTarget() {
 		return target;
 	}
 
 	public void setTarget(Coin target) {
 		this.target = target;
+	}
+	
+	public double moveTime(){
+		System.out.println("movetime: "+timesToMove);
+		if(this.timesToMove>0){
+			if(this.timesToMove>1){
+				this.timesToMove-=1;
+				return 1;
+			}else{
+				System.out.println("is null");
+				double tmp=timesToMove;
+				this.timesToMove-=timesToMove;
+				return tmp;
+			}
+		}
+		return 0;
+	}
+	
+	public void multElapsed(float elapsed){
+		if(this.elapsed>0){
+		}
+		this.timesToMove*=this.elapsed;
+		this.timesToMove/=elapsed;
+		this.elapsed=elapsed;
 	}
 }

@@ -167,13 +167,11 @@ public class Ai extends UntypedActor {
 		int inLevel=inLevel(object.getCenter(), object.getRadius());
 		if(inLevel>=0){
 			Vector max=object.getCenter().add(new VectorImp(object.getRadius(), 0, object.getRadius()));
-			System.out.println(object.getId()+" block center:"+object.getCenter()+" rad:"+object.getRadius());
+//			System.out.println(object.getId()+" block center:"+object.getCenter()+" rad:"+object.getRadius());
 			Vector min=object.getCenter().sub(new VectorImp(object.getRadius(), 0, object.getRadius()));
 			if(inLevel==0){
-				System.out.println("part inlevel");
 				//partially
 				if(inLevel(max,0)<0){
-					System.out.println("max modi");
 					Vector maxBorder=level.maxBorder();
 					//top right (max) out->adjust z
 					max=max.sub(new VectorImp(0, 0, (max.z()-maxBorder.z())));
@@ -183,7 +181,6 @@ public class Ai extends UntypedActor {
 					}
 				}
 				if(inLevel(min,0)<0){
-					System.out.println("min modi");
 					Vector minBorder=level.minBorder();
 					//lower left (min) out->adjust z
 					min=min.sub(new VectorImp(0, 0, (min.z()-minBorder.z())));
@@ -192,7 +189,7 @@ public class Ai extends UntypedActor {
 					}
 				}
 			}
-			System.out.println("min:"+min.toString()+" max:"+max.toString());
+//			System.out.println("min:"+min.toString()+" max:"+max.toString());
 			if(setBlock)level.setBlocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
 			else level.setUnblocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
 			calcNewRouts();
@@ -231,45 +228,16 @@ public class Ai extends UntypedActor {
 		System.out.println("Ai Loop");
 		if(!coins.isEmpty()){
 			for(Car car:cars.values()){
-				if(car.getFinalTarget()==null){
+				if(car.getTarget()==null){
+					System.out.println("got coin");
+					//TODO:trigger pickup animation
+					if(car.getTarget()!=null)coins.remove(car.getTarget().getId());
+					for(Node n:coins.values())System.out.println("coin:"+n.getId());
 					calcRoute(car);
-//					car.setWayToTarget(r);
-//					simulator.tell(new SimulateCreation(car.getId(), r), self());
-				}else{
-					if(car.getPosition().equals(car.getFinalTarget().getPOS())){
-						calcRoute(car);
-//						System.out.println("calced Route: "+r.toString());
-//						car.setWayToTarget(r);
-//						simulator.tell(new SimulateCreation(car.getId(), r), self());
-					}
 				}
-//				if(car.getWayToTarget()==null){
-//					Route r=findRoute(car);
-//					System.out.println("calced Route: "+r.toString());
-//					car.setWayToTarget(r);
-//					car.setUpdateFrequenz(UPDATEFREQUENZ);
-//				}
+//				car.getVecToNextTarget();
 			}
-//			for(Car car:cars.values()){
-//				//next position in route(target) sub position
-//				System.out.println("car: "+car.getId()+" pos: "+car.getPosition());
-//				System.out.println("next way pos: "+car.getNextWaypoint().getPOS());
-//				if(car.getPosition().equals(car.getNextWaypoint().getPOS())){
-//					System.out.println("Waypoint reached");
-//					car.waypointReached();
-//				}
-//				if(car.getWayToTarget()!=null){
-//					Vector vec=car.getVecToNextTarget();
-////					simulator.tell(new SingelSimulation(car.getId(), SimulateType.TRANSLATEFIX, vec, car.getWorldTransform()), self());
-////				if(car.getUpdateFrequenz()==0){
-////					car.setWayToTarget(findRoute(car));
-////		
-//			car.setUpdateFrequenz(UPDATEFREQUENZ);
-////				}
-//				}
-//			}
 		}
-		
 		getSender().tell(Message.DONE, self());
 	}
 
@@ -318,6 +286,7 @@ public class Ai extends UntypedActor {
 //				System.out.println("Nodemodification ai:\nmatrix alt car: \n"+cars.get(nm.id).getWorldTransform()+ "transformationsmatrix: \n"+nm.localMod);
 				setNewMatrix(cars.get(nm.id), nm);
 //				System.out.println("matrix neu car: \n"+cars.get(nm.id).getWorldTransform());
+//				System.out.println("pso car"+nm.id+" "+cars.get(nm.id).getWorldTransform().getPosition().toString());
 			}else{
 				if(nonAiNodes.get(nm.id)instanceof Shape){
 					if(nm.localMod!=null){
@@ -340,7 +309,14 @@ public class Ai extends UntypedActor {
 					nonAiNodes.remove(id);
 				}
 				if(deleteNode(cars.get(id), delete))cars.remove(id);
-				if(deleteNode(coins.get(id), delete))coins.remove(id);
+				if(deleteNode(coins.get(id), delete)){
+					coins.remove(id);
+					for(Car car:cars.values()){
+						if(car.getTarget().getId().equals(id)){
+							car.setTarget(null);
+						}
+					}
+				}
 				if(impacts.containsKey(id)){
 					setBlocked(impacts.get(id), false);
 					impacts.remove(id);

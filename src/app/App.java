@@ -92,7 +92,7 @@ public class App extends WorldState {
 //		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_P)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0, 0) ,ObjectTypes.CUBE);
 //		append(sphere, head);
 		
-		Car car=createCar("Car1", shader, new File("obj/cube.obj"), 8.0f, 1f);
+		Car car=createCar("Car1", shader, new File("obj/cube.obj"), 600.0f, 1f);
 		transform(car, vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
 		transform(car,  vecmath.translationMatrix(-1.0f, floor.getGround(), -1.0f));
 		append(car, head);
@@ -101,6 +101,10 @@ public class App extends WorldState {
 		transform(coin, vecmath.scaleMatrix(0.5f, 0.2f, 0.5f));
 		transform(coin,  vecmath.translationMatrix(1.0f, floor.getGround(), 0));
 		append(coin, head);
+		Coin coin2=createCoin("Coin2", shader, new File("obj/cube.obj"), 1f);
+		transform(coin2, vecmath.scaleMatrix(0.5f, 0.2f, 0.5f));
+		transform(coin2,  vecmath.translationMatrix(-0.5f, floor.getGround(), 0.5f));
+		append(coin2, head);
 		
 		Cube block=createCube("tree", shader, 0.2f,0.4f, 0.2f, 1f);
 		append(block, head);
