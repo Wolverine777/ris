@@ -143,7 +143,11 @@ public class Simulator extends UntypedActor {
 				woldState.tell(new NodeModification(node.getId(), modify), self());
 				node.force = null;
 			}
-		} 
+		} else if (type == SimulateType.FIXVALUE) {
+			Matrix modify = MatrixImp.translate(vec);
+			node.updateWorldTransform(modify);
+			woldState.tell(new NodeModification(node.getId(),modify), self());
+		}
 		// st end nodemodification
 	}
 
