@@ -243,11 +243,16 @@ public abstract class WorldState extends UntypedActor{
 					observer.tell(event, self()); 
 				}
 			}
-			if(event instanceof NodeModification){
+			if(event instanceof NodeModification && (getSender().equals(simulator))){
 				if(((NodeModification) event).id.equals("Canon")){
 					Node modify = nodes.get(((NodeModification) event).id);
 					if (((NodeModification) event).localMod != null) {
+						System.out.println("Spawn im worldstate vor transformation: " + ((Canon)modify).getSpawn());
+						System.out.println("Direction im worldstate vor transformation: " + ((Canon)modify).getDirection());
 						modify.updateWorldTransform(((NodeModification) event).localMod);
+						System.out.println("Matrix die updateworld im worldstate übergeben wird: " +  ((NodeModification) event).localMod);
+						System.out.println("Spawn im worldstate nach transformation: " + ((Canon)modify).getSpawn());
+						System.out.println("Direction im worldstate nach transformation: " + ((Canon)modify).getDirection());
 					}
 				}
 			}
