@@ -1,25 +1,31 @@
 package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
+import java.nio.FloatBuffer;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 
 import vecmath.Matrix;
 import akka.actor.UntypedActor;
 import app.Types.ObjectTypes;
+import app.datatype.SimpleText;
 import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
@@ -36,8 +42,14 @@ import app.shader.Shader;
 public class Renderer extends UntypedActor {
 	private static final int width = 640;
 	private static final int height = 480;
-
-	private boolean multisampling = false;
+	
+	private static UnicodeFont font;
+	private static DecimalFormat formatter = new DecimalFormat("#.##");
+	
+	private static FloatBuffer perspectiveProjectionMatix = BufferUtils.createFloatBuffer(16);
+	private static FloatBuffer orthgraphicProjectionMatix = BufferUtils.createFloatBuffer(16);
+	
+	private static boolean multisampling = false;
 
 	private Map<String, Node> nodes = new HashMap<String, Node>();
 
@@ -48,28 +60,25 @@ public class Renderer extends UntypedActor {
 	// private Float medTime=0f;
 
 	private void initialize() {
-		try {
-			Display.setDisplayMode(new DisplayMode(width, height));
+		
+		setUpDisplay();
+		setUpFonts();
+		setUpCamera();
+		shader = new Shader();
+		setUpLighting();
+		
 
-			if (multisampling)
-				Display.create(new PixelFormat().withSamples(8));
-			else
-				Display.create();
-
-			// Limit to 60 FPS
-			Display.setSwapInterval(1);
-			Display.setVSyncEnabled(true);
-		} catch (LWJGLException e) {
-			e.printStackTrace();
-		}
-
+		
+		
 		// Set background color to black.
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 		// Enable depth testing.
 		glEnable(GL11.GL_DEPTH_TEST);
+		
+		
 
-		shader = new Shader();
+//		shader = new Shader();
 		// shader = new Shader(new
 		// File("src/app/shadercode/backgroundVertShader"), new
 		// File("src/app/shadercode/backgroundFragShader"));
@@ -79,28 +88,46 @@ public class Renderer extends UntypedActor {
 	}
 
 	private void display() {
+
+		
 		// Adjust the the viewport to the actual window size. This makes the
 		// rendered image fill the entire window.
 		glViewport(0, 0, width, height);
 
 		// Clear all buffers.
 		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
-		shader.activate();
-
-		// Assemble the transformation matrix that will be applied to all
-		// vertices in the vertex shader.
-		float aspect = (float) width / (float) height;
-
-		// The perspective projection. Camera space to NDC.
-		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
-				100f);
-		Shader.setProjectionMatrix(projectionMatrix);
-
-		camera.activate();
-		start.display(start.getWorldTransform());
-
-		Display.setTitle("App");
+		
+        glLoadIdentity();
+        
+     // Assemble the transformation matrix that will be applied to all
+     // vertices in the vertex shader.
+        float aspect = (float) width / (float) height;
+        
+        // The perspective projection. Camera space to NDC.
+        Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
+        		100f);
+        Shader.setProjectionMatrix(projectionMatrix);
+        
+        camera.activate();
+    	shader.activate();
+    	start.display(start.getWorldTransform());
+    	glUseProgram(0);
+        glMatrixMode(GL_PROJECTION);
+        glLoadMatrix(orthgraphicProjectionMatix);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+        glDisable(GL_LIGHTING);
+        font.drawString(1, 1, "Benny ich kann Text");
+        glEnable(GL_LIGHTING);
+        glPopMatrix();
+        glMatrixMode(GL_PROJECTION);
+        glLoadMatrix(perspectiveProjectionMatix);
+        glMatrixMode(GL_MODELVIEW);
+		
+		
+//		start.display(start.getWorldTransform());
+		
 		Display.update();
 
 		getSender().tell(Message.DONE, self());
@@ -114,6 +141,84 @@ public class Renderer extends UntypedActor {
 		}
 
 	}
+	
+	private static void setUpFonts(){
+		java.awt.Font awtFont = new java.awt.Font("Arial Bold", java.awt.Font.BOLD, 18);
+		font = new UnicodeFont(awtFont);
+		font.getEffects().add(new ColorEffect(java.awt.Color.white));
+		font.addAsciiGlyphs();
+		try {
+			font.loadGlyphs();
+		} catch (SlickException e){
+			e.printStackTrace();
+			cleanUp();
+		}
+	}
+	
+	 private static void cleanUp() {
+        Display.destroy();
+        System.exit(0);
+	 }
+	 
+	 private static void setUpLighting() {
+		 glShadeModel(GL_SMOOTH);
+	     glEnable(GL_DEPTH_TEST);
+	     glEnable(GL_LIGHTING);
+	     glEnable(GL_TEXTURE_2D);
+	     glEnable(GL_BLEND);
+	     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//	     glEnable(GL_LIGHT0);
+//	     FloatBuffer lm =BufferUtils.createFloatBuffer(4);
+//	     lm.put(new float[]{0.05f, 0.05f, 0.05f, 1f});
+//	     lm.rewind();
+//	     glLightModel(GL_LIGHT_MODEL_AMBIENT, lm);
+//	     FloatBuffer l =BufferUtils.createFloatBuffer(4);
+//	     l.put(new float[]{0, 0, 0, 1});
+//	     l.rewind();
+//	     glLight(GL_LIGHT0, GL_POSITION, l);
+//	     glEnable(GL_CULL_FACE);
+//	     glCullFace(GL_BACK);
+//	     glEnable(GL_COLOR_MATERIAL);
+//	     glColorMaterial(GL_FRONT, GL_DIFFUSE);
+	  }
+	 
+	 private static void setUpDisplay(){
+		 
+		 try {
+				Display.setDisplayMode(new DisplayMode(width, height));
+				Display.setSwapInterval(1);
+				Display.setVSyncEnabled(true);
+				Display.setTitle("App");
+				if (multisampling)
+					Display.create(new PixelFormat().withSamples(8));
+				else
+					Display.create();
+
+				// Limit to 60 FPS
+//				Display.setSwapInterval(1);
+//				Display.setVSyncEnabled(true);
+			} catch (LWJGLException e) {
+				e.printStackTrace();
+			}
+		 
+	 }
+	 
+	 public static void setUpCamera(){
+		float aspect = (float) width / (float) height;
+		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
+					100f);
+		Shader.setProjectionMatrix(projectionMatrix);
+	    glGetFloat(GL_PROJECTION_MATRIX, perspectiveProjectionMatix);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+	    glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1);
+	    glGetFloat(GL_PROJECTION_MATRIX, orthgraphicProjectionMatix);
+	    glLoadMatrix(perspectiveProjectionMatix);
+	    glMatrixMode(GL_MODELVIEW);
+			
+	 }
+	   
+	   
 
 	@Override
 	public void onReceive(Object message) throws Exception {

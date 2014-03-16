@@ -51,5 +51,6 @@
 	<classpathentry kind="lib" path="lib/akka-2.2.3/zeromq-scala-binding_2.10-0.0.7.jar"/>
 	<classpathentry kind="lib" path="lib/guava-15.0/guava-15.0.jar"/>
 	<classpathentry kind="lib" path="lib/jts-1.8.0/jts-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl-2.9.0/jar/slick.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
