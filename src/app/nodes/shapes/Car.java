@@ -29,7 +29,7 @@ public class Car extends ObjLoader {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Car(String id, Shader shader, File sourcePath, float speed, float mass) {
+	public Car(String id, Shader shader, File sourcePath, double speed, float mass) {
 		super(id, shader, sourcePath, mass);
 		this.speed=speed;
 		// TODO Auto-generated constructor stub
@@ -55,7 +55,7 @@ public class Car extends ObjLoader {
 	/**
 	 * Call this when the Car has Reached a Waypoint to get to the next Waypoint
 	 */
-	public void waypointReached(){
+	private void waypointReached(){
 		System.out.print("point reached, set to next waypoint: "+wayToTarget.toString());
 		if(wayToTarget.getWaypoints().size()<=1){
 			wayToTarget.setTotalway(0);
@@ -74,13 +74,13 @@ public class Car extends ObjLoader {
 	
 	private void calcDirection(){
 		Vector v=getNextWaypoint().getPOS().sub(getWorldTransform().getPosition());
-		this.timesToMove=1/this.speed;
+		this.timesToMove=1/this.speed*100;
 		this.elapsed=1;
 		int pos=1000000;
 		directionToNextTarget=new VectorImp(((float)Math.round((v.x()*pos)))/pos, ((float)Math.round((v.y()*pos)))/pos, ((float)Math.round((v.z()*pos)))/pos);
 	}
 	
-	public LevelNode getNextWaypoint(){
+	private LevelNode getNextWaypoint(){
 		if(wayToTarget!=null)return wayToTarget.getFirstWaypoint();
 		return null;
 	}
@@ -97,6 +97,11 @@ public class Car extends ObjLoader {
 		return speed;
 	}
 	
+	/**
+	 * 
+	 * @param elapsed
+	 * @return the Vector to the next WayPoint mult with Speed, or null if there is no next Point.
+	 */
 	public Vector getVecToNextTarget(float elapsed) {
 		updateFrequenz--;
 //		System.out.println("pos way:"+getNextWaypoint().getPOS()+" poss car:"+getWorldTransform().getPosition());
@@ -105,7 +110,7 @@ public class Car extends ObjLoader {
 			waypointReached();
 		}
 		if(directionToNextTarget.equals(new VectorImp(0, 0, 0)))return null;
-		Vector vec=directionToNextTarget.mult((float) ((speed*moveTime())/elapsed));
+		Vector vec=directionToNextTarget.mult((float) ((speed/100*moveTime())/this.elapsed));
 		this.elapsed=elapsed;
 		return vec; 
 	}	
@@ -122,8 +127,7 @@ public class Car extends ObjLoader {
 		this.target = target;
 	}
 	
-	public double moveTime(){
-		System.out.println("movetime: "+timesToMove);
+	private double moveTime(){
 		if(this.timesToMove>0){
 			if(this.timesToMove>1){
 				this.timesToMove-=1;

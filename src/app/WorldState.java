@@ -479,7 +479,7 @@ public abstract class WorldState extends UntypedActor{
         return obj;
 	}
 	
-	protected Car createCar(String id, Shader shader, File sourceFile, float speed, float mass){
+	protected Car createCar(String id, Shader shader, File sourceFile, double speed, float mass){
 		Car car = nodeFactory.car(id, shader, sourceFile, speed, mass);
 		nodes.put(id, car);
 		

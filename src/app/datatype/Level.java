@@ -9,8 +9,6 @@ import java.util.TreeSet;
 
 import vecmath.Vector;
 import vecmath.vecmathimp.VectorImp;
-
-import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
 import com.google.common.collect.TreeBasedTable;
@@ -25,6 +23,7 @@ public class Level {
 	private Table<Float, Float, LevelNode> levelPoints;
 	private final float hight;
 	private Vector max, min;
+	
 	public Level(Vector centerPosition, float width, float depth){
 		makeLevel(centerPosition, width, depth);
 		hight=centerPosition.y();
@@ -70,7 +69,7 @@ public class Level {
 		}
 	}
 	
-	private void setWeigth(Set<LevelNode> positions, int multiplier){
+	private void setWeigth(Set<LevelNode> positions, double multiplier){
 		for(LevelNode node:positions) levelPoints.get(node.getPOS().x(), node.getPOS().z()).multEdgesVal(multiplier);
 	}
 	
@@ -140,7 +139,7 @@ public class Level {
 	 * @param to Value with the maximum x and z value of the Field
 	 * @param value The value to be multiplied with
 	 */
-	public void setSpace(LevelNode from, LevelNode to, int value){
+	public void setSpace(LevelNode from, LevelNode to, double value){
 		if(from!=null&&to!=null){
 			NavigableSet<LevelNode> nodes = new TreeSet<LevelNode>(new Comparator<LevelNode>() {
 				@Override
@@ -249,13 +248,13 @@ public class Level {
 		return levelPoints.values().toArray(new LevelNode[0]); 
 	}
 	
-	public Vector maxBorder(){
+	private Vector maxBorder(){
 		NavigableSet<Float> xValues = new TreeSet<Float>(levelPoints.rowKeySet());
 		NavigableSet<Float> zValues = new TreeSet<Float>(levelPoints.columnKeySet());
 		return new VectorImp(xValues.last(), 0, zValues.last());
 	}
 	
-	public Vector minBorder(){
+	private Vector minBorder(){
 		NavigableSet<Float> xValues = new TreeSet<Float>(levelPoints.rowKeySet());
 		NavigableSet<Float> zValues = new TreeSet<Float>(levelPoints.columnKeySet());
 		return new VectorImp(xValues.first(), 0, zValues.first());
@@ -277,5 +276,13 @@ public class Level {
 			return 0;
 		}
 		return 1;
+	}
+
+	public Vector getMaxBorder() {
+		return max;
+	}
+
+	public Vector getMinBorder() {
+		return min;
 	}
 }

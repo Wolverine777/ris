@@ -29,7 +29,7 @@ public class NodeCreation {
 	
 	public float mass;
 	
-	public float speed;
+	public double speed;
 	
 	public PhysicType physicType;
 

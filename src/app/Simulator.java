@@ -80,14 +80,14 @@ public class Simulator extends UntypedActor {
 								System.out.println("move direction car: "+vec);
 								doSimulation(car, SimulateType.DRIVE, vec);
 							}
-							System.out.println("waytoTarget:"+car.getWayToTarget());
+							System.out.println("simu waytoTarget:"+car.getWayToTarget());
 						}else{
+							//TODO: delete when collision working
 							if(car.getTarget()!=null){
-								System.out.println("Target in sim:"+car.getTarget().getId());
 								List<String> list=new LinkedList<String>();
 								list.add(car.getTarget().getId());
 								woldState.tell(new NodeDeletion(list), getSelf());
-								System.out.println("node del");
+								car.setTarget(null);
 							}
 						}
 					}

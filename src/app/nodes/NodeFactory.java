@@ -95,7 +95,7 @@ public class NodeFactory {
 		return new Coin(id, shader, sourceFile, mass);
 	}
 	
-	public Car car(String id, Shader shader, File sourceFile, float speed, float mass){
+	public Car car(String id, Shader shader, File sourceFile, double speed, float mass){
 		return new Car(id, shader, sourceFile, speed, mass);
 	}
 }

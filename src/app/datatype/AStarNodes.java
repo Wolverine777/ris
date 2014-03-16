@@ -9,9 +9,9 @@ import java.util.List;
 
 public class AStarNodes {
 	private double length; 
-	private int resistance;
+	private double resistance;
 	private List<LevelNode> path;
-	public AStarNodes(double length, int resistance, List<LevelNode> path){
+	public AStarNodes(double length, double resistance, List<LevelNode> path){
 		this.resistance=resistance;
 		this.length=length;
 		this.path=path;
@@ -22,7 +22,7 @@ public class AStarNodes {
 	public List<LevelNode> getPath() {
 		return path;
 	}
-	public int getResistance() {
+	public double getResistance() {
 		return resistance;
 	}
 

@@ -7,16 +7,16 @@ import java.util.List;
 
 
 public class Route {
-	private int totalway = 0;
+	private double totalway = 0;
 	private List<LevelNode> waypoints = new ArrayList<LevelNode>();
 
-	public Route(int totalway, List<LevelNode> waypoints) {
+	public Route(double totalway, List<LevelNode> waypoints) {
 		this.totalway = totalway;
 		Collections.reverse(waypoints);
 		this.waypoints = waypoints;
 	}
 
-	public int getTotalway() {
+	public double getTotalway() {
 		return totalway;
 	}
 
@@ -30,7 +30,7 @@ public class Route {
 		return out;
 	}
 
-	public void setTotalway(int totalway) {
+	public void setTotalway(double totalway) {
 		this.totalway = totalway;
 	}
 	

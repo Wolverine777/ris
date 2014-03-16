@@ -16,11 +16,11 @@ import com.vividsolutions.jts.geom.Coordinate.DimensionalComparator;
  */
 
 public class LevelNode implements Comparable<LevelNode> {
-	private static final int BASEVAL = 1;
+	private static final double BASEVAL = 0.01;
 	private final Vector POS;
-	private int val=1;
+	private double val=BASEVAL;
 	// private int ident=0;
-	private Map<LevelNode, Integer> edges = new HashMap<LevelNode, Integer>();
+	private Map<LevelNode, Double> edges = new HashMap<LevelNode, Double>();
 
 	public LevelNode(Vector vector) {
 		this.POS = vector;
@@ -44,7 +44,7 @@ public class LevelNode implements Comparable<LevelNode> {
 		edges.put(toNode, BASEVAL);
 	}
 
-	public void multEdgesVal(int val) {
+	public void multEdgesVal(double val) {
 		for(LevelNode node:edges.keySet())edges.put(node, edges.get(node)*val);
 		this.val=this.val*val;
 	}
@@ -61,7 +61,7 @@ public class LevelNode implements Comparable<LevelNode> {
 		return 0;
 	}
 
-	public int getVal() {
+	public double getVal() {
 		return val;
 	}
 
@@ -69,7 +69,7 @@ public class LevelNode implements Comparable<LevelNode> {
 		return POS;
 	}
 	
-	public int getValOfEdge(LevelNode toNode){
+	public double getValOfEdge(LevelNode toNode){
 		return edges.get(toNode);
 	}
 	

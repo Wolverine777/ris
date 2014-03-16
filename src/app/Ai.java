@@ -54,7 +54,7 @@ public class Ai extends UntypedActor {
 		Coin nextCoin=findClosestCoin(car);
 		boolean routeStillGood=false;
 		if(car.getWayToTarget()!=null){
-			int currentWayVal=0;
+			double currentWayVal=0;
 			LevelNode last=null;
 			for(LevelNode ln:car.getWayToTarget().getWaypoints()){
 				if(last!=null){
@@ -101,20 +101,15 @@ public class Ai extends UntypedActor {
 		float distance = -1;
 		Coin nearest = null;
 		for (Coin node : coins.values()) {
-//			System.out.println("coins: "+node.getId());
-//			if (node instanceof Cube) {
-//				System.out.println("Node(Cube) findclosest: " + node.id);
-			float tempdistance = node.getWorldTransform().getPosition().sub(car.getWorldTransform().getPosition()).length();
-			if (tempdistance < distance || distance<0) {
-				distance = tempdistance;
+			if(getNearestNodeinLevel(node)!=null){
+				float tempdistance = node.getWorldTransform().getPosition().sub(car.getWorldTransform().getPosition()).length();
+				if (tempdistance < distance || distance<0) {
+					distance = tempdistance;
 //					System.out.println("distance coin: " + distance);
-				nearest = node;
+					nearest = node;
+				}
 			}
-//			}
 		}
-//		VectorImp closestlevelnode = (VectorImp) getNearestNodeinLevel(nearest); //return changed to Node
-//		System.out.println("closestlevelNode: " + closestlevelnode);
-//		return closestlevelnode;
 		return nearest;
 	}
 	
@@ -123,7 +118,7 @@ public class Ai extends UntypedActor {
 			for(LevelNode child:path.get(0).getChilds()){
 				if(child.getValOfEdge(path.get(0))<0)visited.add(child);
 				if(!visited.contains(child)){
-					int resistance = lookAt.get(path.get(0)).getResistance()+child.getValOfEdge(path.get(0)); //resistance till parent + resistance child to parent
+					double resistance = lookAt.get(path.get(0)).getResistance()+child.getValOfEdge(path.get(0)); //resistance till parent + resistance child to parent
 					double distance=child.lengthtoNode(target)+resistance; //pytagoras lenght + resistance
 //					System.out.print(" distance: "+distance);
 					if(lookAt.containsKey(child))if(lookAt.get(child).getLength()<=distance)continue; //keep only shortest way to child
@@ -149,7 +144,7 @@ public class Ai extends UntypedActor {
 			if(min.equals(target)){
 				//start to move to the next, not to the nearestBase
 				pathMin.remove(pathMin.size()-1);
-				return new Route((int)lookAt.get(min).getLength(), pathMin);
+				return new Route(lookAt.get(min).getLength(), pathMin);
 			}else{
 				return aStar(pathMin, lookAt, visited, target);
 			}
@@ -170,24 +165,27 @@ public class Ai extends UntypedActor {
 //			System.out.println(object.getId()+" block center:"+object.getCenter()+" rad:"+object.getRadius());
 			Vector min=object.getCenter().sub(new VectorImp(object.getRadius(), 0, object.getRadius()));
 			if(inLevel==0){
+//				System.out.println("part start "+object.getId()+" min:"+min.toString()+" max:"+max.toString());
 				//partially
 				if(inLevel(max,0)<0){
-					Vector maxBorder=level.maxBorder();
-					//top right (max) out->adjust z
-					max=max.sub(new VectorImp(0, 0, (max.z()-maxBorder.z())));
-					if(inLevel(max, 0)<0){
-						//still out--> adjust x
+					Vector maxBorder=level.getMaxBorder();
+					if(max.z()>maxBorder.z()){
+						max=max.sub(new VectorImp(0, 0, (max.z()-maxBorder.z())));
+					}
+					if(max.x()>maxBorder.x()){
 						max=max.sub(new VectorImp((max.x()-maxBorder.x()), 0, 0));
 					}
 				}
 				if(inLevel(min,0)<0){
-					Vector minBorder=level.minBorder();
-					//lower left (min) out->adjust z
-					min=min.sub(new VectorImp(0, 0, (min.z()-minBorder.z())));
-					if(inLevel(min, 0)<0){
+					Vector minBorder=level.getMinBorder();
+					if(min.z()<minBorder.z()){
+						min=min.sub(new VectorImp(0, 0, (min.z()-minBorder.z())));
+					}
+					if(min.x()<minBorder.x()){
 						min=min.sub(new VectorImp((min.x()-minBorder.x()), 0, 0));
 					}
 				}
+//				System.out.println("part end "+object.getId()+" min:"+min.toString()+" max:"+max.toString());
 			}
 //			System.out.println("min:"+min.toString()+" max:"+max.toString());
 			if(setBlock)level.setBlocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
@@ -355,6 +353,10 @@ public class Ai extends UntypedActor {
 		return deleted;
 	}
 	
+	/**
+	 * @param object
+	 * @return the position of the nearest LevelNode, null if there is no unblocked LevelNode
+	 */
 	private Vector getNearestNodeinLevel(Node object){
 		Vector nearestVec = level.getNearestinLevel(object.getWorldTransform().getPosition());
 		//Tagetposition.sub(startPosition)
