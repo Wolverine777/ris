@@ -18,12 +18,14 @@ import com.vividsolutions.jts.geom.Coordinate.DimensionalComparator;
 public class LevelNode implements Comparable<LevelNode> {
 	private static final double BASEVAL = 0.01;
 	private final Vector POS;
+	private final Coordinate COORD;
 	private double val=BASEVAL;
 	// private int ident=0;
 	private Map<LevelNode, Double> edges = new HashMap<LevelNode, Double>();
 
 	public LevelNode(Vector vector) {
 		this.POS = vector;
+		this.COORD=new Coordinate(vector.x(), vector.z());
 	}
 
 	public void addNode(LevelNode appendNode) {
@@ -95,11 +97,16 @@ public class LevelNode implements Comparable<LevelNode> {
 	}
 	
 	public Coordinate getCoordinate(){
-		return new Coordinate(getPOS().x(), getPOS().z());
+		return COORD;
 	}
 
 	@Override
 	public int compareTo(LevelNode o) {
 		return new DimensionalComparator(2).compare(getCoordinate(), o.getCoordinate());
+	}
+	
+	@Override
+	public String toString() {
+		return "("+POS.x()+"/"+POS.z()+")["+val+"]";
 	}
 }

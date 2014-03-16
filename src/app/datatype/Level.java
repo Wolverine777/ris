@@ -9,9 +9,12 @@ import java.util.TreeSet;
 
 import vecmath.Vector;
 import vecmath.vecmathimp.VectorImp;
+
 import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
 import com.google.common.collect.TreeBasedTable;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Coordinate.DimensionalComparator;
 
 /**
  * @author Benjamin Reemts
@@ -170,66 +173,82 @@ public class Level {
 	
 	/**
 	 * @param position
-	 * @return the position of the nearest LevelNode, null if there is no unblocked LevelNode
+	 * @return the position of the nearest LevelNode, null if there is no LevelNode
 	 */
-	public Vector getNearestinLevel(Vector position){
-		Float x=getNearest(position.x(),true, false, 0),z=getNearest(position.z(),false, false,0);
-		if(x!=null&&z!=null)return new VectorImp(x, position.y(), z);
+	public LevelNode getNearestinLevel(Vector position){
+		Coordinate c=getNearest(new Coordinate(position.x(), position.z()), false, 0);
+		if(c!=null)return levelPoints.get((float)c.x, (float)c.y) ;
 		return null;
+//		Float x=getNearest(position.x(),true, false, 0),z=getNearest(position.z(),false, false,0);
+//		if(x!=null&&z!=null)return new VectorImp(x, position.y(), z);
+//		return null;
 	}
 	
 	public LevelNode getBiggerPosInLevel(Vector position, boolean higher){
 		int minMax=-1;
 		if(higher)minMax=1;
-		Float x=getNearest(position.x(),true, true, minMax);
-		Float z=getNearest(position.z(),false, true, minMax);
-		if(x!=null&&z!=null)return levelPoints.get(x,z);
+//		Float x=getNearest(position.x(),true, true, minMax);
+//		Float z=getNearest(position.z(),false, true, minMax);
+//		if(x!=null&&z!=null)return levelPoints.get(x,z);
+		Coordinate c=getNearest(new Coordinate(position.x(), position.z()), true, minMax);
+		if(c!=null) return levelPoints.get((float)c.x, (float)c.y) ;
 		return null;
 	}
 	
-	private Float getNearest(Float posVal, boolean xOrz, boolean allPoints, int minMax){
-		Float max=0.0F,min=0.0F;
-		if(xOrz){
-			NavigableSet<Float> xValues = new TreeSet<Float>();
-			if(allPoints){
-				xValues.addAll(levelPoints.rowKeySet());
-			}else{
-				//Erzeugt Set mit nur Positionswerten die nicht geblockt sind(>0)
-				for(Cell<Float, Float, LevelNode> c:levelPoints.cellSet()){
-					if(c.getValue().getVal()>0)xValues.add(c.getRowKey());
-				}
-			}
-			min= xValues.floor(posVal);
-			max= xValues.ceiling(posVal);
-			if(minMax<0){
-				max= xValues.floor(posVal);				
-			}else if(minMax>0){
-				min= xValues.ceiling(posVal);
+	public boolean nearestIsBlocked(Vector pos){
+		Coordinate c=getNearest(new Coordinate(pos.x(), pos.z()), true, 0);
+		if(c!=null){
+			if(levelPoints.get((float)c.x, (float)c.y).getVal()>0)return false;
+		}
+		return true;
+	}
+	
+	private Coordinate getNearest(Coordinate pos, boolean allPoints, int minMax){
+		NavigableSet<Coordinate> values = new TreeSet<Coordinate>(new DimensionalComparator(2));
+		if(allPoints){
+			for(Cell<Float, Float, LevelNode> c:levelPoints.cellSet()){
+				values.add(c.getValue().getCoordinate());
 			}
 		}else{
-			NavigableSet<Float> zValues = new TreeSet<Float>();
-			if(allPoints){
-				zValues.addAll(levelPoints.rowKeySet());
-			}else{
-				//Erzeugt Set mit nur Positionswerten die nicht geblockt sind(>0)
-				for(Cell<Float, Float, LevelNode> c:levelPoints.cellSet()){
-					if(c.getValue().getVal()>0)zValues.add(c.getRowKey());
+			//Erzeugt Set mit nur Positionswerten die nicht geblockt sind(>0)
+			for(Cell<Float, Float, LevelNode> c:levelPoints.cellSet()){
+				if(c.getValue().getVal()>0){
+					values.add(c.getValue().getCoordinate());
 				}
 			}
-			min= zValues.floor(posVal);
-			max= zValues.ceiling(posVal);
-			if(minMax<0){
-				max= zValues.floor(posVal);				
-			}else if(minMax>0){
-				min= zValues.ceiling(posVal);
+		}
+		Coordinate near=null;
+		double dist=-1;
+		if(minMax<0){
+			Set<Coordinate> less=values.headSet(pos, true);
+			for(Coordinate c:less){
+				double tmpdist= c.distance(pos);
+				if(tmpdist<dist||dist<0){
+					dist=tmpdist;
+					near=c;
+				}
+			}
+			
+		}else if(minMax>0){
+			Set<Coordinate> more =values.tailSet(pos, true);
+			for(Coordinate c:more){
+				double tmpdist= c.distance(pos);
+				if(tmpdist<dist||dist<0){
+					dist=tmpdist;
+					near=c;
+				}
+			}
+			
+		}else{
+			for(Coordinate c:values){
+				double tmpdist= c.distance(pos);
+				if(tmpdist<dist||dist<0){
+					dist=tmpdist;
+					near=c;
+				}
 			}
 		}
-		if(max==null)return min;
-		else if(min==null)return max;
-		else{
-			if(Math.min(Math.abs((max-posVal)), Math.abs((min-posVal)))==Math.abs((max-posVal)))return max;
-			else return min;
-		}
+		return near;
 	}
 	
 	public LevelNode getLevelNode(float x, float z){

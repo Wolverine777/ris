@@ -65,19 +65,18 @@ public class Ai extends UntypedActor {
 			if(currentWayVal==car.getWayToTarget().getTotalway())routeStillGood=true;
 		}
 		if(nextCoin!=null&&!routeStillGood){
-			Vector posCar=getNearestNodeinLevel(car), posCoin=getNearestNodeinLevel(nextCoin);
-			if(posCar!=null&&posCoin!=null){
-				LevelNode startNode= level.getLevelNode(posCar);
-				LevelNode target = level.getLevelNode(posCoin); 
+			System.out.println("Level: "+level.toString());
+			LevelNode startNode=getNearestNodeinLevel(car), target=getNearestNodeinLevel(nextCoin);
+			if(startNode!=null&&target!=null){
 				if(!startNode.getPOS().equals(target.getPOS())){
 					LinkedHashMap<LevelNode, AStarNodes> lookAt= new LinkedHashMap<LevelNode, AStarNodes>();
 					lookAt.put(startNode, new AStarNodes(startNode.lengthtoNode(target), 0, new LinkedList<LevelNode>()));
+					System.out.println("target:"+nextCoin.getId()+" pos:"+nextCoin.getWorldTransform().getPosition()+" inLevel: "+target.getPOS());
 					
 					List<LevelNode>path =new LinkedList<LevelNode>();
 					path.add(startNode);
 					
 					LinkedList<LevelNode> visit=new LinkedList<LevelNode>();
-					
 					Route way=aStar(path, lookAt, visit, target);
 					car.setTarget(nextCoin);
 					System.out.println("Level: "+level.toString());
@@ -101,7 +100,11 @@ public class Ai extends UntypedActor {
 		float distance = -1;
 		Coin nearest = null;
 		for (Coin node : coins.values()) {
-			if(getNearestNodeinLevel(node)!=null){
+//			System.out.println("find: "+node.getId());
+			//TODO: filter nicht durch collision erreichbare coins
+			if(!level.nearestIsBlocked(node.getCenter())){
+//				System.out.println("is in");
+				//TODO: ignore y-Axis
 				float tempdistance = node.getWorldTransform().getPosition().sub(car.getWorldTransform().getPosition()).length();
 				if (tempdistance < distance || distance<0) {
 					distance = tempdistance;
@@ -227,7 +230,7 @@ public class Ai extends UntypedActor {
 		if(!coins.isEmpty()){
 			for(Car car:cars.values()){
 				if(car.getTarget()==null){
-					System.out.println("got coin");
+					System.out.println("route to new coin");
 					//TODO:trigger pickup animation
 					if(car.getTarget()!=null)coins.remove(car.getTarget().getId());
 					for(Node n:coins.values())System.out.println("coin:"+n.getId());
@@ -357,8 +360,13 @@ public class Ai extends UntypedActor {
 	 * @param object
 	 * @return the position of the nearest LevelNode, null if there is no unblocked LevelNode
 	 */
-	private Vector getNearestNodeinLevel(Node object){
-		Vector nearestVec = level.getNearestinLevel(object.getWorldTransform().getPosition());
+	private LevelNode getNearestNodeinLevel(Node object){
+		LevelNode nearestVec = null;
+		if(object instanceof Shape){
+			nearestVec = level.getNearestinLevel(((Shape)object).getCenter());
+		}else{
+			nearestVec = level.getNearestinLevel(object.getWorldTransform().getPosition());
+		}
 		//Tagetposition.sub(startPosition)
 //		Vector translate=(nearestVec.sub(object.getWorldTransform().getPosition()));
 //		if(!translate.equals(new VectorImp(0, 0, 0)))simulator.tell(new SingelSimulation(object.id, SimulateType.TRANSLATE, translate,object.getWorldTransform()), self());
