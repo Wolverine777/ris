@@ -6,6 +6,8 @@ package vecmath;
 
 import java.nio.FloatBuffer;
 
+import vecmath.vecmathimp.MatrixImp;
+
 /**
  * A simple 4x4 matrix class using float getValues(). Matrices are non-mutable and
  * can be passed around as getValues(). The matrix is stored in one float array in
@@ -127,6 +129,14 @@ public interface Matrix {
    * @return The newly constructed matrix.
    */
   public abstract Matrix getTranslation();
+  
+  
+  /**
+   * Construct a new matrix containing only the scale factors.
+   * 
+   * @return The newly constructed matrix.
+   */
+  public abstract Matrix getScale();
 
   /**
    * Construct a new vector containing the translational elements.

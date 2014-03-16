@@ -140,9 +140,13 @@ public abstract class Shape extends Node {
 	//TODO: Radius mit Scalmatrix anpassen was tun bei unterschiedlichen Werten? Nochmal alle Vertices betrachten?
 	public void updateWorldTransform(Matrix previousTrafo){
 		super.updateWorldTransform(previousTrafo);
-	    center = previousTrafo.mult(MatrixImp.translate(center)).getPosition();	    
-//	    System.out.println("Neues center: " + super.getId() + center.toString());
-//	    System.out.println("Radius für Cube: " + super.id + radius);
+	    center = previousTrafo.mult(MatrixImp.translate(center)).getPosition();	  
+	    
+	    if(previousTrafo.get(0, 0) == previousTrafo.get(1, 1) && previousTrafo.get(1, 1) == previousTrafo.get(2, 2)){
+		    radius = previousTrafo.get(0, 0)*radius;
+	//	    System.out.println("Neues center: " + super.getId() + center.toString());
+	//	    System.out.println("Radius für Cube: " + super.id + radius);
+	    }
 	}
 	
 	@Override

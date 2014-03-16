@@ -94,24 +94,24 @@ public class App extends WorldState {
 //		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_P)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0, 0) ,ObjectTypes.CUBE);
 //		append(sphere, head);
 		
-		Car car=createCar("Car1", shader, new File("obj/cube.obj"), 0.01f, 1f);
-//		transform(car, vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
-		transform(car,  vecmath.translationMatrix(-1.0f, floor.getGround(), -1.0f));
+		Car car=createCar("Car1", shader, new File("obj/cube.obj"), 0.001f, 1f);
+		transform(car, vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
+		transform(car,  vecmath.translationMatrix(-1.0f, floor.getGround(), 0.0f));
 		addPhysic(car, new VectorImp(0, 0, 0), PhysicType.Collision_only);
 		append(car, head);
 		
 		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), 1f);
-		transform(coin, vecmath.scaleMatrix(0.5f, 0.2f, 0.5f));
+		transform(coin, vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
 		transform(coin,  vecmath.translationMatrix(1.0f, floor.getGround(), 0));
 		append(coin, head);
 		Coin coin2=createCoin("Coin2", shader, new File("obj/cube.obj"), 1f);
-//		transform(coin2, vecmath.scaleMatrix(0.5f, 0.2f, 0.5f));
+		transform(coin2, vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
 		transform(coin2,  vecmath.translationMatrix(0.5f, floor.getGround(), 0.5f));
 		addPhysic(coin2, new VectorImp(0, 0, 0), PhysicType.Collision_only);
 		append(coin2, head);
 		
 		Coin coin3=createCoin("Coin3", shader, new File("obj/cube.obj"), 1f);
-		transform(coin, vecmath.scaleMatrix(0.5f, 0.2f, 0.5f));
+		transform(coin, vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
 		transform(coin,  vecmath.translationMatrix(0.0f, 5, 0));
 		addPhysic(coin3, new VectorImp(0, 0, 0), PhysicType.Collision_only);
 		append(coin, head);
