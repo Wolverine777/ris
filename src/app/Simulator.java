@@ -82,13 +82,13 @@ public class Simulator extends UntypedActor {
 							}
 							System.out.println("simu waytoTarget:"+car.getWayToTarget());
 						}else{
-							//TODO: delete when collision working
-							if(car.getTarget()!=null){
-								List<String> list=new LinkedList<String>();
-								list.add(car.getTarget().getId());
-								woldState.tell(new NodeDeletion(list), getSelf());
-								car.setTarget(null);
-							}
+//							if(car.getTarget()!=null){
+//								System.out.println("Target in sim:"+car.getTarget().getId());
+//								List<String> list=new LinkedList<String>();
+//								list.add(car.getTarget().getId());
+//								woldState.tell(new NodeDeletion(list), getSelf());
+//								System.out.println("node del");
+//							}
 						}
 					}
 				}
@@ -143,7 +143,11 @@ public class Simulator extends UntypedActor {
 				woldState.tell(new NodeModification(node.getId(), modify), self());
 				node.force = null;
 			}
-		} 
+		} else if (type == SimulateType.FIXVALUE) {
+			Matrix modify = MatrixImp.translate(vec);
+			node.updateWorldTransform(modify);
+			woldState.tell(new NodeModification(node.getId(),modify), self());
+		}
 		// st end nodemodification
 	}
 

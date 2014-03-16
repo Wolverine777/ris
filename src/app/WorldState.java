@@ -628,6 +628,66 @@ public abstract class WorldState extends UntypedActor{
 		
 	}
 	
+	protected void addPhysic(Car car, Vector impulse, PhysicType physicType){
+		
+		NodeCreation n = new NodeCreation();
+		n.modelmatrix = (nodes.get(car.getId()).getWorldTransform());
+        n.id = car.getId();
+        n.type = ObjectTypes.CAR;
+        n.shader = shader;
+        n.sourceFile= car.getSourceFile();
+        n.sourceTex= car.getSourceTex();
+    	n.impulse = impulse;
+		n.center = car.getCenter();
+		n.radius = car.getRadius();
+		n.mass = car.mass;
+		n.physicType = physicType;
+	    n.speed= (float) car.getSpeed();
+	       
+		
+		physic.tell(n, self());
+
+		SimulateCreation sc = new SimulateCreation(car.getId(), null, SimulateType.PHYSIC, null, null);
+		sc.modelmatrix = n.getModelmatrix();
+		sc.type = ObjectTypes.CAR;
+		sc.shader = shader;
+	    sc.sourceFile= car.getSourceFile();
+	    sc.sourceTex= car.getSourceTex();
+	    sc.mass = car.mass;
+	    n.speed= (float) car.getSpeed();
+		simulator.tell(sc,self());
+		
+	}
+	
+	protected void addPhysic(Coin coin, Vector impulse, PhysicType physicType){
+		
+		NodeCreation n = new NodeCreation();
+		n.modelmatrix = (nodes.get(coin.getId()).getWorldTransform());
+        n.id = coin.getId();
+        n.type = ObjectTypes.COIN;
+        n.shader = shader;
+        n.sourceFile= coin.getSourceFile();
+        n.sourceTex= coin.getSourceTex();
+    	n.impulse = impulse;
+		n.center = coin.getCenter();
+		n.radius = coin.getRadius();
+		n.mass = coin.mass;
+		n.physicType = physicType;
+	    
+	       
+		
+		physic.tell(n, self());
+
+		SimulateCreation sc = new SimulateCreation(coin.getId(), null, SimulateType.PHYSIC, null, null);
+		sc.modelmatrix = n.getModelmatrix();
+		sc.type = ObjectTypes.COIN;
+		sc.shader = shader;
+	    sc.sourceFile= coin.getSourceFile();
+	    sc.sourceTex= coin.getSourceTex();
+	    sc.mass = coin.mass;
+		simulator.tell(sc,self());
+	}
+	
 	protected void addPhysicFloor(Plane plane){
 		
 		Vector pos = plane.getWorldTransform().getPosition();
@@ -717,7 +777,7 @@ public abstract class WorldState extends UntypedActor{
 		Node canon = nodes.get("Canon");
 		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, 1f);
 		transform(cs, vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor));
-		cs.setRadius(cs.getRadius()* scaleFactor);
+//		cs.setRadius(cs.getRadius()* scaleFactor);
 		transform(cs, vecmath.translationMatrix(((Canon) canon).getSpawn()));
 		addPhysic(cs, ((Canon)canon).getDirection().mult(0.03f), PhysicType.Physic_complete);
 		append(cs, startNode);

@@ -701,6 +701,15 @@ public final class MatrixImp implements Matrix {
     t.set(3, 2, get(3, 2));
     return t;
   }
+  
+  @Override
+  public MatrixImp getScale() {
+	    MatrixImp m = new MatrixImp();
+	    m.set(0, 0, get(0, 0));
+	    m.set(1, 1, get(1, 1));
+	    m.set(2, 2, get(2, 2));
+	    return m;
+	  }
 
   /* (non-Javadoc)
    * @see cg2.vecmath.Matrix#getPosition()

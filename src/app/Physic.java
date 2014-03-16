@@ -4,6 +4,7 @@ import static app.nodes.NodeFactory.nodeFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import vecmath.Matrix;
@@ -25,7 +26,12 @@ import app.messages.Message;
 import app.messages.PhysicInitialization;
 import app.messages.SingelSimulation;
 import app.nodes.Node;
+import app.nodes.shapes.Car;
+import app.nodes.shapes.Coin;
+import app.nodes.shapes.Cube;
+import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Shape;
+import app.nodes.shapes.Sphere;
 import app.toolkit.StopWatch;
 
 public class Physic extends UntypedActor {
@@ -55,11 +61,12 @@ public class Physic extends UntypedActor {
 			elapsedCounter++;
 		}
 	
-		elapsedaverage = (elapsed + zeit.elapsed())/elapsedCounter;
-		elapsed = zeit.elapsed();
+		float tmpelapsed =zeit.elapsed();
+		elapsed = tmpelapsed;
+		elapsedaverage = (elapsedaverage + tmpelapsed)/elapsedCounter;
 		NodeDeletion delete = new NodeDeletion();
 		for (Node n : nodes.values()) {
-			if (collisionGround(n) == 0 && collisionObjects(n) == null) {
+			if (collisionGround(n) == 0 && collisionObjects(n).isEmpty()) {
 			
 				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
 				
@@ -73,7 +80,7 @@ public class Physic extends UntypedActor {
 				simulator.tell(p, self());
 
 			} else if (collisionGround(n) != 0
-					&& collisionObjects(n) == null) {
+					&& collisionObjects(n).isEmpty()) {
 				
 				if(((Shape)n).getLifetimeCounter() > 0) {
 					
@@ -98,7 +105,7 @@ public class Physic extends UntypedActor {
 					float differenceinfloor = collisionGround(n);
 	//				float differenceinfloor = (float) Math.sqrt((float) Math.pow((n.getWorldTransform().getPosition().y() - floor.y()),2));
 					VectorImp vec = new VectorImp(0, differenceinfloor + 0.05f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
-					SingelSimulation ss = new SingelSimulation(n.getId(), SimulateType.DRIVE, vec, n.getWorldTransform());
+					SingelSimulation ss = new SingelSimulation(n.getId(), SimulateType.FIXVALUE, vec, n.getWorldTransform());
 	//				Matrix modify=MatrixImp.translate(vec);
 	//	    		n.updateWorldTransform(modify);
 	//	    		getSender().tell(new NodeModification(n.id,modify), self());
@@ -119,26 +126,64 @@ public class Physic extends UntypedActor {
 				
 
 			} else if (collisionGround(n) == 0
-					&& collisionObjects(n) != null) {
+					&& !collisionObjects(n).isEmpty()) {
 
-				 
-//				Node collision = collisionObjects(n);
+				delete.ids.add(n.getId());
+				
+				if(n instanceof Car || n instanceof Sphere || n instanceof Cube || n instanceof ObjLoader){
+					
+					ArrayList<Node> collision = new ArrayList<>(collisionObjects(n));
+					for(Node colwith : collision){
+						if(colwith instanceof Coin && collision.size()==1){
+							delete.ids.remove(n.getId());
+						}
+					}
+				}
+				if(n instanceof Coin){
+//					simulator.tell(msg, sender);
+				}
 
 							
-				delete.ids.add(n.getId());
+//				delete.ids.add(n.getId());
 				
 
-			} else if(collisionGround(n) !=0 && collisionObjects(n) !=null){
+			} else if(collisionGround(n) !=0 && !collisionObjects(n).isEmpty()){
 				
 				delete.ids.add(n.getId());
-			}
+				
+					if(n instanceof Car || n instanceof Sphere || n instanceof Cube || n instanceof ObjLoader){
+					
+						ArrayList<Node> collision = new ArrayList<>(collisionObjects(n));
+						for(Node colwith : collision){
+							if(colwith instanceof Coin && collision.size()==1){
+							delete.ids.remove(n.getId());
+							}
+						}
+					}
+					if(n instanceof Coin){
+//						simulator.tell(msg, sender);
+					}
+				}
 //			Vector impact = collisionGroundPosition(n);
 //			System.out.println("IMpact oben: " + impact.toString());
 		}
 		
 		for (Node n : nodesCollisionOnly.values()) {
-			if(collisionObjects(n) != null ){
+			if(!collisionObjects(n).isEmpty() ){
 				delete.ids.add(n.getId());
+					
+				if(n instanceof Car || n instanceof Sphere || n instanceof Cube || n instanceof ObjLoader){
+						
+					ArrayList<Node> collision = new ArrayList<>(collisionObjects(n));
+					for(Node colwith : collision){
+						if(colwith instanceof Coin && collision.size()==1){
+							delete.ids.remove(n.getId());
+						}
+					}
+				}
+				if(n instanceof Coin){
+	//				simulator.tell(msg, sender);
+				}
 				
 			}
 			
@@ -161,9 +206,10 @@ public class Physic extends UntypedActor {
 
 	// TODO: Im Moment gibt er die Node aus der liste nodes zuerst aus + Problem wenn Collision mit mehreren Objekten vorhanden ist
 	// 		 Mögliche Lösung wäre eine Liste von nodes anzulegen und diese zurückzugeben.
-	private Node collisionObjects(Node n) {
+	private ArrayList<Node> collisionObjects(Node n) {
 		float distance = 0;
 		float radiuses = 0;
+		ArrayList<Node> colObjects = new ArrayList<Node>();
 		for (Node node : nodes.values()) {
 			if (!node.equals(n)) {
 //				System.out.println("Center n: " + ((Shape) n).getCenter());
@@ -175,7 +221,7 @@ public class Physic extends UntypedActor {
 				if (distance < radiuses) {
 //					System.out.println("distance2: " + distance + "radiuses2: "
 //							+ radiuses);
-					return node;
+					colObjects.add(node);
 				}
 			}
 		}
@@ -190,11 +236,11 @@ public class Physic extends UntypedActor {
 				if (distance < radiuses) {
 //					System.out.println("distance2: " + distance + "radiuses2: "
 //							+ radiuses);
-					return node;
+					colObjects.add(node);
 				}
 			}
 		}
-		return null;
+		return colObjects;
 	}
 	
 	private void collisionGroundPosition(String id, Node n){
@@ -418,7 +464,69 @@ public class Physic extends UntypedActor {
 				if(((NodeCreation) message).physicType == PhysicType.Collision_only){
 					nodesCollisionOnly.put(newNode.getId(), newNode);
 				}
-			}
+			} else if(((NodeCreation) message).type == ObjectTypes.CAR){
+				NodeCreation nc=(NodeCreation) message;
+				Node newNode = nodeFactory.car(nc.id, nc.shader, nc.sourceFile, nc.speed, nc.mass);
+				
+				if ((((NodeCreation) message).impulse != null)) {
+					Vector impulse = (((NodeCreation) message).impulse);
+					float newx = impulse.x()/newNode.mass;
+					float newy = impulse.y()/newNode.mass;
+					float newz = impulse.z()/newNode.mass;
+					
+					VectorImp newimpulse = new VectorImp(newx, newy, newz);
+					newNode.setVelocity(newimpulse);
+				}
+				if ((((NodeCreation) message).modelmatrix != null)) {
+					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
+				}
+				if ((((NodeCreation) message).center != null)) {
+					((Shape) newNode)
+							.setCenter(((NodeCreation) message).center);
+				}
+				if ((((NodeCreation) message).radius != 0)) {
+					((Shape) newNode)
+							.setRadius(((NodeCreation) message).radius);
+				}
+				if(((NodeCreation) message).physicType == PhysicType.Physic_complete){
+					
+					nodes.put(newNode.getId(), newNode);
+				}
+				if(((NodeCreation) message).physicType == PhysicType.Collision_only){
+					nodesCollisionOnly.put(newNode.getId(), newNode);
+				}
+			} else if(((NodeCreation) message).type == ObjectTypes.COIN){
+				NodeCreation nc=(NodeCreation) message;
+				Node newNode = nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.mass);
+				
+				if ((((NodeCreation) message).impulse != null)) {
+					Vector impulse = (((NodeCreation) message).impulse);
+					float newx = impulse.x()/newNode.mass;
+					float newy = impulse.y()/newNode.mass;
+					float newz = impulse.z()/newNode.mass;
+					
+					VectorImp newimpulse = new VectorImp(newx, newy, newz);
+					newNode.setVelocity(newimpulse);
+				}
+				if ((((NodeCreation) message).modelmatrix != null)) {
+					newNode.updateWorldTransform(((NodeCreation) message).modelmatrix);
+				}
+				if ((((NodeCreation) message).center != null)) {
+					((Shape) newNode)
+							.setCenter(((NodeCreation) message).center);
+				}
+				if ((((NodeCreation) message).radius != 0)) {
+					((Shape) newNode)
+							.setRadius(((NodeCreation) message).radius);
+				}
+				if(((NodeCreation) message).physicType == PhysicType.Physic_complete){
+					
+					nodes.put(newNode.getId(), newNode);
+				}
+				if(((NodeCreation) message).physicType == PhysicType.Collision_only){
+					nodesCollisionOnly.put(newNode.getId(), newNode);
+				}
+			} 
 		} else if (message instanceof NodeModification) {
 			// System.out.println("NODEMODIFICATION!!!!!");
 			if (nodes.containsKey(((NodeModification) message).id)) {
