@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Map;
 
 import vecmath.Matrix;
+import app.datatype.FontInfo;
 import app.nodes.camera.Camera;
 import app.nodes.shapes.Car;
 import app.nodes.shapes.Coin;
@@ -99,7 +100,7 @@ public class NodeFactory {
 		return new Car(id, shader, sourceFile, speed, mass);
 	}
 	
-	public Text text(String id, Matrix matrix, String text){
-		return new Text(id,matrix,text);
+	public Text text(String id, Matrix matrix, String text, FontInfo font){
+		return new Text(id,matrix,text,font);
 	}
 }

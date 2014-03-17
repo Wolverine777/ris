@@ -25,6 +25,7 @@ import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 
 import app.Renderer;
+import app.datatype.FontInfo;
 import app.nodes.camera.Camera;
 import vecmath.Matrix;
 import vecmath.Vector;
@@ -41,33 +42,31 @@ public class Text extends Node {
 	private static FloatBuffer perspectiveProjectionMatix = BufferUtils.createFloatBuffer(16);
 	private static FloatBuffer orthgraphicProjectionMatix = BufferUtils.createFloatBuffer(16);
 	private String text="";
+	private FontInfo info;
 
 	public Text(String id) {
 		super(id);
 		posX = getWorldTransform().getPosition().x();
 		posY = getWorldTransform().getPosition().y();
-//		setUpCamera();
 	}
 
 	public Text(String id, Matrix modelMatrix) {
 		super(id, modelMatrix);
 		posX = getWorldTransform().getPosition().x();
 		posY = getWorldTransform().getPosition().y();
-//		setUpCamera();
 	}
-	public Text(String id, Matrix modelMatrix, String text){
+	public Text(String id, Matrix modelMatrix, String text, FontInfo font){
 		super(id, modelMatrix);
 		posX = getWorldTransform().getPosition().x();
 		posY = getWorldTransform().getPosition().y();
 		this.text=text;
-//		setUpCamera();
+		this.info=font;
 	}
 
 	public Text(String id, Matrix modelMatrix, Node n) {
 		super(id, modelMatrix, n);
 		posX = getWorldTransform().getPosition().x();
 		posY = getWorldTransform().getPosition().y();
-//		setUpCamera();
 	}
 
 	public Text(String id, Matrix modelMatrix, Node n, Map<String, String> data) {
@@ -103,6 +102,9 @@ public class Text extends Node {
 			posY = getWorldTransform().getPosition().y();
 		} else if (MatrixImp.isScaleMatrix(previousTrafo)) {
 			// TODO: Text scale
+//			float scale = height / 8f;
+//            glTranslatef(x, y, 0);
+//            glScalef(scale,scale,1f);
 		}
 	}
 
@@ -136,7 +138,9 @@ public class Text extends Node {
 	}
 
 	private UnicodeFont setUpFonts() {
-		java.awt.Font awtFont = new java.awt.Font("Arial Bold", java.awt.Font.BOLD, 18);
+		java.awt.Font awtFont=null;
+		if(info!=null) awtFont = new java.awt.Font(info.getName(), info.getStyle(), info.getSize());
+		else awtFont = new java.awt.Font("Arial Bold", java.awt.Font.BOLD, 18);
 		UnicodeFont font = new UnicodeFont(awtFont);
 		font.getEffects().add(new ColorEffect(java.awt.Color.white));
 		font.addAsciiGlyphs();

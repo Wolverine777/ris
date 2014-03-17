@@ -242,7 +242,7 @@ public class Renderer extends UntypedActor {
 				Node newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
 				nodes.put(newNode.getId(), newNode);
 			}else if(nc.type==ObjectTypes.TEXT){
-				nodes.put(nc.getId(), nodeFactory.text(nc.getId(), nc.modelmatrix, nc.text));
+				nodes.put(nc.getId(), nodeFactory.text(nc.getId(), nc.modelmatrix, nc.text, nc.font));
 			}
 
 		} else if (message instanceof CameraCreation) {

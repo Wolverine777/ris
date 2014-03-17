@@ -774,7 +774,7 @@ public abstract class WorldState extends UntypedActor{
 	}
 	
 	protected Text createText(String id, String text){
-		Text t=nodeFactory.text(id, vecmath.identityMatrix(), text);
+		Text t=nodeFactory.text(id, vecmath.identityMatrix(), text, null);
 		NodeCreation n=new NodeCreation(id);
 		n.text=text;
 		n.type=ObjectTypes.TEXT;

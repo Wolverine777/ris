@@ -6,6 +6,7 @@ import vecmath.Matrix;
 import vecmath.Vector;
 import app.Types.ObjectTypes;
 import app.Types.PhysicType;
+import app.datatype.FontInfo;
 import app.shader.Shader;
 
 public class NodeCreation {
@@ -15,6 +16,7 @@ public class NodeCreation {
 		this.id = id;
 	}
 
+	public FontInfo font;
 	public String id, text;
 	public Shader shader;
 	public ObjectTypes type;
