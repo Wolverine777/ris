@@ -16,6 +16,7 @@ import org.lwjgl.input.Keyboard;
 
 
 
+
 import vecmath.Matrix;
 import vecmath.Vector;
 
@@ -31,6 +32,7 @@ import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.PhysicType;
 import app.Types.SimulateType;
+import app.datatype.FontInfo;
 import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.FloorCreation;
@@ -773,12 +775,13 @@ public abstract class WorldState extends UntypedActor{
 		
 	}
 	
-	protected Text createText(String id, String text){
-		Text t=nodeFactory.text(id, vecmath.identityMatrix(), text, null);
+	protected Text createText(String id, String text, FontInfo font){
+		Text t=nodeFactory.text(id, vecmath.identityMatrix(), text, font);
 		NodeCreation n=new NodeCreation(id);
 		n.text=text;
 		n.type=ObjectTypes.TEXT;
 		n.modelmatrix=vecmath.identityMatrix();
+		n.font=font;
 		
 		renderer.tell(n, getSelf());
 		return t;

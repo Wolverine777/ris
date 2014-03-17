@@ -7,9 +7,9 @@ package app.datatype;
 
 public class FontInfo {
 	//Dont make Setters
-	private int size, style;
-	private String name;
-	public FontInfo(int size, int style, String name) {
+	private final int size, style;
+	private final String name;
+	public FontInfo(String name, int style, int size) {
 		this.size = size;
 		this.style = style;
 		this.name = name;

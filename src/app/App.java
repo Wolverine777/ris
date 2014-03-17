@@ -18,6 +18,7 @@ import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.PhysicType;
 import app.Types.SimulateType;
+import app.datatype.FontInfo;
 import app.messages.Message;
 import app.nodes.GroupNode;
 import app.nodes.Text;
@@ -71,7 +72,7 @@ public class App extends WorldState {
 		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 3.0f));
 		append(canon, head);
 		
-		Text t=createText("Text1", "Ich kann ne text klasse");
+		Text t=createText("Text1", "Ich kann ne text klasse", new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
 		append(t, head);
 //		Sphere c4 = createSphere("Shpere!", shader, 1f);
 //		transform(c4, vecmath.translationMatrix(-5f, 1f, 0));

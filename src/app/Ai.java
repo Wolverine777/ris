@@ -65,7 +65,6 @@ public class Ai extends UntypedActor {
 			if(currentWayVal==car.getWayToTarget().getTotalway())routeStillGood=true;
 		}
 		if(nextCoin!=null&&!routeStillGood){
-			System.out.println("Level: "+level.toString());
 			LevelNode startNode=getNearestNodeinLevel(car), target=getNearestNodeinLevel(nextCoin);
 			if(startNode!=null&&target!=null){
 				if(!startNode.getPOS().equals(target.getPOS())){

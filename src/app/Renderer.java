@@ -33,6 +33,7 @@ import app.messages.Message;
 import app.messages.RendererInitialization;
 import app.messages.RendererInitialized;
 import app.nodes.Node;
+import app.nodes.Text;
 import app.nodes.camera.Camera;
 import app.shader.Shader;
 
@@ -74,8 +75,6 @@ public class Renderer extends UntypedActor {
 		// File("src/app/shadercode/backgroundVertShader"), new
 		// File("src/app/shadercode/backgroundFragShader"));
 
-//		nodes.put("text", nodeFactory.text("text", vecmath.identityMatrix(), "test text"));
-		System.out.println("new node:"+nodes.get("text"));
 		getSender().tell(new RendererInitialized(shader), self());
 		getSender().tell(Message.INITIALIZED, self());
 	}
@@ -242,7 +241,10 @@ public class Renderer extends UntypedActor {
 				Node newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
 				nodes.put(newNode.getId(), newNode);
 			}else if(nc.type==ObjectTypes.TEXT){
-				nodes.put(nc.getId(), nodeFactory.text(nc.getId(), nc.modelmatrix, nc.text, nc.font));
+				Text t=nodeFactory.text(nc.getId(), nc.modelmatrix, nc.text, nc.font);
+				nodes.put(nc.getId(), t);
+				t.setOrthgraphicProjectionMatix(orthgraphicProjectionMatix);
+				t.setPerspectiveProjectionMatix(perspectiveProjectionMatix);
 			}
 
 		} else if (message instanceof CameraCreation) {
@@ -290,14 +292,6 @@ public class Renderer extends UntypedActor {
 		// if(medTime==0)medTime=(Float)message;
 		// else medTime=(medTime+(Float)message)/2;
 		// }
-	}
-
-	public static FloatBuffer getPerspectiveProjectionMatix() {
-		return perspectiveProjectionMatix;
-	}
-
-	public static FloatBuffer getOrthgraphicProjectionMatix() {
-		return orthgraphicProjectionMatix;
 	}
 	
 }
