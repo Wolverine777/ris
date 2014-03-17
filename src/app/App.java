@@ -20,6 +20,7 @@ import app.Types.PhysicType;
 import app.Types.SimulateType;
 import app.messages.Message;
 import app.nodes.GroupNode;
+import app.nodes.Text;
 import app.nodes.shapes.*;
 
 /**
@@ -61,7 +62,6 @@ public class App extends WorldState {
 		
 	}
 	private void test(GroupNode head){
-		
 		Canon canon = createCanon("Canon", shader, new File("obj/Cannon2.obj"), null, 1.0f);
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f) ,ObjectTypes.OBJECT);
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0f, 0f) ,ObjectTypes.OBJECT);
@@ -71,6 +71,8 @@ public class App extends WorldState {
 		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 3.0f));
 		append(canon, head);
 		
+		Text t=createText("Text1", "Ich kann ne text klasse");
+		append(t, head);
 //		Sphere c4 = createSphere("Shpere!", shader, 1f);
 //		transform(c4, vecmath.translationMatrix(-5f, 1f, 0));
 //		addPhysic(c4, new VectorImp(0.01f,0.01f,0));

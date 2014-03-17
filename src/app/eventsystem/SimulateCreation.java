@@ -23,7 +23,7 @@ public class SimulateCreation extends NodeCreation {
 	// TODO: add modelmatrix as params, can be null
 
 	public SimulateCreation(String objectId, Set<Integer> keys, SimulateType simulation, KeyMode mode, Vector vec) {
-		id = objectId;
+		super(objectId);
 		this.keys = keys;
 		this.simulation = simulation;
 		this.mode = mode;

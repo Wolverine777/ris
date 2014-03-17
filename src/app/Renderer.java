@@ -2,12 +2,10 @@ package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 
 import java.nio.FloatBuffer;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +23,6 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import vecmath.Matrix;
 import akka.actor.UntypedActor;
 import app.Types.ObjectTypes;
-import app.datatype.SimpleText;
 import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
@@ -40,11 +37,10 @@ import app.nodes.camera.Camera;
 import app.shader.Shader;
 
 public class Renderer extends UntypedActor {
-	private static final int width = 640;
-	private static final int height = 480;
-	
+	public static final int width = 640;
+	public static final int height = 480;
+
 	private static UnicodeFont font;
-	private static DecimalFormat formatter = new DecimalFormat("#.##");
 	
 	private static FloatBuffer perspectiveProjectionMatix = BufferUtils.createFloatBuffer(16);
 	private static FloatBuffer orthgraphicProjectionMatix = BufferUtils.createFloatBuffer(16);
@@ -60,15 +56,12 @@ public class Renderer extends UntypedActor {
 	// private Float medTime=0f;
 
 	private void initialize() {
-		
 		setUpDisplay();
-		setUpFonts();
+		font=setUpFonts();
+		System.out.println("font"+font);
 		setUpCamera();
 		shader = new Shader();
 		setUpLighting();
-		
-
-		
 		
 		// Set background color to black.
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -76,13 +69,13 @@ public class Renderer extends UntypedActor {
 		// Enable depth testing.
 		glEnable(GL11.GL_DEPTH_TEST);
 		
-		
-
 //		shader = new Shader();
 		// shader = new Shader(new
 		// File("src/app/shadercode/backgroundVertShader"), new
 		// File("src/app/shadercode/backgroundFragShader"));
 
+//		nodes.put("text", nodeFactory.text("text", vecmath.identityMatrix(), "test text"));
+		System.out.println("new node:"+nodes.get("text"));
 		getSender().tell(new RendererInitialized(shader), self());
 		getSender().tell(Message.INITIALIZED, self());
 	}
@@ -97,7 +90,7 @@ public class Renderer extends UntypedActor {
 		// Clear all buffers.
 		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
-        glLoadIdentity();
+//        glLoadIdentity();
         
      // Assemble the transformation matrix that will be applied to all
      // vertices in the vertex shader.
@@ -109,7 +102,7 @@ public class Renderer extends UntypedActor {
         Shader.setProjectionMatrix(projectionMatrix);
         
         camera.activate();
-    	shader.activate();
+//    	shader.activate(); ist bereits in jedem Shape drin
     	start.display(start.getWorldTransform());
     	glUseProgram(0);
         glMatrixMode(GL_PROJECTION);
@@ -118,7 +111,7 @@ public class Renderer extends UntypedActor {
         glPushMatrix();
         glLoadIdentity();
         glDisable(GL_LIGHTING);
-        font.drawString(1, 1, "Benny ich kann Text");
+        font.drawString(100, 100, "Benni ich kann Text TEXT ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         glEnable(GL_LIGHTING);
         glPopMatrix();
         glMatrixMode(GL_PROJECTION);
@@ -126,7 +119,7 @@ public class Renderer extends UntypedActor {
         glMatrixMode(GL_MODELVIEW);
 		
 		
-//		start.display(start.getWorldTransform());
+		start.display(start.getWorldTransform());
 		
 		Display.update();
 
@@ -142,9 +135,10 @@ public class Renderer extends UntypedActor {
 
 	}
 	
-	private static void setUpFonts(){
+	private static UnicodeFont setUpFonts(){
 		java.awt.Font awtFont = new java.awt.Font("Arial Bold", java.awt.Font.BOLD, 18);
-		font = new UnicodeFont(awtFont);
+		UnicodeFont font = new UnicodeFont(awtFont);
+		System.out.println("make new font"+font);
 		font.getEffects().add(new ColorEffect(java.awt.Color.white));
 		font.addAsciiGlyphs();
 		try {
@@ -153,6 +147,7 @@ public class Renderer extends UntypedActor {
 			e.printStackTrace();
 			cleanUp();
 		}
+		return font;
 	}
 	
 	 private static void cleanUp() {
@@ -182,8 +177,8 @@ public class Renderer extends UntypedActor {
 //	     glColorMaterial(GL_FRONT, GL_DIFFUSE);
 	  }
 	 
+	 //TODO: warum static?try
 	 private static void setUpDisplay(){
-		 
 		 try {
 				Display.setDisplayMode(new DisplayMode(width, height));
 				Display.setSwapInterval(1);
@@ -215,7 +210,6 @@ public class Renderer extends UntypedActor {
 	    glGetFloat(GL_PROJECTION_MATRIX, orthgraphicProjectionMatix);
 	    glLoadMatrix(perspectiveProjectionMatix);
 	    glMatrixMode(GL_MODELVIEW);
-			
 	 }
 	   
 	   
@@ -247,6 +241,8 @@ public class Renderer extends UntypedActor {
 			}else if(((NodeCreation) message).type == ObjectTypes.CANON){
 				Node newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
 				nodes.put(newNode.getId(), newNode);
+			}else if(nc.type==ObjectTypes.TEXT){
+				nodes.put(nc.getId(), nodeFactory.text(nc.getId(), nc.modelmatrix, nc.text));
 			}
 
 		} else if (message instanceof CameraCreation) {
@@ -271,6 +267,7 @@ public class Renderer extends UntypedActor {
 			start = nodes.get(((StartNodeModification) message).id);
 
 		} else if (message instanceof NodeDeletion) {
+//			start.append(nodes.get("text"));
 			NodeDeletion delete = (NodeDeletion) message;
 			for (String id : delete.ids) {
 				Node modify = nodes.get(id);
@@ -294,4 +291,13 @@ public class Renderer extends UntypedActor {
 		// else medTime=(medTime+(Float)message)/2;
 		// }
 	}
+
+	public static FloatBuffer getPerspectiveProjectionMatix() {
+		return perspectiveProjectionMatix;
+	}
+
+	public static FloatBuffer getOrthgraphicProjectionMatix() {
+		return orthgraphicProjectionMatix;
+	}
+	
 }

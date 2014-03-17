@@ -98,4 +98,8 @@ public class NodeFactory {
 	public Car car(String id, Shader shader, File sourceFile, double speed, float mass){
 		return new Car(id, shader, sourceFile, speed, mass);
 	}
+	
+	public Text text(String id, Matrix matrix, String text){
+		return new Text(id,matrix,text);
+	}
 }

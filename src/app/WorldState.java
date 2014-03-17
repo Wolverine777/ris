@@ -15,6 +15,7 @@ import org.lwjgl.input.Keyboard;
 
 
 
+
 import vecmath.Matrix;
 import vecmath.Vector;
 
@@ -47,6 +48,7 @@ import app.messages.RendererInitialization;
 import app.messages.RendererInitialized;
 import app.nodes.GroupNode;
 import app.nodes.Node;
+import app.nodes.Text;
 import app.nodes.camera.Camera;
 import app.nodes.shapes.*;
 import app.shader.Shader;
@@ -327,8 +329,7 @@ public abstract class WorldState extends UntypedActor{
 		GroupNode group = nodeFactory.groupNode(id);
 		nodes.put(id, group);
 		
-		NodeCreation n = new NodeCreation();
-        n.id = id;
+		NodeCreation n = new NodeCreation(id);
         n.type = ObjectTypes.GROUP;
         n.shader = null;
         announce(n);
@@ -344,8 +345,7 @@ public abstract class WorldState extends UntypedActor{
 		Cube cube = nodeFactory.cube(id, shader, w, h, d, mass);
 		nodes.put(id, cube);
 		
-		NodeCreation n = new NodeCreation();
-		n.id = id;
+		NodeCreation n = new NodeCreation(id);
         n.type = ObjectTypes.CUBE;
         n.shader = shader;
         n.mass = mass;
@@ -363,8 +363,7 @@ public abstract class WorldState extends UntypedActor{
 		Pipe pipe = nodeFactory.pipe(id, shader, r, lats, longs, mass);
 		nodes.put(id, pipe);
 		
-		NodeCreation n = new NodeCreation();
-        n.id = id;
+		NodeCreation n = new NodeCreation(id);
         n.type = ObjectTypes.PIPE;
         n.shader = shader;
         n.mass = mass;
@@ -382,8 +381,7 @@ public abstract class WorldState extends UntypedActor{
 		Sphere sphere = nodeFactory.sphere(id, shader, mass);
 		nodes.put(id, sphere);
 		
-		NodeCreation n = new NodeCreation();
-		n.id = id;
+		NodeCreation n = new NodeCreation(id);
         n.type = ObjectTypes.SPHERE;
         n.shader = shader;
         n.mass = mass;
@@ -399,8 +397,7 @@ public abstract class WorldState extends UntypedActor{
 		Canon canon = nodeFactory.canon(id, shader, sourceFile, mass);
 		nodes.put(id, canon);
 		
-		NodeCreation n = new NodeCreation();
-		n.id = id;
+		NodeCreation n = new NodeCreation(id);
 	    n.type = ObjectTypes.CANON;
 	    n.shader = shader;
 	    n.sourceFile = sourceFile;
@@ -415,8 +412,7 @@ public abstract class WorldState extends UntypedActor{
 		Canon canon = nodeFactory.canon(id, shader, sourceFile, sourceTex, mass);
 		nodes.put(id, canon);
 		
-		NodeCreation n = new NodeCreation();
-		n.id = id;
+		NodeCreation n = new NodeCreation(id);
 	    n.type = ObjectTypes.CANON;
 	    n.shader = shader;
 	    n.sourceFile = sourceFile;
@@ -431,8 +427,7 @@ public abstract class WorldState extends UntypedActor{
 		Plane plane = nodeFactory.plane(id, shader, width, depth, hight, mass);
 		nodes.put(id, plane);
 		
-		NodeCreation n = new NodeCreation();
-        n.id = id;
+		NodeCreation n = new NodeCreation(id);
         n.type = ObjectTypes.PLANE;
         n.shader = shader;
         n.mass = mass;
@@ -448,8 +443,7 @@ public abstract class WorldState extends UntypedActor{
 	protected void announceFloor(Plane floor) {
 		nodes.put(floor.getId(), floor);
 		
-		NodeCreation n = new NodeCreation();
-        n.id = floor.getId();
+		NodeCreation n = new NodeCreation(floor.getId());
         n.type = ObjectTypes.PLANE;
         n.shader = shader;
         n.mass = floor.getMass();
@@ -466,8 +460,7 @@ public abstract class WorldState extends UntypedActor{
 		ObjLoader obj = nodeFactory.obj(id, shader, sourceFile, sourceTex, mass);
 		nodes.put(id, obj);
 		
-		NodeCreation n = new NodeCreation();
-        n.id = id;
+		NodeCreation n = new NodeCreation(id);
         n.type = ObjectTypes.OBJECT;
         n.shader = shader;
         n.sourceFile=sourceFile;
@@ -499,8 +492,7 @@ public abstract class WorldState extends UntypedActor{
 		Coin coin = nodeFactory.coin(id, shader, sourceFile, mass);
 		nodes.put(id, coin);
 		
-		NodeCreation n = new NodeCreation();
-        n.id = id;
+		NodeCreation n = new NodeCreation(id);
         n.type = ObjectTypes.COIN;
         n.shader = shader;
         n.sourceFile=sourceFile;
@@ -513,8 +505,7 @@ public abstract class WorldState extends UntypedActor{
 
 	protected void addPhysic(Cube cube, PhysicType physicType){
 		
-		NodeCreation n = new NodeCreation();
-		n.id = cube.getId();
+		NodeCreation n = new NodeCreation(cube.getId());
 		n.type = ObjectTypes.CUBE;
 		n.shader = cube.getShader();
 		n.d = cube.getD2();
@@ -534,9 +525,8 @@ public abstract class WorldState extends UntypedActor{
 	protected void addPhysic(Cube cube, Vector impulse, PhysicType physicType){
 		
 				
-		NodeCreation n = new NodeCreation();
+		NodeCreation n = new NodeCreation(cube.getId());
 		n.modelmatrix = (nodes.get(cube.getId()).getWorldTransform());
-		n.id = cube.getId();
 		n.type = ObjectTypes.CUBE;
 		n.shader = cube.getShader();
 		n.impulse = impulse;
@@ -573,9 +563,8 @@ public abstract class WorldState extends UntypedActor{
 	protected void addPhysic(Sphere sphere, Vector impulse, PhysicType physicType){
 		
 		
-		NodeCreation n = new NodeCreation();
+		NodeCreation n = new NodeCreation(sphere.getId());
 		n.modelmatrix = (nodes.get(sphere.getId()).getWorldTransform());
-		n.id = sphere.getId();
 		n.type = ObjectTypes.SPHERE;
 		n.shader = sphere.getShader();
 		n.impulse = impulse;
@@ -602,9 +591,8 @@ public abstract class WorldState extends UntypedActor{
 	
 	protected void addPhysic(ObjLoader obj, Vector impulse, PhysicType physicType){
 		
-		NodeCreation n = new NodeCreation();
+		NodeCreation n = new NodeCreation(obj.getId());
 		n.modelmatrix = (nodes.get(obj.getId()).getWorldTransform());
-        n.id = obj.getId();
         n.type = ObjectTypes.OBJECT;
         n.shader = shader;
         n.sourceFile= obj.getSourceFile();
@@ -630,9 +618,8 @@ public abstract class WorldState extends UntypedActor{
 	
 	protected void addPhysic(Car car, Vector impulse, PhysicType physicType){
 		
-		NodeCreation n = new NodeCreation();
+		NodeCreation n = new NodeCreation(car.getId());
 		n.modelmatrix = (nodes.get(car.getId()).getWorldTransform());
-        n.id = car.getId();
         n.type = ObjectTypes.CAR;
         n.shader = shader;
         n.sourceFile= car.getSourceFile();
@@ -661,9 +648,8 @@ public abstract class WorldState extends UntypedActor{
 	
 	protected void addPhysic(Coin coin, Vector impulse, PhysicType physicType){
 		
-		NodeCreation n = new NodeCreation();
+		NodeCreation n = new NodeCreation(coin.getId());
 		n.modelmatrix = (nodes.get(coin.getId()).getWorldTransform());
-        n.id = coin.getId();
         n.type = ObjectTypes.COIN;
         n.shader = shader;
         n.sourceFile= coin.getSourceFile();
@@ -785,5 +771,16 @@ public abstract class WorldState extends UntypedActor{
 //		System.out.println("Sphere Id: " + cs.getId() + "Radius SPhere: " + cs.getRadius());
 		canonballnumber++;
 		
+	}
+	
+	protected Text createText(String id, String text){
+		Text t=nodeFactory.text(id, vecmath.identityMatrix(), text);
+		NodeCreation n=new NodeCreation(id);
+		n.text=text;
+		n.type=ObjectTypes.TEXT;
+		n.modelmatrix=vecmath.identityMatrix();
+		
+		renderer.tell(n, getSelf());
+		return t;
 	}
 }

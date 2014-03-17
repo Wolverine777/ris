@@ -9,7 +9,13 @@ import app.Types.PhysicType;
 import app.shader.Shader;
 
 public class NodeCreation {
-	public String id;
+	
+	public NodeCreation(String id) {
+		super();
+		this.id = id;
+	}
+
+	public String id, text;
 	public Shader shader;
 	public ObjectTypes type;
 	
