@@ -46,7 +46,6 @@ public abstract class Shape extends Node {
 	
 	
 	public void display(Matrix m) {
-
 		shader.activate();
 		if (tex != null) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);

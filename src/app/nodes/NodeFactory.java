@@ -51,10 +51,10 @@ public class NodeFactory {
 		return n;
 	}
 	
-	public Cube cube(String id, Shader shader, float mass) {
-		Cube n = new Cube(id, shader, mass);
-		return n;
-	}
+//	public Cube cube(String id, Shader shader, float mass) {
+//		Cube n = new Cube(id, shader, mass);
+//		return n;
+//	}
 
 	public Cube cube(String id, Shader shader, float w, float h, float d, float mass) {
 		Cube n = new Cube(id, shader, w, h, d, mass);
@@ -71,13 +71,7 @@ public class NodeFactory {
 		return s;
 	}
 	
-	public Canon canon(String id, Shader shader, File sourceFile, float mass){
-		Canon c = new Canon(id, shader, sourceFile, mass);
-		return c;
-	}
-	
-	public Canon canon(String id, Shader shader, File sourceFile, File sourceTex,
-			float mass) {
+	public Canon canon(String id, Shader shader, File sourceFile, File sourceTex, float mass) {
 		Canon c = new Canon (id, shader, sourceFile, sourceTex, mass);
 		return c;
 		

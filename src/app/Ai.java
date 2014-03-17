@@ -324,11 +324,11 @@ public class Ai extends UntypedActor {
 			}
 		}else if(message instanceof PhysicModification){
 			PhysicModification pm=(PhysicModification)message;
-			if(nonAiNodes.get(pm.id) instanceof Shape&&nonAiNodes.get(pm.id) != null){
-				Shape s=((Shape) nonAiNodes.get(pm.id)).clone();
-				s.setCenter(pm.force);
+			if(nonAiNodes.get(pm.getId()) instanceof Shape&&nonAiNodes.get(pm.getId()) != null){
+				Shape s=((Shape) nonAiNodes.get(pm.getId())).clone();
+				s.setCenter(pm.getForce());
 				setBlocked(s, true);
-				impacts.put(pm.id, s);
+				impacts.put(pm.getId(), s);
 			}
 		}
 			

@@ -230,7 +230,7 @@ public class Renderer extends UntypedActor {
 			} else if (nc.type == ObjectTypes.SPHERE) {
 				nodes.put(nc.getId(), nodeFactory.sphere(nc.id, nc.shader, nc.mass));
 			} else if (nc.type == ObjectTypes.PLANE) {
-				nodes.put(nc.getId(), nodeFactory.plane(nc.id, nc.shader, nc.w, nc.d, nc.hight, nc.mass));
+				nodes.put(nc.getId(), nodeFactory.plane(nc.id, nc.shader, nc.w, nc.d, nc.h, nc.mass));
 			} else if (nc.type == ObjectTypes.OBJECT) {
 				nodes.put(nc.getId(), nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
 			}else if (nc.type == ObjectTypes.CAR){

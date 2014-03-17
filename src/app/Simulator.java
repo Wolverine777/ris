@@ -137,11 +137,11 @@ public class Simulator extends UntypedActor {
 			node.updateWorldTransform(modify);
 			woldState.tell(new NodeModification(node.getId(), modify), self());
 		} else if (type == SimulateType.PHYSIC) {
-			if (node.force != null) {
-				Matrix modify = MatrixImp.translate(node.force.mult((elapsed * 60)));
+			if (node.getForce() != null) {
+				Matrix modify = MatrixImp.translate(node.getForce().mult((elapsed * 60)));
 				node.updateWorldTransform(modify);
 				woldState.tell(new NodeModification(node.getId(), modify), self());
-				node.force = null;
+				node.setForce(null);
 			}
 		} else if (type == SimulateType.FIXVALUE) {
 			Matrix modify = MatrixImp.translate(vec);
@@ -226,9 +226,10 @@ public class Simulator extends UntypedActor {
 				newNode.updateWorldTransform();
 			}
 		} else if (message instanceof PhysicModification) {
-			if (nodes.containsKey(((PhysicModification) message).id)) {
-				Node modify = nodes.get(((PhysicModification) message).id);
-				modify.setForce((((PhysicModification) message)).force);
+			PhysicModification pm=(PhysicModification)message;
+			if (nodes.containsKey(pm.getId())) {
+				Node modify = nodes.get(pm.getId());
+				modify.setForce(pm.getForce());
 				for (KeyDef k : simulations.get(modify)) {
 					if (k.getType().equals(SimulateType.PHYSIC)) {
 						k.setVector(modify.getForce());

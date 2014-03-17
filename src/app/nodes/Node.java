@@ -15,11 +15,12 @@ public abstract class Node {
     private Matrix modelMatrix, worldTrafo;
     protected List<Edge> edges = new ArrayList<Edge>();
     private String id;
-    public Vector velocity;
-    public Vector acceleration;
-    public Vector force;
-	public Vector impulse;
-	public float mass;
+    protected Vector velocity;
+    //TODO: unused?
+//    protected Vector acceleration;
+//    protected Vector impulse;
+    protected Vector force;
+	protected float mass;
 
     public Matrix getWorldTransform() {
         return worldTrafo;
