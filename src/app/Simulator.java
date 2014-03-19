@@ -177,21 +177,23 @@ public class Simulator extends UntypedActor {
 			SimulateCreation sc = (SimulateCreation) message;
 			Node newNode = null;
 			if (!nodes.containsKey(sc.id)) {
+				System.out.println("not in "+sc.id);
 				// TODO: ein Type reicht nur ein Shape, von den objekten wird
 				// nur id und woldtrafo benoetigt.
 				// TODO: Generics?
 				NodeCreation nc = (NodeCreation) message;
 				if (nc.type == ObjectTypes.GROUP) {
-					nodes.put(nc.getId(), nodeFactory.groupNode(nc.id));
+					if(nc.getModelmatrix()!=null)nodes.put(nc.getId(), nodeFactory.groupNode(nc.id, nc.getModelmatrix()));
+					else nodes.put(nc.getId(), nodeFactory.groupNode(nc.id));
 				} else if (nc.type == ObjectTypes.CUBE) {
 					nodes.put(nc.getId(), nodeFactory.cube(nc.id, nc.shader, nc.w, nc.h, nc.d, nc.mass));
 				} else if (nc.type == ObjectTypes.SPHERE) {
 					nodes.put(nc.getId(), nodeFactory.sphere(nc.id, nc.shader, nc.mass));
 				} else if (nc.type == ObjectTypes.CAMERA) {
 					nodes.put(((CameraCreation) message).id, nodeFactory.camera(((CameraCreation) message).id));
-				} else if (((NodeCreation) message).type == ObjectTypes.OBJECT) {
+				} else if (nc.type == ObjectTypes.OBJECT) {
 					nodes.put(nc.getId(), nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
-				} else if (((NodeCreation) message).type == ObjectTypes.CANON) {
+				} else if (nc.type == ObjectTypes.CANON) {
 					nodes.put(nc.getId(), nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
 				} else if (nc.type == ObjectTypes.CAR) {
 					Car car = nodeFactory.car(nc.id, nc.shader, nc.sourceFile, nc.speed, nc.mass);
@@ -220,12 +222,23 @@ public class Simulator extends UntypedActor {
 					((Car)newNode).setWayToTarget(sc.getWay());
 					((Car)newNode).setTarget(nodeFactory.coin(sc.getTargetId(), sc.shader, null, 1));
 				}
+			} else if(sc.getSimulation() ==SimulateType.PHYSIC){
+				newNode.setForce(sc.getVector());
+				if(!simulations.containsKey(newNode)){
+					simulations.put(newNode, new KeyDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));
+				}
+				for (KeyDef k : simulations.get(newNode)){
+					if (k.getType().equals(SimulateType.PHYSIC)){
+						k.setVector(newNode.getForce());
+						// doSimulation(modify, k.getType(), k.getVector());
+					}
+				}
 			} else {
 				simulations.put(newNode, new KeyDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));
 				newNode.setLocalTransform(sc.modelmatrix);
 				newNode.updateWorldTransform();
 			}
-		} else if (message instanceof PhysicModification) {
+		} /*else if (message instanceof PhysicModification) {
 			PhysicModification pm=(PhysicModification)message;
 			if (nodes.containsKey(pm.getId())) {
 				Node modify = nodes.get(pm.getId());
@@ -237,7 +250,7 @@ public class Simulator extends UntypedActor {
 					}
 				}
 			}
-		} else if (message instanceof SingelSimulation) {
+		}*/ else if (message instanceof SingelSimulation) {
 			SingelSimulation simulation = (SingelSimulation) message;
 			if (nodes.containsKey(simulation.getNodeId()))
 				doSimulation(nodes.get(simulation.getNodeId()), simulation.getType(), simulation.getVec());

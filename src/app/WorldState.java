@@ -17,11 +17,14 @@ import org.lwjgl.input.Keyboard;
 
 
 
+
+
 import vecmath.Matrix;
 import vecmath.Vector;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
+import com.vividsolutions.jts.operation.overlay.snap.SnapIfNeededOverlayOp;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -171,6 +174,7 @@ public abstract class WorldState extends UntypedActor{
 			
 			
 			observers.put(Events.NODE_CREATION, renderer);
+			observers.put(Events.NODE_CREATION, physic);
 			observers.put(Events.NODE_CREATION, ai);
 			observers.put(Events.NODE_CREATION, simulator);
 			observers.put(Events.NODE_MODIFICATION, renderer);
@@ -334,15 +338,25 @@ public abstract class WorldState extends UntypedActor{
 	}
 	
 	protected Cube createCube(String id, Shader shader, float mass) {
-		return createCube(id, shader, 1, 1, 1, mass);
+		return createCube(id, shader, 1, 1, 1, mass, null, null);
 	}
 	
-	protected Cube createCube(String id, Shader shader, float w, float h, float d, float mass) {
+	/**
+	 * @param id
+	 * @param shader
+	 * @param w
+	 * @param h
+	 * @param d
+	 * @param mass
+	 * @param impulse can be null, for no Physic
+	 * @param physicType can be null, for no Physic
+	 * @return
+	 */
+	protected Cube createCube(String id, Shader shader, float w, float h, float d, float mass, Vector impulse, PhysicType physicType) {
 		Cube cube = nodeFactory.cube(id, shader, w, h, d, mass);
 		nodes.put(id, cube);
-		
 		NodeCreation n = new NodeCreation(id, shader, w, d, h, mass, ObjectTypes.CUBE);
-        
+        n.addPhysic(impulse, physicType);
         announce(n);
         
         return cube;
@@ -358,13 +372,20 @@ public abstract class WorldState extends UntypedActor{
         
         return pipe;
 	}
-	
-	protected Sphere createSphere(String id, Shader shader, float mass) {
+
+	/**
+	 * @param id
+	 * @param shader
+	 * @param mass
+	 * @param impulse can be null, for no Physic
+	 * @param physicType can be null, for no Physic
+	 * @return
+	 */
+	protected Sphere createSphere(String id, Shader shader, float mass, Vector impulse, PhysicType physicType) {
 		Sphere sphere = nodeFactory.sphere(id, shader, mass);
 		nodes.put(id, sphere);
-		
 		NodeCreation n = new NodeCreation(id, shader, mass);
-        
+        n.addPhysic(impulse, physicType);
         announce(n);
         
         return sphere;
@@ -408,189 +429,68 @@ public abstract class WorldState extends UntypedActor{
         announce(n);
 	}
 	
-
-	protected ObjLoader createObject(String id, Shader shader, File sourceFile, File sourceTex, float mass) {
+	/**
+	 * @param id
+	 * @param shader
+	 * @param sourceFile
+	 * @param sourceTex
+	 * @param mass
+	 * @param impulse can be null, for no Physic
+	 * @param physicType can be null, for no Physic
+	 * @return
+	 */
+	protected ObjLoader createObject(String id, Shader shader, File sourceFile, File sourceTex, float mass, Vector impulse, PhysicType physicType) {
 		ObjLoader obj = nodeFactory.obj(id, shader, sourceFile, sourceTex, mass);
 		nodes.put(id, obj);
 		
 		NodeCreation n = new NodeCreation(id, shader, sourceFile, sourceTex, mass, ObjectTypes.OBJECT);
-        
+        n.addPhysic(impulse, physicType);
         announce(n);
         
         return obj;
 	}
 	
-	protected Car createCar(String id, Shader shader, File sourceFile, double speed, float mass){
+	/**
+	 * @param id
+	 * @param shader
+	 * @param sourceFile
+	 * @param speed
+	 * @param mass
+	 * @param impulse can be null, for no Physic
+	 * @param physicType can be null, for no Physic
+	 * @return
+	 */
+	protected Car createCar(String id, Shader shader, File sourceFile, double speed, float mass, Vector impulse, PhysicType physicType){
 		Car car = nodeFactory.car(id, shader, sourceFile, speed, mass);
 		nodes.put(id, car);
-		//TODO opt
-		SimulateCreation n = new SimulateCreation(id,null, null);
-        n.type = ObjectTypes.CAR;
-        n.shader = shader;
-        n.sourceFile=sourceFile;
+		SimulateCreation n = new SimulateCreation(id, shader, sourceFile, mass, null, null);
         n.speed=speed;
         n.mass = mass;
+        n.addPhysic(impulse, physicType);
         
         announce(n);
-        
         return car;
 	}
 	
-	protected Coin createCoin(String id, Shader shader, File sourceFile, float mass){
+	/**
+	 * @param id
+	 * @param shader
+	 * @param sourceFile
+	 * @param mass
+	 * @param impulse can be null, for no Physic
+	 * @param physicType can be null, for no Physic
+	 * @return
+	 */
+	protected Coin createCoin(String id, Shader shader, File sourceFile, float mass, Vector impulse, PhysicType physicType){
 		Coin coin = nodeFactory.coin(id, shader, sourceFile, mass);
 		nodes.put(id, coin);
-		
-		NodeCreation n = new NodeCreation(id, shader, sourceFile, mass, ObjectTypes.COIN);
+		NodeCreation n=new NodeCreation(id, shader, sourceFile, mass, ObjectTypes.COIN);
+		n.addPhysic(impulse, physicType);
         
         announce(n);
-        
         return coin;
 	}
 
-	protected void addPhysic(Cube cube, PhysicType physicType){
-		
-		NodeCreation n = new NodeCreation(cube.getId(), cube.getShader(), cube.getW2(), cube.getD2(), cube.getH2(), cube.getMass(), ObjectTypes.CUBE);
-	    n.center = cube.getCenter();
-		n.radius = cube.getRadius();
-		n.physicType = physicType;
-	    
-		physic.tell(n, self());
-	}
-	
-	//TODO: add Psysic und ai in create.. integrieren
-	protected void addPhysic(Cube cube, Vector impulse, PhysicType physicType){
-		
-				
-		NodeCreation n = new NodeCreation(cube.getId(), cube.getShader(), cube.getW2(), cube.getD2(), cube.getH2(), cube.getMass(), ObjectTypes.CUBE);
-		n.modelmatrix = (nodes.get(cube.getId()).getWorldTransform());
-		n.impulse = impulse;
-		n.center = cube.getCenter();
-		n.radius = cube.getRadius();
-		n.physicType = physicType;
-		
-		//TODO: sinnvolle kapselung announcePhysic
-		physic.tell(n, self());
-//		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?
-//		sc.setSimulation(SimulateType.PHYSIC);
-		SimulateCreation sc = new SimulateCreation(cube.getId(), null, SimulateType.PHYSIC, null, null);
-		sc.modelmatrix = n.getModelmatrix();
-		sc.type = ObjectTypes.CUBE;
-		sc.shader = cube.getShader();
-		sc.impulse = impulse;
-		sc.d = cube.getD2();
-		sc.w = cube.getW2();
-	    sc.h = cube.getH2();
-		sc.center = cube.getCenter();
-		sc.radius = cube.getRadius();
-		sc.mass = cube.getMass();
-		
-		
-		
-		simulator.tell(sc,self());
-			
-	}
-	
-	protected void addPhysic(Sphere sphere, Vector impulse, PhysicType physicType){
-		
-		
-		NodeCreation n = new NodeCreation(sphere.getId(), sphere.getShader(), sphere.getMass());
-		n.modelmatrix = (nodes.get(sphere.getId()).getWorldTransform());
-		n.impulse = impulse;
-		n.center = sphere.getCenter();
-		n.radius = sphere.getRadius();
-		n.physicType = physicType;
-		
-		
-		physic.tell(n, self());
-//		SimulateCreation sc=(SimulateCreation)n; TODO: wieso geht das nicht?
-//		sc.setSimulation(SimulateType.PHYSIC);
-		SimulateCreation sc = new SimulateCreation(sphere.getId(), null, SimulateType.PHYSIC, null, null);
-		sc.modelmatrix = n.getModelmatrix();
-		sc.type = ObjectTypes.SPHERE;
-		sc.shader = sphere.getShader();
-		sc.impulse = impulse;
-		sc.center = sphere.getCenter();
-		sc.radius = sphere.getRadius();
-		sc.mass = sphere.getMass();
-		simulator.tell(sc,self());
-			
-	}
-	
-	protected void addPhysic(ObjLoader obj, Vector impulse, PhysicType physicType){
-		
-		NodeCreation n = new NodeCreation(obj.getId(), obj.getShader(), obj.getSourceFile(), obj.getSourceTex(), obj.getMass(), ObjectTypes.OBJECT);
-		n.modelmatrix = (nodes.get(obj.getId()).getWorldTransform());
-    	n.impulse = impulse;
-		n.center = obj.getCenter();
-		n.radius = obj.getRadius();
-		n.physicType = physicType;
-		
-		physic.tell(n, self());
-
-		SimulateCreation sc = new SimulateCreation(obj.getId(), null, SimulateType.PHYSIC, null, null);
-		sc.modelmatrix = n.getModelmatrix();
-		sc.type = ObjectTypes.OBJECT;
-		sc.shader = shader;
-	    sc.sourceFile= obj.getSourceFile();
-	    sc.sourceTex= obj.getSourceTex();
-	    sc.mass = obj.getMass();
-		simulator.tell(sc,self());
-		
-	}
-	
-	protected void addPhysic(Car car, Vector impulse, PhysicType physicType){
-		
-		NodeCreation n = new NodeCreation(car.getId(), car.getShader(), car.getSourceFile(), car.getMass(), ObjectTypes.CAR);
-		n.modelmatrix = (nodes.get(car.getId()).getWorldTransform());
-        n.type = ObjectTypes.CAR;
-        n.shader = shader;
-        n.sourceFile= car.getSourceFile();
-        n.sourceTex= car.getSourceTex();
-    	n.impulse = impulse;
-		n.center = car.getCenter();
-		n.radius = car.getRadius();
-		n.mass = car.getMass();
-		n.physicType = physicType;
-	    n.speed= (float) car.getSpeed();
-	       
-		
-		physic.tell(n, self());
-
-		SimulateCreation sc = new SimulateCreation(car.getId(), null, SimulateType.PHYSIC, null, null);
-		sc.modelmatrix = n.getModelmatrix();
-		sc.type = ObjectTypes.CAR;
-		sc.shader = shader;
-	    sc.sourceFile= car.getSourceFile();
-	    sc.sourceTex= car.getSourceTex();
-	    sc.mass = car.getMass();
-	    n.speed= (float) car.getSpeed();
-		simulator.tell(sc,self());
-		
-	}
-	
-	protected void addPhysic(Coin coin, Vector impulse, PhysicType physicType){
-		
-		NodeCreation n = new NodeCreation(coin.getId(), coin.getShader(), coin.getSourceFile(), coin.getMass(), ObjectTypes.COIN);
-		n.modelmatrix = (nodes.get(coin.getId()).getWorldTransform());
-    	n.impulse = impulse;
-		n.center = coin.getCenter();
-		n.radius = coin.getRadius();
-		n.physicType = physicType;
-	    
-	       
-		
-		physic.tell(n, self());
-
-		SimulateCreation sc = new SimulateCreation(coin.getId(), null, SimulateType.PHYSIC, null, null);
-		sc.modelmatrix = n.getModelmatrix();
-		sc.type = ObjectTypes.COIN;
-		sc.shader = shader;
-	    sc.sourceFile= coin.getSourceFile();
-	    sc.sourceTex= coin.getSourceTex();
-	    sc.mass = coin.getMass();
-		simulator.tell(sc,self());
-	}
-	
 	protected void addPhysicFloor(Plane plane){
 		
 		Vector pos = plane.getWorldTransform().getPosition();
@@ -602,10 +502,8 @@ public abstract class WorldState extends UntypedActor{
 		
 	}
 	
-	protected void simulateOnKey(Node object, Set<Integer> keys, SimulateType simulation, KeyMode mode, Vector vec, ObjectTypes type){ //TODO:better solution for type
-		SimulateCreation sc=new SimulateCreation(object.getId(), keys, simulation, mode, vec);
-		sc.type=type;
-		sc.modelmatrix=object.getWorldTransform();
+	protected void simulateOnKey(Node object, Set<Integer> keys, SimulateType simulation, KeyMode mode, Vector vec){
+		SimulateCreation sc=new SimulateCreation(object.getId(), object.getWorldTransform(), keys, simulation, mode, vec);
 		if(object instanceof Shape){
 			Shape s=(Shape)object;
 			sc.shader=s.getShader();
@@ -614,23 +512,26 @@ public abstract class WorldState extends UntypedActor{
 			sc.w =((Cube)object).getW2();
 			sc.h = ((Cube)object).getH2();
 			sc.d =((Cube)object).getD2();
+			sc.type=ObjectTypes.CUBE;
 		} else if(object instanceof Pipe){
 			Pipe p=(Pipe)object;
 			sc.r = p.r;
 		    sc.lats = p.lats;
 		    sc.longs = p.longs;
+		    sc.type=ObjectTypes.PIPE;
 		}else if(object instanceof Plane){
 			Plane p=(Plane)object;
 			sc.w = p.getW();
 	        sc.d = p.getD();
-		}/*else if(object instanceof Torus){
-			Torus t=(Torus) object;
-			
-		}*/
+	        sc.type=ObjectTypes.PLANE;
+		}else if(object instanceof Sphere){
+			sc.type=ObjectTypes.SPHERE;
+		}
 		else if(object instanceof ObjLoader){
 			ObjLoader obj=(ObjLoader)object;
 			sc.sourceFile=obj.getSourceFile();
 	        sc.sourceTex=obj.getSourceTex();
+	        sc.type=ObjectTypes.OBJECT;
 		}
 		simulator.tell(sc, getSelf());
 		if(!(keys==null||keys.isEmpty())){
@@ -639,52 +540,20 @@ public abstract class WorldState extends UntypedActor{
 		}
 	}
 	
-//	protected void addToAi(Cube cube){
-//		
-//		
-//		NodeCreation n = new NodeCreation();
-//		n.modelmatrix = (nodes.get(cube.getId()).getWorldTransform());
-//		n.id = cube.getId();
-//		n.type = ObjectTypes.CUBE;
-//		n.shader = cube.getShader();
-//		n.d = cube.getD2();
-//		n.w = cube.getW2();
-//	    n.h = cube.getH2();
-//		n.center = cube.getCenter();
-//		n.radius = cube.getRadius();
-//		
-//		ai.tell(n, self());
-//	}
-//	
-//	protected void addToAi(Sphere sphere){
-//		
-//		
-//		NodeCreation n = new NodeCreation();
-//		n.modelmatrix = (nodes.get(sphere.getId()).getWorldTransform());
-//		n.id = sphere.getId();
-//		n.type = ObjectTypes.SPHERE;
-//		n.shader = sphere.getShader();
-//		n.center = sphere.getCenter();
-//		n.radius = sphere.getRadius();
-//		
-//		
-//		ai.tell(n, self());
-//	}
-	
 	protected void doCanonBalls(){
 		input.tell(new RegisterKeys(new HashSet<Integer>(Arrays.asList(Keyboard.KEY_SPACE)), true), self());
 	}
 	
 	protected void generateCanonBall(){
 		float scaleFactor=0.5f;
-		Node canon = nodes.get("Canon");
-		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, 1f);
+		Canon canon = (Canon) nodes.get("Canon");
+		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, 1f, canon.getDirection().mult(0.03f), PhysicType.Physic_complete);
 		transform(cs, vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor));
 //		cs.setRadius(cs.getRadius()* scaleFactor);
-		transform(cs, vecmath.translationMatrix(((Canon) canon).getSpawn()));
-		addPhysic(cs, ((Canon)canon).getDirection().mult(0.03f), PhysicType.Physic_complete);
+		transform(cs, vecmath.translationMatrix(canon.getSpawn()));
+//		addPhysic(cs, canon.getDirection().mult(0.03f), PhysicType.Physic_complete);
 		append(cs, startNode);
-		System.out.println("sphere speed: " + ((Canon)canon).getDirection().mult(0.03f));
+		System.out.println("sphere speed: " + canon.getDirection().mult(0.03f));
 //		System.out.println("Sphere Id: " + cs.getId() + "Radius SPhere: " + cs.getRadius());
 		canonballnumber++;
 		

@@ -40,8 +40,6 @@ public abstract class Shape extends Node {
 		super(id, FactoryDefault.vecmath.identityMatrix());
 		this.shader = shader;
 		this.mass = mass;
-//		findCenter();
-				
 	}
 	
 	
@@ -139,7 +137,16 @@ public abstract class Shape extends Node {
 	//TODO: Radius mit Scalmatrix anpassen was tun bei unterschiedlichen Werten? Nochmal alle Vertices betrachten?
 	public void updateWorldTransform(Matrix previousTrafo){
 		super.updateWorldTransform(previousTrafo);
-	    center = previousTrafo.mult(MatrixImp.translate(center)).getPosition();	  
+		if(MatrixImp.isTranslationMatrix(previousTrafo)) {
+			if(center.x()==0.0f&&center.y()==0.0f&&center.z()==0.0f){
+//				System.out.println("set center"+getId());
+				setCenter(previousTrafo.getPosition());
+			}
+			else {
+//				System.out.println("translate"+getId());
+				center = previousTrafo.mult(MatrixImp.translate(center)).getPosition();	  
+			}
+		}
 	    
 	    if(previousTrafo.get(0, 0) == previousTrafo.get(1, 1) && previousTrafo.get(1, 1) == previousTrafo.get(2, 2)){
 		    radius = previousTrafo.get(0, 0)*radius;

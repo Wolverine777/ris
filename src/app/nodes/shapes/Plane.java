@@ -43,6 +43,7 @@ public class Plane extends Shape {
 
 		// TODO normals make no sense at all!
 		setup();
+		findCenter();
 	}
 
 	private void setup() {

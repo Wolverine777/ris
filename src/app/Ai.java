@@ -81,7 +81,7 @@ public class Ai extends UntypedActor {
 					System.out.println("Level: "+level.toString());
 					System.out.println("ai setway: "+way);
 					car.setWayToTarget(way);
-					simulator.tell(new SimulateCreation(car.getId(), way, nextCoin.getId()), self());
+					simulator.tell(new SimulateCreation(car.getId(), car.getShader(), car.getSourceFile(), car.getMass(), way, nextCoin.getId()), getSelf());
 					lookAt.clear();
 					path.clear();
 //					return way;
@@ -90,7 +90,7 @@ public class Ai extends UntypedActor {
 		}else if(nextCoin==null){
 			car.setTarget(nextCoin);
 			car.setWayToTarget(null);
-			simulator.tell(new SimulateCreation(car.getId(), null, null), self());
+			simulator.tell(new SimulateCreation(car.getId(), car.getShader(), car.getSourceFile(), car.getMass(), null, null), getSelf());
 		}
 //		return null;
 	}
@@ -189,7 +189,7 @@ public class Ai extends UntypedActor {
 				}
 //				System.out.println("part end "+object.getId()+" min:"+min.toString()+" max:"+max.toString());
 			}
-//			System.out.println("min:"+min.toString()+" max:"+max.toString());
+			System.out.println("min:"+min.toString()+" max:"+max.toString());
 			if(setBlock)level.setBlocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
 			else level.setUnblocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
 			calcNewRouts();
@@ -238,6 +238,7 @@ public class Ai extends UntypedActor {
 //				car.getVecToNextTarget();
 			}
 		}
+		if(nonAiNodes.get("Shpere3")!=null)System.out.println("Shpere3: "+((Shape)nonAiNodes.get("Shpere3")).getCenter());
 		getSender().tell(Message.DONE, self());
 	}
 
@@ -308,7 +309,9 @@ public class Ai extends UntypedActor {
 					}
 					nonAiNodes.remove(id);
 				}
-				if(deleteNode(cars.get(id), delete))cars.remove(id);
+				if(deleteNode(cars.get(id), delete)){
+					cars.remove(id);
+				}
 				if(deleteNode(coins.get(id), delete)){
 					coins.remove(id);
 					for(Car car:cars.values()){

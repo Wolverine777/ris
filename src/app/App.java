@@ -64,11 +64,11 @@ public class App extends WorldState {
 	}
 	private void test(GroupNode head){
 		Canon canon = createCanon("Canon", shader, new File("obj/Cannon2.obj"), null, 1.0f);
-		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f) ,ObjectTypes.OBJECT);
-		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0f, 0f) ,ObjectTypes.OBJECT);
-		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_H)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-1f, 0f, 0f) ,ObjectTypes.OBJECT);		
-//		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_X)), SimulateType.ROTATE, KeyMode.TOGGLE, new VectorImp(0f, 1f, 0f) ,ObjectTypes.OBJECT);
-		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_U)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, -1f) ,ObjectTypes.OBJECT);
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f));
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0f, 0f));
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_H)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-1f, 0f, 0f));		
+//		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_X)), SimulateType.ROTATE, KeyMode.TOGGLE, new VectorImp(0f, 1f, 0f));
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_U)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, -1f));
 		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 3.0f));
 		append(canon, head);
 		
@@ -79,10 +79,10 @@ public class App extends WorldState {
 //		addPhysic(c4, new VectorImp(0.01f,0.01f,0));
 //		append(c4, head);
 		
-//		Sphere c8 = createSphere("Shpere3", shader, 3f);
-//		transform(c8, vecmath.translationMatrix(-5f, 0.5f, 0));
+		Sphere c8 = createSphere("Shpere3", shader, 3f,new VectorImp(0.0f,0.1f,0), PhysicType.Physic_complete);
+		transform(c8, vecmath.translationMatrix(-5f, 0.5f, 0));
 //		addPhysic(c8, new VectorImp(0.0f,0.01f,0));
-//		append(c8, head);
+		append(c8, head);
 		
 		
 //		Sphere c5 = createSphere("Shpere2", shader, 1f);
@@ -96,36 +96,36 @@ public class App extends WorldState {
 //		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_P)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0, 0) ,ObjectTypes.CUBE);
 //		append(sphere, head);
 		
-		Car car=createCar("Car1", shader, new File("obj/cube.obj"), 1.0f, 1f);
+		Car car=createCar("Car1", shader, new File("obj/cube.obj"), 1.0f, 1f, null, PhysicType.Collision_only);
 		transform(car, vecmath.scaleMatrix(0.35f, 0.35f, 0.35f));
 		transform(car,  vecmath.translationMatrix(-1.0f, -1.65f, 0.0f));
-		addPhysic(car, new VectorImp(0, 0, 0), PhysicType.Collision_only);
+//		addPhysic(car, new VectorImp(0, 0, 0), PhysicType.Collision_only);
 		append(car, head);
 		
-		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), 1f);
+		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), 1f, null, PhysicType.Collision_only);
 		transform(coin, vecmath.scaleMatrix(0.15f, 0.15f, 0.15f));
 		transform(coin,  vecmath.translationMatrix(1.0f, floor.getGround(), 0));
-		addPhysic(coin, new VectorImp(0, 0, 0), PhysicType.Collision_only);
+//		addPhysic(coin, new VectorImp(0, 0, 0), PhysicType.Collision_only);
 		append(coin, head);
-		Coin coin2=createCoin("Coin2", shader, new File("obj/cube.obj"), 1f);
+		Coin coin2=createCoin("Coin2", shader, new File("obj/cube.obj"), 1f, null, PhysicType.Collision_only);
 		transform(coin2, vecmath.scaleMatrix(0.15f, 0.15f, 0.15f));
 		transform(coin2,  vecmath.translationMatrix(0.5f, floor.getGround(), 1.0f));
-		addPhysic(coin2, new VectorImp(0, 0, 0), PhysicType.Collision_only);
+//		addPhysic(coin2, new VectorImp(0, 0, 0), PhysicType.Collision_only);
 		append(coin2, head);
 		
-		Coin coin3=createCoin("Coin3", shader, new File("obj/cube.obj"), 1f);
+		Coin coin3=createCoin("Coin3", shader, new File("obj/cube.obj"), 1f, null, PhysicType.Collision_only);
 		transform(coin3, vecmath.scaleMatrix(0.15f, 0.15f, 0.15f));
 		transform(coin3,  vecmath.translationMatrix(0.0f, 1, 0));
-		addPhysic(coin3, new VectorImp(0, 0, 0), PhysicType.Collision_only);
+//		addPhysic(coin3, new VectorImp(0, 0, 0), PhysicType.Collision_only);
 		append(coin3, head);
 		
-		Cube block=createCube("tree", shader, 0.2f,0.8f, 0.2f, 1f);
-		transform(block,  vecmath.translationMatrix(-1.0f, -2.0f, -1.0f));
-		append(block, head);
+//		Cube block=createCube("tree", shader, 0.2f,0.8f, 0.2f, 1f, null, null);
+//		transform(block,  vecmath.translationMatrix(-1.0f, -2.0f, -1.0f));
+//		append(block, head);
 
-		ObjLoader objsphere=createObject("objSphere2", shader, new File("obj/Sphere.obj"), null, 1f);
-		transform(objsphere, vecmath.translationMatrix(4f, 0f, 0f));
-		addPhysic(objsphere, new VectorImp(0,0,0), PhysicType.Collision_only);
+		ObjLoader objsphere=createObject("objSphere2", shader, new File("obj/Sphere.obj"), null, 1f, null, PhysicType.Collision_only);
+		transform(objsphere, vecmath.translationMatrix(5f, 0f, 0f));
+//		addPhysic(objsphere, new VectorImp(0,0,0), PhysicType.Collision_only);
 		append(objsphere, head);
 		
 		doCanonBalls();

@@ -17,22 +17,18 @@ public class NodeCreation {
 	
 	public Matrix modelmatrix;
 	
-	public Vector impulse;
-	
 	public float w, h, d, r;
 	
 	public int lats, longs;
 	
 	public File sourceFile, sourceTex;
-	
-	public Vector center;
-	
-	public float radius;
-	
-	public float mass;
-	
 	public double speed;
 	
+	//TODO: in physcreate
+	public Vector impulse;
+//	public Vector center;	
+//	public float radius;
+	public float mass;
 	public PhysicType physicType;
 	
 	/**
@@ -156,6 +152,75 @@ public class NodeCreation {
 
 	public String getId() {
 		return id;
+	}
+	
+	public void addPhysic(Vector impulse, PhysicType physicType){
+		this.impulse=impulse;
+		this.physicType=physicType;
+	}
+
+	public FontInfo getFont() {
+		return font;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public Shader getShader() {
+		return shader;
+	}
+
+	public ObjectTypes getType() {
+		return type;
+	}
+
+	public float getW() {
+		return w;
+	}
+
+	public float getH() {
+		return h;
+	}
+
+	public float getD() {
+		return d;
+	}
+
+	public float getR() {
+		return r;
+	}
+
+	public int getLats() {
+		return lats;
+	}
+
+	public int getLongs() {
+		return longs;
+	}
+
+	public File getSourceFile() {
+		return sourceFile;
+	}
+
+	public File getSourceTex() {
+		return sourceTex;
+	}
+
+	public double getSpeed() {
+		return speed;
+	}
+
+	public Vector getImpulse() {
+		return impulse;
+	}
+
+	public float getMass() {
+		return mass;
+	}
+
+	public PhysicType getPhysicType() {
+		return physicType;
 	}
 	
 }
