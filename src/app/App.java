@@ -72,7 +72,7 @@ public class App extends WorldState {
 		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 3.0f));
 		append(canon, head);
 		
-		Text t=createText("Text1", "Ich kann ne text klasse", new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
+		Text t=createText("Text1", "Ich kann ne text klasse. Nice", new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
 		append(t, head);
 //		Sphere c4 = createSphere("Shpere!", shader, 1f);
 //		transform(c4, vecmath.translationMatrix(-5f, 1f, 0));
