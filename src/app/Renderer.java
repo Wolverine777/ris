@@ -5,6 +5,17 @@ import static org.lwjgl.opengl.GL11.*;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
+import org.lwjgl.*;
+import org.lwjgl.opengl.*;
+import org.lwjgl.openal.AL;
+
+import static org.lwjgl.openal.AL10.*;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +30,7 @@ import org.lwjgl.opengl.PixelFormat;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.openal.WaveData;
 
 import vecmath.Matrix;
 import akka.actor.UntypedActor;
@@ -46,6 +58,8 @@ public class Renderer extends UntypedActor {
 	private static FloatBuffer perspectiveProjectionMatix = BufferUtils.createFloatBuffer(16);
 	private static FloatBuffer orthgraphicProjectionMatix = BufferUtils.createFloatBuffer(16);
 	
+	private static int buffer;
+	private static int source;
 	private static boolean multisampling = false;
 
 	private Map<String, Node> nodes = new HashMap<String, Node>();
@@ -53,11 +67,21 @@ public class Renderer extends UntypedActor {
 	private Shader shader;
 	private Node start;
 	private Camera camera;
+	private int counter = 0;
+	
 
 	// private Float medTime=0f;
 
 	private void initialize() {
 		setUpDisplay();
+		
+		try {
+			setUpSound();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		font=setUpFonts();
 		System.out.println("font"+font);
 		setUpCamera();
@@ -120,6 +144,14 @@ public class Renderer extends UntypedActor {
 		
 		start.display(start.getWorldTransform());
 		
+	    if(counter%1000 == 0){
+	    	
+	    	System.out.println("BITTE SOUND ABSPIELEN!!!");
+	    	alSourcePlay(source);
+	    }
+         
+           
+		counter++;
 		Display.update();
 
 		getSender().tell(Message.DONE, self());
@@ -127,6 +159,8 @@ public class Renderer extends UntypedActor {
 		if (Display.isCloseRequested()) {
 			// System.out.println("Average ms took:"+medTime); //TODO:
 			// nullpointer
+//			alDeleteBuffers(buffer);
+			AL.destroy();
 			Display.destroy();
 			context().system().stop(getSender());
 			context().system().shutdown();
@@ -210,7 +244,26 @@ public class Renderer extends UntypedActor {
 	    glLoadMatrix(perspectiveProjectionMatix);
 	    glMatrixMode(GL_MODELVIEW);
 	 }
-	   
+	  
+	 public static void setUpSound() throws FileNotFoundException{
+		 try {
+			AL.create();
+		} catch (LWJGLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 FileInputStream fis = new FileInputStream(("C:\\Users\\Fabian\\workspace\\ris-duo\\sounds\\test.wav"));
+		 
+		 System.out.println("GEHT HIER WAS?????? " + fis.toString());
+		  WaveData data = WaveData.create(new BufferedInputStream(fis));
+//		  WaveData data = WaveData.create(new BufferedInputStream(new FileInputStream("res" + File.separatorChar +
+//	                "sounds" + File.separatorChar + "test.wav")));
+		  	buffer = alGenBuffers();
+	        alBufferData(buffer, data.format, data.data, data.samplerate);
+	        data.dispose();
+	        source = alGenSources();
+	        alSourcei(source, AL_BUFFER, buffer);
+	 }
 	   
 
 	@Override
