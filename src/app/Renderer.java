@@ -252,7 +252,7 @@ public class Renderer extends UntypedActor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 FileInputStream fis = new FileInputStream(("C:\\Users\\Fabian\\workspace\\ris-duo\\sounds\\test.wav"));
+		 FileInputStream fis = new FileInputStream(("sounds\\test.wav"));
 		 
 		 System.out.println("GEHT HIER WAS?????? " + fis.toString());
 		  WaveData data = WaveData.create(new BufferedInputStream(fis));
