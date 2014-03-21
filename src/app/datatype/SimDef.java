@@ -11,28 +11,43 @@ import app.Types.SimulateType;
  *
  */
 
-public class KeyDef {
+public class SimDef {
 	private SimulateType type;
 	private Set<Integer> keys;
 	private KeyMode mode;
 	private Vector vector;
 	private Route way;
+	private int times=0;
+	private String referenzId;
+	// has to be <0
+	public float scale=0.2f;
 	
 
-	public KeyDef(SimulateType type, Set<Integer> keys, KeyMode mode){
+	public SimDef(SimulateType type, Set<Integer> keys, KeyMode mode){
 		this.type=type;
 		this.keys=keys;
 		this.mode=mode;
 	}
 	
-	public KeyDef(SimulateType type, Set<Integer> keys, KeyMode mode, Vector vec){
+	public SimDef(SimulateType type, Set<Integer> keys, KeyMode mode, Vector vec){
 		this.type=type;
 		this.keys=keys;
 		this.mode=mode;
 		this.vector=vec;
 	}
-	
-	public KeyDef(SimulateType type, Route way){
+
+	/**
+	 * Only for Pickup
+	 * @param vector
+	 * @param referenzId
+	 */
+	public SimDef(String referenzId, int times) {
+		this.referenzId = referenzId;
+		this.times=times;
+		this.type=SimulateType.PICKUP;
+	}
+
+	public SimDef(SimulateType type, Route way){
 		this(type, null, null);
 		this.way=way;
 	}
@@ -62,6 +77,18 @@ public class KeyDef {
 
 	public Route getWay() {
 		return way;
+	}
+
+	public int getTimes() {
+		return times;
+	}
+
+	public void timesDown() {
+		this.times--;
+	}
+
+	public String getReferenzId() {
+		return referenzId;
 	}
 	
 }

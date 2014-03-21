@@ -23,6 +23,7 @@ public class SimulateCreation extends NodeCreation {
 	private Vector vector;
 	private Route way;
 	private String targetId;
+	private int times;
 
 	public SimulateCreation(String objectId, Matrix modelMatrix, Set<Integer> keys, SimulateType simulation, KeyMode mode, Vector vec) {
 		super(objectId);
@@ -64,6 +65,19 @@ public class SimulateCreation extends NodeCreation {
 		this.targetId=targetId;
 	}
 
+	/**
+	 * Only for Pickup animation
+	 * @param id
+	 * @param targetId
+	 */
+	public SimulateCreation(String id, String targetId, Matrix targetMatrix, int times) {
+		super(id);
+		this.targetId = targetId;
+		modelmatrix=targetMatrix;
+		simulation=SimulateType.PICKUP;
+		this.times=times;
+	}
+
 	public String getObjectId() {
 		return id;
 	}
@@ -91,4 +105,9 @@ public class SimulateCreation extends NodeCreation {
 	public String getTargetId() {
 		return targetId;
 	}
+
+	public int getTimes() {
+		return times;
+	}
+	
 }

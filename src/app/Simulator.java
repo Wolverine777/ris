@@ -14,6 +14,7 @@ import java.util.Set;
 import vecmath.Matrix;
 import vecmath.Vector;
 import vecmath.vecmathimp.MatrixImp;
+import vecmath.vecmathimp.VectorImp;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
@@ -23,7 +24,7 @@ import akka.actor.UntypedActor;
 import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.SimulateType;
-import app.datatype.KeyDef;
+import app.datatype.SimDef;
 import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
@@ -36,15 +37,16 @@ import app.messages.Message;
 import app.messages.SingelSimulation;
 import app.nodes.Node;
 import app.nodes.shapes.Car;
+import app.nodes.shapes.Coin;
+import app.nodes.shapes.Shape;
 import app.toolkit.StopWatch;
 
 public class Simulator extends UntypedActor {
 
 	private Map<String, Node> nodes = new HashMap<String, Node>();
-	private SetMultimap<Node, KeyDef> simulations = HashMultimap.create();
+	private SetMultimap<Node, SimDef> simulations = HashMultimap.create();
 	private Set<Integer> pressedKeys = new HashSet<Integer>();
 	private Set<Integer> toggeled = new HashSet<Integer>();
-	private float angle = 0;
 	private StopWatch sw = new StopWatch();
 	private float elapsed = 0;
 	// TODO:was besseres überlegen, also simulator die App zu geben?
@@ -56,39 +58,49 @@ public class Simulator extends UntypedActor {
 
 	private void simulate() throws Exception {
 		elapsed = sw.elapsed();
-		for (Map.Entry<Node, KeyDef> entry : simulations.entries()) {
+		for (Map.Entry<Node, SimDef> entry : simulations.entries()) {
 			Set<Integer> keys = entry.getValue().getKeys();
 			// if(entry.getValue().getType()!=SimulateType.PHYSIC){
 			if (keys == null || keys.isEmpty()) {
 				if(entry.getValue().getVector()!=null){
+//					if(entry.getValue().getType()==SimulateType.PICKUP&&entry.getKey() instanceof Shape){
+//						Shape s=(Shape)entry.getKey();
+//						Vector up=new VectorImp(0, s.getRadius()*8, 0);
+//						if(s.getWorldTransform().getPosition().equals(entry.getValue().getVector().add(up)))entry.getValue().scale*=-1;
+//						if(s.getWorldTransform().getPosition().equals(entry.getValue().getVector()))
+//						doSimulation(entry.getKey(), entry.getValue().getType(), up.mult(entry.getValue().scale));
+//					}else{
+//					}
 					doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
 				}else{
 					if(entry.getKey() instanceof Car&&entry.getValue().getType()==SimulateType.DRIVE){
 						Car car=(Car) entry.getKey();
 						if(car.getWayToTarget()!=null){
-//							if(car.getPosition().equals(car.getNextWaypoint().getPOS())){
-//								System.out.println("Waypoint reached");
-//								car.waypointReached();
-//							}
-//							if(car.getWayToTarget()!=null){
-//								Vector vec=car.getVecToNextTarget();
-//								System.out.println("move direction car: "+vec);
-//								doSimulation(car, SimulateType.DRIVE, vec);
-//							}
 							Vector vec=car.getVecToNextTarget(elapsed);
 							if(vec!=null){
 								System.out.println("move direction car: "+vec);
 								doSimulation(car, SimulateType.DRIVE, vec);
 							}
 							System.out.println("simu waytoTarget:"+car.getWayToTarget());
-						}else{
-//							if(car.getTarget()!=null){
-//								System.out.println("Target in sim:"+car.getTarget().getId());
-//								List<String> list=new LinkedList<String>();
-//								list.add(car.getTarget().getId());
-//								woldState.tell(new NodeDeletion(list), getSelf());
-//								System.out.println("node del");
-//							}
+						}
+					}
+					if(entry.getValue().getType()==SimulateType.PICKUP&&entry.getKey() instanceof Shape){
+						if(nodes.containsKey(entry.getValue().getReferenzId())){
+							Node ref=nodes.get(entry.getValue().getReferenzId());
+							Shape s=(Shape)entry.getKey();
+							Vector up=new VectorImp(0, s.getRadius()*8, 0);
+							Vector pos=s.getWorldTransform().getPosition();
+							Vector posRef=ref.getWorldTransform().getPosition();
+							//If coinY == (car+up)y --> down
+							if(pos.y()==posRef.add(up).y())entry.getValue().scale*=-1;
+							//If coinY == carY && isdown --> up
+							if(pos.y()==posRef.y()&&entry.getValue().scale<0)entry.getValue().scale*=-1;
+							pos=new VectorImp(pos.x(), 0, pos.z());
+							posRef=new VectorImp(posRef.x(), 0, posRef.z());
+							entry.getValue().timesDown();
+							//up only a part(scale) + trans over actual car pos
+							doSimulation(entry.getKey(), entry.getValue().getType(), up.mult(entry.getValue().scale).mult((pos.sub(posRef))));
+							if(entry.getValue().getTimes()==0)simulations.remove(entry.getKey(), entry.getValue());
 						}
 					}
 				}
@@ -120,13 +132,12 @@ public class Simulator extends UntypedActor {
 
 	private void doSimulation(Node node, SimulateType type, Vector vec) {
 		if (type == SimulateType.ROTATE) {
-			angle += elapsed * (vec.length() * 90);
+			float angle = elapsed * (vec.length() * 90);
 			Vector v = node.getWorldTransform().getPosition();
 
 			Matrix modify = MatrixImp.translate(v.x(), v.y(), v.z()).mult(
 					vecmath.rotationMatrix(vec.x(), vec.y(), vec.z(), angle).mult(MatrixImp.translate(-v.x(), -v.y(), -v.z())));
 			node.updateWorldTransform(modify);
-			angle = 0;
 			woldState.tell(new NodeModification(node.getId(), modify), self());
 		} else if (type == SimulateType.TRANSLATE) {
 			Matrix modify = MatrixImp.translate(vec.mult(elapsed));
@@ -147,6 +158,14 @@ public class Simulator extends UntypedActor {
 			Matrix modify = MatrixImp.translate(vec);
 			node.updateWorldTransform(modify);
 			woldState.tell(new NodeModification(node.getId(),modify), self());
+		}else if (type ==SimulateType.PICKUP){
+			float angle = elapsed *  90;
+			Vector v = node.getWorldTransform().getPosition();
+			Matrix rot=vecmath.rotationMatrix(0, 1, 0, angle);
+			Matrix modify = MatrixImp.translate(v.x(), v.y(), v.z()).mult(rot.mult(MatrixImp.translate(-v.x(), -v.y(), -v.z())));
+			modify.mult(vecmath.translationMatrix(vec));
+			node.updateWorldTransform(modify);
+			woldState.tell(new NodeModification(node.getId(), modify), self());
 		}
 		// st end nodemodification
 	}
@@ -208,7 +227,7 @@ public class Simulator extends UntypedActor {
 			newNode = nodes.get(sc.id);
 			if (sc.getSimulation() == SimulateType.NONE) {
 				//TODO: only remove one keyDef
-				for (KeyDef kd : simulations.get(newNode)) {
+				for (SimDef kd : simulations.get(newNode)) {
 					if (kd.getKeys().containsAll(sc.getKeys()) && kd.getMode() == sc.getMode()) {
 						simulations.remove(newNode, kd);
 					}
@@ -217,7 +236,7 @@ public class Simulator extends UntypedActor {
 			} else if (sc.getSimulation() == SimulateType.DRIVE) {
 				if (newNode instanceof Car) {
 					simulations.removeAll(newNode);
-					simulations.put(newNode, new KeyDef(sc.getSimulation(), sc.getWay()));
+					simulations.put(newNode, new SimDef(sc.getSimulation(), sc.getWay()));
 //					System.out.println("simulator setway:"+sc.getWay());
 					((Car)newNode).setWayToTarget(sc.getWay());
 					((Car)newNode).setTarget(nodeFactory.coin(sc.getTargetId(), sc.shader, null, 1));
@@ -225,16 +244,25 @@ public class Simulator extends UntypedActor {
 			} else if(sc.getSimulation() ==SimulateType.PHYSIC){
 				newNode.setForce(sc.getVector());
 				if(!simulations.containsKey(newNode)){
-					simulations.put(newNode, new KeyDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));
+					simulations.put(newNode, new SimDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));
 				}
-				for (KeyDef k : simulations.get(newNode)){
+				for (SimDef k : simulations.get(newNode)){
 					if (k.getType().equals(SimulateType.PHYSIC)){
 						k.setVector(newNode.getForce());
 						// doSimulation(modify, k.getType(), k.getVector());
 					}
 				}
-			} else {
-				simulations.put(newNode, new KeyDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));
+			} else if(sc.getSimulation() ==SimulateType.PICKUP){
+				Node ref=nodes.get(sc.getTargetId());
+				if(ref==null){
+					Node n=nodeFactory.groupNode(sc.getTargetId(), sc.getModelmatrix());
+					nodes.put(sc.getTargetId(), n);
+					ref=n;
+				}
+				simulations.put(newNode, new SimDef(sc.getTargetId(), sc.getTimes()));
+			}
+			else {
+				simulations.put(newNode, new SimDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));
 				newNode.setLocalTransform(sc.modelmatrix);
 				newNode.updateWorldTransform();
 			}

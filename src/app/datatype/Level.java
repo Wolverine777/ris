@@ -22,7 +22,7 @@ import com.vividsolutions.jts.geom.Coordinate.DimensionalComparator;
  */
 
 public class Level {
-	private final float GRIDREFACTOR=2.f; 
+	private final float GRIDREFACTOR=2.0f; 
 	private Table<Float, Float, LevelNode> levelPoints;
 	private final float hight;
 	private Vector max, min;
