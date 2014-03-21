@@ -294,7 +294,6 @@ public class Ai extends UntypedActor {
 //				car.getVecToNextTarget();
 			}
 		}
-		if(nonAiNodes.get("Shpere3")!=null)System.out.println("Shpere3: "+((Shape)nonAiNodes.get("Shpere3")).getCenter());
 		changeText();
 		getSender().tell(Message.DONE, self());
 	}
@@ -382,6 +381,7 @@ public class Ai extends UntypedActor {
 					for(Car car:cars.values()){
 						if(car.getTarget().getId().equals(id)){
 							car.setTarget(null);
+//							simulator.tell(new SimulateCreation(id, car.getId(), car.getWorldTransform(), 2), getSelf());
 						}
 					}
 				}
@@ -411,7 +411,8 @@ public class Ai extends UntypedActor {
 	private boolean deleteNode(Node modify, NodeDeletion nd){
 		boolean deleted=false;
 		if(modify!=null &&nd != null){
-			ArrayList<Edge> removeEdges = new ArrayList<>(); 
+			ArrayList<Edge> removeEdges = new ArrayList<>();
+			//TODO: opt
 			for(Edge e: modify.getEdges()){
 				removeEdges.add(e);
 			}

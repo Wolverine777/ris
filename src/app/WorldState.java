@@ -479,10 +479,11 @@ public abstract class WorldState extends UntypedActor{
 	protected Coin createCoin(String id, Shader shader, File sourceFile, float mass, Vector impulse, PhysicType physicType){
 		Coin coin = nodeFactory.coin(id, shader, sourceFile, mass);
 		nodes.put(id, coin);
-		NodeCreation n=new NodeCreation(id, shader, sourceFile, mass, ObjectTypes.COIN);
-		n.addPhysic(impulse, physicType);
+		SimulateCreation sc=new SimulateCreation(id, shader, sourceFile, null, mass, ObjectTypes.COIN);
+//		NodeCreation n=new NodeCreation(id, shader, sourceFile, mass, ObjectTypes.COIN);
+		sc.addPhysic(impulse, physicType);
         
-        announce(n);
+        announce(sc);
         return coin;
 	}
 

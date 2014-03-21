@@ -38,7 +38,6 @@ public class NodeCreation {
 	public NodeCreation(String id) {
 		//TODO
 		this.id = id;
-		type=type;
 	}
 	
 	public NodeCreation(String id, ObjectTypes type) {

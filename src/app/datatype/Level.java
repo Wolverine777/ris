@@ -285,7 +285,7 @@ public class Level {
 	
 	public int inLevel(Vector center, float rad){
 		float maxX=max.x(), maxZ=max.z(), minX=min.x(), minZ=min.z();
-		System.out.println("inlevel center"+center);
+//		System.out.println("inlevel center"+center);
 		if(center.x()+rad>maxX||center.x()-rad<minX||center.z()+rad>maxZ||center.z()-rad<minZ){
 			if(center.x()-rad>maxX){
 				System.out.println("hier drin");

@@ -57,7 +57,6 @@ public class Text extends Node {
 			super.updateWorldTransform(previousTrafo);
 			posX = getWorldTransform().getPosition().x();
 			posY = getWorldTransform().getPosition().y();
-			System.out.println("Posx: " + posX);
 		} else if (MatrixImp.isScaleMatrix(previousTrafo)) {
 			// TODO: Text scale
 //			float scale = height / 8f;
@@ -78,7 +77,6 @@ public class Text extends Node {
 	@Override
 	public void display(Matrix m) {
 		if(font==null)font=setUpFonts(info);
-		System.out.println("Posx anfang display: " + posX);
 //		setUpCamera();
 		glUseProgram(0);
 		glMatrixMode(GL_PROJECTION);
@@ -98,7 +96,6 @@ public class Text extends Node {
 		glLoadMatrix(perspectiveProjectionMatix);
 //		glLoadMatrix(Renderer.getPerspectiveProjectionMatix());
 		glMatrixMode(GL_MODELVIEW);
-		System.out.println("Posx ende display: " + posX);
 	}
 
 	private UnicodeFont setUpFonts(FontInfo info) {

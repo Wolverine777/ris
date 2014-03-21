@@ -4,6 +4,7 @@ import static app.nodes.NodeFactory.nodeFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -164,14 +165,14 @@ public class Physic extends UntypedActor {
 //			Vector impact = collisionGroundPosition(n);
 //			System.out.println("IMpact oben: " + impact.toString());
 		}
-		
+		List<Node> remCoin=new LinkedList<Node>();
 		for (Node n : nodesCollisionOnly.values()) {
-			if(!collisionObjects(n).isEmpty() ){
+			ArrayList<Node> collision = new ArrayList<Node>(collisionObjects(n));
+			if(!collision.isEmpty() ){
 				delete.ids.add(n.getId());
 					
 				if(n instanceof Car || n instanceof Sphere || n instanceof Cube || n instanceof ObjLoader){
 						
-					ArrayList<Node> collision = new ArrayList<>(collisionObjects(n));
 					for(Node colwith : collision){
 						if(colwith instanceof Coin && collision.size()==1){
 							delete.ids.remove(n.getId());
@@ -179,12 +180,23 @@ public class Physic extends UntypedActor {
 					}
 				}
 				if(n instanceof Coin){
+					for(Node col:collision){
+						if(col instanceof Car){
+							delete.ids.remove(n.getId());
+							remCoin.add(n);
+							Vector carhight=new VectorImp(((Car) col).getPosition().x(), ((Car) col).getPosition().y()+((Car) col).getRadius(), ((Car) col).getPosition().z());
+							simulator.tell(new SimulateCreation(n.getId(), col.getId(), col.getWorldTransform(), 2, carhight), getSelf());
+						}else{
+							delete.ids.remove(n.getId());
+						}
+					}
 	//				simulator.tell(msg, sender);
 				}
 				
 			}
 			
 		}
+		for(Node n:remCoin)nodesCollisionOnly.remove(n.getId());
 		
 		if(delete.ids.isEmpty() != true){
 			for(String id: delete.ids){

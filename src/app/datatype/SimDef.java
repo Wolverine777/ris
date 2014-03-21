@@ -20,7 +20,8 @@ public class SimDef {
 	private int times=0;
 	private String referenzId;
 	// has to be <0
-	public float scale=0.2f;
+	public float scale=0.05f;
+	private double counter=1/scale;
 	
 
 	public SimDef(SimulateType type, Set<Integer> keys, KeyMode mode){
@@ -43,7 +44,7 @@ public class SimDef {
 	 */
 	public SimDef(String referenzId, int times) {
 		this.referenzId = referenzId;
-		this.times=times;
+		this.times=times*2;
 		this.type=SimulateType.PICKUP;
 	}
 
@@ -83,12 +84,23 @@ public class SimDef {
 		return times;
 	}
 
-	public void timesDown() {
-		this.times--;
+	public boolean timesDown() {
+		if(counter>1)this.counter--;
+		else counter=0;
+		if(counter==0){
+			this.times--;
+			counter=Math.abs(1/scale);
+			return true;
+		}
+		return false;
 	}
 
 	public String getReferenzId() {
 		return referenzId;
+	}
+
+	public double getCounter() {
+		return counter;
 	}
 	
 }

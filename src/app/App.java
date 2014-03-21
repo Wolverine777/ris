@@ -115,12 +115,12 @@ public class App extends WorldState {
 		
 		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), 1f, null, PhysicType.Collision_only);
 		transform(coin, vecmath.scaleMatrix(0.15f, 0.15f, 0.15f));
-		transform(coin,  vecmath.translationMatrix(1.0f, floor.getGround(), 0));
+		transform(coin,  vecmath.translationMatrix(1.0f, floor.getGround(), 1.0f));
 //		addPhysic(coin, new VectorImp(0, 0, 0), PhysicType.Collision_only);
 		append(coin, head);
 		Coin coin2=createCoin("Coin2", shader, new File("obj/cube.obj"), 1f, null, PhysicType.Collision_only);
 		transform(coin2, vecmath.scaleMatrix(0.15f, 0.15f, 0.15f));
-		transform(coin2,  vecmath.translationMatrix(0.5f, floor.getGround(), 1.0f));
+		transform(coin2,  vecmath.translationMatrix(0.5f, floor.getGround(), 0.0f));
 //		addPhysic(coin2, new VectorImp(0, 0, 0), PhysicType.Collision_only);
 		append(coin2, head);
 		

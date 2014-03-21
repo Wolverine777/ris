@@ -319,7 +319,6 @@ public class Renderer extends UntypedActor {
 						.get(((NodeModification) message).appendTo));
 			}
 			if(((NodeModification) message).text!=null){
-				System.out.println("seeeeeeeers");
 				((Text)modify).setText(((NodeModification) message).text);				
 			}
 		} else if (message instanceof StartNodeModification) {

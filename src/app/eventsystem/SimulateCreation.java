@@ -8,7 +8,6 @@ import vecmath.Vector;
 import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.SimulateType;
-import app.datatype.FontInfo;
 import app.datatype.Route;
 import app.shader.Shader;
 
@@ -25,6 +24,15 @@ public class SimulateCreation extends NodeCreation {
 	private String targetId;
 	private int times;
 
+	/**
+	 * Standard for simulation on Keys
+	 * @param objectId
+	 * @param modelMatrix
+	 * @param keys
+	 * @param simulation
+	 * @param mode
+	 * @param vec
+	 */
 	public SimulateCreation(String objectId, Matrix modelMatrix, Set<Integer> keys, SimulateType simulation, KeyMode mode, Vector vec) {
 		super(objectId);
 		this.modelmatrix=modelMatrix;
@@ -70,12 +78,27 @@ public class SimulateCreation extends NodeCreation {
 	 * @param id
 	 * @param targetId
 	 */
-	public SimulateCreation(String id, String targetId, Matrix targetMatrix, int times) {
+	public SimulateCreation(String id, String targetId, Matrix targetMatrix, int times, Vector maxHight) {
 		super(id);
 		this.targetId = targetId;
 		modelmatrix=targetMatrix;
 		simulation=SimulateType.PICKUP;
 		this.times=times;
+		type=ObjectTypes.COIN;
+		this.vector=maxHight;
+	}
+	
+	/**
+	 * For Objects and childs
+	 * @param id
+	 * @param shader
+	 * @param sourceFile
+	 * @param sourceTex
+	 * @param mass
+	 * @param type
+	 */
+	public SimulateCreation(String id, Shader shader, File sourceFile, File sourceTex, float mass, ObjectTypes type) {
+		super(id, shader, sourceFile, sourceTex, mass, type);
 	}
 
 	public String getObjectId() {
