@@ -30,9 +30,11 @@ import app.eventsystem.SimulateCreation;
 import app.messages.AiInitialization;
 import app.messages.Message;
 import app.nodes.Node;
+import app.nodes.Text;
 import app.nodes.shapes.Car;
 import app.nodes.shapes.Coin;
 import app.nodes.shapes.Shape;
+import app.nodes.shapes.Sphere;
 
 public class Ai extends UntypedActor {
 
@@ -224,6 +226,60 @@ public class Ai extends UntypedActor {
 		}
 	}
 	
+	private void changeText(){
+		Node carsT =  nonAiNodes.get("Cars");
+		Node coinsT = nonAiNodes.get("Coins");
+		Node ballsT=  nonAiNodes.get("Balls");
+		
+		int carsAmount = 0;
+		int coinsAmount = 0;
+		int ballsAmount = 0;
+		
+		
+		for(Node n : nonAiNodes.values()){
+			if(n instanceof Sphere){
+				ballsAmount++;
+			}
+		}
+		for(Node n : cars.values()){
+			if(n instanceof Car){
+				carsAmount++;
+			}
+		}	
+		for(Node n : coins.values()){
+			if(n instanceof Coin){
+				coinsAmount++;
+			}
+		}
+		
+		if(coinsT instanceof Text){
+			((Text) coinsT).setText("Coins: " + coinsAmount);
+			NodeModification nm = new NodeModification(coinsT.getId(), coinsT.getWorldTransform());
+			nm.text = ((Text) coinsT).getText();
+			sender().tell(nm, self());
+		}
+		
+		if(carsT instanceof Text){
+			((Text) carsT).setText("Cars: " + carsAmount);
+			NodeModification nm = new NodeModification(carsT.getId(), carsT.getWorldTransform());
+			nm.text = ((Text) carsT).getText();
+			sender().tell(nm, self());
+		}
+		
+		if(ballsT instanceof Text){
+			((Text) ballsT).setText("Balls: " + ballsAmount);
+			NodeModification nm = new NodeModification(ballsT.getId(), ballsT.getWorldTransform());
+			nm.text = ((Text) ballsT).getText();
+			sender().tell(nm, self());
+		}
+		
+		
+		
+		
+//		((Text) carsT).setText("Cars: " + carsAmount);
+//		((Text) ballsT).setText("Balls: " + ballsAmount);
+	}
+	
 	private void aiLoop() {
 		System.out.println("Ai Loop");
 		if(!coins.isEmpty()){
@@ -239,6 +295,7 @@ public class Ai extends UntypedActor {
 			}
 		}
 		if(nonAiNodes.get("Shpere3")!=null)System.out.println("Shpere3: "+((Shape)nonAiNodes.get("Shpere3")).getCenter());
+		changeText();
 		getSender().tell(Message.DONE, self());
 	}
 
@@ -264,7 +321,11 @@ public class Ai extends UntypedActor {
 			} else if (nc.type == ObjectTypes.SPHERE) {
 				nonAiNodes.put(nc.id, nodeFactory.sphere(nc.id, nc.shader, nc.mass));
 				setBlocked((Shape)nonAiNodes.get(nc.getId()), true);
-			}
+			} else if(nc.type == ObjectTypes.TEXT){
+				System.out.println("kommt hier was? ");
+				nonAiNodes.put(nc.getId(),nodeFactory.text(nc.id, nc.getModelmatrix(), nc.getText(), nc.getFont()));
+				
+			}	
 //			else if (nc.type == ObjectTypes.PLANE) {
 //				nonAiNodes.put(nc.id, nodeFactory.plane(nc.id, nc.shader, nc.w, nc.d, nc.hight, nc.mass));
 //			}
@@ -283,6 +344,10 @@ public class Ai extends UntypedActor {
 			}
 		} else if(message instanceof NodeModification){
 			NodeModification nm=(NodeModification) message;
+			if(nonAiNodes.get(nm.id) instanceof Text){
+				((Text) nonAiNodes.get(nm.id)).setText(((NodeModification) message).text);
+				
+			}
 			if(cars.get(nm.id)!=null){
 //				System.out.println("Nodemodification ai:\nmatrix alt car: \n"+cars.get(nm.id).getWorldTransform()+ "transformationsmatrix: \n"+nm.localMod);
 				setNewMatrix(cars.get(nm.id), nm);

@@ -6,6 +6,7 @@ public class NodeModification {
 	public final String id;
 	public String appendTo;
 	public Matrix localMod;
+	public String text;
 	
 	public NodeModification(String id, String appendTo) {
 		this.id = id;

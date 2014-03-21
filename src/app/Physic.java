@@ -469,6 +469,8 @@ public class Physic extends UntypedActor {
 //							.setRadius(nc.radius);
 //				}
 				} 
+					
+								
 				if(nc.physicType == PhysicType.Physic_complete){
 					nodes.put(newNode.getId(), newNode);
 				}

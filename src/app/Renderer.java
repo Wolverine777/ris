@@ -82,7 +82,7 @@ public class Renderer extends UntypedActor {
 			e.printStackTrace();
 		}
 		
-		font=setUpFonts();
+//		font=setUpFonts();
 		System.out.println("font"+font);
 		setUpCamera();
 		shader = new Shader();
@@ -134,7 +134,7 @@ public class Renderer extends UntypedActor {
         glPushMatrix();
         glLoadIdentity();
         glDisable(GL_LIGHTING);
-        font.drawString(100, 100, "Benni ich kann Text TEXT ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+//        font.drawString(100, 100, "Benni ich kann Text TEXT ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         glEnable(GL_LIGHTING);
         glPopMatrix();
         glMatrixMode(GL_PROJECTION);
@@ -168,25 +168,25 @@ public class Renderer extends UntypedActor {
 
 	}
 	
-	private static UnicodeFont setUpFonts(){
-		java.awt.Font awtFont = new java.awt.Font("Arial Bold", java.awt.Font.BOLD, 18);
-		UnicodeFont font = new UnicodeFont(awtFont);
-		System.out.println("make new font"+font);
-		font.getEffects().add(new ColorEffect(java.awt.Color.white));
-		font.addAsciiGlyphs();
-		try {
-			font.loadGlyphs();
-		} catch (SlickException e){
-			e.printStackTrace();
-			cleanUp();
-		}
-		return font;
-	}
+//	private static UnicodeFont setUpFonts(){
+//		java.awt.Font awtFont = new java.awt.Font("Arial Bold", java.awt.Font.BOLD, 18);
+//		UnicodeFont font = new UnicodeFont(awtFont);
+//		System.out.println("make new font"+font);
+//		font.getEffects().add(new ColorEffect(java.awt.Color.white));
+//		font.addAsciiGlyphs();
+//		try {
+//			font.loadGlyphs();
+//		} catch (SlickException e){
+//			e.printStackTrace();
+//			cleanUp();
+//		}
+//		return font;
+//	}
 	
-	 private static void cleanUp() {
-        Display.destroy();
-        System.exit(0);
-	 }
+//	 private static void cleanUp() {
+//        Display.destroy();
+//        System.exit(0);
+//	 }
 	 
 	 private static void setUpLighting() {
 		 glShadeModel(GL_SMOOTH);
@@ -317,6 +317,10 @@ public class Renderer extends UntypedActor {
 			if (((NodeModification) message).appendTo != null) {
 				modify.appendTo(nodes
 						.get(((NodeModification) message).appendTo));
+			}
+			if(((NodeModification) message).text!=null){
+				System.out.println("seeeeeeeers");
+				((Text)modify).setText(((NodeModification) message).text);				
 			}
 		} else if (message instanceof StartNodeModification) {
 			start = nodes.get(((StartNodeModification) message).id);

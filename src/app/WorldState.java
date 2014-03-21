@@ -558,7 +558,7 @@ public abstract class WorldState extends UntypedActor{
 		Text t=nodeFactory.text(id, vecmath.identityMatrix(), text, font);
 		NodeCreation n=new NodeCreation(id, vecmath.identityMatrix(), text, font);
 		
-		renderer.tell(n, getSelf());
+		announce(n);
 		return t;
 	}
 	
