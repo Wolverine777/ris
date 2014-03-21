@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import vecmath.Vector;
+import vecmath.vecmathimp.FactoryDefault;
 import vecmath.vecmathimp.VectorImp;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
@@ -254,21 +255,21 @@ public class Ai extends UntypedActor {
 		
 		if(coinsT instanceof Text){
 			((Text) coinsT).setText("Coins: " + coinsAmount);
-			NodeModification nm = new NodeModification(coinsT.getId(), coinsT.getWorldTransform());
+			NodeModification nm = new NodeModification(coinsT.getId(), FactoryDefault.vecmath.identityMatrix());
 			nm.text = ((Text) coinsT).getText();
 			sender().tell(nm, self());
 		}
 		
 		if(carsT instanceof Text){
 			((Text) carsT).setText("Cars: " + carsAmount);
-			NodeModification nm = new NodeModification(carsT.getId(), carsT.getWorldTransform());
+			NodeModification nm = new NodeModification(carsT.getId(), FactoryDefault.vecmath.identityMatrix());
 			nm.text = ((Text) carsT).getText();
 			sender().tell(nm, self());
 		}
 		
 		if(ballsT instanceof Text){
 			((Text) ballsT).setText("Balls: " + ballsAmount);
-			NodeModification nm = new NodeModification(ballsT.getId(), ballsT.getWorldTransform());
+			NodeModification nm = new NodeModification(ballsT.getId(), FactoryDefault.vecmath.identityMatrix());
 			nm.text = ((Text) ballsT).getText();
 			sender().tell(nm, self());
 		}

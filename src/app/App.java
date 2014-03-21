@@ -73,15 +73,18 @@ public class App extends WorldState {
 		append(canon, head);
 		
 		Text t=createText("Coins", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
-		transform(t, vecmath.translationMatrix(2.5f, 1.0f, 0.0f));
+		transform(t, vecmath.translationMatrix(200f, 1.0f, 0.0f));
 		append(t, head);
-//		
-//		Text t2=createText("Cars", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
-//		append(t2, head);
-//		
-//		Text t3=createText("Balls", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
-//		append(t3, head);
-//		
+		
+		Text t2=createText("Cars", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
+		append(t2, head);
+		
+		Text t3=createText("Balls", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
+		transform(t3, vecmath.translationMatrix(400f, 1.0f, 0.0f));
+		append(t3, head);
+		
+		
+		
 		
 		
 		
