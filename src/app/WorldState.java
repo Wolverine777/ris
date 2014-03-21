@@ -1,6 +1,7 @@
 package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
+import static org.lwjgl.openal.AL10.alSourcePlay;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.io.File;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.lwjgl.input.Keyboard;
+
 
 
 import vecmath.Matrix;
@@ -92,8 +94,9 @@ public abstract class WorldState extends UntypedActor{
 
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
 			
-			if(amountOfSpheres%10==0){
+			if(amountOfSpheres%100==0){
 				System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+				alSourcePlay(Renderer.source2);
 				generateCanonBall();
 				
 			}
