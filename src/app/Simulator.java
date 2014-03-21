@@ -201,7 +201,9 @@ public class Simulator extends UntypedActor {
 					System.out.println("got car "+nc.getId());
 				} else if (nc.type == ObjectTypes.COIN) {
 					nodes.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.mass));
-				}else {
+				} else if(nc.type == ObjectTypes.TEXT){
+					nodes.put(nc.getId(),nodeFactory.text(nc.id, nc.getModelmatrix(), nc.getText(), nc.getFont()));
+				} else {
 					throw new Exception("Please implement Type"+sc.getId()+" "+sc.getSimulation());
 				}
 			}

@@ -57,6 +57,7 @@ public class Text extends Node {
 			super.updateWorldTransform(previousTrafo);
 			posX = getWorldTransform().getPosition().x();
 			posY = getWorldTransform().getPosition().y();
+			System.out.println("Posx: " + posX);
 		} else if (MatrixImp.isScaleMatrix(previousTrafo)) {
 			// TODO: Text scale
 //			float scale = height / 8f;
@@ -77,6 +78,7 @@ public class Text extends Node {
 	@Override
 	public void display(Matrix m) {
 		if(font==null)font=setUpFonts(info);
+		System.out.println("Posx anfang display: " + posX);
 //		setUpCamera();
 		glUseProgram(0);
 		glMatrixMode(GL_PROJECTION);
@@ -89,13 +91,14 @@ public class Text extends Node {
 		glDisable(GL_LIGHTING);
 		//TODO: syso kommt 2 mal
 //		System.out.println("text font:"+font+" t:"+text);
-		font.drawString(1, 1, text);
+		font.drawString(posX, posY, text);
 		glEnable(GL_LIGHTING);
 		glPopMatrix();
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrix(perspectiveProjectionMatix);
 //		glLoadMatrix(Renderer.getPerspectiveProjectionMatix());
 		glMatrixMode(GL_MODELVIEW);
+		System.out.println("Posx ende display: " + posX);
 	}
 
 	private UnicodeFont setUpFonts(FontInfo info) {
@@ -129,5 +132,14 @@ public class Text extends Node {
 	public void setOrthgraphicProjectionMatix(FloatBuffer orthgraphicProjectionMatix) {
 		this.orthgraphicProjectionMatix = orthgraphicProjectionMatix;
 	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+	
 	
 }
