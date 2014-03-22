@@ -10,6 +10,8 @@ import java.util.HashSet;
 
 import org.lwjgl.input.Keyboard;
 
+import com.leapmotion.leap.Controller;
+
 import vecmath.vecmathimp.FactoryDefault;
 import vecmath.vecmathimp.VectorImp;
 import akka.actor.ActorRef;
@@ -57,6 +59,8 @@ public class App extends WorldState {
 		addPhysicFloor(floor);
 		append(floor, head);
 		test(head);
+		
+		
 
 	}
 	
@@ -140,6 +144,7 @@ public class App extends WorldState {
 		append(objsphere, head);
 		
 		doCanonBalls();
+		
 	}
 
 	public static void main(String[] args) {

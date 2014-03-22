@@ -64,6 +64,7 @@ public class Renderer extends UntypedActor {
 	static int source2;
 	static int source3;
 	static int source4;
+	static int source5;
 	
 	private static boolean multisampling = false;
 
@@ -87,6 +88,7 @@ public class Renderer extends UntypedActor {
 			source2 = createSound("sounds\\Music_Hexagon1.wav");
 			source3 = createSound("sounds\\awesome.wav");
 			source4 = createSound("sounds\\gameover.wav");
+			source5 = createSound("sounds\\excellent.wav");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -138,19 +140,19 @@ public class Renderer extends UntypedActor {
         camera.activate();
 //    	shader.activate(); ist bereits in jedem Shape drin
     	start.display(start.getWorldTransform());
-    	glUseProgram(0);
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrix(orthgraphicProjectionMatix);
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
-        glDisable(GL_LIGHTING);
-//        font.drawString(100, 100, "Benni ich kann Text TEXT ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        glEnable(GL_LIGHTING);
-        glPopMatrix();
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrix(perspectiveProjectionMatix);
-        glMatrixMode(GL_MODELVIEW);
+//    	glUseProgram(0);
+//        glMatrixMode(GL_PROJECTION);
+//        glLoadMatrix(orthgraphicProjectionMatix);
+//        glMatrixMode(GL_MODELVIEW);
+//        glPushMatrix();
+//        glLoadIdentity();
+//        glDisable(GL_LIGHTING);
+////        font.drawString(100, 100, "Benni ich kann Text TEXT ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+//        glEnable(GL_LIGHTING);
+//        glPopMatrix();
+//        glMatrixMode(GL_PROJECTION);
+//        glLoadMatrix(perspectiveProjectionMatix);
+//        glMatrixMode(GL_MODELVIEW);
 		
 		
 		start.display(start.getWorldTransform());

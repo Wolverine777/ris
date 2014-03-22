@@ -16,11 +16,15 @@ import org.lwjgl.input.Keyboard;
 
 
 
+
+
+
 import vecmath.Matrix;
 import vecmath.Vector;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
+import com.leapmotion.leap.Controller;
 import com.vividsolutions.jts.operation.overlay.snap.SnapIfNeededOverlayOp;
 
 import akka.actor.ActorRef;
@@ -86,12 +90,14 @@ public abstract class WorldState extends UntypedActor{
     private Set<Integer> toggeled=new HashSet<Integer>();
     private float canonballnumber = 0;
     private float amountOfSpheres=0;
+    private LeapListener listener;
+    Controller controller;
 
 	private void loop() {
 
 		System.out.println("\nStarting new loop");
 		
-
+		
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
 			
 			if(amountOfSpheres%10==0){
@@ -151,6 +157,13 @@ public abstract class WorldState extends UntypedActor{
 			System.out.println("Starting initialization");
 
 			System.out.println("Creating Entities");
+			
+			listener = new LeapListener();
+			controller = new Controller();
+			
+			controller.addListener(listener);
+			
+			
 
 			renderer = getContext().actorOf(
 					Props.create(Renderer.class).withDispatcher(
