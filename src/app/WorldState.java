@@ -94,15 +94,15 @@ public abstract class WorldState extends UntypedActor{
 
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
 			
-			if(amountOfSpheres%100==0){
+			if(amountOfSpheres%10==0){
 				System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
 				alSourcePlay(Renderer.source2);
 				generateCanonBall();
 				
 			}
-			amountOfSpheres++;
 			
 		}
+		amountOfSpheres++;
 		physic.tell(Message.LOOP, self());
 		ai.tell(Message.LOOP, self());
 		input.tell(Message.LOOP, self());
