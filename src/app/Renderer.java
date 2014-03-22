@@ -59,7 +59,10 @@ public class Renderer extends UntypedActor {
 	private static FloatBuffer orthgraphicProjectionMatix = BufferUtils.createFloatBuffer(16);
 	
 	private static int buffer;
-	private static int source;
+	
+	static int source;
+	static int source2;
+	
 	private static boolean multisampling = false;
 
 	private Map<String, Node> nodes = new HashMap<String, Node>();
@@ -75,13 +78,16 @@ public class Renderer extends UntypedActor {
 	private void initialize() {
 		setUpDisplay();
 		
+		setUpSound();
+		
 		try {
-			setUpSound();
+			source2 =createSound("sounds\\test.wav");
+			source = createSound("sounds\\test.wav");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+//		createSound(source2, "sounds\\test.wav");
 //		font=setUpFonts();
 		System.out.println("font"+font);
 		setUpCamera();
@@ -144,14 +150,7 @@ public class Renderer extends UntypedActor {
 		
 		start.display(start.getWorldTransform());
 		
-	    if(counter%1000 == 0){
-	    	
-	    	System.out.println("BITTE SOUND ABSPIELEN!!!");
-	    	alSourcePlay(source);
-	    }
-         
-           
-		counter++;
+	 	
 		Display.update();
 
 		getSender().tell(Message.DONE, self());
@@ -245,25 +244,30 @@ public class Renderer extends UntypedActor {
 	    glMatrixMode(GL_MODELVIEW);
 	 }
 	  
-	 public static void setUpSound() throws FileNotFoundException{
+	 public static void setUpSound(){
 		 try {
 			AL.create();
 		} catch (LWJGLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 FileInputStream fis = new FileInputStream(("sounds\\test.wav"));
-		 
-		 System.out.println("GEHT HIER WAS?????? " + fis.toString());
+	 }
+	 
+	 public static int createSound(String file) throws FileNotFoundException{
+		 int tmp =0;
+		 FileInputStream fis = new FileInputStream(file);
+				 
 		  WaveData data = WaveData.create(new BufferedInputStream(fis));
-//		  WaveData data = WaveData.create(new BufferedInputStream(new FileInputStream("res" + File.separatorChar +
-//	                "sounds" + File.separatorChar + "test.wav")));
 		  	buffer = alGenBuffers();
 	        alBufferData(buffer, data.format, data.data, data.samplerate);
 	        data.dispose();
-	        source = alGenSources();
-	        alSourcei(source, AL_BUFFER, buffer);
+	        tmp = alGenSources();
+	        alSourcei(tmp, AL_BUFFER, buffer);
+			return tmp;
+	       
 	 }
+	 
+	
 	   
 
 	@Override

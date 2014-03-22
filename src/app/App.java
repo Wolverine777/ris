@@ -83,11 +83,6 @@ public class App extends WorldState {
 		transform(t3, vecmath.translationMatrix(400f, 1.0f, 0.0f));
 		append(t3, head);
 		
-		
-		
-		
-		
-		
 //		Sphere c4 = createSphere("Shpere!", shader, 1f);
 //		transform(c4, vecmath.translationMatrix(-5f, 1f, 0));
 //		addPhysic(c4, new VectorImp(0.01f,0.01f,0));
