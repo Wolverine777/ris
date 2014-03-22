@@ -69,7 +69,7 @@ public class App extends WorldState {
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_H)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-1f, 0f, 0f));		
 //		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_X)), SimulateType.ROTATE, KeyMode.TOGGLE, new VectorImp(0f, 1f, 0f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_U)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, -1f));
-		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 3.0f));
+		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 0.0f));
 		append(canon, head);
 		
 		Text t=createText("Coins", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
@@ -105,7 +105,7 @@ public class App extends WorldState {
 //		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_P)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0, 0) ,ObjectTypes.CUBE);
 //		append(sphere, head);
 		
-		Car car=createCar("Car1", shader, new File("obj/cube.obj"), 1.0f, 1f, null, PhysicType.Collision_only);
+		Car car=createCar("Car1", shader, new File("obj/cube.obj"), 1.4, 1f, null, PhysicType.Collision_only);
 		transform(car, vecmath.scaleMatrix(0.35f, 0.35f, 0.35f));
 		transform(car,  vecmath.translationMatrix(-1.0f, -1.65f, 0.0f));
 //		addPhysic(car, new VectorImp(0, 0, 0), PhysicType.Collision_only);

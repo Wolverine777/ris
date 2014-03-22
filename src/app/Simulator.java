@@ -88,7 +88,7 @@ public class Simulator extends UntypedActor {
 							System.out.println("pos coin: "+posCoin+ " pos car: "+posRef);
 							//If coinY == carY && isdown --> up
 							if(entry.getValue().timesDown()){
-								entry.getValue().scale*=-1;
+								entry.getValue().multScale(-1);
 								System.out.println("Time down "+entry.getValue().getTimes());
 							}
 							posCoin=new VectorImp(posCoin.x(), 0, posCoin.z());
@@ -96,10 +96,10 @@ public class Simulator extends UntypedActor {
 							//verschiebungsvector= zielpunkt- startpunkt
 							//up only a part(scale) + trans over actual car pos 
 //							Vector trans=up.mult(entry.getValue().scale).add((posCoin.sub(posRef)));
-							System.out.println("up: "+up + " mult: "+up.mult(entry.getValue().scale));
+							System.out.println("up: "+up + " mult: "+up.mult(entry.getValue().getScale()));
 							System.out.println("zu ueber car: "+posRef.sub(posCoin));
 							
-							Vector trans=posRef.sub(posCoin).add(up.mult(entry.getValue().scale));
+							Vector trans=posRef.sub(posCoin).add(up.mult(entry.getValue().getScale()));
 							doSimulation(entry.getKey(), entry.getValue().getType(), trans);
 							if(entry.getValue().getTimes()==0){
 								System.out.println("rem coin"+s.getId());
@@ -165,18 +165,17 @@ public class Simulator extends UntypedActor {
 				node.setForce(null);
 			}
 		} else if (type == SimulateType.FIXVALUE) {
-			System.out.println("sim fix "+node.getId());
 			Matrix modify = MatrixImp.translate(vec);
 			node.updateWorldTransform(modify);
 			worldState.tell(new NodeModification(node.getId(),modify), self());
 		}else if (type ==SimulateType.PICKUP){
-			float angle = elapsed *  90;
+			float angle = elapsed *  90 * vec.length()*100;
+			System.out.println("vec len"+vec.length());
 			Vector v = node.getWorldTransform().getPosition();
 			Matrix rot=vecmath.rotationMatrix(0, 1, 0, angle);
 			Matrix modify =vecmath.identityMatrix();
 			modify = MatrixImp.translate(v.x(), v.y(), v.z()).mult(rot.mult(MatrixImp.translate(-v.x(), -v.y(), -v.z())));
 			modify = vecmath.translationMatrix(vec).mult(modify);
-			System.out.println("trans vec: "+vec);
 			node.updateWorldTransform(modify);
 			worldState.tell(new NodeModification(node.getId(), modify), self());
 		}
@@ -276,8 +275,10 @@ public class Simulator extends UntypedActor {
 					nodes.put(sc.getTargetId(), n);
 					ref=n;
 				}
+				SimDef sd =new SimDef(sc.getTargetId(), sc.getTimes());
+				if(ref instanceof Car)sd.multScale((float) ((((Car) ref).getSpeed())));
 				doSimulation(newNode, SimulateType.FIXVALUE, sc.getVector().sub(newNode.getWorldTransform().getPosition()));
-				simulations.put(newNode, new SimDef(sc.getTargetId(), sc.getTimes()));
+				simulations.put(newNode, sd);
 			}
 			else if(sc.getSimulation()!=null) {
 				simulations.put(newNode, new SimDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));

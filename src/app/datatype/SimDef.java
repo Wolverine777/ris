@@ -20,7 +20,7 @@ public class SimDef {
 	private int times=0;
 	private String referenzId;
 	// has to be <0
-	public float scale=0.05f;
+	private float scale=0.05f;
 	private double counter=1/scale;
 	
 
@@ -101,6 +101,22 @@ public class SimDef {
 
 	public double getCounter() {
 		return counter;
+	}
+
+	public float getScale() {
+		return scale;
+	}
+
+	/**
+	 * Don't call on Pickup Simulation runtime
+	 * @param mult
+	 */
+	public void multScale(float mult) {
+		System.out.println("mult with"+mult);
+		this.scale =this.scale* mult;
+		System.out.println("new scale"+this.scale+" old count"+counter);
+		this.counter=Math.abs(1/this.scale);
+		System.out.println("new count"+counter);
 	}
 	
 }
