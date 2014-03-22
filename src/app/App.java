@@ -1,6 +1,7 @@
 package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
+import static org.lwjgl.openal.AL10.alSourcePlay;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.io.File;
@@ -63,6 +64,7 @@ public class App extends WorldState {
 		
 	}
 	private void test(GroupNode head){
+		alSourcePlay(Renderer.source2);
 		Canon canon = createCanon("Canon", shader, new File("obj/Cannon2.obj"), null, 1.0f);
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0f, 0f));
@@ -122,11 +124,11 @@ public class App extends WorldState {
 //		addPhysic(coin2, new VectorImp(0, 0, 0), PhysicType.Collision_only);
 		append(coin2, head);
 		
-		Coin coin3=createCoin("Coin3", shader, new File("obj/cube.obj"), 1f, null, PhysicType.Collision_only);
-		transform(coin3, vecmath.scaleMatrix(0.15f, 0.15f, 0.15f));
-		transform(coin3,  vecmath.translationMatrix(0.0f, 1, 0));
-//		addPhysic(coin3, new VectorImp(0, 0, 0), PhysicType.Collision_only);
-		append(coin3, head);
+//		Coin coin3=createCoin("Coin3", shader, new File("obj/cube.obj"), 1f, null, PhysicType.Collision_only);
+//		transform(coin3, vecmath.scaleMatrix(0.15f, 0.15f, 0.15f));
+//		transform(coin3,  vecmath.translationMatrix(0.0f, 1, 0));
+////		addPhysic(coin3, new VectorImp(0, 0, 0), PhysicType.Collision_only);
+//		append(coin3, head);
 		
 //		Cube block=createCube("tree", shader, 0.2f,0.8f, 0.2f, 1f, null, null);
 //		transform(block,  vecmath.translationMatrix(-1.0f, -2.0f, -1.0f));

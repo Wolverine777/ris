@@ -96,7 +96,7 @@ public abstract class WorldState extends UntypedActor{
 			
 			if(amountOfSpheres%10==0){
 				System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
-				alSourcePlay(Renderer.source2);
+//				alSourcePlay(Renderer.source2);
 				generateCanonBall();
 				
 			}

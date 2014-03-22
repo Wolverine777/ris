@@ -324,14 +324,25 @@ public class Simulator extends UntypedActor {
 					for (Edge e : removeEdges) {
 						modify.removeEdge(e);
 					}
+					Map<Node, SimDef> remove=new HashMap<Node, SimDef>();
 					for (Map.Entry<Node, SimDef> entry : simulations.entries()) {
 						if(entry.getValue().getReferenzId()!=null){
 							if(entry.getValue().getReferenzId().equals(id)){
-								simulations.remove(entry.getKey(), entry.getValue());
+								remove.put(entry.getKey(), entry.getValue());
+								NodeDeletion nd = new NodeDeletion();
+								nd.ids.add(entry.getKey().getId());
+								worldState.tell(nd, self());
 							}
 						}
+						if(entry.getKey().getId().equals(id)){
+							remove.put(entry.getKey(), entry.getValue());
+						}
 					}
-					if(!(modify instanceof Coin))nodes.remove(modify);
+					for(Map.Entry<Node, SimDef> rem:remove.entrySet()){
+						simulations.remove(rem.getKey(), rem.getValue());
+					}
+//					if(!(modify instanceof Coin))
+						nodes.remove(modify.getId());
 				}
 			}
 		}
