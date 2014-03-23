@@ -1,6 +1,7 @@
 package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
+import static org.lwjgl.openal.AL10.alSourcePlay;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -126,13 +127,37 @@ public class Physic extends UntypedActor {
 					&& !collisionObjects(n).isEmpty()) {
 
 				delete.ids.add(n.getId());
+				ArrayList<Node> collision = new ArrayList<>(collisionObjects(n));
 				
-				if(n instanceof Car || n instanceof Sphere || n instanceof Cube || n instanceof ObjLoader){
+				if(n instanceof Car ||  n instanceof Cube || n instanceof ObjLoader){
 					
-					ArrayList<Node> collision = new ArrayList<>(collisionObjects(n));
 					for(Node colwith : collision){
 						if(colwith instanceof Coin && collision.size()==1){
 							delete.ids.remove(n.getId());
+						}
+					}
+				}
+				if(n instanceof Sphere && collision.size() ==1){
+					for (Node colwith : collision){
+						if(colwith instanceof Coin){
+							delete.ids.remove(n.getId());
+							System.out.println("klappt das? ");				
+							n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
+					
+							n.setVelocity(n.getForce());
+					
+							SimulateCreation sc=new SimulateCreation(n.getId(),n.getWorldTransform(), SimulateType.PHYSIC, n.getForce());
+						
+							simulator.tell(sc, self());	
+							}
+					
+						}
+				}
+				if(n instanceof Sphere){
+					for (Node colwith : collision){
+						if(colwith instanceof Car){
+							alSourcePlay(Renderer.source3);
+							
 						}
 					}
 				}
@@ -147,18 +172,43 @@ public class Physic extends UntypedActor {
 			} else if(collisionGround(n) !=0 && !collisionObjects(n).isEmpty()){
 				
 				delete.ids.add(n.getId());
+				ArrayList<Node> collision = new ArrayList<>(collisionObjects(n));
 				
-					if(n instanceof Car || n instanceof Sphere || n instanceof Cube || n instanceof ObjLoader){
+					if(n instanceof Car ||  n instanceof Cube || n instanceof ObjLoader){
 					
-						ArrayList<Node> collision = new ArrayList<>(collisionObjects(n));
 						for(Node colwith : collision){
 							if(colwith instanceof Coin && collision.size()==1){
 							delete.ids.remove(n.getId());
 							}
 						}
 					}
+					if(n instanceof Sphere && collision.size() ==1){
+						for (Node colwith : collision){
+							if(colwith instanceof Coin){
+								delete.ids.remove(n.getId());
+								System.out.println("klappt das? ");				
+								n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
+						
+								n.setVelocity(n.getForce());
+						
+								SimulateCreation sc=new SimulateCreation(n.getId(),n.getWorldTransform(), SimulateType.PHYSIC, n.getForce());
+							
+								simulator.tell(sc, self());	
+								}
+						
+							}
+					}
+					if(n instanceof Sphere){
+						for (Node colwith : collision){
+							if(colwith instanceof Car){
+								alSourcePlay(Renderer.source3);
+								
+							}
+						}
+					}
 					if(n instanceof Coin){
-//						simulator.tell(msg, sender);
+						
+						delete.ids.remove(n.getId());
 					}
 				}
 //			Vector impact = collisionGroundPosition(n);
@@ -170,7 +220,7 @@ public class Physic extends UntypedActor {
 			if(!collision.isEmpty() ){
 				delete.ids.add(n.getId());
 					
-				if(n instanceof Car || n instanceof Sphere || n instanceof Cube || n instanceof ObjLoader){
+				if(n instanceof Car ||  n instanceof Cube || n instanceof ObjLoader){
 						
 					for(Node colwith : collision){
 						if(colwith instanceof Coin && collision.size()==1){
@@ -178,6 +228,7 @@ public class Physic extends UntypedActor {
 						}
 					}
 				}
+			
 				if(n instanceof Coin){
 					System.out.println("colli with coin");
 					for(Node col:collision){
@@ -187,11 +238,10 @@ public class Physic extends UntypedActor {
 							Vector carhight=new VectorImp(((Car) col).getPosition().x(), ((Car) col).getPosition().y()+((Car) col).getRadius(), ((Car) col).getPosition().z());
 							System.out.println("tell pickup simulation");
 							simulator.tell(new SimulateCreation(n.getId(), col.getId(), col.getWorldTransform(), 2, carhight), getSelf());
-						}else{
+						} else{
 							delete.ids.remove(n.getId());
 						}
 					}
-	//				simulator.tell(msg, sender);
 				}
 				
 			}

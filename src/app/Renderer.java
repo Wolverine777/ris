@@ -60,8 +60,11 @@ public class Renderer extends UntypedActor {
 	
 	private static int buffer;
 	
-	static int source;
+	static int source1;
 	static int source2;
+	static int source3;
+	static int source4;
+	static int source5;
 	
 	private static boolean multisampling = false;
 
@@ -82,8 +85,11 @@ public class Renderer extends UntypedActor {
 		setUpSound();
 		
 		try {
-			source2 =createSound("sounds\\test.wav");
-			source = createSound("sounds\\test.wav");
+			source1 =createSound("sounds\\begin.wav");
+			source2 = createSound("sounds\\Music_Hexagon1.wav");
+			source3 = createSound("sounds\\awesome.wav");
+			source4 = createSound("sounds\\gameover.wav");
+			source5 = createSound("sounds\\excellent.wav");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,6 +111,7 @@ public class Renderer extends UntypedActor {
 
 		getSender().tell(new RendererInitialized(shader,texShader), self());
 		getSender().tell(Message.INITIALIZED, self());
+		alSourcePlay(Renderer.source1);
 	}
 
 	private void display() {

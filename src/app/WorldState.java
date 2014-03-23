@@ -23,6 +23,7 @@ import vecmath.Vector;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
+import com.leapmotion.leap.Controller;
 import com.vividsolutions.jts.operation.overlay.snap.SnapIfNeededOverlayOp;
 
 import akka.actor.ActorRef;
@@ -30,6 +31,7 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 import app.Types.Events;
+import app.Types.GestureType;
 import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.PhysicType;
@@ -41,10 +43,12 @@ import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
+import app.eventsystem.SimulateGestureCreation;
 import app.eventsystem.StartNodeModification;
 import app.messages.AiInitialization;
 import app.messages.KeyState;
 import app.messages.Message;
+import app.messages.RegisterGesture;
 import app.messages.RegisterKeys;
 import app.messages.PhysicInitialization;
 import app.messages.RendererInitialization;
@@ -89,17 +93,18 @@ public abstract class WorldState extends UntypedActor{
     private Set<Integer> toggeled=new HashSet<Integer>();
     private float canonballnumber = 0;
     private float amountOfSpheres=0;
+    
 
 	private void loop() {
 
 		System.out.println("\nStarting new loop");
 		
-
+		
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
 			
-			if(amountOfSpheres%20==0){
+			if(amountOfSpheres%10==0){
 				System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
-				alSourcePlay(Renderer.source2);
+//				alSourcePlay(Renderer.source2);
 				generateCanonBall();
 				
 			}
@@ -154,6 +159,8 @@ public abstract class WorldState extends UntypedActor{
 			System.out.println("Starting initialization");
 
 			System.out.println("Creating Entities");
+			
+			
 
 			renderer = getContext().actorOf(
 					Props.create(Renderer.class).withDispatcher(
@@ -545,6 +552,45 @@ public abstract class WorldState extends UntypedActor{
 			if(simulation!=SimulateType.NONE) input.tell(new RegisterKeys(keys, true), simulator);
 			else input.tell(new RegisterKeys(keys, false), simulator);
 		}
+	}
+	protected void simulateOnGesture(Node object, GestureType gesture, SimulateType simulation, Vector vec){
+		SimulateGestureCreation sgc= new SimulateGestureCreation(object.getId(),object.getWorldTransform(), gesture, simulation, vec);
+		if(object instanceof Shape){
+			Shape s=(Shape)object;
+			sgc.shader=s.getShader();
+		}
+		if (object instanceof Cube){
+			sgc.w =((Cube)object).getW2();
+			sgc.h = ((Cube)object).getH2();
+			sgc.d =((Cube)object).getD2();
+			sgc.type=ObjectTypes.CUBE;
+		} else if(object instanceof Pipe){
+			Pipe p=(Pipe)object;
+			sgc.r = p.r;
+		    sgc.lats = p.lats;
+		    sgc.longs = p.longs;
+		    sgc.type=ObjectTypes.PIPE;
+		}else if(object instanceof Plane){
+			Plane p=(Plane)object;
+			sgc.w = p.getW();
+	        sgc.d = p.getD();
+	        sgc.type=ObjectTypes.PLANE;
+		}else if(object instanceof Sphere){
+			sgc.type=ObjectTypes.SPHERE;
+		}
+		else if(object instanceof ObjLoader){
+			ObjLoader obj=(ObjLoader)object;
+			sgc.sourceFile=obj.getSourceFile();
+	        sgc.sourceTex=obj.getSourceTex();
+	        sgc.type=ObjectTypes.OBJECT;
+		}
+		
+		simulator.tell(sgc, getSelf());
+		if(simulation!=SimulateType.NONE){
+			input.tell(new RegisterGesture(gesture, true), simulator);			
+		} else input.tell(new RegisterGesture(gesture, false), simulator);
+		
+		
 	}
 	
 	protected void doCanonBalls(){

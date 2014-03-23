@@ -1,6 +1,7 @@
 package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
+import static org.lwjgl.openal.AL10.alSourcePlay;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +47,7 @@ public class Ai extends UntypedActor {
 	private Map<String, Coin> coins=new HashMap<String, Coin>();
 	private Map<String, Shape> impacts=new HashMap<String, Shape>();
 	ActorRef simulator;
+	private int gameover = 0;
 
 	private void initialize(Vector levelPosition, float width, float depth) {
 		System.out.println("Init Ai");
@@ -250,6 +252,7 @@ public class Ai extends UntypedActor {
 		}	
 		for(Node n : coins.values()){
 			if(n instanceof Coin){
+				System.out.println("ai coins: " + n.getId() + coinsAmount);
 				coinsAmount++;
 			}
 		}
@@ -259,6 +262,12 @@ public class Ai extends UntypedActor {
 			NodeModification nm = new NodeModification(coinsT.getId(), FactoryDefault.vecmath.identityMatrix());
 			nm.text = ((Text) coinsT).getText();
 			sender().tell(nm, self());
+			
+			if(coinsAmount == 0 && gameover == 0){
+				alSourcePlay(Renderer.source4);
+				gameover++;
+				
+			}
 		}
 		
 		if(carsT instanceof Text){

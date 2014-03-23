@@ -1,6 +1,7 @@
 package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
+import static org.lwjgl.openal.AL10.alSourcePlay;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.io.File;
@@ -10,12 +11,14 @@ import java.util.LinkedList;
 
 import org.lwjgl.input.Keyboard;
 
+import com.leapmotion.leap.Controller;
 import vecmath.Matrix;
 import vecmath.vecmathimp.FactoryDefault;
 import vecmath.vecmathimp.VectorImp;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import app.Types.GestureType;
 import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.PhysicType;
@@ -107,12 +110,14 @@ public class App extends WorldState {
 		append(coin3, head);
 	}
 	private void test(GroupNode head){
+		alSourcePlay(Renderer.source2);
 		Canon canon = createCanon("Canon", shader, new File("obj/Cannon2.obj"), null, vecmath.translationMatrix(2.5f, 0.0f, 1.0f), 1.0f);
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0f, 0f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_H)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-1f, 0f, 0f));		
 //		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_X)), SimulateType.ROTATE, KeyMode.TOGGLE, new VectorImp(0f, 1f, 0f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_U)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, -1f));
+		simulateOnGesture(canon, GestureType.HAND_POSITION, SimulateType.ROTATE, new VectorImp(1, 0, 0));
 //		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 0.0f));
 		append(canon, head);
 		
@@ -174,6 +179,7 @@ public class App extends WorldState {
 		append(objsphere, head);
 		
 		doCanonBalls();
+		
 	}
 
 	public static void main(String[] args) {

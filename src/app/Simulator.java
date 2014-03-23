@@ -21,16 +21,20 @@ import com.google.common.collect.SetMultimap;
 
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
+import app.Types.GestureType;
 import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.SimulateType;
 import app.datatype.SimDef;
+import app.datatype.SimGesDef;
 import app.edges.Edge;
 import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
 import app.eventsystem.SimulateCreation;
+import app.eventsystem.SimulateGestureCreation;
+import app.messages.HandPosition;
 import app.messages.KeyState;
 import app.messages.Message;
 import app.messages.SingelSimulation;
@@ -44,6 +48,8 @@ public class Simulator extends UntypedActor {
 
 	private Map<String, Node> nodes = new HashMap<String, Node>();
 	private SetMultimap<Node, SimDef> simulations = HashMultimap.create();
+	private SetMultimap<Node, SimGesDef> simulationsgestures = HashMultimap.create();
+	
 	private Set<Integer> pressedKeys = new HashSet<Integer>();
 	private Set<Integer> toggeled = new HashSet<Integer>();
 	private StopWatch sw = new StopWatch();
@@ -308,7 +314,74 @@ public class Simulator extends UntypedActor {
 				// simulation.getType(), simulation.getVec());
 				// nodes.remove(simulation.getNodeId());
 			}
-		} else if (message instanceof NodeDeletion) {
+		}  else if (message instanceof SimulateGestureCreation) {
+			SimulateGestureCreation sgc = (SimulateGestureCreation) message;
+			Node newNode = null;
+			if (!nodes.containsKey(sgc.id)) {
+				System.out.println("not in "+sgc.id);
+				// TODO: ein Type reicht nur ein Shape, von den objekten wird
+				// nur id und woldtrafo benoetigt.
+				// TODO: Generics?
+				NodeCreation nc = (NodeCreation) message;
+				if (nc.type == ObjectTypes.GROUP) {
+					if(nc.getModelmatrix()!=null)nodes.put(nc.getId(), nodeFactory.groupNode(nc.id, nc.getModelmatrix()));
+					else nodes.put(nc.getId(), nodeFactory.groupNode(nc.id));
+				} else if (nc.type == ObjectTypes.CUBE) {
+					nodes.put(nc.getId(), nodeFactory.cube(nc.id, nc.shader, nc.w, nc.h, nc.d, nc.mass));
+				} else if (nc.type == ObjectTypes.SPHERE) {
+					nodes.put(nc.getId(), nodeFactory.sphere(nc.id, nc.shader, nc.mass));
+				} else if (nc.type == ObjectTypes.CAMERA) {
+					nodes.put(((CameraCreation) message).id, nodeFactory.camera(((CameraCreation) message).id));
+				} else if (nc.type == ObjectTypes.OBJECT) {
+					nodes.put(nc.getId(), nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
+				} else if (nc.type == ObjectTypes.CANON) {
+					nodes.put(nc.getId(), nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
+				} else if (nc.type == ObjectTypes.CAR) {
+					Car car = nodeFactory.car(nc.id, nc.shader, nc.sourceFile, nc.speed, nc.mass);
+					nodes.put(nc.id, car);
+					System.out.println("got car "+nc.getId());
+				} else if (nc.type == ObjectTypes.COIN) {
+					//TODO: because of pickup animation
+					nodes.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.mass));
+				} else if(nc.type == ObjectTypes.TEXT){
+					nodes.put(nc.getId(),nodeFactory.text(nc.id, nc.getModelmatrix(), nc.getText(), nc.getFont()));
+				} else {
+					throw new Exception("Please implement Type"+sgc.getId()+" "+sgc.getSimulation());
+				}
+			}
+			newNode = nodes.get(sgc.id);
+			if (sgc.getSimulation() == SimulateType.NONE) {
+				//TODO: only remove one keyDef
+				for (SimGesDef kd : simulationsgestures.get(newNode)) {
+					if (kd.getGesture().equals((sgc.getGesture()))) {
+						simulationsgestures.remove(newNode, kd);
+					}
+				}
+			}
+			else if(sgc.getSimulation()!=null) {
+				simulationsgestures.put(newNode, new SimGesDef(sgc.getSimulation(), sgc.getGesture(), sgc.getVector()));
+				newNode.setLocalTransform(sgc.modelmatrix);
+				newNode.updateWorldTransform();
+				System.out.println("huhu" + sgc.modelmatrix);
+			}
+		} else if(message instanceof HandPosition){
+			HandPosition hp = (HandPosition)message;
+			if(hp.fingerAmount == 5){
+				for(Node n: simulationsgestures.keySet()){
+					for(SimGesDef sgf: simulationsgestures.get(n)){
+						if(sgf.getGesture() == GestureType.HAND_POSITION){
+							System.out.println("Hand position: " +  hp.getHandPosition().x() + " " + hp.getHandPosition().y() + " " + hp.getHandPosition().z());
+							if(sgf.getVector().y() > 1f){
+								doSimulation(n, sgf.getType(), new VectorImp(1f, 0f, 0f));
+							}
+							
+//							doSimulation(n, sgf.getType(), sgf.getVector());
+						}
+					}
+				}
+			}
+		}
+		else if (message instanceof NodeDeletion) {
 			NodeDeletion delete = (NodeDeletion) message;
 			for (String id : delete.ids) {
 				Node modify = nodes.get(id);
@@ -321,21 +394,25 @@ public class Simulator extends UntypedActor {
 					for (Edge e : removeEdges) {
 						modify.removeEdge(e);
 					}
-					if(!simulations.isEmpty()){
-						Map<Node, SimDef> remove=new HashMap<Node, SimDef>();
-						for (Map.Entry<Node, SimDef> entry : simulations.entries()) {
-							if(entry.getValue().getReferenzId()!=null){
-								if(entry.getValue().getReferenzId().equals(id)){
-									remove.put(entry.getKey(), entry.getValue());
-								}
+					Map<Node, SimDef> remove=new HashMap<Node, SimDef>();
+					for (Map.Entry<Node, SimDef> entry : simulations.entries()) {
+						if(entry.getValue().getReferenzId()!=null){
+							if(entry.getValue().getReferenzId().equals(id)){
+								remove.put(entry.getKey(), entry.getValue());
+								NodeDeletion nd = new NodeDeletion();
+								nd.ids.add(entry.getKey().getId());
+								worldState.tell(nd, self());
 							}
 						}
-						for(Map.Entry<Node, SimDef> rem:remove.entrySet()){
-							simulations.remove(rem.getKey(), rem.getValue());
+						if(entry.getKey().getId().equals(id)){
+							remove.put(entry.getKey(), entry.getValue());
 						}
-						
 					}
-					if(!(modify instanceof Coin))nodes.remove(modify);
+					for(Map.Entry<Node, SimDef> rem:remove.entrySet()){
+						simulations.remove(rem.getKey(), rem.getValue());
+					}
+//					if(!(modify instanceof Coin))
+						nodes.remove(modify.getId());
 				}
 			}
 		}
