@@ -17,6 +17,7 @@ import vecmath.vecmathimp.VectorImp;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import app.Types.GestureType;
 import app.Types.KeyMode;
 import app.Types.ObjectTypes;
 import app.Types.PhysicType;
@@ -75,6 +76,7 @@ public class App extends WorldState {
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_H)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-1f, 0f, 0f));		
 //		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_X)), SimulateType.ROTATE, KeyMode.TOGGLE, new VectorImp(0f, 1f, 0f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_U)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, -1f));
+		simulateOnGesture(canon, GestureType.HAND_POSITION, SimulateType.ROTATE, new VectorImp(1, 0, 0));
 		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 0.0f));
 		append(canon, head);
 		

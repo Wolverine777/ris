@@ -162,9 +162,12 @@ public class Input extends UntypedActor {
             Vector normal = hand.palmNormal();
             Vector direction = hand.direction();
             
+            Vector position = hand.palmPosition();
+            
             Map<ActorRef, HandPosition> sendHP = new HashMap<ActorRef, HandPosition>();            	
             	for(ActorRef actor:gestureObservers.get(GestureType.HAND_POSITION)){
             		HandPosition hp = new HandPosition();
+            		System.out.println("normal Vector leap: " + normal.getX() + " " + normal.getY() + " " + normal.getZ());
            			hp.handPosition = new VectorImp(normal.getX(), normal.getY(), normal.getZ());
            			hp.fingerAmount = fingers.count();
            			            			

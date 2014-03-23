@@ -12,11 +12,24 @@ public class HandPosition {
 		this.handPosition = handPosition;
 		this.fingerAmount = fingerAmount;
 	}
-	
 	public HandPosition() {
-		this.handPosition = new VectorImp(0,0,0);
-		this.fingerAmount = 0;
+	
 	}
+	public Vector getHandPosition() {
+		return handPosition;
+	}
+	public void setHandPosition(Vector handPosition) {
+		this.handPosition = handPosition;
+	}
+	public int getFingerAmount() {
+		return fingerAmount;
+	}
+	public void setFingerAmount(int fingerAmount) {
+		this.fingerAmount = fingerAmount;
+	}
+	
+	
+	
 	
 
 }
