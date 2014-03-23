@@ -90,8 +90,7 @@ public abstract class WorldState extends UntypedActor{
     private Set<Integer> toggeled=new HashSet<Integer>();
     private float canonballnumber = 0;
     private float amountOfSpheres=0;
-    private LeapListener listener;
-    Controller controller;
+    
 
 	private void loop() {
 
@@ -157,11 +156,6 @@ public abstract class WorldState extends UntypedActor{
 			System.out.println("Starting initialization");
 
 			System.out.println("Creating Entities");
-			
-			listener = new LeapListener();
-			controller = new Controller();
-			
-			controller.addListener(listener);
 			
 			
 
