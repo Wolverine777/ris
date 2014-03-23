@@ -150,7 +150,7 @@ public class Ai extends UntypedActor {
 					return Double.compare(o1.getValue().getLength(), o2.getValue().getLength());
 				}}).getKey();
 			
-			List<LevelNode> pathMin=new LinkedList<LevelNode>();
+			List<LevelNode> pathMin=new LinkedList<LevelNode>( );
 			pathMin.add(min);
 			pathMin.addAll(lookAt.get(min).getPath());
 			if(min.equals(target)){
