@@ -102,12 +102,17 @@ public class App extends WorldState {
 		append(canon, head);
 		doCanonBalls();
 		
-		Matrix m=vecmath.translationMatrix(-1, -2, 0);
-		m=m.mult(vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
-		Car car=createCar("Car1", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 5.4, m, 1f, null, PhysicType.Collision_only);
+//		Matrix m=vecmath.translationMatrix(-1, -2, 0);
+		Matrix carScale=vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f);
+		Car car1=createCar("Car1", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 5.4, vecmath.translationMatrix(-2, -2, 8).mult(carScale), 1f, null, PhysicType.Collision_only);
 //		transform(car, vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
 //		transform(car,  vecmath.translationMatrix(-1.0f, -2.0f, 0.0f));
-		append(car, head);
+		append(car1, head);
+		
+		Car car2=createCar("Car2", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 5.4, vecmath.translationMatrix(-5, -2, -3).mult(carScale), 1f, null, PhysicType.Collision_only);
+//		transform(car, vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
+//		transform(car,  vecmath.translationMatrix(-1.0f, -2.0f, 0.0f));
+		append(car2, head);
 		
 		Matrix scaleCoin=vecmath.scaleMatrix(0.15f, 0.15f, 0.15f);
 		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), vecmath.translationMatrix(8.0f, floor.getGround(), 8.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
