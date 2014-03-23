@@ -363,7 +363,7 @@ public class Simulator extends UntypedActor {
 			}
 		} else if(message instanceof HandPosition){
 			HandPosition hp = (HandPosition)message;
-			if(hp.fingerAmount == 5){
+			if(hp.fingerAmount >= 4){
 				for(Node n: simulationsgestures.keySet()){
 					for(SimGesDef sgf: simulationsgestures.get(n)){
 						if(sgf.getGesture() == GestureType.HAND_POSITION){

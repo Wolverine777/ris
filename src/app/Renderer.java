@@ -111,7 +111,7 @@ public class Renderer extends UntypedActor {
 
 		getSender().tell(new RendererInitialized(shader,texShader), self());
 		getSender().tell(Message.INITIALIZED, self());
-		alSourcePlay(Renderer.source1);
+		
 	}
 
 	private void display() {

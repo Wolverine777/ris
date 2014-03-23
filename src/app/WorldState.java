@@ -158,6 +158,8 @@ public abstract class WorldState extends UntypedActor{
 				System.out.printf("Initialization finished in %.3fs",
 						time.elapsed());
 				
+				alSourcePlay(Renderer.source2);
+				alSourcePlay(Renderer.source1);
 				loop();
 			}
 		} else if (message == Message.INIT) {

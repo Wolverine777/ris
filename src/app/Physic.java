@@ -136,6 +136,7 @@ public class Physic extends UntypedActor {
 							delete.ids.remove(n.getId());
 						}
 					}
+				
 				}
 				if(n instanceof Sphere && collision.size() ==1){
 					for (Node colwith : collision){
@@ -181,6 +182,7 @@ public class Physic extends UntypedActor {
 							delete.ids.remove(n.getId());
 							}
 						}
+						
 					}
 					if(n instanceof Sphere && collision.size() ==1){
 						for (Node colwith : collision){
@@ -226,6 +228,20 @@ public class Physic extends UntypedActor {
 						if(colwith instanceof Coin && collision.size()==1){
 							delete.ids.remove(n.getId());
 						}
+					}
+				}
+				if(n instanceof Car){
+					int colsize = collision.size();
+					for(Node colwith : collision){
+						if(colwith instanceof Car && collision.size()==1){
+							delete.ids.remove(n.getId());
+						}
+						else if(colwith instanceof Car || colwith instanceof Coin){
+							colsize--;
+						}
+					}
+					if(colsize == 0){
+						delete.ids.remove(n.getId());
 					}
 				}
 			

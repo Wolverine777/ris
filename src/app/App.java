@@ -90,7 +90,7 @@ public class App extends WorldState {
 	}
 	
 	private void finalLevel(GroupNode head){
-		alSourcePlay(Renderer.source2);
+//		alSourcePlay(Renderer.source2);
 		Canon canon = createCanon("Canon", texShader, new File("obj/Cannon2.obj"), new File("obj/2.jpg"), vecmath.translationMatrix(0.0f, floor.getHight(), ((floor.getD()/2)*0.90f)).mult(vecmath.rotationMatrix(-1.0f, 0f, 0f, 45f)), 1.0f);
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_D)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, -0.7f, 0f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_A)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0.7f, 0f));
