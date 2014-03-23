@@ -380,7 +380,18 @@ public class Simulator extends UntypedActor {
 							if(hp.getHandPosition().x() < -25 && hp.getHandPosition().y() <190 && hp.getHandPosition().y() > 150 ){
 								doSimulation(n, sgf.getType(), new VectorImp(0f, -0.7f, 0f));
 							}
-//							doSimulation(n, sgf.getType(), sgf.getVector());
+							if(hp.getHandPosition().y() > 190f && hp.handPosition.x()> 25f){
+								doSimulation(n, sgf.getType(), new VectorImp(0.7f, 0.7f, 0f));
+							}
+							if(hp.getHandPosition().y() > 190f &&  hp.getHandPosition().x() < -25){
+								doSimulation(n, sgf.getType(), new VectorImp(0.7f, -0.7f, 0f));
+							}
+							if(hp.getHandPosition().y() < 150f && hp.handPosition.x()> 25f){
+								doSimulation(n, sgf.getType(), new VectorImp(-0.7f, 0.7f, 0f));
+							}
+							if(hp.getHandPosition().y() < 150f &&  hp.getHandPosition().x() < -25){
+								doSimulation(n, sgf.getType(), new VectorImp(-0.7f, 0.7f, 0f));
+							}
 						}
 					}
 				}
