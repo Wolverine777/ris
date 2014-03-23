@@ -54,7 +54,7 @@ public class App extends WorldState {
 		 * Note: After Creation add keys and physic before transform.
 		 */
 		setCamera(nodeFactory.camera("Cam", new LinkedList<Shader>(Arrays.asList(new Shader[]{shader,texShader}))));
-		transform(camera, FactoryDefault.vecmath.translationMatrix(0, 0, 10));
+		transform(camera, FactoryDefault.vecmath.translationMatrix(0, floor.getHight()+floor.getD()*0.2f, (floor.getD()*0.86f)));
 
 		GroupNode start = createGroup("start");
 		setStart(start);
@@ -67,8 +67,8 @@ public class App extends WorldState {
 		announceFloor(floor);
 		append(floor, head);
 		
-		test(head);
-//		finalLevel(head);
+//		test(head);
+		finalLevel(head);
 //		obj(head);
 
 	}
@@ -90,15 +90,27 @@ public class App extends WorldState {
 	}
 	
 	private void finalLevel(GroupNode head){
+		alSourcePlay(Renderer.source2);
+		Canon canon = createCanon("Canon", texShader, new File("obj/Cannon2.obj"), new File("obj/2.jpg"), vecmath.translationMatrix(0.0f, floor.getHight(), ((floor.getD()/2)*0.90f)).mult(vecmath.rotationMatrix(-1.0f, 0f, 0f, 45f)), 1.0f);
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_D)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, -0.7f, 0f));
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_A)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0.7f, 0f));
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0.7f, 0f, 0f));
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_S)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-0.7f, 0f, 0f));		
+//		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_X)), SimulateType.ROTATE, KeyMode.TOGGLE, new VectorImp(0f, 1f, 0f));
+		simulateOnGesture(canon, GestureType.HAND_POSITION, SimulateType.ROTATE, new VectorImp(1, 0, 0));
+//		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 0.0f));
+		append(canon, head);
+		doCanonBalls();
+		
 		Matrix m=vecmath.translationMatrix(-1, -2, 0);
 		m=m.mult(vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
-		Car car=createCar("Car1", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 1.4, m, 1f, null, PhysicType.Collision_only);
+		Car car=createCar("Car1", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 5.4, m, 1f, null, PhysicType.Collision_only);
 //		transform(car, vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
 //		transform(car,  vecmath.translationMatrix(-1.0f, -2.0f, 0.0f));
 		append(car, head);
 		
 		Matrix scaleCoin=vecmath.scaleMatrix(0.15f, 0.15f, 0.15f);
-		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), vecmath.translationMatrix(1.0f, floor.getGround(), 1.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
+		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), vecmath.translationMatrix(8.0f, floor.getGround(), 8.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
 //		transform(coin,  vecmath.translationMatrix(1.0f, floor.getGround(), 1.0f));
 		append(coin, head);
 		Coin coin2=createCoin("Coin2", shader, new File("obj/cube.obj"), vecmath.translationMatrix(0.5f, floor.getGround(), 0.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);

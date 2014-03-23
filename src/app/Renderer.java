@@ -312,7 +312,6 @@ public class Renderer extends UntypedActor {
 				// modify.setLocalTransform(modify.getWorldTransform());
 			}
 			if (((NodeModification) message).appendTo != null) {
-				System.out.println("NodeMod "+modify+" id "+((NodeModification) message).id);
 				modify.appendTo(nodes.get(((NodeModification) message).appendTo));
 			}
 			if(((NodeModification) message).text!=null){

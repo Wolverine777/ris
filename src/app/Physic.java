@@ -44,7 +44,7 @@ public class Physic extends UntypedActor {
 	ActorRef simulator;
 	ActorRef ai;
 	private StopWatch zeit = new StopWatch();
-	private Vector ground = new VectorImp(0f, -0.005f, 0f);
+	private Vector ground = new VectorImp(0f, -0.0981f, 0f);
 	private float elapsedaverage = 0;
 	private float elapsed = 0;
 	private float elapsedCounter = 1;
@@ -88,7 +88,7 @@ public class Physic extends UntypedActor {
 					((Shape)n).setLifetimeCounter(((Shape)n).getLifetimeCounter()-1);
 					VectorImp opposite = oppositeDirectionGround(n);
 					n.setVelocity(opposite);
-					VectorImp reduce = reduceVelocityGround(n, 0.9f);
+					VectorImp reduce = reduceVelocityGround(n, 0.8f);
 					n.setVelocity(reduce);
 					// TODO Erdanziehungskraft m*g?
 	//				n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* elapsed, 0))));
@@ -104,7 +104,7 @@ public class Physic extends UntypedActor {
 					
 					float differenceinfloor = collisionGround(n);
 	//				float differenceinfloor = (float) Math.sqrt((float) Math.pow((n.getWorldTransform().getPosition().y() - floor.y()),2));
-					VectorImp vec = new VectorImp(0, differenceinfloor + 0.05f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
+					VectorImp vec = new VectorImp(0, differenceinfloor + 0.2f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
 					SingelSimulation ss = new SingelSimulation(n.getId(), SimulateType.FIXVALUE, vec, n.getWorldTransform());
 	//				Matrix modify=MatrixImp.translate(vec);
 	//	    		n.updateWorldTransform(modify);
@@ -237,7 +237,7 @@ public class Physic extends UntypedActor {
 							remCoin.add(n);
 							Vector carhight=new VectorImp(((Car) col).getPosition().x(), ((Car) col).getPosition().y()+((Car) col).getRadius(), ((Car) col).getPosition().z());
 							System.out.println("tell pickup simulation");
-							simulator.tell(new SimulateCreation(n.getId(), col.getId(), col.getWorldTransform(), 2, carhight), getSelf());
+							simulator.tell(new SimulateCreation(n.getId(), col.getId(), col.getWorldTransform(), 1, carhight), getSelf());
 						} else{
 							delete.ids.remove(n.getId());
 						}
@@ -330,7 +330,7 @@ public class Physic extends UntypedActor {
 		
 		PhysicModification tellAi = new PhysicModification(id, impact);
 		//TODO: activate when test done
-//		ai.tell(tellAi, self());
+		ai.tell(tellAi, self());
 		
 		
 	}
@@ -338,21 +338,23 @@ public class Physic extends UntypedActor {
 
 	private float collisionGround(Node n) {
 		float distance = 0;
-		float radiuses = 0;
-		
-		
-//		System.out.println("flooooooor: " + floor.y());
-		distance = (float) Math.sqrt((float) Math.pow(((Shape) n).getCenter().y() - floor.y(),2));
-		radiuses = ((Shape) n).getRadius();
-//		System.out.println("distance ground: " + distance + " radiuses ground: " + radiuses);
-			
-		if(distance < radiuses){
-			float inground = radiuses -distance;
-					return inground;
-				
-		
-		}
+//		float radiuses = 0;
+		distance=(((Shape) n).getCenter().y()- ((Shape)n).getRadius()) - floor.y();
+		if(distance<0)return Math.abs(distance);
 		return 0;
+//		
+////		System.out.println("flooooooor: " + floor.y());
+//		distance = (float) Math.sqrt((float) Math.pow(((Shape) n).getCenter().y() - floor.y(),2));
+//		radiuses = ((Shape) n).getRadius();
+////		System.out.println("distance ground: " + distance + " radiuses ground: " + radiuses);
+//			
+//		if(distance < radiuses){
+//			float inground = radiuses -distance;
+//					return inground;
+//				
+//		
+//		}
+//		return 0;
 	}
 	
 	private VectorImp oppositeDirection(Node n){
@@ -420,7 +422,6 @@ public class Physic extends UntypedActor {
 					}
 				} else if (nc.type == ObjectTypes.SPHERE) {
 					newNode = nodeFactory.sphere(nc.id,nc.shader, nc.mass, nc.getModelmatrix());
-					System.out.println("phy node "+newNode.getId());
 					//TODO: wtf ist denn hier los?
 					Node newNode2 = nodeFactory.sphere("hallo",nc.shader, nc.mass, nc.getModelmatrix());
 					
@@ -437,7 +438,6 @@ public class Physic extends UntypedActor {
 						
 					}
 					collisionGroundPosition(newNode.getId(), newNode2);
-					System.out.println("after col");
 				} else if(nc.type == ObjectTypes.OBJECT){
 					newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, null, nc.getModelmatrix(), nc.mass);
 					if ((nc.impulse != null)) {

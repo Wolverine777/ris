@@ -774,4 +774,11 @@ public final class MatrixImp implements Matrix {
 	  }
 	  return true;
   }
+  
+  public static boolean isRotationMatrix(Matrix m){
+	  if(m.get(0, 0)!=0.0f&&m.get(0, 1)!=0.0f&&m.get(1, 0)!=0.0f&&m.get(1, 1)!=0.0f)return true;
+	  if(m.get(0, 0)!=0.0f&&m.get(0, 2)!=0.0f&&m.get(2, 0)!=0.0f&&m.get(2, 2)!=0.0f)return true;
+	  if(m.get(1, 1)!=0.0f&&m.get(1, 2)!=0.0f&&m.get(2, 1)!=0.0f&&m.get(2, 2)!=0.0f)return true;
+	  return false;
+  }
 }

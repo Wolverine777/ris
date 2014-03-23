@@ -83,7 +83,7 @@ public abstract class WorldState extends UntypedActor{
 	protected Camera camera;
 	protected Shader shader;
 	protected Shader texShader;
-	protected Plane floor=new Plane("Floor", shader, 2, 2, -2.0f, 1.0f);
+	protected Plane floor=new Plane("Floor", shader, 20, 20, -2.0f, 1.0f);
 //	protected Canon canon;
 	private Set<Integer> pressedKeys = new HashSet<Integer>();
     private Set<Integer> toggeled=new HashSet<Integer>();
@@ -99,7 +99,6 @@ public abstract class WorldState extends UntypedActor{
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
 			
 			if(amountOfSpheres%10==0){
-				System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
 //				alSourcePlay(Renderer.source2);
 				generateCanonBall();
 				
@@ -420,7 +419,7 @@ public abstract class WorldState extends UntypedActor{
 	
 	protected Canon createCanon(String id, Shader shader, File sourceFile,File sourceTex, Matrix modelMatrix, float mass){
 		if(modelMatrix==null)modelMatrix=vecmath.identityMatrix();
-		Canon canon = nodeFactory.canon(id, shader, sourceFile, sourceTex, modelMatrix, mass);
+		Canon canon = nodeFactory.canon(id, shader, sourceFile, null, modelMatrix, mass);
 		nodes.put(id, canon);
 		
 		NodeCreation n = new NodeCreation(id, shader, sourceFile, sourceTex, modelMatrix, mass, ObjectTypes.CANON);
@@ -594,13 +593,13 @@ public abstract class WorldState extends UntypedActor{
 	}
 	
 	protected void generateCanonBall(){
-		float scaleFactor=0.5f;
+		float scaleFactor=0.25f;
 		Canon canon = (Canon) nodes.get("Canon");
 		Matrix modelMatrix =vecmath.translationMatrix(canon.getSpawn()).mult(vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor)); 
-		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, modelMatrix, 1f, canon.getDirection().mult(0.03f), PhysicType.Physic_complete);
+		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, modelMatrix, 1f, canon.getDirection().mult(0.07f+(0.001f*floor.getD())), PhysicType.Physic_complete);
 //		cs.setRadius(cs.getRadius()* scaleFactor);
 		append(cs, startNode);
-		System.out.println("sphere speed: " + canon.getDirection().mult(0.03f));
+//		System.out.println("sphere speed: " + canon.getDirection().mult(0.03f));
 //		System.out.println("Sphere Id: " + cs.getId() + "Radius SPhere: " + cs.getRadius());
 		canonballnumber++;
 		

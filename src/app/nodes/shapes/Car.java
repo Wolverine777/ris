@@ -113,7 +113,6 @@ public class Car extends ObjLoader {
 		updateFrequenz--;
 //		System.out.println("pos way:"+getNextWaypoint().getPOS()+" poss car:"+getWorldTransform().getPosition());
 		if(timesToMove==0){
-			System.out.println("reached");
 			waypointReached();
 		}
 		if(directionToNextTarget.equals(new VectorImp(0, 0, 0)))return null;
@@ -140,7 +139,6 @@ public class Car extends ObjLoader {
 				this.timesToMove-=1;
 				return 1;
 			}else{
-				System.out.println("is null");
 				double tmp=timesToMove;
 				this.timesToMove-=timesToMove;
 				return tmp;
