@@ -325,24 +325,21 @@ public class Simulator extends UntypedActor {
 				NodeCreation nc = (NodeCreation) message;
 				if (nc.type == ObjectTypes.GROUP) {
 					if(nc.getModelmatrix()!=null)nodes.put(nc.getId(), nodeFactory.groupNode(nc.id, nc.getModelmatrix()));
-					else nodes.put(nc.getId(), nodeFactory.groupNode(nc.id));
+					else nodes.put(nc.getId(), nodeFactory.groupNode(nc.id, nc.getModelmatrix()));
 				} else if (nc.type == ObjectTypes.CUBE) {
 					nodes.put(nc.getId(), nodeFactory.cube(nc.id, nc.shader, nc.w, nc.h, nc.d, nc.mass));
 				} else if (nc.type == ObjectTypes.SPHERE) {
-					nodes.put(nc.getId(), nodeFactory.sphere(nc.id, nc.shader, nc.mass));
-				} else if (nc.type == ObjectTypes.CAMERA) {
-					nodes.put(((CameraCreation) message).id, nodeFactory.camera(((CameraCreation) message).id));
+					nodes.put(nc.getId(), nodeFactory.sphere(nc.id, nc.shader, nc.mass, nc.modelmatrix));
 				} else if (nc.type == ObjectTypes.OBJECT) {
-					nodes.put(nc.getId(), nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
+					nodes.put(nc.getId(), nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, null, nc.getModelmatrix(), nc.mass));
 				} else if (nc.type == ObjectTypes.CANON) {
-					nodes.put(nc.getId(), nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
+					nodes.put(nc.getId(), nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.getModelmatrix(), nc.mass));
 				} else if (nc.type == ObjectTypes.CAR) {
-					Car car = nodeFactory.car(nc.id, nc.shader, nc.sourceFile, nc.speed, nc.mass);
+					Car car = nodeFactory.car(nc.id, nc.shader, nc.sourceFile, null, nc.speed, nc.getModelmatrix(), nc.mass);
 					nodes.put(nc.id, car);
-					System.out.println("got car "+nc.getId());
 				} else if (nc.type == ObjectTypes.COIN) {
 					//TODO: because of pickup animation
-					nodes.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.mass));
+					nodes.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.getModelmatrix(), nc.mass));
 				} else if(nc.type == ObjectTypes.TEXT){
 					nodes.put(nc.getId(),nodeFactory.text(nc.id, nc.getModelmatrix(), nc.getText(), nc.getFont()));
 				} else {

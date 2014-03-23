@@ -52,9 +52,8 @@
 	<classpathentry kind="lib" path="lib/guava-15.0/guava-15.0.jar"/>
 	<classpathentry kind="lib" path="lib/jts-1.8.0/jts-1.8.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl-2.9.0/jar/slick.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Fabian/workspace/ris-duo/lib/LeapSDK/lib/LeapJava.jar">
+	<classpathentry kind="lib" path="lib/LeapSDK/lib/LeapJava.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/Fabian/Desktop/Leap/LeapDeveloperKit/LeapSDK/docs/Languages/Java/API/index.html"/>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="ris-duo/lib/LeapSDK/lib/x86"/>
 		</attributes>
 	</classpathentry>

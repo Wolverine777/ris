@@ -14,10 +14,6 @@ import java.util.Set;
 
 import org.lwjgl.input.Keyboard;
 
-
-
-
-
 import vecmath.Matrix;
 import vecmath.Vector;
 
