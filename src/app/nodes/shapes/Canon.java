@@ -17,10 +17,10 @@ public class Canon extends ObjLoader {
 		super(id, shader, sourcePath, null, mass);
 	}
 	
-	public Canon(String id, Shader shader, File sourceFile, File sourceTex,
-			float mass) {
-		super(id, shader, sourceFile, sourceTex, mass);
-		
+	public Canon(String id, Shader shader, File sourceFile, File sourceTex, Matrix modelMatrix, float mass) {
+		super(id, shader, sourceFile, sourceTex, modelMatrix, mass);
+		direction = modelMatrix.getRotation().mult(MatrixImp.translate(direction)).getPosition();
+		spawn = modelMatrix.mult(MatrixImp.translate(spawn)).getPosition();
 	}
 	
 	@Override

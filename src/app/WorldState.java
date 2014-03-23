@@ -16,6 +16,8 @@ import org.lwjgl.input.Keyboard;
 
 
 
+
+
 import vecmath.Matrix;
 import vecmath.Vector;
 
@@ -35,7 +37,6 @@ import app.Types.SimulateType;
 import app.datatype.FontInfo;
 import app.edges.Edge;
 import app.eventsystem.CameraCreation;
-import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
@@ -48,10 +49,11 @@ import app.messages.RegisterKeys;
 import app.messages.PhysicInitialization;
 import app.messages.RendererInitialization;
 import app.messages.RendererInitialized;
+import app.nodes.Camera;
 import app.nodes.GroupNode;
 import app.nodes.Node;
+import app.nodes.Sun;
 import app.nodes.Text;
-import app.nodes.camera.Camera;
 import app.nodes.shapes.*;
 import app.shader.Shader;
 import app.toolkit.StopWatch;
@@ -80,6 +82,7 @@ public abstract class WorldState extends UntypedActor{
 	protected Node startNode;
 	protected Camera camera;
 	protected Shader shader;
+	protected Shader texShader;
 	protected Plane floor=new Plane("Floor", shader, 2, 2, -2.0f, 1.0f);
 //	protected Canon canon;
 	private Set<Integer> pressedKeys = new HashSet<Integer>();
@@ -94,15 +97,15 @@ public abstract class WorldState extends UntypedActor{
 
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
 			
-			if(amountOfSpheres%100==0){
+			if(amountOfSpheres%20==0){
 				System.out.println("HUHHHUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
 				alSourcePlay(Renderer.source2);
 				generateCanonBall();
 				
 			}
-			amountOfSpheres++;
 			
 		}
+		amountOfSpheres++;
 		physic.tell(Message.LOOP, self());
 		ai.tell(Message.LOOP, self());
 		input.tell(Message.LOOP, self());
@@ -195,6 +198,7 @@ public abstract class WorldState extends UntypedActor{
 			
 		} else if (message instanceof RendererInitialized) {
 			shader = ((RendererInitialized) message).shader;
+			texShader = ((RendererInitialized) message).texShader;
 			
 			//reinpacken nach alle INIZILIZED gesendet haben
 //			System.out.println("Initializing App");
@@ -292,8 +296,7 @@ public abstract class WorldState extends UntypedActor{
 		camera = cam;
 		nodes.put(cam.getId(), cam);
 		
-		CameraCreation cc = new CameraCreation();
-		cc.id = cam.getId();
+		CameraCreation cc = new CameraCreation(cam.getId(), cam.getShaderList());
 		announce(cc);
 	}
 	
@@ -324,10 +327,22 @@ public abstract class WorldState extends UntypedActor{
 	}
 	
 	protected GroupNode createGroup(String id) {
-		GroupNode group = nodeFactory.groupNode(id);
+		GroupNode group = nodeFactory.groupNode(id, vecmath.identityMatrix());
 		nodes.put(id, group);
 		
-		NodeCreation n = new NodeCreation(id, ObjectTypes.GROUP);
+		NodeCreation n = new NodeCreation(id, vecmath.identityMatrix(), ObjectTypes.GROUP);
+        n.type = ObjectTypes.GROUP;
+        n.shader = null;
+        announce(n);
+        
+        return group;
+	}
+	
+	protected GroupNode createGroup(String id, Matrix modelMatrix) {
+		GroupNode group = nodeFactory.groupNode(id, modelMatrix);
+		nodes.put(id, group);
+		
+		NodeCreation n = new NodeCreation(id, modelMatrix, ObjectTypes.GROUP);
         n.type = ObjectTypes.GROUP;
         n.shader = null;
         announce(n);
@@ -379,31 +394,33 @@ public abstract class WorldState extends UntypedActor{
 	 * @param physicType can be null, for no Physic
 	 * @return
 	 */
-	protected Sphere createSphere(String id, Shader shader, float mass, Vector impulse, PhysicType physicType) {
-		Sphere sphere = nodeFactory.sphere(id, shader, mass);
+	protected Sphere createSphere(String id, Shader shader, Matrix modelMatrix, float mass, Vector impulse, PhysicType physicType) {
+		Sphere sphere = nodeFactory.sphere(id, shader, mass, modelMatrix);
 		nodes.put(id, sphere);
-		NodeCreation n = new NodeCreation(id, shader, mass);
+		NodeCreation n = new NodeCreation(id, shader, mass, modelMatrix);
         n.addPhysic(impulse, physicType);
         announce(n);
         
         return sphere;
 	}
 	
-	protected Canon createCanon(String id, Shader shader, File sourceFile, float mass){
-		Canon canon = nodeFactory.canon(id, shader, sourceFile, null, mass);
+	protected Canon createCanon(String id, Shader shader, File sourceFile, Matrix modelMatrix, float mass){
+		if(modelMatrix==null)modelMatrix=vecmath.identityMatrix();
+		Canon canon = nodeFactory.canon(id, shader, sourceFile, null, modelMatrix, mass);
 		nodes.put(id, canon);
 		
-		NodeCreation n = new NodeCreation(id, shader, sourceFile, null, mass, ObjectTypes.CANON);
+		NodeCreation n = new NodeCreation(id, shader, sourceFile, null, modelMatrix, mass, ObjectTypes.CANON);
 
 	    announce(n);
 	    return canon;
 	}
 	
-	protected Canon createCanon(String id, Shader shader, File sourceFile,File sourceTex, float mass){
-		Canon canon = nodeFactory.canon(id, shader, sourceFile, sourceTex, mass);
+	protected Canon createCanon(String id, Shader shader, File sourceFile,File sourceTex, Matrix modelMatrix, float mass){
+		if(modelMatrix==null)modelMatrix=vecmath.identityMatrix();
+		Canon canon = nodeFactory.canon(id, shader, sourceFile, sourceTex, modelMatrix, mass);
 		nodes.put(id, canon);
 		
-		NodeCreation n = new NodeCreation(id, shader, sourceFile, sourceTex, mass, ObjectTypes.CANON);
+		NodeCreation n = new NodeCreation(id, shader, sourceFile, sourceTex, modelMatrix, mass, ObjectTypes.CANON);
 
 	    announce(n);
 	    return canon;
@@ -437,11 +454,12 @@ public abstract class WorldState extends UntypedActor{
 	 * @param physicType can be null, for no Physic
 	 * @return
 	 */
-	protected ObjLoader createObject(String id, Shader shader, File sourceFile, File sourceTex, float mass, Vector impulse, PhysicType physicType) {
-		ObjLoader obj = nodeFactory.obj(id, shader, sourceFile, sourceTex, mass);
+	protected ObjLoader createObject(String id, Shader shader, File sourceFile, File sourceTex, Matrix modelMatrix, float mass, Vector impulse, PhysicType physicType) {
+		if(modelMatrix==null)modelMatrix=vecmath.identityMatrix();
+		ObjLoader obj = nodeFactory.obj(id, shader, sourceFile, null, modelMatrix, mass);
 		nodes.put(id, obj);
 		
-		NodeCreation n = new NodeCreation(id, shader, sourceFile, sourceTex, mass, ObjectTypes.OBJECT);
+		NodeCreation n = new NodeCreation(id, shader, sourceFile, sourceTex, modelMatrix, mass, ObjectTypes.OBJECT);
         n.addPhysic(impulse, physicType);
         announce(n);
         
@@ -458,11 +476,11 @@ public abstract class WorldState extends UntypedActor{
 	 * @param physicType can be null, for no Physic
 	 * @return
 	 */
-	protected Car createCar(String id, Shader shader, File sourceFile, double speed, float mass, Vector impulse, PhysicType physicType){
-		Car car = nodeFactory.car(id, shader, sourceFile, speed, mass);
+	protected Car createCar(String id, Shader shader, File sourceFile, File sourceTex, double speed, Matrix modelMatrix, float mass, Vector impulse, PhysicType physicType){
+		if(modelMatrix==null)modelMatrix=vecmath.identityMatrix();
+		Car car = nodeFactory.car(id, shader, sourceFile,null, speed, modelMatrix, mass);
 		nodes.put(id, car);
-		SimulateCreation n = new SimulateCreation(id, shader, sourceFile, mass, null, null);
-        n.speed=speed;
+		SimulateCreation n = new SimulateCreation(id, shader, sourceFile, sourceTex, speed, modelMatrix, mass, null, null);
         n.mass = mass;
         n.addPhysic(impulse, physicType);
         
@@ -479,26 +497,16 @@ public abstract class WorldState extends UntypedActor{
 	 * @param physicType can be null, for no Physic
 	 * @return
 	 */
-	protected Coin createCoin(String id, Shader shader, File sourceFile, float mass, Vector impulse, PhysicType physicType){
-		Coin coin = nodeFactory.coin(id, shader, sourceFile, mass);
+	protected Coin createCoin(String id, Shader shader, File sourceFile, Matrix modelMatrix, float mass, Vector impulse, PhysicType physicType){
+		if(modelMatrix==null)modelMatrix=vecmath.identityMatrix();
+		Coin coin = nodeFactory.coin(id, shader, sourceFile, modelMatrix, mass);
 		nodes.put(id, coin);
-		SimulateCreation sc=new SimulateCreation(id, shader, sourceFile, null, mass, ObjectTypes.COIN);
+		SimulateCreation sc=new SimulateCreation(id, shader, sourceFile, null, modelMatrix, mass, ObjectTypes.COIN);
 //		NodeCreation n=new NodeCreation(id, shader, sourceFile, mass, ObjectTypes.COIN);
 		sc.addPhysic(impulse, physicType);
         
         announce(sc);
         return coin;
-	}
-
-	protected void addPhysicFloor(Plane plane){
-		
-		Vector pos = plane.getWorldTransform().getPosition();
-		
-		FloorCreation f = new FloorCreation();
-		f.position = pos;
-		
-		physic.tell(f, self());
-		
 	}
 	
 	protected void simulateOnKey(Node object, Set<Integer> keys, SimulateType simulation, KeyMode mode, Vector vec){
@@ -546,11 +554,9 @@ public abstract class WorldState extends UntypedActor{
 	protected void generateCanonBall(){
 		float scaleFactor=0.5f;
 		Canon canon = (Canon) nodes.get("Canon");
-		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, 1f, canon.getDirection().mult(0.03f), PhysicType.Physic_complete);
-		transform(cs, vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor));
+		Matrix modelMatrix =vecmath.translationMatrix(canon.getSpawn()).mult(vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor)); 
+		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, modelMatrix, 1f, canon.getDirection().mult(0.03f), PhysicType.Physic_complete);
 //		cs.setRadius(cs.getRadius()* scaleFactor);
-		transform(cs, vecmath.translationMatrix(canon.getSpawn()));
-//		addPhysic(cs, canon.getDirection().mult(0.03f), PhysicType.Physic_complete);
 		append(cs, startNode);
 		System.out.println("sphere speed: " + canon.getDirection().mult(0.03f));
 //		System.out.println("Sphere Id: " + cs.getId() + "Radius SPhere: " + cs.getRadius());
@@ -564,6 +570,13 @@ public abstract class WorldState extends UntypedActor{
 		
 		announce(n);
 		return t;
+	}
+	
+	protected Sun createSun(String id, Matrix matrix, Shader shader){
+		Sun s=nodeFactory.sun(id, matrix, shader);
+		NodeCreation n=new NodeCreation(id, shader, matrix);
+		announce(n);
+		return s; 
 	}
 	
 }

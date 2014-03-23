@@ -4,6 +4,7 @@ import java.io.File;
 
 import vecmath.Matrix;
 import vecmath.Vector;
+import vecmath.vecmathimp.MatrixImp;
 import app.Types.ObjectTypes;
 import app.Types.PhysicType;
 import app.datatype.FontInfo;
@@ -15,7 +16,7 @@ public class NodeCreation {
 	public Shader shader;
 	public ObjectTypes type;
 	
-	public Matrix modelmatrix;
+	public Matrix modelmatrix=MatrixImp.identity;
 	
 	public float w, h, d, r;
 	
@@ -40,11 +41,32 @@ public class NodeCreation {
 		this.id = id;
 	}
 	
-	public NodeCreation(String id, ObjectTypes type) {
+	/**
+	 * For Group
+	 * @param id
+	 * @param modelMatrix
+	 * @param type
+	 */
+	public NodeCreation(String id, Matrix modelMatrix, ObjectTypes type) {
 		this.id = id;
+		this.modelmatrix=modelMatrix;
 		type=type;
 	}
 	
+	/**
+	 * For Sun
+	 * @param id
+	 * @param shader
+	 * @param modelmatrix
+	 */
+	public NodeCreation(String id, Shader shader, Matrix modelmatrix) {
+		super();
+		this.id = id;
+		this.shader = shader;
+		this.modelmatrix = modelmatrix;
+		this.type=ObjectTypes.SUN;
+	}
+
 	/**
 	 * For Cube, Plane
 	 * @param id
@@ -89,15 +111,16 @@ public class NodeCreation {
 	 * @param shader
 	 * @param mass
 	 */
-	public NodeCreation(String id, Shader shader, float mass) {
+	public NodeCreation(String id, Shader shader, float mass, Matrix modelMatrix) {
 		this.id = id;
 		this.shader=shader;
 		this.mass=mass;
+		this.modelmatrix=modelMatrix;
 		this.type=ObjectTypes.SPHERE;
 	}
 	
 	/**
-	 * For Canon, ObjLoader
+	 * For Canon, ObjLoader, Coin
 	 * @param id
 	 * @param shader
 	 * @param sourceFile
@@ -105,29 +128,33 @@ public class NodeCreation {
 	 * @param mass
 	 * @param type
 	 */
-	public NodeCreation(String id, Shader shader, File sourceFile, File sourceTex, float mass, ObjectTypes type) {
+	public NodeCreation(String id, Shader shader, File sourceFile, File sourceTex, Matrix modelMatrix, float mass, ObjectTypes type) {
 		this.id = id;
 		this.shader=shader;
 		this.mass=mass;
+		this.modelmatrix=modelMatrix;
 		this.sourceFile=sourceFile;
 		this.sourceTex=sourceTex;
 		this.type=type;
 	}
 	
 	/**
-	 * For Car, Coin
+	 * For Car
 	 * @param id
 	 * @param shader
 	 * @param sourceFile
 	 * @param mass
 	 * @param type
 	 */
-	public NodeCreation(String id, Shader shader, File sourceFile, float mass, ObjectTypes type){
+	public NodeCreation(String id, Shader shader, File sourceFile, File sourceTex, double speed, Matrix modelMatrix, float mass){
 		this.id = id;
 		this.shader=shader;
 		this.mass=mass;
+		this.speed=speed;
+		this.modelmatrix=modelMatrix;
 		this.sourceFile=sourceFile;
-		this.type=type;
+		this.sourceTex=sourceTex;
+		this.type=ObjectTypes.CAR;
 	}
 	
 	/**

@@ -2,6 +2,7 @@ package app.nodes.shapes;
 
 import java.io.File;
 
+import vecmath.Matrix;
 import app.shader.Shader;
 
 /**
@@ -11,14 +12,14 @@ import app.shader.Shader;
 
 public class Coin extends ObjLoader {
 
-	public Coin(String id, Shader shader, float mass) {
-		super(id, shader, mass);
+	public Coin(String id, Shader shader, Matrix modelMatrix, float mass) {
+		super(id, shader, modelMatrix, mass);
 		// TODO Auto-generated constructor stub
 		
 	}
 
-	public Coin(String id, Shader shader, File sourcePath, float mass) {
-		super(id, shader, sourcePath, mass);
+	public Coin(String id, Shader shader, File sourcePath, Matrix modelMatrix, float mass) {
+		super(id, shader, sourcePath, modelMatrix, mass);
 		// TODO Auto-generated constructor stub
 	}
 

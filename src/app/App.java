@@ -6,9 +6,11 @@ import static vecmath.vecmathimp.FactoryDefault.vecmath;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 import org.lwjgl.input.Keyboard;
 
+import vecmath.Matrix;
 import vecmath.vecmathimp.FactoryDefault;
 import vecmath.vecmathimp.VectorImp;
 import akka.actor.ActorRef;
@@ -21,8 +23,10 @@ import app.Types.SimulateType;
 import app.datatype.FontInfo;
 import app.messages.Message;
 import app.nodes.GroupNode;
+import app.nodes.Sun;
 import app.nodes.Text;
 import app.nodes.shapes.*;
+import app.shader.Shader;
 
 /**
  * Put your stuff here
@@ -46,30 +50,70 @@ public class App extends WorldState {
 		/**
 		 * Note: After Creation add keys and physic before transform.
 		 */
-		setCamera(nodeFactory.camera("Cam"));
+		setCamera(nodeFactory.camera("Cam", new LinkedList<Shader>(Arrays.asList(new Shader[]{shader,texShader}))));
 		transform(camera, FactoryDefault.vecmath.translationMatrix(0, 0, 10));
 
+		GroupNode start = createGroup("start");
+		setStart(start);
+		Sun sun=createSun("Sun", camera.getWorldTransform(), texShader);
 		GroupNode head = createGroup("head");
-		setStart(head);
+		append(head, start);
+		append(sun, start);
+		
 		
 		announceFloor(floor);
-		addPhysicFloor(floor);
 		append(floor, head);
+		
 		test(head);
+//		finalLevel(head);
+//		obj(head);
 
 	}
 	
+	private void obj(GroupNode head){
+		Matrix m=vecmath.translationMatrix(0, -2, 0);
+		m=m.mult(vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
+//		ObjLoader obj=createObject("hamvee", texShader, new File("obj/HQ_Movie cycle.obj"), new File("obj/2.jpg"), 1f, null, null);
+//		ObjLoader obj=createObject("hamvee", texShader, new File("obj/apc.obj"), new File("obj/2.jpg"), 1f, null, null);
+		ObjLoader obj=createObject("hamvee", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), m, 1f, null, null);
+//		ObjLoader obj=createObject("hamvee", shader, new File("obj/ATV.obj"), null, 1f, null, null);
+		simulateOnKey(obj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_RIGHT)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 1f, 0f));
+		simulateOnKey(obj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_LEFT)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, -1f, 0f));
+		simulateOnKey(obj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_UP)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0f, 0f));
+		simulateOnKey(obj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_DOWN)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-1f, 0f, 0f));
+//		transform(obj, vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
+//		transform(obj, vecmath.translationMatrix(0, -2, 0));
+		append(obj, head);
+	}
+	
 	private void finalLevel(GroupNode head){
+		Matrix m=vecmath.translationMatrix(-1, -2, 0);
+		m=m.mult(vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
+		Car car=createCar("Car1", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 1.4, m, 1f, null, PhysicType.Collision_only);
+//		transform(car, vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
+//		transform(car,  vecmath.translationMatrix(-1.0f, -2.0f, 0.0f));
+		append(car, head);
 		
+		Matrix scaleCoin=vecmath.scaleMatrix(0.15f, 0.15f, 0.15f);
+		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), vecmath.translationMatrix(1.0f, floor.getGround(), 1.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
+//		transform(coin,  vecmath.translationMatrix(1.0f, floor.getGround(), 1.0f));
+		append(coin, head);
+		Coin coin2=createCoin("Coin2", shader, new File("obj/cube.obj"), vecmath.translationMatrix(0.5f, floor.getGround(), 0.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
+//		transform(coin2,  vecmath.translationMatrix(0.5f, floor.getGround(), 0.0f));
+		append(coin2, head);
+		
+		Coin coin3=createCoin("Coin3", shader, new File("obj/cube.obj"), vecmath.translationMatrix(0.0f, floor.getGround(), 0.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
+//		transform(coin3,  vecmath.translationMatrix(0.0f, 1, 0));
+		append(coin3, head);
 	}
 	private void test(GroupNode head){
-		Canon canon = createCanon("Canon", shader, new File("obj/Cannon2.obj"), null, 1.0f);
+		Canon canon = createCanon("Canon", shader, new File("obj/Cannon2.obj"), null, vecmath.translationMatrix(2.5f, 0.0f, 1.0f), 1.0f);
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0f, 0f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_H)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-1f, 0f, 0f));		
 //		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_X)), SimulateType.ROTATE, KeyMode.TOGGLE, new VectorImp(0f, 1f, 0f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_U)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, -1f));
-		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 0.0f));
+//		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 0.0f));
 		append(canon, head);
 		
 		Text t=createText("Coins", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
@@ -85,18 +129,14 @@ public class App extends WorldState {
 		
 //		Sphere c4 = createSphere("Shpere!", shader, 1f);
 //		transform(c4, vecmath.translationMatrix(-5f, 1f, 0));
-//		addPhysic(c4, new VectorImp(0.01f,0.01f,0));
 //		append(c4, head);
 		
-		Sphere c8 = createSphere("Shpere3", shader, 3f,new VectorImp(0.0f,0.1f,0), PhysicType.Physic_complete);
-		transform(c8, vecmath.translationMatrix(-5f, 0.5f, 0));
-//		addPhysic(c8, new VectorImp(0.0f,0.01f,0));
+		Sphere c8 = createSphere("Shpere3", shader, vecmath.translationMatrix(-5.0f, 0.5f, 0.0f), 3f,new VectorImp(0.0f,0.1f,0), PhysicType.Physic_complete);
 		append(c8, head);
 		
 		
 //		Sphere c5 = createSphere("Shpere2", shader, 1f);
 //		transform(c5, vecmath.translationMatrix(5f, 3f, 0));
-//		addPhysic(c5, new VectorImp(0.0f,0.00f,0));
 //		append(c5, head);
 		
 //		ObjLoader sphere=createObject("objSphere", shader, new File("obj/Sphere.obj"), null, 1f);
@@ -105,36 +145,32 @@ public class App extends WorldState {
 //		simulateOnKey(sphere, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_P)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0, 0) ,ObjectTypes.CUBE);
 //		append(sphere, head);
 		
-		Car car=createCar("Car1", shader, new File("obj/cube.obj"), 1.4, 1f, null, PhysicType.Collision_only);
-		transform(car, vecmath.scaleMatrix(0.35f, 0.35f, 0.35f));
-		transform(car,  vecmath.translationMatrix(-1.0f, -1.65f, 0.0f));
-//		addPhysic(car, new VectorImp(0, 0, 0), PhysicType.Collision_only);
+		Matrix m=vecmath.translationMatrix(-1, -2, 0);
+		m=m.mult(vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
+//		m=m.mult(vecmath.scaleMatrix(0.35f, 0.35f, 0.35f));
+//		Car car=createCar("Car1", shader, new File("obj/cube.obj"), null, 1.4, m, 1f, null, PhysicType.Collision_only);
+		Car car=createCar("Car1", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 1.4, m, 1f, null, PhysicType.Collision_only);
+//		transform(car, vecmath.scaleMatrix(0.35f, 0.35f, 0.35f));
+//		transform(car,  vecmath.translationMatrix(-1.0f, -1.65f, 0.0f));
 		append(car, head);
 		
-		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), 1f, null, PhysicType.Collision_only);
-		transform(coin, vecmath.scaleMatrix(0.15f, 0.15f, 0.15f));
-		transform(coin,  vecmath.translationMatrix(1.0f, floor.getGround(), 1.0f));
-//		addPhysic(coin, new VectorImp(0, 0, 0), PhysicType.Collision_only);
+		Matrix scaleCoin=vecmath.scaleMatrix(0.15f, 0.15f, 0.15f);
+		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), vecmath.translationMatrix(1.0f, floor.getGround(), 1.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
+//		transform(coin,  vecmath.translationMatrix(1.0f, floor.getGround(), 1.0f));
 		append(coin, head);
-		Coin coin2=createCoin("Coin2", shader, new File("obj/cube.obj"), 1f, null, PhysicType.Collision_only);
-		transform(coin2, vecmath.scaleMatrix(0.15f, 0.15f, 0.15f));
-		transform(coin2,  vecmath.translationMatrix(0.5f, floor.getGround(), 0.0f));
-//		addPhysic(coin2, new VectorImp(0, 0, 0), PhysicType.Collision_only);
+		Coin coin2=createCoin("Coin2", shader, new File("obj/cube.obj"), vecmath.translationMatrix(0.5f, floor.getGround(), 0.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
+//		transform(coin2,  vecmath.translationMatrix(0.5f, floor.getGround(), 0.0f));
 		append(coin2, head);
 		
-		Coin coin3=createCoin("Coin3", shader, new File("obj/cube.obj"), 1f, null, PhysicType.Collision_only);
-		transform(coin3, vecmath.scaleMatrix(0.15f, 0.15f, 0.15f));
-		transform(coin3,  vecmath.translationMatrix(0.0f, 1, 0));
-//		addPhysic(coin3, new VectorImp(0, 0, 0), PhysicType.Collision_only);
+		Coin coin3=createCoin("Coin3", shader, new File("obj/cube.obj"), vecmath.translationMatrix(0.0f, floor.getGround(), 0.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
+//		transform(coin3,  vecmath.translationMatrix(0.0f, 1, 0));
 		append(coin3, head);
 		
 //		Cube block=createCube("tree", shader, 0.2f,0.8f, 0.2f, 1f, null, null);
 //		transform(block,  vecmath.translationMatrix(-1.0f, -2.0f, -1.0f));
 //		append(block, head);
 
-		ObjLoader objsphere=createObject("objSphere2", shader, new File("obj/Sphere.obj"), null, 1f, null, PhysicType.Collision_only);
-		transform(objsphere, vecmath.translationMatrix(5f, 0f, 0f));
-//		addPhysic(objsphere, new VectorImp(0,0,0), PhysicType.Collision_only);
+		ObjLoader objsphere=createObject("objSphere2", shader, new File("obj/Sphere.obj"), null, vecmath.translationMatrix(5f, 0f, 0f), 1f, null, PhysicType.Collision_only);
 		append(objsphere, head);
 		
 		doCanonBalls();

@@ -10,7 +10,9 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import vecmath.Color;
+import vecmath.Matrix;
 import vecmath.Vector;
+import vecmath.vecmathimp.MatrixImp;
 import app.shader.Shader;
 
 
@@ -52,8 +54,8 @@ public class Sphere extends Shape {
 	 *            Name
 	 *            Shader to use
 	 */
-	public Sphere(String id, Shader shader, float mass) {
-		super(id, shader, mass);
+	public Sphere(String id, Shader shader, float mass, Matrix modelMatrix) {
+		super(id, shader, mass, modelMatrix);
 		mode = GL11.GL_TRIANGLES;
 
 //		// Spitze 0
@@ -133,6 +135,8 @@ public class Sphere extends Shape {
 		colorData.rewind();
 		normalData.rewind();
 		findCenter();
+		if(MatrixImp.isTranslationMatrix(modelMatrix))setCenter(modelMatrix.mult(vecmath.translationMatrix(getCenter())).getPosition());
+		if(modelMatrix.get(0, 0) == modelMatrix.get(1, 1) && modelMatrix.get(1, 1) == modelMatrix.get(2, 2))radius = modelMatrix.get(0, 0)*radius;
 	}
 
 	// Make construction of normals easy on the eyes.
@@ -285,6 +289,6 @@ public class Sphere extends Shape {
 
 	@Override
 	public Shape clone() {
-		return new Sphere(new String(getId()), shader, DIVISIONS);
+		return new Sphere(new String(getId()), shader, DIVISIONS, getWorldTransform());
 	}
 }

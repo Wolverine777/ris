@@ -287,10 +287,7 @@ public class Level {
 		float maxX=max.x(), maxZ=max.z(), minX=min.x(), minZ=min.z();
 //		System.out.println("inlevel center"+center);
 		if(center.x()+rad>maxX||center.x()-rad<minX||center.z()+rad>maxZ||center.z()-rad<minZ){
-			if(center.x()-rad>maxX){
-				System.out.println("hier drin");
-				return -1;
-			}
+			if(center.x()-rad>maxX)return -1;
 			if(center.x()+rad<minX)return -1;
 			if(center.z()-rad>maxZ)return -1;
 			if(center.z()+rad<minZ)return -1;

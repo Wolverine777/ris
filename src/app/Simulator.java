@@ -208,31 +208,27 @@ public class Simulator extends UntypedActor {
 			SimulateCreation sc = (SimulateCreation) message;
 			Node newNode = null;
 			if (!nodes.containsKey(sc.id)) {
-				System.out.println("not in "+sc.id);
 				// TODO: ein Type reicht nur ein Shape, von den objekten wird
 				// nur id und woldtrafo benoetigt.
 				// TODO: Generics?
 				NodeCreation nc = (NodeCreation) message;
 				if (nc.type == ObjectTypes.GROUP) {
 					if(nc.getModelmatrix()!=null)nodes.put(nc.getId(), nodeFactory.groupNode(nc.id, nc.getModelmatrix()));
-					else nodes.put(nc.getId(), nodeFactory.groupNode(nc.id));
+					else nodes.put(nc.getId(), nodeFactory.groupNode(nc.id, nc.getModelmatrix()));
 				} else if (nc.type == ObjectTypes.CUBE) {
 					nodes.put(nc.getId(), nodeFactory.cube(nc.id, nc.shader, nc.w, nc.h, nc.d, nc.mass));
 				} else if (nc.type == ObjectTypes.SPHERE) {
-					nodes.put(nc.getId(), nodeFactory.sphere(nc.id, nc.shader, nc.mass));
-				} else if (nc.type == ObjectTypes.CAMERA) {
-					nodes.put(((CameraCreation) message).id, nodeFactory.camera(((CameraCreation) message).id));
+					nodes.put(nc.getId(), nodeFactory.sphere(nc.id, nc.shader, nc.mass, nc.modelmatrix));
 				} else if (nc.type == ObjectTypes.OBJECT) {
-					nodes.put(nc.getId(), nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
+					nodes.put(nc.getId(), nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, null, nc.getModelmatrix(), nc.mass));
 				} else if (nc.type == ObjectTypes.CANON) {
-					nodes.put(nc.getId(), nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
+					nodes.put(nc.getId(), nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.getModelmatrix(), nc.mass));
 				} else if (nc.type == ObjectTypes.CAR) {
-					Car car = nodeFactory.car(nc.id, nc.shader, nc.sourceFile, nc.speed, nc.mass);
+					Car car = nodeFactory.car(nc.id, nc.shader, nc.sourceFile, null, nc.speed, nc.getModelmatrix(), nc.mass);
 					nodes.put(nc.id, car);
-					System.out.println("got car "+nc.getId());
 				} else if (nc.type == ObjectTypes.COIN) {
 					//TODO: because of pickup animation
-					nodes.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.mass));
+					nodes.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.getModelmatrix(), nc.mass));
 				} else if(nc.type == ObjectTypes.TEXT){
 					nodes.put(nc.getId(),nodeFactory.text(nc.id, nc.getModelmatrix(), nc.getText(), nc.getFont()));
 				} else {
@@ -254,7 +250,7 @@ public class Simulator extends UntypedActor {
 					simulations.put(newNode, new SimDef(sc.getSimulation(), sc.getWay()));
 //					System.out.println("simulator setway:"+sc.getWay());
 					((Car)newNode).setWayToTarget(sc.getWay());
-					((Car)newNode).setTarget(nodeFactory.coin(sc.getTargetId(), sc.shader, null, 1));
+					((Car)newNode).setTarget(nodeFactory.coin(sc.getTargetId(), sc.shader, null, sc.getModelmatrix(), 1));
 				}
 			} else if(sc.getSimulation() ==SimulateType.PHYSIC){
 				newNode.setForce(sc.getVector());
@@ -269,6 +265,7 @@ public class Simulator extends UntypedActor {
 				}
 			} else if(sc.getSimulation() ==SimulateType.PICKUP){
 				//TODO: kick from ai
+				System.out.println("got pickup");
 				Node ref=nodes.get(sc.getTargetId());
 				if(ref==null){
 					Node n=nodeFactory.groupNode(sc.getTargetId(), sc.getModelmatrix());
@@ -324,12 +321,19 @@ public class Simulator extends UntypedActor {
 					for (Edge e : removeEdges) {
 						modify.removeEdge(e);
 					}
-					for (Map.Entry<Node, SimDef> entry : simulations.entries()) {
-						if(entry.getValue().getReferenzId()!=null){
-							if(entry.getValue().getReferenzId().equals(id)){
-								simulations.remove(entry.getKey(), entry.getValue());
+					if(!simulations.isEmpty()){
+						Map<Node, SimDef> remove=new HashMap<Node, SimDef>();
+						for (Map.Entry<Node, SimDef> entry : simulations.entries()) {
+							if(entry.getValue().getReferenzId()!=null){
+								if(entry.getValue().getReferenzId().equals(id)){
+									remove.put(entry.getKey(), entry.getValue());
+								}
 							}
 						}
+						for(Map.Entry<Node, SimDef> rem:remove.entrySet()){
+							simulations.remove(rem.getKey(), rem.getValue());
+						}
+						
 					}
 					if(!(modify instanceof Coin))nodes.remove(modify);
 				}

@@ -12,4 +12,5 @@ public enum ObjectTypes {
 	CAR,
 	COIN,
 	TEXT,
+	SUN,
 }

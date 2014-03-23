@@ -34,6 +34,7 @@ import app.nodes.Node;
 import app.nodes.Text;
 import app.nodes.shapes.Car;
 import app.nodes.shapes.Coin;
+import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Shape;
 import app.nodes.shapes.Sphere;
 
@@ -84,7 +85,7 @@ public class Ai extends UntypedActor {
 					System.out.println("Level: "+level.toString());
 					System.out.println("ai setway: "+way);
 					car.setWayToTarget(way);
-					simulator.tell(new SimulateCreation(car.getId(), car.getShader(), car.getSourceFile(), car.getMass(), way, nextCoin.getId()), getSelf());
+					simulator.tell(new SimulateCreation(car.getId(), car.getShader(), car.getSourceFile(), car.getSourceTex(), car.getSpeed(), car.getWorldTransform(), car.getMass(), way, nextCoin.getId()), getSelf());
 					lookAt.clear();
 					path.clear();
 //					return way;
@@ -93,7 +94,7 @@ public class Ai extends UntypedActor {
 		}else if(nextCoin==null){
 			car.setTarget(nextCoin);
 			car.setWayToTarget(null);
-			simulator.tell(new SimulateCreation(car.getId(), car.getShader(), car.getSourceFile(), car.getMass(), null, null), getSelf());
+			simulator.tell(new SimulateCreation(car.getId(), car.getShader(), car.getSourceFile(), car.getSourceTex(), car.getSpeed(), car.getWorldTransform(), car.getMass(), null, null), getSelf());
 		}
 //		return null;
 	}
@@ -192,7 +193,7 @@ public class Ai extends UntypedActor {
 				}
 //				System.out.println("part end "+object.getId()+" min:"+min.toString()+" max:"+max.toString());
 			}
-			System.out.println("min:"+min.toString()+" max:"+max.toString());
+			System.out.println("min:"+min.toString()+" max:"+max.toString()+" ID:"+object.getId());
 			if(setBlock)level.setBlocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
 			else level.setUnblocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
 			calcNewRouts();
@@ -289,7 +290,7 @@ public class Ai extends UntypedActor {
 					System.out.println("route to new coin");
 					//TODO:trigger pickup animation
 					if(car.getTarget()!=null)coins.remove(car.getTarget().getId());
-					for(Node n:coins.values())System.out.println("coin:"+n.getId());
+//					for(Node n:coins.values())System.out.println("coin:"+n.getId());
 					calcRoute(car);
 				}
 //				car.getVecToNextTarget();
@@ -311,7 +312,7 @@ public class Ai extends UntypedActor {
 			NodeCreation nc=(NodeCreation) message;
 			//TODO: delete Groupnode?
 			if (nc.type == ObjectTypes.GROUP) {
-				nonAiNodes.put(nc.id, nodeFactory.groupNode(nc.id));
+				nonAiNodes.put(nc.id, nodeFactory.groupNode(nc.id, nc.getModelmatrix()));
 			} else if (nc.type == ObjectTypes.CUBE) {
 				nonAiNodes.put(nc.id, nodeFactory.cube(nc.id, nc.shader, nc.w, nc.h, nc.d, nc.mass));
 				setBlocked((Shape)nonAiNodes.get(nc.getId()), true);
@@ -319,26 +320,25 @@ public class Ai extends UntypedActor {
 				nonAiNodes.put(nc.id, nodeFactory.pipe(nc.id, nc.shader, nc.r, nc.lats, nc.longs,nc.mass));
 				setBlocked((Shape)nonAiNodes.get(nc.getId()), true);
 			} else if (nc.type == ObjectTypes.SPHERE) {
-				nonAiNodes.put(nc.id, nodeFactory.sphere(nc.id, nc.shader, nc.mass));
+				nonAiNodes.put(nc.id, nodeFactory.sphere(nc.id, nc.shader, nc.mass, nc.getModelmatrix()));
 				setBlocked((Shape)nonAiNodes.get(nc.getId()), true);
 			} else if(nc.type == ObjectTypes.TEXT){
-				System.out.println("kommt hier was? ");
 				nonAiNodes.put(nc.getId(),nodeFactory.text(nc.id, nc.getModelmatrix(), nc.getText(), nc.getFont()));
-				
 			}	
 //			else if (nc.type == ObjectTypes.PLANE) {
 //				nonAiNodes.put(nc.id, nodeFactory.plane(nc.id, nc.shader, nc.w, nc.d, nc.hight, nc.mass));
 //			}
 			else if(nc.type == ObjectTypes.OBJECT){
-				nonAiNodes.put(nc.id, nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
+				ObjLoader obj=nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, null, nc.getModelmatrix(), nc.mass);
+				nonAiNodes.put(nc.id, obj);
 				setBlocked((Shape)nonAiNodes.get(nc.getId()), true);
 			}else if(nc.type == ObjectTypes.CAR){
-				Car car=nodeFactory.car(nc.id, nc.shader, nc.sourceFile, nc.speed, nc.mass);
+				Car car=nodeFactory.car(nc.id, nc.shader, nc.sourceFile, null, nc.speed, nc.getModelmatrix(), nc.mass);
 				cars.put(nc.id, car);
 			}else if(nc.type == ObjectTypes.COIN){
-				coins.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.mass));
+				coins.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.getModelmatrix(), nc.mass));
 			}else if(((NodeCreation) message).type == ObjectTypes.CANON){
-				Node newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
+				Node newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.getModelmatrix(), nc.mass);
 				nonAiNodes.put(newNode.getId(), newNode);
 				setBlocked((Shape)nonAiNodes.get(nc.getId()), true);
 			}

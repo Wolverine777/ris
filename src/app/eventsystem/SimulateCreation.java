@@ -66,8 +66,8 @@ public class SimulateCreation extends NodeCreation {
 	 * @param way
 	 * @param targetId
 	 */
-	public SimulateCreation(String id, Shader shader, File sourceFile, float mass, Route way, String targetId){
-		super(id, shader, sourceFile, mass, ObjectTypes.CAR);
+	public SimulateCreation(String id, Shader shader, File sourceFile, File sourceTex, double speed, Matrix modelMatrix, float mass, Route way, String targetId){
+		super(id, shader, sourceFile, sourceTex, speed, modelMatrix, mass);
 		this.simulation=SimulateType.DRIVE;
 		if(way!=null)this.way=way.clone();
 		this.targetId=targetId;
@@ -84,6 +84,7 @@ public class SimulateCreation extends NodeCreation {
 		modelmatrix=targetMatrix;
 		simulation=SimulateType.PICKUP;
 		this.times=times;
+		//TODO possible error when simulator dont have the coin, quicksolve change to group
 		type=ObjectTypes.COIN;
 		this.vector=maxHight;
 	}
@@ -97,8 +98,8 @@ public class SimulateCreation extends NodeCreation {
 	 * @param mass
 	 * @param type
 	 */
-	public SimulateCreation(String id, Shader shader, File sourceFile, File sourceTex, float mass, ObjectTypes type) {
-		super(id, shader, sourceFile, sourceTex, mass, type);
+	public SimulateCreation(String id, Shader shader, File sourceFile, File sourceTex, Matrix modelMatrix, float mass, ObjectTypes type) {
+		super(id, shader, sourceFile, sourceTex, modelMatrix, mass, type);
 	}
 
 	public String getObjectId() {

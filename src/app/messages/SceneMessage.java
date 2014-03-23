@@ -1,7 +1,7 @@
 package app.messages;
 
+import app.nodes.Camera;
 import app.nodes.Node;
-import app.nodes.camera.Camera;
 
 public class SceneMessage {
     public Node start;

@@ -2,13 +2,12 @@ package app.nodes.shapes;
 
 import java.io.File;
 
-import app.nodes.shapes.Texture;
-
 import org.lwjgl.BufferUtils;
 
 import vecmath.Color;
 import vecmath.Vector;
 import app.shader.Shader;
+import app.toolkit.Texture;
 import static app.nodes.shapes.Vertex.*;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
 

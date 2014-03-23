@@ -20,7 +20,6 @@ import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 
 import app.datatype.FontInfo;
-import app.nodes.camera.Camera;
 import vecmath.Matrix;
 import vecmath.Vector;
 import vecmath.vecmathimp.MatrixImp;

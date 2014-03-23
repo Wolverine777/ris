@@ -2,6 +2,7 @@ package app.nodes.shapes;
 
 import java.io.File;
 
+import vecmath.Matrix;
 import vecmath.Vector;
 import vecmath.vecmathimp.VectorImp;
 import app.datatype.LevelNode;
@@ -23,14 +24,20 @@ public class Car extends ObjLoader {
 	private Coin target=null;
 	private float elapsed=1;
 
-	public Car(String id, Shader shader, double speed, float mass) {
-		super(id, shader, mass);
+	public Car(String id, Shader shader, double speed, Matrix modelMatrix, float mass) {
+		super(id, shader, modelMatrix, mass);
 		this.speed=speed;
 		// TODO Auto-generated constructor stub
 	}
 
-	public Car(String id, Shader shader, File sourcePath, double speed, float mass) {
-		super(id, shader, sourcePath, mass);
+	public Car(String id, Shader shader, File sourcePath, double speed, Matrix modelMatrix, float mass) {
+		super(id, shader, sourcePath, modelMatrix, mass);
+		this.speed=speed;
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Car(String id, Shader shader, File sourceFile, File sourceTex, double speed, Matrix modelMatrix, float mass) {
+		super(id, shader, sourceFile, sourceTex, modelMatrix, mass);
 		this.speed=speed;
 		// TODO Auto-generated constructor stub
 	}

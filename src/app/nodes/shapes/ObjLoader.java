@@ -10,7 +10,9 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 
 import vecmath.Color;
+import vecmath.Matrix;
 import vecmath.Vector;
+import vecmath.vecmathimp.MatrixImp;
 import vecmath.vecmathimp.VectorImp;
 import app.toolkit.BasicFunctions;
 import app.toolkit.Texture;
@@ -30,27 +32,28 @@ public class ObjLoader extends Shape {
 	private Vector[] t = {};
 	private File sourceFile, sourceTex;
 
-	 private final Color[] defaultCol ={ Vertex.col((float) Math.random(), (float) Math.random(), (float) Math.random()),Vertex.col((float) Math.random(), (float) Math.random(), (float) Math.random())};
+//	 private final Color[] defaultCol ={ Vertex.col((float) Math.random(), (float) Math.random(), (float) Math.random()),Vertex.col((float) Math.random(), (float) Math.random(), (float) Math.random())};
 //	private final Color[] defaultCol = { Vertex.col(0.4f, 0.7f, 0.8f),
 //			Vertex.col(1, 0, 0), Vertex.col(1, 1, 0), Vertex.col(0, 1, 0),
 //			Vertex.col(1, 0, 1), Vertex.col(0, 0, 1), Vertex.col(0, 1, 1),
 //			Vertex.col(1, 1, 1) };
-//	private final Color[] defaultCol = { Vertex.col(0.5f, 0.2f, 0.1f),Vertex.col(0.1f, 0.9f, 0.1f),Vertex.col(0.5f, 0.4f, 0.1f)};
+	private final Color[] defaultCol = {Vertex.col(0.7f, 0.7f, 0.7f)};
 
-	private Texture tex;
+//	private Texture tex;
 
-	public ObjLoader(String id, Shader shader, float mass) {
-		this(id, shader, new File("obj/cube.obj"), mass);
+	public ObjLoader(String id, Shader shader, Matrix modelMatrix, float mass) {
+		this(id, shader, new File("obj/cube.obj"), modelMatrix, mass);
 	}
 
-	public ObjLoader(String id, Shader shader, File sourceFile, float mass) {
-		this(id, shader, sourceFile, null, mass);
+	public ObjLoader(String id, Shader shader, File sourceFile, Matrix modelMatrix, float mass) {
+		this(id, shader, sourceFile, null, modelMatrix, mass);
 	}
 
-	public ObjLoader(String id, Shader shader, File sourceFile, File sourceTex, float mass) {
-		super(id, shader, mass);
-		if (sourceTex != null)
-			tex = new Texture(sourceTex);
+	public ObjLoader(String id, Shader shader, File sourceFile, File sourceTex, Matrix modelMatrix, float mass) {
+		super(id, shader, mass, modelMatrix);
+		if (sourceTex != null){
+			super.tex = new Texture(sourceTex);
+		}
 
 		if (sourceFile == null)
 			sourceFile = new File("obj/cube.obj");
@@ -109,6 +112,8 @@ public class ObjLoader extends Shape {
 		if (tex != null)
 			textureData.rewind();
 		findCenter();
+		if(MatrixImp.isTranslationMatrix(modelMatrix))setCenter(modelMatrix.mult(vecmath.translationMatrix(getCenter())).getPosition());
+		if(modelMatrix.get(0, 0) == modelMatrix.get(1, 1) && modelMatrix.get(1, 1) == modelMatrix.get(2, 2))radius = modelMatrix.get(0, 0)*radius;
 	}
 
 	private Vector[] getVecs(List<String> source, Vector[] points) {
@@ -280,22 +285,28 @@ public class ObjLoader extends Shape {
 	
 	@Override
 	protected void findCenter(){
-		float xKlein = 0;
-		float xGroﬂ = 0;
-		float yKlein = 0;
-		float yGroﬂ = 0;
-		float zKlein = 0;
-		float zGroﬂ = 0;
-		float xKlein2 = 0;
-		float xGroﬂ2 = 0;
-		float yKlein2 = 0;
-		float yGroﬂ2 = 0;
-		float zKlein2 = 0;
-		float zGroﬂ2 = 0;
+		Float xKlein = null;
+		Float xGroﬂ = null;
+		Float yKlein = null;
+		Float yGroﬂ = null;
+		Float zKlein = null;
+		Float zGroﬂ = null;
+		Float xKlein2 = null;
+		Float xGroﬂ2 = null;
+		Float yKlein2 = null;
+		Float yGroﬂ2 = null;
+		Float zKlein2 = null;
+		Float zGroﬂ2 = null;
 		float radiustmp = 0;
 		float radiustmp2 = 0;
 		
 		for(Vertex v: vertices){
+			if(xKlein==null)xKlein = v.position.x();
+			if(xGroﬂ==null)xGroﬂ = v.position.x();
+			if(yKlein==null)yKlein = v.position.y();
+			if(yGroﬂ==null)yGroﬂ = v.position.y();
+			if(zKlein==null)zKlein = v.position.z();
+			if(zGroﬂ==null)zGroﬂ = v.position.z();
 			if(v.position.x() < xKlein){
 				xKlein = v.position.x();
 			}
@@ -317,6 +328,12 @@ public class ObjLoader extends Shape {
 		}
 		
 		for(Vertex v: vertices3){
+			if(xKlein2==null)xKlein2 = v.position.x();
+			if(xGroﬂ2==null)xGroﬂ2 = v.position.x();
+			if(yKlein2==null)yKlein2 = v.position.y();
+			if(yGroﬂ2==null)yGroﬂ2 = v.position.y();
+			if(zKlein2==null)zKlein2 = v.position.z();
+			if(zGroﬂ2==null)zGroﬂ2 = v.position.z();
 			if(v.position.x() < xKlein2){
 				xKlein2 = v.position.x();
 			}
@@ -336,21 +353,21 @@ public class ObjLoader extends Shape {
 				zGroﬂ2 = v.position.z();
 			}			
 		}
-		xKlein = Math.min(xKlein, xKlein2);
-		xGroﬂ = Math.max(xGroﬂ, xGroﬂ2);
-		yKlein = Math.min(yKlein, yKlein2);
-		yGroﬂ = Math.max(yGroﬂ, yGroﬂ2);
-		zKlein = Math.min(zKlein, zKlein2);
-		zGroﬂ = Math.max(zGroﬂ, zGroﬂ2);
-		
+		xKlein = min(xKlein, xKlein2);
+		xGroﬂ = max(xGroﬂ, xGroﬂ2);
+		yKlein = min(yKlein, yKlein2);
+		yGroﬂ = max(yGroﬂ, yGroﬂ2);
+		zKlein = min(zKlein, zKlein2);
+		zGroﬂ = max(zGroﬂ, zGroﬂ2);
+//		System.out.println(getId()+" xkl:"+xKlein+" xGr:"+xGroﬂ+" yKl:"+yKlein+" yGr:"+yGroﬂ+" zKl:"+zKlein+" zGr:"+zGroﬂ);
 		
 		setCenter(new VectorImp((xGroﬂ + xKlein)/2, (yGroﬂ + yKlein)/2, (zGroﬂ + zKlein)/2));
 		
 		for(Vertex v: vertices){
-			radiustmp = Math.max(v.position.sub(getCenter()).length(),getRadius());
+			radiustmp = Math.max(v.position.sub(getCenter()).length(),radiustmp);
 		}
 		for(Vertex v: vertices3){
-			radiustmp2 = Math.max(v.position.sub(getCenter()).length(),getRadius());
+			radiustmp2 = Math.max(v.position.sub(getCenter()).length(),radiustmp2);
 		}
 		
 		radiustmp = Math.max(radiustmp, radiustmp2);		
@@ -361,6 +378,19 @@ public class ObjLoader extends Shape {
 //		 System.out.println("Radius f¸r ObjLoader: " + super.getId() + " " + getRadius());
 		
 //		System.out.println("Neues center f¸r Cubezuerst: " + super.id + center.toString());
+	}
+	private Float min(Float one, Float two){
+		if(one==null&&two==null)return 0.0f;
+		if(one==null)return two;
+		if(two==null)return one;
+		return Math.min(one, two);
+	}
+	
+	private Float max(Float one, Float two){
+		if(one==null&&two==null)return 0.0f;
+		if(one==null)return two;
+		if(two==null)return one;
+		return Math.max(one, two);
 	}
 
 	public File getSourceFile() {
@@ -373,6 +403,6 @@ public class ObjLoader extends Shape {
 
 	@Override
 	public Shape clone() {
-		return new ObjLoader(new String(getId()), shader, sourceFile, sourceTex, mass);
+		return new ObjLoader(new String(getId()), shader, sourceFile, sourceTex, getWorldTransform(), mass);
 	}
 }

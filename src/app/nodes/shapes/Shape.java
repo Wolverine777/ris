@@ -17,6 +17,7 @@ import vecmath.vecmathimp.VectorImp;
 import app.nodes.Node;
 import app.nodes.shapes.Vertex;
 import app.shader.Shader;
+import app.toolkit.Texture;
 
 public abstract class Shape extends Node {
 	protected Vertex[] vertices={};
@@ -37,13 +38,20 @@ public abstract class Shape extends Node {
 	protected float lifetimeCounter = 2;
 
 	public Shape(String id, Shader shader, float mass) {
-		super(id, FactoryDefault.vecmath.identityMatrix());
+		this(id, shader, mass, FactoryDefault.vecmath.identityMatrix());
+	}
+	
+	public Shape(String id, Shader shader, float mass, Matrix modelMatrix) {
+		super(id, modelMatrix);
 		this.shader = shader;
 		this.mass = mass;
 	}
 	
 	
 	public void display(Matrix m) {
+//		System.out.println("Activate Shader "+shader+ " for: "+getId());
+		shader.activate();
+		
 		shader.activate();
 		if (tex != null) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);

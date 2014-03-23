@@ -18,7 +18,6 @@ import app.Types.ObjectTypes;
 import app.Types.PhysicType;
 import app.Types.SimulateType;
 import app.edges.Edge;
-import app.eventsystem.FloorCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
@@ -180,11 +179,13 @@ public class Physic extends UntypedActor {
 					}
 				}
 				if(n instanceof Coin){
+					System.out.println("colli with coin");
 					for(Node col:collision){
 						if(col instanceof Car){
 							delete.ids.remove(n.getId());
 							remCoin.add(n);
 							Vector carhight=new VectorImp(((Car) col).getPosition().x(), ((Car) col).getPosition().y()+((Car) col).getRadius(), ((Car) col).getPosition().z());
+							System.out.println("tell pickup simulation");
 							simulator.tell(new SimulateCreation(n.getId(), col.getId(), col.getWorldTransform(), 2, carhight), getSelf());
 						}else{
 							delete.ids.remove(n.getId());
@@ -239,8 +240,8 @@ public class Physic extends UntypedActor {
 //				System.out.println("Center n: " + ((Shape) n).getCenter());
 				distance = ((Shape) n).getCenter().sub(((Shape) node).getCenter()).length();
 				radiuses = (((Shape) n).getRadius() + ((Shape) node).getRadius());
-//				System.out.println("Radius n: " + ((Shape) n).getRadius()
-//						+ "Radius node: " + ((Shape) node).getRadius()
+//				System.out.println(n.getId()+" Radius n: " + ((Shape) n).getRadius()
+//						+ "Radius "+node.getId()+": " + ((Shape) node).getRadius()
 //						+ "distance1: " + distance + "radiuses1: " + radiuses);
 				if (distance < radiuses) {
 //					System.out.println("distance2: " + distance + "radiuses2: "
@@ -278,6 +279,7 @@ public class Physic extends UntypedActor {
 		impacts.put(id, impact);
 		
 		PhysicModification tellAi = new PhysicModification(id, impact);
+		//TODO: activate when test done
 //		ai.tell(tellAi, self());
 		
 		
@@ -355,7 +357,7 @@ public class Physic extends UntypedActor {
 			if(nc.getPhysicType()!=null){
 				Node newNode=null;
 				if (nc.type == ObjectTypes.GROUP) {
-					newNode = nodeFactory.groupNode(nc.id);
+					newNode = nodeFactory.groupNode(nc.id, nc.getModelmatrix());
 				} else if (nc.type == ObjectTypes.CUBE) {
 					newNode = nodeFactory.cube(nc.id,nc.shader,nc.w, nc.h,	nc.d, nc.mass);
 					if ((nc.impulse != null)) {
@@ -366,21 +368,11 @@ public class Physic extends UntypedActor {
 						VectorImp newimpulse = new VectorImp(newx, newy, newz);
 						newNode.setVelocity(newimpulse);
 					}
-					if ((nc.modelmatrix != null)) {
-						newNode.updateWorldTransform(nc.modelmatrix);
-					}
-//				if ((nc.center != null)) {
-//					((Shape) newNode).setCenter(nc.center);
-//				}
-//				if ((nc.radius != 0)) {
-//					((Shape) newNode)
-//							.setRadius(nc.radius);
-//				}
 				} else if (nc.type == ObjectTypes.SPHERE) {
-					newNode = nodeFactory.sphere(nc.id,nc.shader, nc.mass);
+					newNode = nodeFactory.sphere(nc.id,nc.shader, nc.mass, nc.getModelmatrix());
 					System.out.println("phy node "+newNode.getId());
 					//TODO: wtf ist denn hier los?
-					Node newNode2 = nodeFactory.sphere("hallo",nc.shader, nc.mass);
+					Node newNode2 = nodeFactory.sphere("hallo",nc.shader, nc.mass, nc.getModelmatrix());
 					
 					if ((nc.impulse != null)) {
 						Vector impulse = (nc.impulse);
@@ -394,27 +386,10 @@ public class Physic extends UntypedActor {
 						newNode2.setVelocity(newimpulse);
 						
 					}
-					if ((nc.modelmatrix != null)) {
-						newNode.updateWorldTransform(nc.modelmatrix);
-						newNode2.updateWorldTransform(nc.modelmatrix);
-					}
-					System.out.println("bevor col");
-//				if ((nc.center != null)) {
-//					((Shape) newNode)
-//							.setCenter(nc.center);
-//					((Shape) newNode2)
-//							.setCenter(nc.center);
-//				}
-//				if ((nc.radius != 0)) {
-//					((Shape) newNode)
-//							.setRadius(nc.radius);
-//					((Shape) newNode2)
-//							.setRadius(nc.radius);
-//				}
 					collisionGroundPosition(newNode.getId(), newNode2);
 					System.out.println("after col");
 				} else if(nc.type == ObjectTypes.OBJECT){
-					newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
+					newNode = nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, null, nc.getModelmatrix(), nc.mass);
 					if ((nc.impulse != null)) {
 						Vector impulse = (nc.impulse);
 						float newx = impulse.x()/newNode.getMass();
@@ -424,20 +399,8 @@ public class Physic extends UntypedActor {
 						VectorImp newimpulse = new VectorImp(newx, newy, newz);
 						newNode.setVelocity(newimpulse);
 					}
-					if ((nc.modelmatrix != null)) {
-						newNode.updateWorldTransform(nc.modelmatrix);
-					}
-//				if ((nc.center != null)) {
-//					((Shape) newNode)
-//							.setCenter(nc.center);
-//				}
-//				if ((nc.radius != 0)) {
-//					((Shape) newNode)
-//							.setRadius(nc.radius);
-//					System.out.println("center objtest physic: " + ((Shape) newNode).getCenter() + "Position: " + newNode.getWorldTransform().getPosition());
-//				}
 				} else if(nc.type == ObjectTypes.CAR){
-					newNode = nodeFactory.car(nc.id, nc.shader, nc.sourceFile, nc.speed, nc.mass);
+					newNode = nodeFactory.car(nc.id, nc.shader, nc.sourceFile, null, nc.speed, nc.getModelmatrix(), nc.mass);
 					if ((nc.impulse != null)) {
 						Vector impulse = (nc.impulse);
 						float newx = impulse.x()/newNode.getMass();
@@ -447,19 +410,8 @@ public class Physic extends UntypedActor {
 						VectorImp newimpulse = new VectorImp(newx, newy, newz);
 						newNode.setVelocity(newimpulse);
 					}
-					if ((nc.modelmatrix != null)) {
-						newNode.updateWorldTransform(nc.modelmatrix);
-					}
-//				if ((nc.center != null)) {
-//					((Shape) newNode)
-//							.setCenter(nc.center);
-//				}
-//				if ((nc.radius != 0)) {
-//					((Shape) newNode)
-//							.setRadius(nc.radius);
-//				}
 				} else if(nc.type == ObjectTypes.COIN){
-					newNode = nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.mass);
+					newNode = nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.getModelmatrix(), nc.mass);
 					if ((nc.impulse != null)) {
 						Vector impulse = (nc.impulse);
 						float newx = impulse.x()/newNode.getMass();
@@ -469,17 +421,6 @@ public class Physic extends UntypedActor {
 						VectorImp newimpulse = new VectorImp(newx, newy, newz);
 						newNode.setVelocity(newimpulse);
 					}
-					if ((nc.modelmatrix != null)) {
-						newNode.updateWorldTransform(nc.modelmatrix);
-					}
-//				if ((nc.center != null)) {
-//					((Shape) newNode)
-//							.setCenter(nc.center);
-//				}
-//				if ((nc.radius != 0)) {
-//					((Shape) newNode)
-//							.setRadius(nc.radius);
-//				}
 				} 
 					
 								
@@ -489,6 +430,9 @@ public class Physic extends UntypedActor {
 				if(nc.physicType == PhysicType.Collision_only){
 					nodesCollisionOnly.put(newNode.getId(), newNode);
 				}
+			}
+			if(nc.type == ObjectTypes.PLANE){
+				floor = nodeFactory.plane(nc.getId(), nc.getShader(), nc.getW(), nc.getD(), nc.getH(), nc.getMass()).getWorldTransform().getPosition();
 			}
 		} else if (message instanceof NodeModification) {
 			NodeModification nm=(NodeModification)message;
@@ -517,10 +461,7 @@ public class Physic extends UntypedActor {
 				}
 			}
 		}
-		else if( message instanceof FloorCreation){
-			floor = ((FloorCreation) message).position;			
-			
-		}  else if (message instanceof NodeDeletion){
+		else if (message instanceof NodeDeletion){
 			NodeDeletion delete = (NodeDeletion)message;
 			for(String id: delete.ids){
 				Node modify = nodes.get(id);

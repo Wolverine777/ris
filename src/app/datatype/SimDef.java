@@ -112,11 +112,8 @@ public class SimDef {
 	 * @param mult
 	 */
 	public void multScale(float mult) {
-		System.out.println("mult with"+mult);
 		this.scale =this.scale* mult;
-		System.out.println("new scale"+this.scale+" old count"+counter);
 		this.counter=Math.abs(1/this.scale);
-		System.out.println("new count"+counter);
 	}
 	
 }

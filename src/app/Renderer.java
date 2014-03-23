@@ -44,14 +44,14 @@ import app.eventsystem.StartNodeModification;
 import app.messages.Message;
 import app.messages.RendererInitialization;
 import app.messages.RendererInitialized;
+import app.nodes.Camera;
 import app.nodes.Node;
 import app.nodes.Text;
-import app.nodes.camera.Camera;
 import app.shader.Shader;
 
 public class Renderer extends UntypedActor {
-	public static final int width = 640;
-	public static final int height = 480;
+	public static final int width = 1280;
+	public static final int height = 700;
 
 	private static UnicodeFont font;
 	
@@ -68,6 +68,7 @@ public class Renderer extends UntypedActor {
 	private Map<String, Node> nodes = new HashMap<String, Node>();
 
 	private Shader shader;
+	private Shader texShader;
 	private Node start;
 	private Camera camera;
 	private int counter = 0;
@@ -88,10 +89,10 @@ public class Renderer extends UntypedActor {
 			e.printStackTrace();
 		}
 //		createSound(source2, "sounds\\test.wav");
-//		font=setUpFonts();
 		System.out.println("font"+font);
 		setUpCamera();
 		shader = new Shader();
+		texShader = new Shader(new File("src/app/shadercode/texturesVertex"), new File("src/app/shadercode/texturesFragment"));
 		setUpLighting();
 		
 		// Set background color to black.
@@ -101,11 +102,8 @@ public class Renderer extends UntypedActor {
 		glEnable(GL11.GL_DEPTH_TEST);
 		
 //		shader = new Shader();
-		// shader = new Shader(new
-		// File("src/app/shadercode/backgroundVertShader"), new
-		// File("src/app/shadercode/backgroundFragShader"));
 
-		getSender().tell(new RendererInitialized(shader), self());
+		getSender().tell(new RendererInitialized(shader,texShader), self());
 		getSender().tell(Message.INITIALIZED, self());
 	}
 
@@ -130,25 +128,11 @@ public class Renderer extends UntypedActor {
         		100f);
         Shader.setProjectionMatrix(projectionMatrix);
         
-        camera.activate();
-//    	shader.activate(); ist bereits in jedem Shape drin
-    	start.display(start.getWorldTransform());
-    	glUseProgram(0);
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrix(orthgraphicProjectionMatix);
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
-        glDisable(GL_LIGHTING);
-//        font.drawString(100, 100, "Benni ich kann Text TEXT ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        glEnable(GL_LIGHTING);
-        glPopMatrix();
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrix(perspectiveProjectionMatix);
-        glMatrixMode(GL_MODELVIEW);
-		
+//    	shader.activate(); //ist bereits in jedem Shape drin
+//    	start.display(start.getWorldTransform());
 		
 		start.display(start.getWorldTransform());
+		camera.activate();
 		
 	 	
 		Display.update();
@@ -279,37 +263,39 @@ public class Renderer extends UntypedActor {
 		} else if (message instanceof NodeCreation) {
 			NodeCreation nc = (NodeCreation) message;
 			if (nc.type == ObjectTypes.GROUP) {
-				nodes.put(nc.getId(), nodeFactory.groupNode(nc.id));
+				nodes.put(nc.getId(), nodeFactory.groupNode(nc.id, nc.getModelmatrix()));
 			} else if (nc.type == ObjectTypes.CUBE) {
 				nodes.put(nc.getId(), nodeFactory.cube(nc.id, nc.shader, nc.w, nc.h,nc.d, nc.mass));
 			} else if (nc.type == ObjectTypes.PIPE) {
 				nodes.put(nc.getId(), nodeFactory.pipe(nc.id, nc.shader, nc.r,nc.lats, nc.longs, nc.mass));
 			} else if (nc.type == ObjectTypes.SPHERE) {
-				nodes.put(nc.getId(), nodeFactory.sphere(nc.id, nc.shader, nc.mass));
+				nodes.put(nc.getId(), nodeFactory.sphere(nc.id, nc.shader, nc.mass, nc.getModelmatrix()));
 			} else if (nc.type == ObjectTypes.PLANE) {
 				nodes.put(nc.getId(), nodeFactory.plane(nc.id, nc.shader, nc.w, nc.d, nc.h, nc.mass));
 			} else if (nc.type == ObjectTypes.OBJECT) {
-				nodes.put(nc.getId(), nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass));
+				nodes.put(nc.getId(), nodeFactory.obj(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.getModelmatrix(), nc.mass));
 			}else if (nc.type == ObjectTypes.CAR){
-				nodes.put(nc.getId(), nodeFactory.car(nc.getId(), nc.shader, nc.sourceFile, nc.speed, nc.mass));
+				nodes.put(nc.getId(), nodeFactory.car(nc.getId(), nc.shader, nc.sourceFile, nc.getSourceTex(), nc.speed, nc.getModelmatrix(), nc.mass));
 			}else if (nc.type == ObjectTypes.COIN){
-				nodes.put(nc.getId(), nodeFactory.coin(nc.getId(), nc.shader, nc.sourceFile, nc.mass));
+				nodes.put(nc.getId(), nodeFactory.coin(nc.getId(), nc.shader, nc.sourceFile, nc.getModelmatrix(), nc.mass));
 			}else if(((NodeCreation) message).type == ObjectTypes.CANON){
-				Node newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.mass);
+				Node newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.getModelmatrix(), nc.mass);
 				nodes.put(newNode.getId(), newNode);
 			}else if(nc.type==ObjectTypes.TEXT){
 				Text t=nodeFactory.text(nc.getId(), nc.modelmatrix, nc.text, nc.font);
 				nodes.put(nc.getId(), t);
 				t.setOrthgraphicProjectionMatix(orthgraphicProjectionMatix);
 				t.setPerspectiveProjectionMatix(perspectiveProjectionMatix);
+			}else if(nc.type==ObjectTypes.SUN){
+				nodes.put(nc.getId(), nodeFactory.sun(nc.getId(), nc.getModelmatrix(), nc.getShader()));
+				System.out.println("sun added");
 			}
 
 		} else if (message instanceof CameraCreation) {
-			camera = nodeFactory.camera(((CameraCreation) message).id);
+			camera = nodeFactory.camera(((CameraCreation) message).id, ((CameraCreation) message).shaderList);
 			nodes.put(((CameraCreation) message).id, camera);
 		} else if (message instanceof NodeModification) {
 			Node modify = nodes.get(((NodeModification) message).id);
-
 			if (((NodeModification) message).localMod != null) {
 				// modify.setLocalTransform(((NodeModification)
 				// message).localMod);
@@ -319,8 +305,8 @@ public class Renderer extends UntypedActor {
 				// modify.setLocalTransform(modify.getWorldTransform());
 			}
 			if (((NodeModification) message).appendTo != null) {
-				modify.appendTo(nodes
-						.get(((NodeModification) message).appendTo));
+				System.out.println("NodeMod "+modify+" id "+((NodeModification) message).id);
+				modify.appendTo(nodes.get(((NodeModification) message).appendTo));
 			}
 			if(((NodeModification) message).text!=null){
 				((Text)modify).setText(((NodeModification) message).text);				
