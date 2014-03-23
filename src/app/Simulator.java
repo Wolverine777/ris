@@ -374,9 +374,10 @@ public class Simulator extends UntypedActor {
 					for(SimGesDef sgf: simulationsgestures.get(n)){
 						if(sgf.getGesture() == GestureType.HAND_POSITION){
 							System.out.println("Hand position: " +  hp.getHandPosition().x() + " " + hp.getHandPosition().y() + " " + hp.getHandPosition().z());
-							if(sgf.getVector().y() < 1f){
+							if(sgf.getVector().y() > 1f){
 								doSimulation(n, sgf.getType(), new VectorImp(1f, 0f, 0f));
 							}
+							
 //							doSimulation(n, sgf.getType(), sgf.getVector());
 						}
 					}

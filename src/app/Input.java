@@ -113,6 +113,10 @@ public class Input extends UntypedActor {
         controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
         controller.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
         controller.enableGesture(Gesture.Type.TYPE_KEY_TAP);
+        if(controller.config().setFloat("Gesture.KeyTap.MinDownVelocity", 30.0f) &&
+                controller.config().setFloat("Gesture.KeyTap.HistorySeconds", .1f) &&
+                controller.config().setFloat("Gesture.KeyTap.MinDistance", .3f))
+            controller.config().save();
     }
 
     public void onDisconnect(Controller controller) {
@@ -167,8 +171,8 @@ public class Input extends UntypedActor {
             Map<ActorRef, HandPosition> sendHP = new HashMap<ActorRef, HandPosition>();            	
             	for(ActorRef actor:gestureObservers.get(GestureType.HAND_POSITION)){
             		HandPosition hp = new HandPosition();
-            		System.out.println("normal Vector leap: " + normal.getX() + " " + normal.getY() + " " + normal.getZ());
-           			hp.handPosition = new VectorImp(normal.getX(), normal.getY(), normal.getZ());
+            		System.out.println("normal Vector leap: " + position.getX() + " " + position.getY() + " " + position.getZ());
+           			hp.handPosition = new VectorImp(position.getX(), position.getY(), position.getZ());
            			hp.fingerAmount = fingers.count();
            			            			
            			sendHP.put(actor, hp);
@@ -230,6 +234,7 @@ public class Input extends UntypedActor {
                                + ", " + screenTap.state()
                                + ", position: " + screenTap.position()
                                + ", direction: " + screenTap.direction());
+                    System.exit(0);
                     break;
                 case TYPE_KEY_TAP:
                     KeyTapGesture keyTap = new KeyTapGesture(gesture);
@@ -237,6 +242,7 @@ public class Input extends UntypedActor {
                                + ", " + keyTap.state()
                                + ", position: " + keyTap.position()
                                + ", direction: " + keyTap.direction());
+//                    System.exit(0);
                     break;
                 default:
                     System.out.println("Unknown gesture type.");
