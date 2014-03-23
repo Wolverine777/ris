@@ -92,19 +92,26 @@ public abstract class WorldState extends UntypedActor{
     private Set<Integer> toggeled=new HashSet<Integer>();
     private float canonballnumber = 0;
     private float amountOfSpheres=0;
+    private boolean tapped=false;
     
 
 	private void loop() {
 
 		System.out.println("\nStarting new loop");
 		
+		if(tapped &&amountOfSpheres>10){
+			System.out.println("bam");
+			generateCanonBall();
+			tapped=false;
+			amountOfSpheres=0;
+		}
 		
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
 			
-			if(amountOfSpheres%10==0){
+			if(amountOfSpheres>20){
 //				alSourcePlay(Renderer.source2);
 				generateCanonBall();
-				
+				amountOfSpheres=0;
 			}
 			
 		}
@@ -236,10 +243,7 @@ public abstract class WorldState extends UntypedActor{
         	toggeled.addAll(((KeyState)message).getToggled());
         	
 		} else if(message instanceof TapDetected){
-			System.out.println("bam");
-			generateCanonBall();
-			
-			
+			tapped=true;
 		}
 		
 	}

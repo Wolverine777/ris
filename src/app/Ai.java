@@ -110,8 +110,12 @@ public class Ai extends UntypedActor {
 		Coin nearest = null;
 		for (Coin node : coins.values()) {
 //			System.out.println("find: "+node.getId());
+			boolean isTarget=false;
+			for(Car c:cars.values()){
+				if(c.getTarget()!=null)if(c.getTarget().getId().equals(node.getId())&&!c.getId().equals(car.getId()))isTarget=true;
+			}
 			//TODO: filter nicht durch collision erreichbare coins
-			if(!level.nearestIsBlocked(node.getCenter())){
+			if(!level.nearestIsBlocked(node.getCenter())&&!isTarget){
 //				System.out.println("is in");
 				//TODO: ignore y-Axis
 				float tempdistance = node.getWorldTransform().getPosition().sub(car.getWorldTransform().getPosition()).length();

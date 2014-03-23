@@ -94,8 +94,8 @@ public class App extends WorldState {
 		Canon canon = createCanon("Canon", texShader, new File("obj/Cannon2.obj"), new File("obj/2.jpg"), vecmath.translationMatrix(0.0f, floor.getHight(), ((floor.getD()/2)*0.90f)).mult(vecmath.rotationMatrix(-1.0f, 0f, 0f, 45f)), 1.0f);
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_D)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, -0.7f, 0f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_A)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0.7f, 0f));
-		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0.7f, 0f, 0f));
-		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_S)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-0.7f, 0f, 0f));		
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-0.7f, 0f, 0f));
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_S)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0.7f, 0f, 0f));		
 //		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_X)), SimulateType.ROTATE, KeyMode.TOGGLE, new VectorImp(0f, 1f, 0f));
 		simulateOnGesture(canon, GestureType.HAND_POSITION, SimulateType.ROTATE, new VectorImp(1, 0, 0));
 //		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 0.0f));
@@ -118,13 +118,27 @@ public class App extends WorldState {
 		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), vecmath.translationMatrix(8.0f, floor.getGround(), 8.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
 //		transform(coin,  vecmath.translationMatrix(1.0f, floor.getGround(), 1.0f));
 		append(coin, head);
-		Coin coin2=createCoin("Coin2", shader, new File("obj/cube.obj"), vecmath.translationMatrix(0.5f, floor.getGround(), 0.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
+		Coin coin2=createCoin("Coin2", shader, new File("obj/cube.obj"), vecmath.translationMatrix(3.5f, floor.getGround(), 0.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
 //		transform(coin2,  vecmath.translationMatrix(0.5f, floor.getGround(), 0.0f));
 		append(coin2, head);
 		
 		Coin coin3=createCoin("Coin3", shader, new File("obj/cube.obj"), vecmath.translationMatrix(0.0f, floor.getGround(), 0.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
 //		transform(coin3,  vecmath.translationMatrix(0.0f, 1, 0));
 		append(coin3, head);
+		
+		
+		Cube block=createCube("tree", shader, 2.2f,0.8f, 2.2f, 1f, null, null);
+		transform(block,  vecmath.translationMatrix(-1.0f, -2.0f, -1.0f));
+		append(block, head);
+		
+		Text t=createText("Coins", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
+		transform(t, vecmath.translationMatrix(200f, 1.0f, 0.0f));
+		append(t, head);
+		Text t2=createText("Cars", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
+		append(t2, head);
+		Text t3=createText("Balls", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
+		transform(t3, vecmath.translationMatrix(400f, 1.0f, 0.0f));
+		append(t3, head);
 	}
 	private void test(GroupNode head){
 		alSourcePlay(Renderer.source2);
