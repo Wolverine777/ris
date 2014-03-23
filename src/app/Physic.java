@@ -44,7 +44,7 @@ public class Physic extends UntypedActor {
 	ActorRef simulator;
 	ActorRef ai;
 	private StopWatch zeit = new StopWatch();
-	private Vector ground = new VectorImp(0f, -0.005f, 0f);
+	private Vector ground = new VectorImp(0f, -0.05f, 0f);
 	private float elapsedaverage = 0;
 	private float elapsed = 0;
 	private float elapsedCounter = 1;
@@ -104,7 +104,7 @@ public class Physic extends UntypedActor {
 					
 					float differenceinfloor = collisionGround(n);
 	//				float differenceinfloor = (float) Math.sqrt((float) Math.pow((n.getWorldTransform().getPosition().y() - floor.y()),2));
-					VectorImp vec = new VectorImp(0, differenceinfloor + 0.05f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
+					VectorImp vec = new VectorImp(0, differenceinfloor + 0.1f, 0); // 1 ist der Radius der Kugeln + 0.01 damit immer knapp über dem boden
 					SingelSimulation ss = new SingelSimulation(n.getId(), SimulateType.FIXVALUE, vec, n.getWorldTransform());
 	//				Matrix modify=MatrixImp.translate(vec);
 	//	    		n.updateWorldTransform(modify);
@@ -344,10 +344,16 @@ public class Physic extends UntypedActor {
 //		System.out.println("flooooooor: " + floor.y());
 		distance = (float) Math.sqrt((float) Math.pow(((Shape) n).getCenter().y() - floor.y(),2));
 		radiuses = ((Shape) n).getRadius();
+		
+		
 //		System.out.println("distance ground: " + distance + " radiuses ground: " + radiuses);
 			
 		if(distance < radiuses){
-			float inground = radiuses -distance;
+			float inground;
+				if(((Shape) n).getCenter().y() < floor.y()){
+					inground = radiuses + distance;
+				}else inground = radiuses - distance;
+					
 					return inground;
 				
 		

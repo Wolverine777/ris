@@ -16,6 +16,7 @@ import org.lwjgl.input.Keyboard;
 
 import vecmath.Matrix;
 import vecmath.Vector;
+import vecmath.vecmathimp.VectorImp;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
@@ -42,6 +43,7 @@ import app.eventsystem.SimulateCreation;
 import app.eventsystem.SimulateGestureCreation;
 import app.eventsystem.StartNodeModification;
 import app.messages.AiInitialization;
+import app.messages.HandPosition;
 import app.messages.KeyState;
 import app.messages.Message;
 import app.messages.RegisterGesture;
@@ -49,6 +51,7 @@ import app.messages.RegisterKeys;
 import app.messages.PhysicInitialization;
 import app.messages.RendererInitialization;
 import app.messages.RendererInitialized;
+import app.messages.TapDetected;
 import app.nodes.Camera;
 import app.nodes.GroupNode;
 import app.nodes.Node;
@@ -232,6 +235,12 @@ public abstract class WorldState extends UntypedActor{
         	toggeled.clear();
         	pressedKeys.addAll(((KeyState)message).getPressedKeys());
         	toggeled.addAll(((KeyState)message).getToggled());
+        	
+		} else if(message instanceof TapDetected){
+			System.out.println("bam");
+			generateCanonBall();
+			
+			
 		}
 		
 	}
@@ -292,7 +301,7 @@ public abstract class WorldState extends UntypedActor{
 					observer.tell(event, self());
 				}
 			}
-		}
+		} 
 	}
 
 	protected void setCamera(Camera cam) {
@@ -591,6 +600,7 @@ public abstract class WorldState extends UntypedActor{
 	
 	protected void doCanonBalls(){
 		input.tell(new RegisterKeys(new HashSet<Integer>(Arrays.asList(Keyboard.KEY_SPACE)), true), self());
+		input.tell(new RegisterGesture(GestureType.KEY_TAP, true),self());
 	}
 	
 	protected void generateCanonBall(){

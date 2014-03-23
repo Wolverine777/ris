@@ -34,6 +34,7 @@ import app.messages.KeyState;
 import app.messages.Message;
 import app.messages.RegisterGesture;
 import app.messages.RegisterKeys;
+import app.messages.TapDetected;
 
 /**
  * @author Benjamin Reemts
@@ -113,9 +114,9 @@ public class Input extends UntypedActor {
         controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
         controller.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
         controller.enableGesture(Gesture.Type.TYPE_KEY_TAP);
-        if(controller.config().setFloat("Gesture.KeyTap.MinDownVelocity", 30.0f) &&
+        if(controller.config().setFloat("Gesture.KeyTap.MinDownVelocity", 5.0f) &&
                 controller.config().setFloat("Gesture.KeyTap.HistorySeconds", .1f) &&
-                controller.config().setFloat("Gesture.KeyTap.MinDistance", .3f))
+                controller.config().setFloat("Gesture.KeyTap.MinDistance", .1f))
             controller.config().save();
     }
 
@@ -225,14 +226,14 @@ public class Input extends UntypedActor {
                                + ", direction: " + swipe.direction()
                                + ", speed: " + swipe.speed());
                     break;
-                case TYPE_SCREEN_TAP:
-                    ScreenTapGesture screenTap = new ScreenTapGesture(gesture);
-                    System.out.println("Screen Tap id: " + screenTap.id()
-                               + ", " + screenTap.state()
-                               + ", position: " + screenTap.position()
-                               + ", direction: " + screenTap.direction());
-                    System.exit(0);
-                    break;
+//                case TYPE_SCREEN_TAP:
+//                    ScreenTapGesture screenTap = new ScreenTapGesture(gesture);
+//                    System.out.println("Screen Tap id: " + screenTap.id()
+//                               + ", " + screenTap.state()
+//                               + ", position: " + screenTap.position()
+//                               + ", direction: " + screenTap.direction());
+////                    System.exit(0);
+//                    break;
                 case TYPE_KEY_TAP:
                     KeyTapGesture keyTap = new KeyTapGesture(gesture);
                     System.out.println("Key Tap id: " + keyTap.id()
@@ -240,7 +241,20 @@ public class Input extends UntypedActor {
                                + ", position: " + keyTap.position()
                                + ", direction: " + keyTap.direction());
 //                    System.exit(0);
+                   
+                    Map<ActorRef, TapDetected> sendTD = new HashMap<ActorRef, TapDetected>();            	
+                	for(ActorRef actor:gestureObservers.get(GestureType.KEY_TAP)){
+                		TapDetected td = new TapDetected();
+               			            			
+               			sendTD.put(actor, td);
+               		}
+                	for(Entry<ActorRef, TapDetected> send:sendTD.entrySet()){
+                		System.out.println("send to" + send.getKey());
+                		send.getKey().tell(send.getValue(), self());
+                	}
+                    
                     break;
+                    
                 default:
                     System.out.println("Unknown gesture type.");
                     break;
