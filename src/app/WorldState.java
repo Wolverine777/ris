@@ -97,6 +97,7 @@ public abstract class WorldState extends UntypedActor{
     private float canonballnumber = 0;
     private float amountOfSpheres=0;
     private boolean tapped=false;
+    protected double leap=0.5; //1Tastatur 0.5Leap
     
 
 	private void loop() {
@@ -632,7 +633,7 @@ public abstract class WorldState extends UntypedActor{
 	}
 	
 	protected void generateCanonBall(){
-		float scaleFactor=0.25f;
+		float scaleFactor=0.25f/(float)leap;
 		Canon canon = (Canon) nodes.get("Canon");
 		Matrix modelMatrix =vecmath.translationMatrix(canon.getSpawn()).mult(vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor)); 
 		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, modelMatrix, 0.72f, canon.getDirection().mult(0.07f+(0.001f*floor.getD())), PhysicType.Physic_complete);

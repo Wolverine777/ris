@@ -105,13 +105,13 @@ public class App extends WorldState {
 	private void finalLevel(GroupNode head){
 //		Matrix m=vecmath.translationMatrix(-1, -2, 0);
 		Matrix carScale=vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f);
-		Car car1=createCar("Car1", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 2.7, vecmath.translationMatrix(-3.5f, floor.getGround(), 8.5f).mult(carScale), 1f, null, PhysicType.Collision_only);
+		Car car1=createCar("Car1", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 2.7*leap, vecmath.translationMatrix(-3.5f, floor.getGround(), 8.5f).mult(carScale), 1f, null, PhysicType.Collision_only);
 		append(car1, head);
 		
-		Car car2=createCar("Car2", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 2.0, vecmath.translationMatrix(5.0f, floor.getGround(), 2.0f).mult(carScale), 1f, null, PhysicType.Collision_only);
+		Car car2=createCar("Car2", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 2.0*leap, vecmath.translationMatrix(5.0f, floor.getGround(), 2.0f).mult(carScale), 1f, null, PhysicType.Collision_only);
 		append(car2, head);
 		
-		Car car3=createCar("Car3", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 1.1, vecmath.translationMatrix(-3.0f, floor.getGround(), -6.0f).mult(carScale), 1f, null, PhysicType.Collision_only);
+		Car car3=createCar("Car3", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 1.1*leap, vecmath.translationMatrix(-3.0f, floor.getGround(), -6.0f).mult(carScale), 1f, null, PhysicType.Collision_only);
 		append(car3, head);
 		
 		Canon canon = createCanon("Canon", shader, new File("obj/Cannon2.obj"), null, vecmath.translationMatrix(0.0f, floor.getHight(), ((floor.getD()/2)*0.90f)).mult(vecmath.rotationMatrix(-1.0f, 0f, 0f, 45f)), 1.0f);
