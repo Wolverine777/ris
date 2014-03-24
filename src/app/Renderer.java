@@ -65,6 +65,7 @@ public class Renderer extends UntypedActor {
 	static int source3;
 	static int source4;
 	static int source5;
+	static int source6;
 	
 	private static boolean multisampling = false;
 
@@ -90,6 +91,7 @@ public class Renderer extends UntypedActor {
 			source3 = createSound("sounds\\awesome.wav");
 			source4 = createSound("sounds\\gameover.wav");
 			source5 = createSound("sounds\\excellent.wav");
+			source6 = createSound("sounds\\you_win.wav");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

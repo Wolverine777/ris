@@ -69,8 +69,8 @@ public class App extends WorldState {
 		append(floor, head);
 		
 //		test(head);
-		finalLevel(head);
-//		obj(head);
+//		finalLevel(head);
+		obj(head);
 
 	}
 	
@@ -88,6 +88,19 @@ public class App extends WorldState {
 //		transform(obj, vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
 //		transform(obj, vecmath.translationMatrix(0, -2, 0));
 		append(obj, head);
+		
+		float tree = 0.0009f;
+		Matrix scaletree=vecmath.scaleMatrix(tree, tree, tree);
+		
+		ObjLoader objsphere3=createObject("objSphere3", texShader, new File("obj/1.obj"),  null, vecmath.translationMatrix(0, 0, 0).mult(scaletree), 1f , null, PhysicType.Collision_only);
+		System.out.println("objSphere3" + objsphere3.getCenter());
+		append(objsphere3, head);
+		
+		float apple = 0.009f;
+		Matrix scaleapple=vecmath.scaleMatrix(apple, apple, apple);
+		ObjLoader objsphere4=createObject("objSphere4", texShader, new File("obj/apple.obj"),  new File("obj/skin.jpg"), vecmath.translationMatrix(5,0,5).mult(scaleapple), 1f , null, PhysicType.Collision_only);
+		System.out.println("objSphere4" + objsphere4.getWorldTransform().getPosition());
+		append(objsphere4, head);
 	}
 	
 	private void finalLevel(GroupNode head){
@@ -131,17 +144,20 @@ public class App extends WorldState {
 		transform(block,  vecmath.translationMatrix(-1.0f, -2.0f, -1.0f));
 		append(block, head);
 		
-		Text t=createText("Coins", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
+		
+		
+		
+		Text t=createText("Coins", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 35));
 		transform(t, vecmath.translationMatrix(200f, 1.0f, 0.0f));
 		append(t, head);
-		Text t2=createText("Cars", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
+		Text t2=createText("Cars", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 35));
 		append(t2, head);
-		Text t3=createText("Balls", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 12));
+		Text t3=createText("Balls", "hi" , new FontInfo("Arial Bold", java.awt.Font.BOLD, 35));
 		transform(t3, vecmath.translationMatrix(400f, 1.0f, 0.0f));
 		append(t3, head);
 	}
 	private void test(GroupNode head){
-		alSourcePlay(Renderer.source2);
+//		alSourcePlay(Renderer.source2);
 		Canon canon = createCanon("Canon", shader, new File("obj/Cannon2.obj"), null, vecmath.translationMatrix(2.5f, 0.0f, 1.0f), 1.0f);
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_T)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0f, 1f));
 		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_Z)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0f, 0f));
@@ -205,9 +221,8 @@ public class App extends WorldState {
 //		Cube block=createCube("tree", shader, 0.2f,0.8f, 0.2f, 1f, null, null);
 //		transform(block,  vecmath.translationMatrix(-1.0f, -2.0f, -1.0f));
 //		append(block, head);
+		
 
-		ObjLoader objsphere=createObject("objSphere2", shader, new File("obj/Sphere.obj"), null, vecmath.translationMatrix(5f, 0f, 0f), 1f, null, PhysicType.Collision_only);
-		append(objsphere, head);
 		
 		doCanonBalls();
 		

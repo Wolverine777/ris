@@ -50,6 +50,7 @@ public class Ai extends UntypedActor {
 	private Map<String, Shape> impacts=new HashMap<String, Shape>();
 	ActorRef simulator;
 	private int gameover = 0;
+	private int gameover2 = 0;
 	private float radCar=0.0f;
 	
 	private void initialize(Vector levelPosition, float width, float depth) {
@@ -441,6 +442,17 @@ public class Ai extends UntypedActor {
 			NodeModification nm = new NodeModification(carsT.getId(), FactoryDefault.vecmath.identityMatrix());
 			nm.text = ((Text) carsT).getText();
 			sender().tell(nm, self());
+			
+			if(carsAmount == 0 && gameover2 ==0){
+				try {
+					Thread.sleep((long) 1000.0f);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				alSourcePlay(Renderer.source6);
+				gameover2++;
+			}
 		}
 		
 		if(ballsT instanceof Text){
