@@ -16,7 +16,7 @@ import com.vividsolutions.jts.geom.Coordinate.DimensionalComparator;
  */
 
 public class LevelNode implements Comparable<LevelNode> {
-	private static final double BASEVAL = 0.01;
+	private static final double BASEVAL = 0.1;
 	private final Vector POS;
 	private final Coordinate COORD;
 	private double val=BASEVAL;

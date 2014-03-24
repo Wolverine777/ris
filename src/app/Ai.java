@@ -459,13 +459,7 @@ public class Ai extends UntypedActor {
 			nm.text = ((Text) carsT).getText();
 			sender().tell(nm, self());
 			
-			if(carsAmount == 0 && gameover2 ==0){
-				try {
-					Thread.sleep((long) 1000.0f);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			if(carsAmount == 0 && gameover2 ==0 && coinsAmount >0){
 				alSourcePlay(Renderer.source6);
 				gameover2++;
 			}

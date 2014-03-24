@@ -144,22 +144,22 @@ public class Level {
 //				if(levelNode.getVal()>0)nodes.add(levelNode);
 //			}
 			sub=nodes.subSet(from, toElement);
-			System.out.println("from: "+from.getPOS().toString()+" to: "+toElement.getPOS().toString());
-			System.out.println("block nodes:");
-			for(LevelNode n:sub){
-				System.out.print(n.getPOS().toString());
-			}
-			System.out.println();
+//			System.out.println("from: "+from.getPOS().toString()+" to: "+toElement.getPOS().toString());
+//			System.out.println("block nodes:");
+//			for(LevelNode n:sub){
+//				System.out.print(n.getPOS().toString());
+//			}
+//			System.out.println();
 		}else{
 //			Set<LevelNode> blocked=new TreeSet<LevelNode>();
 			nodes.addAll(levelPoints.values());
 			sub=nodes.subSet(from, toElement);
-			System.out.println("from: "+from.getPOS().toString()+" to: "+toElement.getPOS().toString());
-			System.out.println("unblock nodes");
-			for(LevelNode n:sub){
-				System.out.print(n.getPOS().toString());
-			}
-			System.out.println();
+//			System.out.println("from: "+from.getPOS().toString()+" to: "+toElement.getPOS().toString());
+//			System.out.println("unblock nodes");
+//			for(LevelNode n:sub){
+//				System.out.print(n.getPOS().toString());
+//			}
+//			System.out.println();
 //			for(LevelNode levelNode:levelPoints.values()){
 //				if(levelNode.getVal()<0&&blocked.contains(levelNode)){
 //					//TODO: Wenn ueberschneidungen, unterscheiden welche Nodes nicht -1 gesetzt werden muessen, weil sie noch von einem andern Objekt geblockt werden

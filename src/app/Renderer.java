@@ -86,12 +86,12 @@ public class Renderer extends UntypedActor {
 		setUpSound();
 		
 		try {
-			source1 =createSound("sounds\\begin.wav");
-			source2 = createSound("sounds\\Music_Hexagon1.wav");
-			source3 = createSound("sounds\\awesome.wav");
-			source4 = createSound("sounds\\gameover.wav");
-			source5 = createSound("sounds\\excellent.wav");
-			source6 = createSound("sounds\\you_win.wav");
+			source1 =createSound("sounds/begin.wav");
+			source2 = createSound("sounds/Music_Hexagon1.wav");
+			source3 = createSound("sounds/awesome.wav");
+			source4 = createSound("sounds/gameover.wav");
+			source5 = createSound("sounds/excellent.wav");
+			source6 = createSound("sounds/you_win_time2.wav");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

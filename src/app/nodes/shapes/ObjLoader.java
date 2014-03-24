@@ -205,7 +205,7 @@ public class ObjLoader extends Shape {
 		Vertex v2 = makeVert(2, lineSplitted);
 		Vertex v3 = makeVert(3, lineSplitted);
 		if (v1.normal == null) {
-			System.out.println("tri n");
+//			System.out.println("tri n");
 			// Constis normalize: (v1.sub(v0).cross(v2.sub(v0))).normalize(); Vector v0 = p[i]; Vector v1 = p[i + 1]; Vector v2 = p[i + 2];
 //			v1.setNormal(v2.position.sub(v1.position).cross(v3.position.sub(v1.position)).normalize());
 //			v2.setNormal(v2.position.sub(v1.position).cross(v3.position.sub(v1.position)).normalize());
@@ -231,7 +231,7 @@ public class ObjLoader extends Shape {
 		Vertex v3 = makeVert(3, lineSplitted);
 		Vertex v4 = makeVert(4, lineSplitted);
 		if (v1.normal == null) {
-			System.out.println("quad n");
+//			System.out.println("quad n");
 			v1.setNormal(v3.position.sub(v2.position).cross(
 					v1.position.sub(v2.position)));
 		}
