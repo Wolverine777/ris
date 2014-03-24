@@ -69,8 +69,8 @@ public class App extends WorldState {
 		append(floor, head);
 		
 //		test(head);
-//		finalLevel(head);
-		obj(head);
+		finalLevel(head);
+//		obj(head);
 
 	}
 	

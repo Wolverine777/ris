@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +70,7 @@ public class Ai extends UntypedActor {
 		System.out.println("find out");
 		while(bestFree==null){
 			visited.addAll(toCheck);
+//			System.out.println("find way visited:"+visited);
 			List<LevelNode> rem=new LinkedList<LevelNode>();
 			List<LevelNode> add=new LinkedList<LevelNode>();
 			for(LevelNode child:toCheck){
@@ -78,7 +78,15 @@ public class Ai extends UntypedActor {
 					if(!visited.contains(edge)){
 						add.add(edge);
 //						toCheck.add(edge);
-						List<LevelNode> path=lookAt.get(child).getPath();
+						List<LevelNode> path=new LinkedList<LevelNode>();
+//						try{
+							path.addAll(lookAt.get(child).getPath());
+//						}catch(Exception e){
+//							System.out.println("Fail at way out look at "+e.getMessage());
+//							System.out.println("lookat:"+lookAt);
+//							System.out.print("lookat to child:"+child+" is:"+lookAt.get(child));
+//							System.out.println(" path:"+lookAt.get(child).getPath());
+//						}
 						path.add(edge);
 						if(lookAt.containsKey(edge)){
 							if(child.getValOfEdge(edge)>0){
@@ -95,10 +103,12 @@ public class Ai extends UntypedActor {
 						}
 					}
 				}
-				lookAt.remove(child);
 				rem.add(child);
 			}
-			for(LevelNode r:rem)toCheck.remove(r);
+			for(LevelNode r:rem){
+				lookAt.remove(r);
+				toCheck.remove(r);
+			}
 			for(LevelNode a:add)toCheck.add(a);
 			//break no more unblocked points in Level
 			if(toCheck.isEmpty())return null;
@@ -115,7 +125,9 @@ public class Ai extends UntypedActor {
 		}
 		//if nullpointer here check why return in while is not reached
 		System.out.println("WayOut: "+bestFree.getPath());
-		return bestFree.getPath();
+		List<LevelNode> out=bestFree.getPath();
+		out.remove(out.size()-1);
+		return out;
 	}
 	
 	private void calcRoute(Car car){
@@ -145,8 +157,8 @@ public class Ai extends UntypedActor {
 			LevelNode startNode=level.getNearestinLevel(car.getCenter(), true), target=getNearestNodeinLevel(nextCoin);
 			List<LevelNode>path =new LinkedList<LevelNode>();
 			if(startNode!=null){
-				if(startNode.getVal()<0){
-					System.out.println("StartNode: "+startNode.toString());
+				if(startNode.isBlocked()){
+//					System.out.println("StartNode: "+startNode.toString());
 					List<LevelNode> wayOut=findWayOut(startNode);
 					if(wayOut!=null){
 						path.addAll(wayOut);
@@ -163,9 +175,10 @@ public class Ai extends UntypedActor {
 					List<LevelNode> pathWithoutStart=new LinkedList<LevelNode>();
 					pathWithoutStart.addAll(path);
 					pathWithoutStart.remove(startNode);
-					lookAt.put(startNode, new AStarNodes(path.get(0).lengthtoNode(target), 0, pathWithoutStart));
+					lookAt.put(path.get(0), new AStarNodes(path.get(0).lengthtoNode(target), 0, pathWithoutStart));
+//					System.out.println("look at bevor astar:"+lookAt);
 					
-					System.out.println("target:"+nextCoin.getId()+" pos:"+nextCoin.getWorldTransform().getPosition()+" inLevel: "+target.getPOS());
+//					System.out.println("target:"+nextCoin.getId()+" pos:"+nextCoin.getWorldTransform().getPosition()+" inLevel: "+target.getPOS());
 //					path.add(startNode);
 					
 					List<LevelNode> visit=new LinkedList<LevelNode>();
@@ -272,29 +285,31 @@ public class Ai extends UntypedActor {
 				for(LevelNode child:path.get(0).getChilds()){
 					if(child.getValOfEdge(path.get(0))<0)visited.add(child);
 					if(!visited.contains(child)){
-						System.out.println("Val of Child to Edge: "+child+" -->"+path.get(0)+" :"+child.getValOfEdge(path.get(0)));
+//						System.out.println("Val of Child to Edge: "+child+" -->"+path.get(0)+" :"+child.getValOfEdge(path.get(0)));
 						double resistance=1;
-						try{
+//						try{
 							resistance = lookAt.get(path.get(0)).getResistance()+child.getValOfEdge(path.get(0)); //resistance till parent + resistance child to parent
-						}catch(Exception e){
-							System.out.println("Resistance fail: "+e.getMessage());
-							System.out.println("lookat: "+lookAt);
-							System.out.println("child: "+child+" -->"+path.get(0)+" val:"+child.getValOfEdge(path.get(0)));
-							System.out.println("lookat path0:"+lookAt.get(path.get(0)));
-							System.out.println("lookat res:"+lookAt.get(path.get(0)).getResistance());
-						}
+//						}catch(Exception e){
+//							System.out.println("Resistance fail: "+e.getMessage());
+//							System.out.println("lookat: "+lookAt);
+//							System.out.println("child: "+child+" -->"+path.get(0)+" val:"+child.getValOfEdge(path.get(0)));
+//							System.out.println("lookat path0:"+lookAt.get(path.get(0)));
+//							System.out.println("lookat res:"+lookAt.get(path.get(0)).getResistance());
+//						}
 						double distance=child.lengthtoNode(target)+resistance; //pytagoras lenght + resistance
 //					System.out.print(" distance: "+distance);
 						//keep only shortest way to child
+						List<LevelNode> pathClone=new LinkedList<LevelNode>();
+						pathClone.addAll(path);
 						if(lookAt.containsKey(child)){
 							if(lookAt.get(child).getLength()>distance){
-								lookAt.put(child, new AStarNodes(distance, resistance, path));
+								lookAt.put(child, new AStarNodes(distance, resistance, pathClone));
 							}
 						}else{
-							lookAt.put(child, new AStarNodes(distance, resistance, path));
+							lookAt.put(child, new AStarNodes(distance, resistance, pathClone));
 						}
 					}else{
-						System.out.println("visited: "+child+" -->"+path.get(0)+" :"+child.getValOfEdge(path.get(0)));
+//						System.out.println("visited: "+child+" -->"+path.get(0)+" :"+child.getValOfEdge(path.get(0)));
 					}
 				}
 //			if(path.contains(target))return new Route((int) lookAt.get(target).getLength(), path);
@@ -311,7 +326,7 @@ public class Ai extends UntypedActor {
 							Entry<LevelNode, AStarNodes> o2) {
 						return Double.compare(o1.getValue().getLength(), o2.getValue().getLength());
 					}}).getKey();
-				System.out.println("Pathmin size "+pathMin.size()+" "+pathMin);
+//				System.out.println("Pathmin size "+pathMin.size()+" "+pathMin);
 				pathMin.clear();
 				pathMin.add(min);
 				pathMin.addAll(lookAt.get(min).getPath());
@@ -319,7 +334,7 @@ public class Ai extends UntypedActor {
 				path.addAll(pathMin);
 			}
 			if(min!=null){
-				System.out.println("Pathmin size:"+pathMin.size()+" min:"+min+" path:"+pathMin);
+//				System.out.println("Pathmin size:"+pathMin.size()+" min:"+min+" path:"+pathMin);
 				double len=lookAt.get(min).getLength()-pathMin.get(pathMin.size()-1).getValOfEdge(pathMin.get(pathMin.size()-2));
 				pathMin.remove(pathMin.size()-1);
 				return new Route(len, pathMin);

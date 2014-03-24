@@ -111,11 +111,9 @@ public class Level {
 	}
 	
 	private void setWeigth(Set<LevelNode> positions, double multiplier){
-		System.out.println("fail from?");
 		for(LevelNode node:positions) {
 			levelPoints.get(node.getPOS().x(), node.getPOS().z()).multEdgesVal(multiplier);
 		}
-		System.out.println("fail to?");
 	}
 	
 	private void manageBlocked(LevelNode from, LevelNode toElement, boolean block){
@@ -234,7 +232,7 @@ public class Level {
 	public boolean nearestIsBlocked(Vector pos){
 		Coordinate c=getNearest(new Coordinate(pos.x(), pos.z()), true, 0);
 		if(c!=null){
-			if(levelPoints.get((float)c.x, (float)c.y).getVal()>0)return false;
+			if(!levelPoints.get((float)c.x, (float)c.y).isBlocked())return false;
 		}
 		return true;
 	}
@@ -248,7 +246,7 @@ public class Level {
 		}else{
 			//Erzeugt Set mit nur Positionswerten die nicht geblockt sind(>0)
 			for(Cell<Float, Float, LevelNode> c:levelPoints.cellSet()){
-				if(c.getValue().getVal()>0){
+				if(!c.getValue().isBlocked()){
 					values.add(c.getValue().getCoordinate());
 				}
 			}

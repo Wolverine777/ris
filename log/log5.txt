@@ -1,0 +1,8372 @@
+Starting initialization
+Creating Entities
+Initializing Entities
+Physic initialised
+Init Ai
+level center vec: (0.0, -2.0, 0.0)
+Initialized Actor[akka://default/user/App/Simulator#-1996779821]
+Initialized Actor[akka://default/user/App/Physic#1814651556]
+Initialized Actor[akka://default/user/App/Ai#2085815416]
+Connected
+Initialized Actor[akka://default/user/App/Input#2072579421]
+fontnull
+Initialized Actor[akka://default/user/App/Renderer#2078902919]
+Initializing App
+sun added
+__ Appending head to start
+__ Appending Sun to start
+__ Appending Floor to head
+__ Appending hamvee to head
+input receive: [205]Actor[akka://default/user/App/Simulator#-1996779821]
+input receive: [203]Actor[akka://default/user/App/Simulator#-1996779821]
+input receive: [200]Actor[akka://default/user/App/Simulator#-1996779821]
+input receive: [208]Actor[akka://default/user/App/Simulator#-1996779821]
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+objSphere3(65.31067, 584.9128, -816.839)
+__ Appending objSphere3 to head
+TextureID1
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+objSphere4(5.0, 0.0, 5.0)
+__ Appending objSphere4 to head
+App initialized
+Initialization finished in 2,825s
+Starting new loop
+simulation loop
+input loop
+physic loop
+min:(-0.5535387, -1.730859, -0.5532549) max:(0.5677464, -1.730859, 0.5680302) ID:hamvee
+from: (-1.0, -2.0, -0.5) to: (1.0, -2.0, 0.5)
+block nodes:
+(-1.0, -2.0, -0.5)(-1.0, -2.0, 0.0)(-1.0, -2.0, 0.5)(-0.5, -2.0, -0.5)(-0.5, -2.0, 0.0)(-0.5, -2.0, 0.5)(0.0, -2.0, -0.5)(0.0, -2.0, 0.0)(0.0, -2.0, 0.5)(0.5, -2.0, -0.5)(0.5, -2.0, 0.0)(0.5, -2.0, 0.5)(1.0, -2.0, -0.5)(1.0, -2.0, 0.0)(1.0, -2.0, 0.5)
+fail from?
+mult val:(-1.0/-0.5)[0.01]-->(-1.5/-1.0)[0.01] val:-0.01
+mult val:(-1.0/-0.5)[0.01]-->(-1.5/0.0)[0.01] val:-0.01
+mult val:(-1.0/-0.5)[0.01]-->(-1.0/-1.0)[0.01] val:-0.01
+mult val:(-1.0/-0.5)[0.01]-->(-0.5/-1.0)[0.01] val:-0.01
+mult val:(-1.0/-0.5)[0.01]-->(-0.5/-0.5)[0.01] val:-0.01
+mult val:(-1.0/-0.5)[0.01]-->(-0.5/0.0)[0.01] val:-0.01
+mult val:(-1.0/-0.5)[0.01]-->(-1.5/-0.5)[0.01] val:-0.01
+mult val:(-1.0/-0.5)[0.01]-->(-1.0/0.0)[0.01] val:-0.01
+mult val:(-1.0/0.0)[0.01]-->(-0.5/0.5)[0.01] val:-0.01
+mult val:(-1.0/0.0)[0.01]-->(-1.5/0.0)[0.01] val:-0.01
+mult val:(-1.0/0.0)[0.01]-->(-1.0/0.5)[0.01] val:-0.01
+mult val:(-1.0/0.0)[0.01]-->(-0.5/-0.5)[0.01] val:-0.01
+mult val:(-1.0/0.0)[0.01]-->(-1.0/-0.5)[-0.01] val:-0.01
+mult val:(-1.0/0.0)[0.01]-->(-0.5/0.0)[0.01] val:-0.01
+mult val:(-1.0/0.0)[0.01]-->(-1.5/-0.5)[0.01] val:-0.01
+mult val:(-1.0/0.0)[0.01]-->(-1.5/0.5)[0.01] val:-0.01
+mult val:(-1.0/0.5)[0.01]-->(-0.5/0.5)[0.01] val:-0.01
+mult val:(-1.0/0.5)[0.01]-->(-1.5/1.0)[0.01] val:-0.01
+mult val:(-1.0/0.5)[0.01]-->(-1.5/0.0)[0.01] val:-0.01
+mult val:(-1.0/0.5)[0.01]-->(-1.0/1.0)[0.01] val:-0.01
+mult val:(-1.0/0.5)[0.01]-->(-0.5/0.0)[0.01] val:-0.01
+mult val:(-1.0/0.5)[0.01]-->(-1.0/0.0)[-0.01] val:-0.01
+mult val:(-1.0/0.5)[0.01]-->(-1.5/0.5)[0.01] val:-0.01
+mult val:(-1.0/0.5)[0.01]-->(-0.5/1.0)[0.01] val:-0.01
+mult val:(-0.5/-0.5)[0.01]-->(0.0/0.0)[0.01] val:-0.01
+mult val:(-0.5/-0.5)[0.01]-->(0.0/-1.0)[0.01] val:-0.01
+mult val:(-0.5/-0.5)[0.01]-->(-1.0/-1.0)[0.01] val:-0.01
+mult val:(-0.5/-0.5)[0.01]-->(-0.5/-1.0)[0.01] val:-0.01
+mult val:(-0.5/-0.5)[0.01]-->(-1.0/-0.5)[-0.01] val:-0.01
+mult val:(-0.5/-0.5)[0.01]-->(-0.5/0.0)[0.01] val:-0.01
+mult val:(-0.5/-0.5)[0.01]-->(-1.0/0.0)[-0.01] val:-0.01
+mult val:(-0.5/-0.5)[0.01]-->(0.0/-0.5)[0.01] val:-0.01
+mult val:(-0.5/0.0)[0.01]-->(0.0/0.0)[0.01] val:-0.01
+mult val:(-0.5/0.0)[0.01]-->(-0.5/0.5)[0.01] val:-0.01
+mult val:(-0.5/0.0)[0.01]-->(0.0/0.5)[0.01] val:-0.01
+mult val:(-0.5/0.0)[0.01]-->(-1.0/0.5)[-0.01] val:-0.01
+mult val:(-0.5/0.0)[0.01]-->(-0.5/-0.5)[-0.01] val:-0.01
+mult val:(-0.5/0.0)[0.01]-->(-1.0/-0.5)[-0.01] val:-0.01
+mult val:(-0.5/0.0)[0.01]-->(-1.0/0.0)[-0.01] val:-0.01
+mult val:(-0.5/0.0)[0.01]-->(0.0/-0.5)[0.01] val:-0.01
+mult val:(-0.5/0.5)[0.01]-->(0.0/0.0)[0.01] val:-0.01
+mult val:(-0.5/0.5)[0.01]-->(0.0/0.5)[0.01] val:-0.01
+mult val:(-0.5/0.5)[0.01]-->(0.0/1.0)[0.01] val:-0.01
+mult val:(-0.5/0.5)[0.01]-->(-1.0/0.5)[-0.01] val:-0.01
+mult val:(-0.5/0.5)[0.01]-->(-1.0/1.0)[0.01] val:-0.01
+mult val:(-0.5/0.5)[0.01]-->(-0.5/0.0)[-0.01] val:-0.01
+mult val:(-0.5/0.5)[0.01]-->(-1.0/0.0)[-0.01] val:-0.01
+mult val:(-0.5/0.5)[0.01]-->(-0.5/1.0)[0.01] val:-0.01
+mult val:(0.0/-0.5)[0.01]-->(0.0/0.0)[0.01] val:-0.01
+mult val:(0.0/-0.5)[0.01]-->(0.0/-1.0)[0.01] val:-0.01
+mult val:(0.0/-0.5)[0.01]-->(0.5/-1.0)[0.01] val:-0.01
+mult val:(0.0/-0.5)[0.01]-->(-0.5/-1.0)[0.01] val:-0.01
+mult val:(0.0/-0.5)[0.01]-->(0.5/0.0)[0.01] val:-0.01
+mult val:(0.0/-0.5)[0.01]-->(-0.5/-0.5)[-0.01] val:-0.01
+mult val:(0.0/-0.5)[0.01]-->(-0.5/0.0)[-0.01] val:-0.01
+mult val:(0.0/-0.5)[0.01]-->(0.5/-0.5)[0.01] val:-0.01
+mult val:(0.0/0.0)[0.01]-->(-0.5/0.5)[-0.01] val:-0.01
+mult val:(0.0/0.0)[0.01]-->(0.0/0.5)[0.01] val:-0.01
+mult val:(0.0/0.0)[0.01]-->(0.5/0.5)[0.01] val:-0.01
+mult val:(0.0/0.0)[0.01]-->(0.5/0.0)[0.01] val:-0.01
+mult val:(0.0/0.0)[0.01]-->(-0.5/-0.5)[-0.01] val:-0.01
+mult val:(0.0/0.0)[0.01]-->(-0.5/0.0)[-0.01] val:-0.01
+mult val:(0.0/0.0)[0.01]-->(0.5/-0.5)[0.01] val:-0.01
+mult val:(0.0/0.0)[0.01]-->(0.0/-0.5)[-0.01] val:-0.01
+mult val:(0.0/0.5)[0.01]-->(0.0/0.0)[-0.01] val:-0.01
+mult val:(0.0/0.5)[0.01]-->(-0.5/0.5)[-0.01] val:-0.01
+mult val:(0.0/0.5)[0.01]-->(0.5/0.5)[0.01] val:-0.01
+mult val:(0.0/0.5)[0.01]-->(0.0/1.0)[0.01] val:-0.01
+mult val:(0.0/0.5)[0.01]-->(0.5/0.0)[0.01] val:-0.01
+mult val:(0.0/0.5)[0.01]-->(-0.5/0.0)[-0.01] val:-0.01
+mult val:(0.0/0.5)[0.01]-->(0.5/1.0)[0.01] val:-0.01
+mult val:(0.0/0.5)[0.01]-->(-0.5/1.0)[0.01] val:-0.01
+mult val:(0.5/-0.5)[0.01]-->(1.0/-1.0)[0.01] val:-0.01
+mult val:(0.5/-0.5)[0.01]-->(0.0/0.0)[-0.01] val:-0.01
+mult val:(0.5/-0.5)[0.01]-->(0.0/-1.0)[0.01] val:-0.01
+mult val:(0.5/-0.5)[0.01]-->(1.0/0.0)[0.01] val:-0.01
+mult val:(0.5/-0.5)[0.01]-->(0.5/-1.0)[0.01] val:-0.01
+mult val:(0.5/-0.5)[0.01]-->(1.0/-0.5)[0.01] val:-0.01
+mult val:(0.5/-0.5)[0.01]-->(0.5/0.0)[0.01] val:-0.01
+mult val:(0.5/-0.5)[0.01]-->(0.0/-0.5)[-0.01] val:-0.01
+mult val:(0.5/0.0)[0.01]-->(0.0/0.0)[-0.01] val:-0.01
+mult val:(0.5/0.0)[0.01]-->(0.0/0.5)[-0.01] val:-0.01
+mult val:(0.5/0.0)[0.01]-->(1.0/0.5)[0.01] val:-0.01
+mult val:(0.5/0.0)[0.01]-->(1.0/0.0)[0.01] val:-0.01
+mult val:(0.5/0.0)[0.01]-->(0.5/0.5)[0.01] val:-0.01
+mult val:(0.5/0.0)[0.01]-->(1.0/-0.5)[0.01] val:-0.01
+mult val:(0.5/0.0)[0.01]-->(0.5/-0.5)[-0.01] val:-0.01
+mult val:(0.5/0.0)[0.01]-->(0.0/-0.5)[-0.01] val:-0.01
+mult val:(0.5/0.5)[0.01]-->(0.0/0.0)[-0.01] val:-0.01
+mult val:(0.5/0.5)[0.01]-->(1.0/1.0)[0.01] val:-0.01
+mult val:(0.5/0.5)[0.01]-->(0.0/0.5)[-0.01] val:-0.01
+mult val:(0.5/0.5)[0.01]-->(1.0/0.5)[0.01] val:-0.01
+mult val:(0.5/0.5)[0.01]-->(1.0/0.0)[0.01] val:-0.01
+mult val:(0.5/0.5)[0.01]-->(0.0/1.0)[0.01] val:-0.01
+mult val:(0.5/0.5)[0.01]-->(0.5/0.0)[-0.01] val:-0.01
+mult val:(0.5/0.5)[0.01]-->(0.5/1.0)[0.01] val:-0.01
+mult val:(1.0/-0.5)[0.01]-->(1.0/-1.0)[0.01] val:-0.01
+mult val:(1.0/-0.5)[0.01]-->(1.0/0.0)[0.01] val:-0.01
+mult val:(1.0/-0.5)[0.01]-->(1.5/-0.5)[0.01] val:-0.01
+mult val:(1.0/-0.5)[0.01]-->(0.5/-1.0)[0.01] val:-0.01
+mult val:(1.0/-0.5)[0.01]-->(1.5/-1.0)[0.01] val:-0.01
+mult val:(1.0/-0.5)[0.01]-->(0.5/0.0)[-0.01] val:-0.01
+mult val:(1.0/-0.5)[0.01]-->(0.5/-0.5)[-0.01] val:-0.01
+mult val:(1.0/-0.5)[0.01]-->(1.5/0.0)[0.01] val:-0.01
+mult val:(1.0/0.0)[0.01]-->(1.0/0.5)[0.01] val:-0.01
+mult val:(1.0/0.0)[0.01]-->(0.5/0.5)[-0.01] val:-0.01
+mult val:(1.0/0.0)[0.01]-->(1.5/-0.5)[0.01] val:-0.01
+mult val:(1.0/0.0)[0.01]-->(1.0/-0.5)[-0.01] val:-0.01
+mult val:(1.0/0.0)[0.01]-->(0.5/0.0)[-0.01] val:-0.01
+mult val:(1.0/0.0)[0.01]-->(0.5/-0.5)[-0.01] val:-0.01
+mult val:(1.0/0.0)[0.01]-->(1.5/0.0)[0.01] val:-0.01
+mult val:(1.0/0.0)[0.01]-->(1.5/0.5)[0.01] val:-0.01
+mult val:(1.0/0.5)[0.01]-->(1.0/1.0)[0.01] val:-0.01
+mult val:(1.0/0.5)[0.01]-->(1.5/1.0)[0.01] val:-0.01
+mult val:(1.0/0.5)[0.01]-->(1.0/0.0)[-0.01] val:-0.01
+mult val:(1.0/0.5)[0.01]-->(0.5/0.5)[-0.01] val:-0.01
+mult val:(1.0/0.5)[0.01]-->(0.5/0.0)[-0.01] val:-0.01
+mult val:(1.0/0.5)[0.01]-->(1.5/0.0)[0.01] val:-0.01
+mult val:(1.0/0.5)[0.01]-->(1.5/0.5)[0.01] val:-0.01
+mult val:(1.0/0.5)[0.01]-->(0.5/1.0)[0.01] val:-0.01
+fail to?
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+tri n
+TextureID2
+Ai Loop
+Took 1241,71ms(possible 0,805fps) at 0,8fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 19,45ms(possible 0,805fps) at 51,4fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 7,23ms(possible 0,805fps) at 138,4fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 6,23ms(possible 0,805fps) at 160,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,70ms(possible 0,805fps) at 59,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 17,04ms(possible 0,805fps) at 58,7fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 17,32ms(possible 0,805fps) at 57,7fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,50ms(possible 0,805fps) at 60,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,83ms(possible 0,805fps) at 59,4fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,51ms(possible 0,805fps) at 60,6fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,84ms(possible 0,805fps) at 59,4fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,46ms(possible 0,805fps) at 60,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,60ms(possible 0,805fps) at 60,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,79ms(possible 0,805fps) at 59,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,55ms(possible 0,805fps) at 60,4fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,66ms(possible 0,805fps) at 60,0fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,72ms(possible 0,805fps) at 59,8fps.
+
+Starting new loop
+Ai Loop
+input loop
+simulation loop
+physic loop
+Took 16,54ms(possible 0,805fps) at 60,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,85ms(possible 0,805fps) at 59,3fps.
+
+Starting new loop
+physic loop
+Ai Loop
+simulation loop
+input loop
+Took 16,69ms(possible 0,805fps) at 59,9fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,61ms(possible 0,805fps) at 60,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,73ms(possible 0,805fps) at 59,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,77ms(possible 0,805fps) at 59,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,65ms(possible 0,805fps) at 60,1fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,48ms(possible 0,805fps) at 60,7fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 16,67ms(possible 0,805fps) at 60,0fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,70ms(possible 0,805fps) at 59,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,79ms(possible 0,805fps) at 59,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,70ms(possible 0,805fps) at 59,9fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,53ms(possible 0,805fps) at 60,5fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,66ms(possible 0,805fps) at 60,0fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+physic loop
+input loop
+Took 16,98ms(possible 0,805fps) at 58,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,60ms(possible 0,805fps) at 60,2fps.
+
+Starting new loop
+physic loop
+Ai Loop
+simulation loop
+input loop
+Took 16,52ms(possible 0,805fps) at 60,5fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,70ms(possible 0,805fps) at 59,9fps.
+
+Starting new loop
+input loop
+simulation loop
+Ai Loop
+physic loop
+Took 16,75ms(possible 0,805fps) at 59,7fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,57ms(possible 0,805fps) at 60,4fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,50ms(possible 0,805fps) at 60,6fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,45ms(possible 0,805fps) at 60,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 18,08ms(possible 0,805fps) at 55,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 15,15ms(possible 0,805fps) at 66,0fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 16,77ms(possible 0,805fps) at 59,6fps.
+
+Starting new loop
+Ai Loop
+physic loop
+simulation loop
+input loop
+Took 16,62ms(possible 0,805fps) at 60,2fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 17,15ms(possible 0,805fps) at 58,3fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,67ms(possible 0,805fps) at 60,0fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 16,56ms(possible 0,805fps) at 60,4fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,76ms(possible 0,805fps) at 59,7fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,54ms(possible 0,805fps) at 60,5fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 16,65ms(possible 0,805fps) at 60,1fps.
+
+Starting new loop
+Ai Loop
+physic loop
+simulation loop
+input loop
+Took 16,90ms(possible 0,805fps) at 59,2fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 16,72ms(possible 0,805fps) at 59,8fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,58ms(possible 0,805fps) at 60,3fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,82ms(possible 0,805fps) at 59,5fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,59ms(possible 0,805fps) at 60,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,71ms(possible 0,805fps) at 59,9fps.
+
+Starting new loop
+simulation loop
+physic loop
+input loop
+Ai Loop
+Took 16,85ms(possible 0,805fps) at 59,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,45ms(possible 0,805fps) at 60,8fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,72ms(possible 0,805fps) at 59,8fps.
+
+Starting new loop
+Ai Loop
+physic loop
+simulation loop
+input loop
+Took 16,50ms(possible 0,805fps) at 60,6fps.
+
+Starting new loop
+Ai Loop
+input loop
+simulation loop
+physic loop
+Took 16,73ms(possible 0,805fps) at 59,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,60ms(possible 0,805fps) at 60,3fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+physic loop
+input loop
+Took 16,78ms(possible 60,955fps) at 59,6fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,63ms(possible 60,955fps) at 60,1fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,61ms(possible 60,955fps) at 60,2fps.
+
+Starting new loop
+physic loop
+Ai Loop
+simulation loop
+input loop
+Took 16,70ms(possible 60,955fps) at 59,9fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,88ms(possible 60,955fps) at 59,3fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,56ms(possible 60,955fps) at 60,4fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,72ms(possible 60,955fps) at 59,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,66ms(possible 60,955fps) at 60,0fps.
+
+Starting new loop
+Ai Loop
+physic loop
+input loop
+simulation loop
+Took 16,52ms(possible 60,955fps) at 60,5fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,80ms(possible 60,955fps) at 59,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 21,71ms(possible 60,955fps) at 46,1fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 11,37ms(possible 60,955fps) at 88,0fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 17,79ms(possible 60,955fps) at 56,2fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 15,93ms(possible 60,955fps) at 62,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,34ms(possible 60,955fps) at 61,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 17,15ms(possible 60,955fps) at 58,3fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,45ms(possible 60,955fps) at 60,8fps.
+
+Starting new loop
+physic loop
+Ai Loop
+simulation loop
+input loop
+Took 16,68ms(possible 60,955fps) at 60,0fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,59ms(possible 60,955fps) at 60,3fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 17,25ms(possible 60,955fps) at 58,0fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,25ms(possible 60,955fps) at 61,5fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,46ms(possible 60,955fps) at 60,7fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,84ms(possible 60,955fps) at 59,4fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 17,12ms(possible 60,955fps) at 58,4fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,32ms(possible 60,955fps) at 61,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,49ms(possible 60,955fps) at 60,6fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 16,82ms(possible 60,955fps) at 59,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 17,16ms(possible 60,955fps) at 58,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,39ms(possible 60,955fps) at 61,0fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,30ms(possible 60,955fps) at 61,3fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,61ms(possible 60,955fps) at 60,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 17,01ms(possible 60,955fps) at 58,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,20ms(possible 60,955fps) at 61,7fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,85ms(possible 60,955fps) at 59,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,90ms(possible 60,955fps) at 59,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,74ms(possible 60,955fps) at 59,7fps.
+
+Starting new loop
+Ai Loop
+physic loop
+simulation loop
+input loop
+Took 16,31ms(possible 60,955fps) at 61,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,86ms(possible 60,955fps) at 59,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 18,04ms(possible 60,955fps) at 55,4fps.
+
+Starting new loop
+Ai Loop
+physic loop
+input loop
+simulation loop
+Took 15,12ms(possible 60,955fps) at 66,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,52ms(possible 60,955fps) at 60,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,77ms(possible 60,955fps) at 59,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,53ms(possible 60,955fps) at 60,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,91ms(possible 60,955fps) at 59,1fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,87ms(possible 60,955fps) at 59,3fps.
+
+Starting new loop
+input loop
+Ai Loop
+physic loop
+simulation loop
+Took 16,39ms(possible 60,955fps) at 61,0fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,92ms(possible 60,955fps) at 59,1fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,26ms(possible 60,955fps) at 61,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,99ms(possible 60,955fps) at 58,9fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,61ms(possible 60,955fps) at 60,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,70ms(possible 60,955fps) at 59,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,47ms(possible 60,955fps) at 60,7fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,89ms(possible 60,955fps) at 59,2fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,65ms(possible 60,955fps) at 60,1fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,57ms(possible 60,955fps) at 60,3fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+physic loop
+input loop
+Took 16,46ms(possible 60,955fps) at 60,8fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,74ms(possible 60,955fps) at 59,7fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,83ms(possible 60,955fps) at 59,4fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,58ms(possible 60,955fps) at 60,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,56ms(possible 60,955fps) at 60,4fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,64ms(possible 60,955fps) at 60,1fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,71ms(possible 59,998fps) at 59,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,78ms(possible 59,998fps) at 59,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,88ms(possible 59,998fps) at 59,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,70ms(possible 59,998fps) at 59,9fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,65ms(possible 59,998fps) at 60,0fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,56ms(possible 59,998fps) at 60,4fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,99ms(possible 59,998fps) at 58,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,43ms(possible 59,998fps) at 60,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,82ms(possible 59,998fps) at 59,5fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,68ms(possible 59,998fps) at 59,9fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,74ms(possible 59,998fps) at 59,7fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,68ms(possible 59,998fps) at 60,0fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,61ms(possible 59,998fps) at 60,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,44ms(possible 59,998fps) at 60,8fps.
+
+Starting new loop
+Ai Loop
+input loop
+simulation loop
+physic loop
+Took 16,74ms(possible 59,998fps) at 59,7fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,52ms(possible 59,998fps) at 60,5fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,78ms(possible 59,998fps) at 59,6fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,75ms(possible 59,998fps) at 59,7fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,55ms(possible 59,998fps) at 60,4fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,91ms(possible 59,998fps) at 59,1fps.
+
+Starting new loop
+input loop
+physic loop
+simulation loop
+Ai Loop
+Took 16,47ms(possible 59,998fps) at 60,7fps.
+
+Starting new loop
+physic loop
+Ai Loop
+simulation loop
+input loop
+Took 16,51ms(possible 59,998fps) at 60,6fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,99ms(possible 59,998fps) at 58,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,45ms(possible 59,998fps) at 60,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,45ms(possible 59,998fps) at 60,8fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 16,73ms(possible 59,998fps) at 59,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,60ms(possible 59,998fps) at 60,2fps.
+
+Starting new loop
+input loop
+simulation loop
+Ai Loop
+physic loop
+Took 16,97ms(possible 59,998fps) at 58,9fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+physic loop
+input loop
+Took 16,49ms(possible 59,998fps) at 60,7fps.
+
+Starting new loop
+input loop
+simulation loop
+Ai Loop
+physic loop
+Took 16,61ms(possible 59,998fps) at 60,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,63ms(possible 59,998fps) at 60,1fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,90ms(possible 59,998fps) at 59,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,60ms(possible 59,998fps) at 60,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,68ms(possible 59,998fps) at 60,0fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,84ms(possible 59,998fps) at 59,4fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,62ms(possible 59,998fps) at 60,2fps.
+
+Starting new loop
+Ai Loop
+input loop
+simulation loop
+physic loop
+Took 16,68ms(possible 59,998fps) at 59,9fps.
+
+Starting new loop
+Ai Loop
+physic loop
+simulation loop
+input loop
+Took 18,54ms(possible 59,998fps) at 53,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 14,79ms(possible 59,998fps) at 67,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,45ms(possible 59,998fps) at 60,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,68ms(possible 59,998fps) at 59,9fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,71ms(possible 59,998fps) at 59,8fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,62ms(possible 59,998fps) at 60,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,73ms(possible 59,998fps) at 59,8fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,63ms(possible 59,998fps) at 60,1fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,61ms(possible 59,998fps) at 60,2fps.
+
+Starting new loop
+input loop
+simulation loop
+Ai Loop
+physic loop
+Took 16,59ms(possible 59,998fps) at 60,3fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,65ms(possible 59,998fps) at 60,1fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,72ms(possible 59,998fps) at 59,8fps.
+
+Starting new loop
+input loop
+simulation loop
+Ai Loop
+physic loop
+Took 16,91ms(possible 59,998fps) at 59,1fps.
+
+Starting new loop
+physic loop
+Ai Loop
+simulation loop
+input loop
+Took 16,76ms(possible 59,998fps) at 59,7fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+physic loop
+input loop
+Took 16,55ms(possible 59,998fps) at 60,4fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,71ms(possible 59,998fps) at 59,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,77ms(possible 59,998fps) at 59,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,56ms(possible 59,998fps) at 60,4fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,72ms(possible 59,998fps) at 59,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,59ms(possible 59,998fps) at 60,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,88ms(possible 59,998fps) at 59,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,78ms(possible 59,998fps) at 59,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,52ms(possible 59,998fps) at 60,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,55ms(possible 59,972fps) at 60,4fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,67ms(possible 59,972fps) at 60,0fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,67ms(possible 59,972fps) at 60,0fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,65ms(possible 59,972fps) at 60,1fps.
+
+Starting new loop
+Ai Loop
+physic loop
+simulation loop
+input loop
+Took 16,77ms(possible 59,972fps) at 59,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,71ms(possible 59,972fps) at 59,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,38ms(possible 59,972fps) at 61,0fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 17,82ms(possible 59,972fps) at 56,1fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,20ms(possible 59,972fps) at 61,7fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,28ms(possible 59,972fps) at 61,4fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,56ms(possible 59,972fps) at 60,4fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,60ms(possible 59,972fps) at 60,2fps.
+
+Starting new loop
+input loop
+simulation loop
+Ai Loop
+physic loop
+Took 16,83ms(possible 59,972fps) at 59,4fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 16,80ms(possible 59,972fps) at 59,5fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,64ms(possible 59,972fps) at 60,1fps.
+
+Starting new loop
+Ai Loop
+physic loop
+simulation loop
+input loop
+Took 16,56ms(possible 59,972fps) at 60,4fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+physic loop
+input loop
+Took 16,72ms(possible 59,972fps) at 59,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,72ms(possible 59,972fps) at 59,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,09ms(possible 59,972fps) at 62,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 17,25ms(possible 59,972fps) at 58,0fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 17,37ms(possible 59,972fps) at 57,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,26ms(possible 59,972fps) at 61,5fps.
+
+Starting new loop
+input loop
+Ai Loop
+simulation loop
+physic loop
+Took 16,45ms(possible 59,972fps) at 60,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,69ms(possible 59,972fps) at 59,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,71ms(possible 59,972fps) at 59,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,74ms(possible 59,972fps) at 59,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,36ms(possible 59,972fps) at 61,1fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,87ms(possible 59,972fps) at 59,3fps.
+
+Starting new loop
+Ai Loop
+input loop
+simulation loop
+physic loop
+Took 16,82ms(possible 59,972fps) at 59,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,41ms(possible 59,972fps) at 61,0fps.
+
+Starting new loop
+input loop
+simulation loop
+physic loop
+Ai Loop
+Took 16,53ms(possible 59,972fps) at 60,5fps.
+
+Starting new loop
+Ai Loop
+input loop
+simulation loop
+physic loop
+Took 16,78ms(possible 59,972fps) at 59,6fps.
+
+Starting new loop
+input loop
+simulation loop
+Ai Loop
+physic loop
+Took 16,91ms(possible 59,972fps) at 59,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,62ms(possible 59,972fps) at 60,2fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 17,64ms(possible 59,972fps) at 56,7fps.
+
+Starting new loop
+input loop
+Ai Loop
+simulation loop
+physic loop
+Took 16,81ms(possible 59,972fps) at 59,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,13ms(possible 59,972fps) at 62,0fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,44ms(possible 59,972fps) at 60,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 18,55ms(possible 59,972fps) at 53,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 14,18ms(possible 59,972fps) at 70,5fps.
+
+Starting new loop
+physic loop
+Ai Loop
+simulation loop
+input loop
+Took 16,51ms(possible 59,972fps) at 60,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 17,03ms(possible 59,972fps) at 58,7fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,83ms(possible 59,972fps) at 59,4fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,68ms(possible 59,972fps) at 59,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,61ms(possible 59,972fps) at 60,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,72ms(possible 59,972fps) at 59,8fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,85ms(possible 59,972fps) at 59,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,36ms(possible 59,972fps) at 61,1fps.
+
+Starting new loop
+Ai Loop
+physic loop
+simulation loop
+input loop
+Took 17,14ms(possible 59,972fps) at 58,3fps.
+
+Starting new loop
+physic loop
+input loop
+Ai Loop
+simulation loop
+Took 17,11ms(possible 59,972fps) at 58,4fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,25ms(possible 59,972fps) at 61,5fps.
+
+Starting new loop
+input loop
+physic loop
+simulation loop
+Ai Loop
+Took 18,80ms(possible 59,972fps) at 53,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 15,65ms(possible 59,972fps) at 63,9fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 17,41ms(possible 59,972fps) at 57,4fps.
+
+Starting new loop
+input loop
+physic loop
+simulation loop
+Ai Loop
+Took 14,69ms(possible 59,972fps) at 68,1fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,22ms(possible 59,972fps) at 61,7fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,69ms(possible 59,972fps) at 59,9fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 17,02ms(possible 59,972fps) at 58,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,35ms(possible 59,972fps) at 61,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,94ms(possible 59,972fps) at 59,0fps.
+
+Starting new loop
+input loop
+simulation loop
+Ai Loop
+physic loop
+Took 16,44ms(possible 59,971fps) at 60,8fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,82ms(possible 59,971fps) at 59,4fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,70ms(possible 59,971fps) at 59,9fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,62ms(possible 59,971fps) at 60,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,75ms(possible 59,971fps) at 59,7fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,50ms(possible 59,971fps) at 60,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,78ms(possible 59,971fps) at 59,6fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,48ms(possible 59,971fps) at 60,7fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,90ms(possible 59,971fps) at 59,2fps.
+
+Starting new loop
+input loop
+simulation loop
+physic loop
+Ai Loop
+Took 16,62ms(possible 59,971fps) at 60,2fps.
+
+Starting new loop
+Ai Loop
+input loop
+simulation loop
+physic loop
+Took 16,53ms(possible 59,971fps) at 60,5fps.
+
+Starting new loop
+input loop
+simulation loop
+Ai Loop
+physic loop
+Took 16,57ms(possible 59,971fps) at 60,4fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,95ms(possible 59,971fps) at 59,0fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 18,83ms(possible 59,971fps) at 53,1fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+physic loop
+input loop
+Took 14,97ms(possible 59,971fps) at 66,8fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 17,27ms(possible 59,971fps) at 57,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,94ms(possible 59,971fps) at 59,0fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 16,90ms(possible 59,971fps) at 59,2fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 16,70ms(possible 59,971fps) at 59,9fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+input loop
+physic loop
+Took 16,56ms(possible 59,971fps) at 60,4fps.
+
+Starting new loop
+input loop
+simulation loop
+physic loop
+Ai Loop
+Took 16,59ms(possible 59,971fps) at 60,3fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,64ms(possible 59,971fps) at 60,1fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 16,85ms(possible 59,971fps) at 59,4fps.
+
+Starting new loop
+input loop
+simulation loop
+Ai Loop
+physic loop
+Took 16,84ms(possible 59,971fps) at 59,4fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,42ms(possible 59,971fps) at 60,9fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 15,28ms(possible 59,971fps) at 65,4fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,48ms(possible 59,971fps) at 60,7fps.
+
+Starting new loop
+physic loop
+Ai Loop
+simulation loop
+input loop
+Took 16,62ms(possible 59,971fps) at 60,2fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,65ms(possible 59,971fps) at 60,1fps.
+
+Starting new loop
+Ai Loop
+physic loop
+input loop
+simulation loop
+Took 17,08ms(possible 59,971fps) at 58,5fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop
+Took 16,26ms(possible 59,971fps) at 61,5fps.
+
+Starting new loop
+Ai Loop
+simulation loop
+physic loop
+input loop
+Took 16,64ms(possible 59,971fps) at 60,1fps.
+
+Starting new loop
+physic loop
+simulation loop
+Ai Loop
+input loop
+Took 16,71ms(possible 59,971fps) at 59,8fps.
+
+Starting new loop
+input loop
+simulation loop
+Ai Loop
+physic loop
+Took 16,67ms(possible 59,971fps) at 60,0fps.
+
+Starting new loop
+physic loop
+Ai Loop
+input loop
+simulation loop
+Took 16,66ms(possible 59,971fps) at 60,0fps.
+
+Starting new loop
+physic loop
+input loop
+simulation loop
+Ai Loop
+Took 27,00ms(possible 59,971fps) at 37,0fps.
+
+Starting new loop
+physic loop
+simulation loop
+input loop
+Ai Loop

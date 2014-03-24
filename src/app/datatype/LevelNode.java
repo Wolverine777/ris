@@ -1,8 +1,6 @@
 package app.datatype;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -56,10 +54,10 @@ public class LevelNode implements Comparable<LevelNode> {
 
 	public void multEdgesVal(double val) {
 		for(LevelNode node:edges.keySet()){
-			if(val<0)System.out.println("mult val:"+this+"-->"+node+" val:"+edges.get(node).doubleValue()*val);
+//			if(val<0)System.out.println("mult val:"+this+"-->"+node+" val:"+edges.get(node).doubleValue()*val);
 			edges.put(node, edges.get(node).doubleValue()*val);
 		}
-		calcOwnVal();
+		this.val=this.val*val;
 	}
 	
 	private void calcOwnVal(){
@@ -82,11 +80,21 @@ public class LevelNode implements Comparable<LevelNode> {
 		return new TreeSet<LevelNode>(edges.keySet());
 	}
 
+	public boolean isBlocked(){
+		for(LevelNode l:edges.keySet()){
+			if(getValOfEdge(l)<0)return true;
+		}
+		return false;
+	}
+	
 	public float getDepth() {
-
 		return 0;
 	}
 
+	/**
+	 * dont calc with that
+	 * @return
+	 */
 	public double getVal() {
 		return val;
 	}
@@ -97,13 +105,13 @@ public class LevelNode implements Comparable<LevelNode> {
 	
 	public double getValOfEdge(LevelNode toNode){
 		double ret=BASEVAL;
-		try{
+//		try{
 			ret=edges.get(toNode).doubleValue();
-		}catch(Exception e){
-			System.out.println("Fail to get Way of Edge: "+e.getMessage());
-			System.out.println(" this: "+toString()+ " toNode: "+toNode+" edges: "+edges+" get "+edges.get(toNode));
-			ret=edges.get(toNode).doubleValue();
-		}
+//		}catch(Exception e){
+//			System.out.println("Fail to get Way of Edge: "+e.getMessage());
+//			System.out.println(" this: "+toString()+ " toNode: "+toNode+" edges: "+edges+" get "+edges.get(toNode));
+//			ret=edges.get(toNode).doubleValue();
+//		}
 		return ret;
 	}
 	
