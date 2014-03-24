@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import vecmath.Vector;
 
@@ -27,9 +29,9 @@ public class LevelNode implements Comparable<LevelNode> {
 		this.POS = vector;
 		this.COORD=new Coordinate(vector.x(), vector.z());
 	}
-
-	public void addNode(LevelNode appendNode) {
-		edges.put(appendNode, BASEVAL);
+	
+	public Set<LevelNode> getEdges(){
+		return edges.keySet();
 	}
 
 	public void removeNode() {
@@ -43,7 +45,12 @@ public class LevelNode implements Comparable<LevelNode> {
 	}
 
 	public void addEdge(LevelNode toNode) {
+		//TODO: addEdge toNode(this)
 		edges.put(toNode, BASEVAL);
+	}
+	
+	public void addEdge(LevelNode toNode, double value) {
+		edges.put(toNode, value);
 	}
 
 	public void multEdgesVal(double val) {
@@ -51,11 +58,11 @@ public class LevelNode implements Comparable<LevelNode> {
 		this.val=this.val*val;
 	}
 	
-	public List<LevelNode> getChilds(){
+	public Set<LevelNode> getChilds(){
 //		System.out.println("parentNode: "+POS);
 //		System.out.println("childlist:"+new LinkedList<LevelNode>(edges.keySet()).size());
 //		System.out.println("childlist set:"+edges.keySet().size());
-		return new LinkedList<LevelNode>(edges.keySet());
+		return new TreeSet<LevelNode>(edges.keySet());
 	}
 
 	public float getDepth() {
@@ -72,6 +79,7 @@ public class LevelNode implements Comparable<LevelNode> {
 	}
 	
 	public double getValOfEdge(LevelNode toNode){
+		System.out.println(" this: "+toString()+ " toNode: "+toNode+" edges: "+edges+" get "+edges.get(toNode));
 		return edges.get(toNode);
 	}
 	

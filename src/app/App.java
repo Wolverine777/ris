@@ -52,6 +52,7 @@ public class App extends WorldState {
 
 		/**
 		 * Note: After Creation add keys and physic before transform.
+		 * For Ai at first init Cars
 		 */
 		setCamera(nodeFactory.camera("Cam", new LinkedList<Shader>(Arrays.asList(new Shader[]{shader,texShader}))));
 		transform(camera, FactoryDefault.vecmath.translationMatrix(0, floor.getHight()+floor.getD()*0.2f, (floor.getD()*0.86f)));
@@ -90,18 +91,6 @@ public class App extends WorldState {
 	}
 	
 	private void finalLevel(GroupNode head){
-//		alSourcePlay(Renderer.source2);
-		Canon canon = createCanon("Canon", texShader, new File("obj/Cannon2.obj"), new File("obj/2.jpg"), vecmath.translationMatrix(0.0f, floor.getHight(), ((floor.getD()/2)*0.90f)).mult(vecmath.rotationMatrix(-1.0f, 0f, 0f, 45f)), 1.0f);
-		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_D)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, -0.7f, 0f));
-		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_A)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0.7f, 0f));
-		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-0.7f, 0f, 0f));
-		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_S)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0.7f, 0f, 0f));		
-//		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_X)), SimulateType.ROTATE, KeyMode.TOGGLE, new VectorImp(0f, 1f, 0f));
-		simulateOnGesture(canon, GestureType.HAND_POSITION, SimulateType.ROTATE, new VectorImp(1, 0, 0));
-//		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 0.0f));
-		append(canon, head);
-		doCanonBalls();
-		
 //		Matrix m=vecmath.translationMatrix(-1, -2, 0);
 		Matrix carScale=vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f);
 		Car car1=createCar("Car1", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 5.4, vecmath.translationMatrix(-2, -2, 8).mult(carScale), 1f, null, PhysicType.Collision_only);
@@ -113,6 +102,17 @@ public class App extends WorldState {
 //		transform(car, vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
 //		transform(car,  vecmath.translationMatrix(-1.0f, -2.0f, 0.0f));
 		append(car2, head);
+		
+		Canon canon = createCanon("Canon", shader, new File("obj/Cannon2.obj"), /*new File("obj/2.jpg")*/null, vecmath.translationMatrix(0.0f, floor.getHight(), ((floor.getD()/2)*0.90f)).mult(vecmath.rotationMatrix(-1.0f, 0f, 0f, 45f)), 1.0f);
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_D)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, -0.7f, 0f));
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_A)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 0.7f, 0f));
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-0.7f, 0f, 0f));
+		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_S)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0.7f, 0f, 0f));		
+//		simulateOnKey(canon, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_X)), SimulateType.ROTATE, KeyMode.TOGGLE, new VectorImp(0f, 1f, 0f));
+		simulateOnGesture(canon, GestureType.HAND_POSITION, SimulateType.ROTATE, new VectorImp(1, 0, 0));
+//		transform(canon, vecmath.translationMatrix(2.5f, 0.0f, 0.0f));
+		append(canon, head);
+		doCanonBalls();
 		
 		Matrix scaleCoin=vecmath.scaleMatrix(0.15f, 0.15f, 0.15f);
 		Coin coin=createCoin("Coin1", shader, new File("obj/cube.obj"), vecmath.translationMatrix(8.0f, floor.getGround(), 8.0f).mult(scaleCoin), 1f, null, PhysicType.Collision_only);
@@ -127,7 +127,7 @@ public class App extends WorldState {
 		append(coin3, head);
 		
 		
-		Cube block=createCube("tree", shader, 2.2f,0.8f, 2.2f, 1f, null, null);
+		Cube block=createCube("tree", shader, 2.2f,0.8f, 2.2f, 1f, null, PhysicType.Collision_only);
 		transform(block,  vecmath.translationMatrix(-1.0f, -2.0f, -1.0f));
 		append(block, head);
 		

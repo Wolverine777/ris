@@ -359,7 +359,7 @@ public class Simulator extends UntypedActor {
 				simulationsgestures.put(newNode, new SimGesDef(sgc.getSimulation(), sgc.getGesture(), sgc.getVector()));
 				newNode.setLocalTransform(sgc.modelmatrix);
 				newNode.updateWorldTransform();
-				System.out.println("huhu" + sgc.modelmatrix);
+//				System.out.println("huhu" + sgc.modelmatrix);
 			}
 		} else if(message instanceof HandPosition){
 			HandPosition hp = (HandPosition)message;
@@ -414,6 +414,11 @@ public class Simulator extends UntypedActor {
 					for (Map.Entry<Node, SimDef> entry : simulations.entries()) {
 						if(entry.getValue().getReferenzId()!=null){
 							if(entry.getValue().getReferenzId().equals(id)){
+								if(entry.getKey()!=null){
+									if(entry instanceof Car){
+										((Car)entry.getKey()).setWayToTarget(null);
+									}
+								}
 								remove.put(entry.getKey(), entry.getValue());
 								NodeDeletion nd = new NodeDeletion();
 								nd.ids.add(entry.getKey().getId());

@@ -45,31 +45,69 @@ public class Level {
 				levelPoints.put(x/GRIDREFACTOR, z/GRIDREFACTOR, new LevelNode(new VectorImp(x/GRIDREFACTOR, centerPosition.y(), z/GRIDREFACTOR)));
 			}
 		}
+		Float prevRow=null;
+//		for(Cell<Float, Float, LevelNode> cell:levelPoints.cellSet()){
+//			if(prevColum!=null){
+//				cell.getValue().addEdge(levelPoints.get(cell.getRowKey(), prevColum));
+//				levelPoints.get(cell.getRowKey(), prevColum).addEdge(cell.getValue());
+//				
+//				
+//			}
+//		}
 		
-		for(Float row: levelPoints.rowKeySet()){
-			LevelNode lastNode=null;
+		for(Float row:levelPoints.rowMap().keySet()){
+			Float prevColum=null;
 			for(Map.Entry<Float, LevelNode> pair:levelPoints.rowMap().get(row).entrySet()){
-				LevelNode currentNode=pair.getValue();
-				if(lastNode!=null){
-					currentNode.addEdge(lastNode);
-					lastNode.addEdge(currentNode);
+				if(prevRow!=null){
+					//to prevRow up-down
+					pair.getValue().addEdge(levelPoints.get(prevRow, pair.getKey()));
+					levelPoints.get(prevRow, pair.getKey()).addEdge(pair.getValue());
+					if(prevColum!=null){
+						//to prevRow and prevCol to top left
+						pair.getValue().addEdge(levelPoints.get(prevRow, prevColum));
+						levelPoints.get(prevRow, prevColum).addEdge(pair.getValue());
+					}
+					//is there a next Colum?
+					if(levelPoints.containsColumn(pair.getKey()+(1/GRIDREFACTOR))){
+						//than add to top right
+						pair.getValue().addEdge(levelPoints.get(prevRow, pair.getKey()+(1/GRIDREFACTOR)));
+						levelPoints.get(prevRow, pair.getKey()+(1/GRIDREFACTOR)).addEdge(pair.getValue());
+					}
 				}
-				lastNode=currentNode;
-			}
-			lastNode=null;
-		}
-		for(Float col: levelPoints.columnKeySet()){
-			LevelNode lastNode=null;
-			for(Map.Entry<Float, LevelNode> pair:levelPoints.columnMap().get(col).entrySet()){
-				LevelNode currentNode=pair.getValue();
-				if(lastNode!=null){
-					currentNode.addEdge(lastNode);
-					lastNode.addEdge(currentNode);
+				if(prevColum!=null){
+					//to prevCol left-right
+					pair.getValue().addEdge(levelPoints.get(row, prevColum));
+					levelPoints.get(row, prevColum).addEdge(pair.getValue());
 				}
-				lastNode=currentNode;
+				prevColum=pair.getKey();
 			}
-			lastNode=null;
+			prevRow=row;
 		}
+		
+//		for(Float row: levelPoints.rowKeySet()){
+//			LevelNode lastNode=null;
+//			for(Map.Entry<Float, LevelNode> pair:levelPoints.rowMap().get(row).entrySet()){
+//				LevelNode currentNode=pair.getValue();
+//				if(lastNode!=null){
+//					currentNode.addEdge(lastNode);
+//					lastNode.addEdge(currentNode);
+//				}
+//				lastNode=currentNode;
+//			}
+//			lastNode=null;
+//		}
+//		for(Float col: levelPoints.columnKeySet()){
+//			LevelNode lastNode=null;
+//			for(Map.Entry<Float, LevelNode> pair:levelPoints.columnMap().get(col).entrySet()){
+//				LevelNode currentNode=pair.getValue();
+//				if(lastNode!=null){
+//					currentNode.addEdge(lastNode);
+//					lastNode.addEdge(currentNode);
+//				}
+//				lastNode=currentNode;
+//			}
+//			lastNode=null;
+//		}
 	}
 	
 	private void setWeigth(Set<LevelNode> positions, double multiplier){

@@ -51,8 +51,23 @@ public class Route {
 	
 	@Override
 	public Route clone(){
-		List<LevelNode> ln=new LinkedList<LevelNode>(waypoints);
+		List<LevelNode> ln=new LinkedList<LevelNode>();
+//		ln.addAll(waypoints);
+		for(LevelNode l:waypoints){
+			LevelNode node=new LevelNode(l.getPOS());
+			ln.add(node);
+		}
+		for(int x=0;x<ln.size();x++){
+			for(LevelNode edge:waypoints.get(x).getEdges()){
+				for(LevelNode newNode:ln){
+					if(newNode.getPOS().equals(edge.getPOS())){
+						ln.get(x).addEdge(newNode, edge.getValOfEdge(waypoints.get(x)));
+					}
+				}
+			}
+		}
 		Collections.reverse(ln);
-		return new Route(totalway, ln); 
+		double lenWay=totalway;
+		return new Route(lenWay, ln); 
 	}
 }

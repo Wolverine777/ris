@@ -63,10 +63,11 @@ public class Car extends ObjLoader {
 	 * Call this when the Car has Reached a Waypoint to get to the next Waypoint
 	 */
 	private void waypointReached(){
-		System.out.print("point reached, set to next waypoint: "+wayToTarget.toString());
+		System.out.println("point reached, set to next waypoint: "+wayToTarget.toString());
 		if(wayToTarget.getWaypoints().size()<=1){
 			wayToTarget.setTotalway(0);
 		}else{
+			System.out.println("way to next:"+getNextWaypoint()+" sec next: "+wayToTarget.getWaypoints().get(1)+" totalway:"+wayToTarget.getTotalway());
 			wayToTarget.setTotalway(wayToTarget.getTotalway()-getNextWaypoint().getValOfEdge(wayToTarget.getWaypoints().get(1)));
 		}
 		this.wayToTarget.removeFirstPoint();

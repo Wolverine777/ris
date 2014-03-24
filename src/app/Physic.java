@@ -354,29 +354,29 @@ public class Physic extends UntypedActor {
 
 	private float collisionGround(Node n) {
 		float distance = 0;
-//		float radiuses = 0;
-		distance=(((Shape) n).getCenter().y()- ((Shape)n).getRadius()) - floor.y();
-		if(distance<0)return Math.abs(distance);
-		return 0;
+		float radiuses = 0;
+//		distance=(((Shape) n).getCenter().y()- ((Shape)n).getRadius()) - floor.y();
+//		if(distance<0)return Math.abs(distance);
+//		return 0;
 		
 //		System.out.println("flooooooor: " + floor.y());
-//		distance = (float) Math.sqrt((float) Math.pow(((Shape) n).getCenter().y() - floor.y(),2));
-//		radiuses = ((Shape) n).getRadius();
+		distance = (float) Math.sqrt((float) Math.pow(((Shape) n).getCenter().y() - floor.y(),2));
+		radiuses = ((Shape) n).getRadius();
 		
 		
 //		System.out.println("distance ground: " + distance + " radiuses ground: " + radiuses);
 			
-//		if(distance < radiuses){
-//			float inground;
-//				if(((Shape) n).getCenter().y() < floor.y()){
-//					inground = radiuses + distance;
-//				}else inground = radiuses - distance;
-//					
-//					return inground;
-//				
-//		
-//		}
-//		return 0;
+		if(distance < radiuses){
+			float inground;
+				if(((Shape) n).getCenter().y() < floor.y()){
+					inground = radiuses + distance;
+				}else inground = radiuses - distance;
+					
+					return inground;
+				
+		
+		}
+		return 0;
 	}
 	
 	private VectorImp oppositeDirection(Node n){

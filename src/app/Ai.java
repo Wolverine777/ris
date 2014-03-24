@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import vecmath.Vector;
 import vecmath.vecmathimp.FactoryDefault;
@@ -49,7 +50,8 @@ public class Ai extends UntypedActor {
 	private Map<String, Shape> impacts=new HashMap<String, Shape>();
 	ActorRef simulator;
 	private int gameover = 0;
-
+	private float radCar=0.0f;
+	
 	private void initialize(Vector levelPosition, float width, float depth) {
 		System.out.println("Init Ai");
 		level=new Level(levelPosition, width, depth);
@@ -65,10 +67,16 @@ public class Ai extends UntypedActor {
 			LevelNode next=car.getWayToTarget().getFirstWaypoint();
 			List<LevelNode> ln=car.getWayToTarget().getWaypoints();
 			for(int x=0;x<ln.size()-1;x++){
-				currentWayVal+=ln.get(x+1).getValOfEdge(next);
+				double val=ln.get(x+1).getValOfEdge(next);
+				if(val<0){
+					currentWayVal=-1;
+					System.out.println("way blocked");
+					break;
+				}
+				currentWayVal+=val;
 				next=ln.get(x+1);
 			}
-			System.out.println("calced"+currentWayVal+" way:"+car.getWayToTarget().getTotalway());
+//			System.out.println("calced"+currentWayVal+" way:"+car.getWayToTarget().getTotalway());
 			if(currentWayVal==car.getWayToTarget().getTotalway()){
 				System.out.println("keep Route");
 				routeStillGood=true;
@@ -78,15 +86,17 @@ public class Ai extends UntypedActor {
 			LevelNode startNode=getNearestNodeinLevel(car), target=getNearestNodeinLevel(nextCoin);
 			if(startNode!=null&&target!=null){
 				if(!startNode.getPOS().equals(target.getPOS())){
-					LinkedHashMap<LevelNode, AStarNodes> lookAt= new LinkedHashMap<LevelNode, AStarNodes>();
+					TreeMap<LevelNode, AStarNodes> lookAt= new TreeMap<LevelNode, AStarNodes>();
 					lookAt.put(startNode, new AStarNodes(startNode.lengthtoNode(target), 0, new LinkedList<LevelNode>()));
 					System.out.println("target:"+nextCoin.getId()+" pos:"+nextCoin.getWorldTransform().getPosition()+" inLevel: "+target.getPOS());
 					
 					List<LevelNode>path =new LinkedList<LevelNode>();
 					path.add(startNode);
 					
-					LinkedList<LevelNode> visit=new LinkedList<LevelNode>();
-					Route way=aStar(path, lookAt, visit, target);
+					List<LevelNode> visit=new LinkedList<LevelNode>();
+					
+					Route way=aStarLoop(path, lookAt, visit, target);
+//					Route way=aStar(path, lookAt, visit, target);
 					car.setTarget(nextCoin);
 //					System.out.println("Level: "+level.toString());
 					System.out.println("ai setway: "+way);
@@ -129,7 +139,7 @@ public class Ai extends UntypedActor {
 		return nearest;
 	}
 	
-	private Route aStar(List<LevelNode> path, LinkedHashMap<LevelNode, AStarNodes> lookAt, List<LevelNode> visited, LevelNode target) {
+	private Route aStar(List<LevelNode> path, TreeMap<LevelNode, AStarNodes> lookAt, List<LevelNode> visited, LevelNode target) {
 		if(starParamsValid(path,lookAt, visited, target)){
 			for(LevelNode child:path.get(0).getChilds()){
 				if(child.getValOfEdge(path.get(0))<0)visited.add(child);
@@ -154,7 +164,7 @@ public class Ai extends UntypedActor {
 					return Double.compare(o1.getValue().getLength(), o2.getValue().getLength());
 				}}).getKey();
 			
-			List<LevelNode> pathMin=new LinkedList<LevelNode>( );
+			List<LevelNode> pathMin=new LinkedList<LevelNode>();
 			pathMin.add(min);
 			pathMin.addAll(lookAt.get(min).getPath());
 			if(min.equals(target)){
@@ -170,6 +180,60 @@ public class Ai extends UntypedActor {
 		return null;
 	}
 	
+	private boolean isTarget(LevelNode min, LevelNode target){
+		if(min==null)return false;
+		if(min.equals(target)){
+			return true;
+		}
+		return false;
+	}
+	
+	private Route aStarLoop(List<LevelNode> path, TreeMap<LevelNode, AStarNodes> lookAt, List<LevelNode> visited, LevelNode target) {
+		if(starParamsValid(path,lookAt, visited, target)){
+			LevelNode min=null;
+			List<LevelNode> pathMin=new LinkedList<LevelNode>();
+			while(!isTarget(min,target)){
+				for(LevelNode child:path.get(0).getChilds()){
+					if(child.getValOfEdge(path.get(0))<0)visited.add(child);
+					if(!visited.contains(child)){
+						double resistance = lookAt.get(path.get(0)).getResistance()+child.getValOfEdge(path.get(0)); //resistance till parent + resistance child to parent
+						double distance=child.lengthtoNode(target)+resistance; //pytagoras lenght + resistance
+//					System.out.print(" distance: "+distance);
+						if(lookAt.containsKey(child))if(lookAt.get(child).getLength()<=distance)continue; //keep only shortest way to child
+						lookAt.put(child, new AStarNodes(distance, resistance, path));
+					}
+				}
+//			if(path.contains(target))return new Route((int) lookAt.get(target).getLength(), path);
+				lookAt.remove(path.get(0));
+				if(lookAt.isEmpty()){
+					System.out.println("lookatempty");
+					return null;
+				}
+				visited.add(path.get(0));
+//			System.out.println(lookAt.toString());
+				min=Collections.min(lookAt.entrySet(), new Comparator<Map.Entry<LevelNode, AStarNodes>>() {
+					@Override
+					public int compare(Entry<LevelNode, AStarNodes> o1,
+							Entry<LevelNode, AStarNodes> o2) {
+						return Double.compare(o1.getValue().getLength(), o2.getValue().getLength());
+					}}).getKey();
+				System.out.println("Pathmin size "+pathMin.size()+" "+pathMin);
+				pathMin.clear();
+				pathMin.add(min);
+				pathMin.addAll(lookAt.get(min).getPath());
+				path.clear();
+				path.addAll(pathMin);
+			}
+			if(min!=null){
+				System.out.println("Pathmin size "+pathMin.size()+" "+pathMin);
+				double len=lookAt.get(min).getLength()-pathMin.get(pathMin.size()-1).getValOfEdge(pathMin.get(pathMin.size()-2));
+				pathMin.remove(pathMin.size()-1);
+				return new Route(len, pathMin);
+			}
+		}
+		return null;
+	}
+	
 	private boolean starParamsValid(List<LevelNode> path, Map<LevelNode, AStarNodes> lookAt, List<LevelNode> visited, LevelNode target){
 		if(path!=null&&lookAt!=null&&!lookAt.isEmpty()&&target!=null&&visited!=null) return true;
 		return false;
@@ -177,11 +241,10 @@ public class Ai extends UntypedActor {
 
 	private void setBlocked(Shape object, boolean setBlock){
 		int inLevel=inLevel(object.getCenter(), object.getRadius());
-		if(level==null)System.out.println("level null1");
 		if(inLevel>=0){
-			Vector max=object.getCenter().add(new VectorImp(object.getRadius(), 0, object.getRadius()));
+			Vector max=object.getCenter().add(new VectorImp(object.getRadius()+this.radCar, 0, object.getRadius()+this.radCar));
 //			System.out.println(object.getId()+" block center:"+object.getCenter()+" rad:"+object.getRadius());
-			Vector min=object.getCenter().sub(new VectorImp(object.getRadius(), 0, object.getRadius()));
+			Vector min=object.getCenter().sub(new VectorImp(object.getRadius()+this.radCar, 0, object.getRadius()+this.radCar));
 			if(inLevel==0){
 //				System.out.println("part start "+object.getId()+" min:"+min.toString()+" max:"+max.toString());
 				//partially
@@ -205,12 +268,10 @@ public class Ai extends UntypedActor {
 				}
 //				System.out.println("part end "+object.getId()+" min:"+min.toString()+" max:"+max.toString());
 			}
-			if(level==null)System.out.println("level null2");
+			
 			System.out.println("min:"+min.toString()+" max:"+max.toString()+" ID:"+object.getId());
-			if(level==null)System.out.println("level null3");
 			if(setBlock)level.setBlocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
 			else level.setUnblocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
-			if(level==null)System.out.println("level null4");
 			calcNewRouts();
 		}
 	}
@@ -336,6 +397,7 @@ public class Ai extends UntypedActor {
 				nonAiNodes.put(nc.id, nodeFactory.groupNode(nc.id, nc.getModelmatrix()));
 			} else if (nc.type == ObjectTypes.CUBE) {
 				nonAiNodes.put(nc.id, nodeFactory.cube(nc.id, nc.shader, nc.w, nc.h, nc.d, nc.mass));
+				System.out.println("block cube");
 				setBlocked((Shape)nonAiNodes.get(nc.getId()), true);
 			} else if (nc.type == ObjectTypes.PIPE) {
 				nonAiNodes.put(nc.id, nodeFactory.pipe(nc.id, nc.shader, nc.r, nc.lats, nc.longs,nc.mass));
@@ -356,6 +418,7 @@ public class Ai extends UntypedActor {
 			}else if(nc.type == ObjectTypes.CAR){
 				Car car=nodeFactory.car(nc.id, nc.shader, nc.sourceFile, null, nc.speed, nc.getModelmatrix(), nc.mass);
 				cars.put(nc.id, car);
+				if(car.getRadius()>this.radCar)this.radCar=car.getRadius();
 			}else if(nc.type == ObjectTypes.COIN){
 				coins.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.getModelmatrix(), nc.mass));
 			}else if(((NodeCreation) message).type == ObjectTypes.CANON){
@@ -372,6 +435,21 @@ public class Ai extends UntypedActor {
 			if(cars.get(nm.id)!=null){
 //				System.out.println("Nodemodification ai:\nmatrix alt car: \n"+cars.get(nm.id).getWorldTransform()+ "transformationsmatrix: \n"+nm.localMod);
 				setNewMatrix(cars.get(nm.id), nm);
+				if(cars.get(nm.id).getRadius()>this.radCar){
+					for(Node n:nonAiNodes.values()){
+						if(n instanceof Shape){
+							Shape s=(Shape)n;
+							setBlocked(s, false);
+						}
+					}
+					this.radCar=cars.get(nm.id).getRadius();
+					for(Node n:nonAiNodes.values()){
+						if(n instanceof Shape){
+							Shape s=(Shape)n;
+							setBlocked(s, true);
+						}
+					}
+				}
 //				System.out.println("matrix neu car: \n"+cars.get(nm.id).getWorldTransform());
 //				System.out.println("pso car"+nm.id+" "+cars.get(nm.id).getWorldTransform().getPosition().toString());
 			}else{
