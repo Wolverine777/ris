@@ -25,5 +25,12 @@ public class AStarNodes {
 	public double getResistance() {
 		return resistance;
 	}
-
+	@Override
+	public String toString() {
+		String out="Len:"+length+" Res:"+resistance+" Path:";
+		for(LevelNode l:path){
+			out+=" "+l.getPOS().x()+"/"+l.getPOS().z();
+		}
+		return out;
+	}
 }

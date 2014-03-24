@@ -111,7 +111,11 @@ public class Level {
 	}
 	
 	private void setWeigth(Set<LevelNode> positions, double multiplier){
-		for(LevelNode node:positions) levelPoints.get(node.getPOS().x(), node.getPOS().z()).multEdgesVal(multiplier);
+		System.out.println("fail from?");
+		for(LevelNode node:positions) {
+			levelPoints.get(node.getPOS().x(), node.getPOS().z()).multEdgesVal(multiplier);
+		}
+		System.out.println("fail to?");
 	}
 	
 	private void manageBlocked(LevelNode from, LevelNode toElement, boolean block){
@@ -164,7 +168,7 @@ public class Level {
 //				}
 //			}
 		}
-		setWeigth(sub, -1);
+		setWeigth(sub, -1.0);
 	}
 	
 	public void setBlocked(LevelNode from, LevelNode to){
@@ -200,8 +204,8 @@ public class Level {
 			out+="\n";
 			for(Map.Entry<Float, LevelNode> pair:levelPoints.rowMap().get(row).entrySet()){
 //				out+=String.format(" %.2f/ %.2f(%d)", row,pair.getKey(), pair.getValue().getVal());
-				if(row>=0) out+=" ";
-				out+=row+"/";
+				if(row.floatValue()>=0) out+=" ";
+				out+=row.floatValue()+"/";
 				if(pair.getKey()>=0)out+=" ";
 				out+=pair.getKey()+"("+pair.getValue().getVal()+"); ";
 			}
@@ -213,21 +217,15 @@ public class Level {
 	 * @param position
 	 * @return the position of the nearest LevelNode, null if there is no LevelNode
 	 */
-	public LevelNode getNearestinLevel(Vector position){
-		Coordinate c=getNearest(new Coordinate(position.x(), position.z()), false, 0);
+	public LevelNode getNearestinLevel(Vector position, boolean withBlocked){
+		Coordinate c=getNearest(new Coordinate(position.x(), position.z()), withBlocked, 0);
 		if(c!=null)return levelPoints.get((float)c.x, (float)c.y) ;
 		return null;
-//		Float x=getNearest(position.x(),true, false, 0),z=getNearest(position.z(),false, false,0);
-//		if(x!=null&&z!=null)return new VectorImp(x, position.y(), z);
-//		return null;
 	}
 	
 	public LevelNode getBiggerPosInLevel(Vector position, boolean higher){
 		int minMax=-1;
 		if(higher)minMax=1;
-//		Float x=getNearest(position.x(),true, true, minMax);
-//		Float z=getNearest(position.z(),false, true, minMax);
-//		if(x!=null&&z!=null)return levelPoints.get(x,z);
 		Coordinate c=getNearest(new Coordinate(position.x(), position.z()), true, minMax);
 		if(c!=null) return levelPoints.get((float)c.x, (float)c.y) ;
 		return null;

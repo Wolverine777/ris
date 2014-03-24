@@ -58,6 +58,65 @@ public class Ai extends UntypedActor {
 		getSender().tell(Message.INITIALIZED, self());
 	}
 	
+	private List<LevelNode> findWayOut(LevelNode startNode){
+		List<LevelNode> toCheck=new LinkedList<LevelNode>();
+		toCheck.add(startNode);
+		List<LevelNode> visited=new LinkedList<LevelNode>();
+		TreeMap<LevelNode, AStarNodes> lookAt=new TreeMap<LevelNode, AStarNodes>();
+		List<LevelNode> firstPath=new LinkedList<LevelNode>();
+		firstPath.add(startNode);
+		lookAt.put(startNode, new AStarNodes(0, 0, firstPath));
+		AStarNodes bestFree=null;
+		System.out.println("find out");
+		while(bestFree==null){
+			visited.addAll(toCheck);
+			List<LevelNode> rem=new LinkedList<LevelNode>();
+			List<LevelNode> add=new LinkedList<LevelNode>();
+			for(LevelNode child:toCheck){
+				for(LevelNode edge:child.getEdges()){
+					if(!visited.contains(edge)){
+						add.add(edge);
+//						toCheck.add(edge);
+						List<LevelNode> path=lookAt.get(child).getPath();
+						path.add(edge);
+						if(lookAt.containsKey(edge)){
+							if(child.getValOfEdge(edge)>0){
+								if(lookAt.get(edge).getResistance()>0){
+									if(child.lengthtoNode(edge)<lookAt.get(edge).getLength()){
+										lookAt.put(edge, new AStarNodes(child.lengthtoNode(edge), child.getValOfEdge(edge), path));
+									}
+								}else{
+									lookAt.put(edge, new AStarNodes(child.lengthtoNode(edge), child.getValOfEdge(edge), path));
+								}
+							}
+						}else{
+							lookAt.put(edge, new AStarNodes(child.lengthtoNode(edge), child.getValOfEdge(edge), path));
+						}
+					}
+				}
+				lookAt.remove(child);
+				rem.add(child);
+			}
+			for(LevelNode r:rem)toCheck.remove(r);
+			for(LevelNode a:add)toCheck.add(a);
+			//break no more unblocked points in Level
+			if(toCheck.isEmpty())return null;
+			for(AStarNodes as:lookAt.values()){
+//			for(LevelNode v:lookAt.keySet()){
+				if(as.getResistance()>0){
+//				if(v.getVal()>0){
+					if(bestFree!=null){
+						if(bestFree.getLength()>as.getLength())bestFree=as;
+					}else bestFree=as;
+				}
+			}
+			
+		}
+		//if nullpointer here check why return in while is not reached
+		System.out.println("WayOut: "+bestFree.getPath());
+		return bestFree.getPath();
+	}
+	
 	private void calcRoute(Car car){
 		//TODO: einbauen, dass Coins die schon Target sind geblockt werden und ein Anderes auto bekommt( fincloesestcoin eine liste übergeben)
 		Coin nextCoin=findClosestCoin(car);
@@ -67,10 +126,10 @@ public class Ai extends UntypedActor {
 			LevelNode next=car.getWayToTarget().getFirstWaypoint();
 			List<LevelNode> ln=car.getWayToTarget().getWaypoints();
 			for(int x=0;x<ln.size()-1;x++){
+				
 				double val=ln.get(x+1).getValOfEdge(next);
 				if(val<0){
 					currentWayVal=-1;
-					System.out.println("way blocked");
 					break;
 				}
 				currentWayVal+=val;
@@ -78,20 +137,35 @@ public class Ai extends UntypedActor {
 			}
 //			System.out.println("calced"+currentWayVal+" way:"+car.getWayToTarget().getTotalway());
 			if(currentWayVal==car.getWayToTarget().getTotalway()){
-				System.out.println("keep Route");
 				routeStillGood=true;
 			}
 		}
 		if(nextCoin!=null&&!routeStillGood){
-			LevelNode startNode=getNearestNodeinLevel(car), target=getNearestNodeinLevel(nextCoin);
-			if(startNode!=null&&target!=null){
+			LevelNode startNode=level.getNearestinLevel(car.getCenter(), true), target=getNearestNodeinLevel(nextCoin);
+			List<LevelNode>path =new LinkedList<LevelNode>();
+			if(startNode!=null){
+				if(startNode.getVal()<0){
+					System.out.println("StartNode: "+startNode.toString());
+					List<LevelNode> wayOut=findWayOut(startNode);
+					if(wayOut!=null){
+						path.addAll(wayOut);
+						//aStar starts over at first in path, sould be startNode oder last node in way out
+						Collections.reverse(path);
+					}
+				}else{
+					path.add(startNode);
+				}
+			}
+			if(target!=null&&!path.isEmpty()){
 				if(!startNode.getPOS().equals(target.getPOS())){
 					TreeMap<LevelNode, AStarNodes> lookAt= new TreeMap<LevelNode, AStarNodes>();
-					lookAt.put(startNode, new AStarNodes(startNode.lengthtoNode(target), 0, new LinkedList<LevelNode>()));
-					System.out.println("target:"+nextCoin.getId()+" pos:"+nextCoin.getWorldTransform().getPosition()+" inLevel: "+target.getPOS());
+					List<LevelNode> pathWithoutStart=new LinkedList<LevelNode>();
+					pathWithoutStart.addAll(path);
+					pathWithoutStart.remove(startNode);
+					lookAt.put(startNode, new AStarNodes(path.get(0).lengthtoNode(target), 0, pathWithoutStart));
 					
-					List<LevelNode>path =new LinkedList<LevelNode>();
-					path.add(startNode);
+					System.out.println("target:"+nextCoin.getId()+" pos:"+nextCoin.getWorldTransform().getPosition()+" inLevel: "+target.getPOS());
+//					path.add(startNode);
 					
 					List<LevelNode> visit=new LinkedList<LevelNode>();
 					
@@ -170,6 +244,7 @@ public class Ai extends UntypedActor {
 			if(min.equals(target)){
 				//start to move to the next, not to the nearestBase
 				double len=lookAt.get(min).getLength()-pathMin.get(pathMin.size()-1).getValOfEdge(pathMin.get(pathMin.size()-2));
+				
 				pathMin.remove(pathMin.size()-1);
 				return new Route(len, pathMin);
 			}else{
@@ -196,11 +271,29 @@ public class Ai extends UntypedActor {
 				for(LevelNode child:path.get(0).getChilds()){
 					if(child.getValOfEdge(path.get(0))<0)visited.add(child);
 					if(!visited.contains(child)){
-						double resistance = lookAt.get(path.get(0)).getResistance()+child.getValOfEdge(path.get(0)); //resistance till parent + resistance child to parent
+						System.out.println("Val of Child to Edge: "+child+" -->"+path.get(0)+" :"+child.getValOfEdge(path.get(0)));
+						double resistance=1;
+						try{
+							resistance = lookAt.get(path.get(0)).getResistance()+child.getValOfEdge(path.get(0)); //resistance till parent + resistance child to parent
+						}catch(Exception e){
+							System.out.println("Resistance fail: "+e.getMessage());
+							System.out.println("lookat: "+lookAt);
+							System.out.println("child: "+child+" -->"+path.get(0)+" val:"+child.getValOfEdge(path.get(0)));
+							System.out.println("lookat path0:"+lookAt.get(path.get(0)));
+							System.out.println("lookat res:"+lookAt.get(path.get(0)).getResistance());
+						}
 						double distance=child.lengthtoNode(target)+resistance; //pytagoras lenght + resistance
 //					System.out.print(" distance: "+distance);
-						if(lookAt.containsKey(child))if(lookAt.get(child).getLength()<=distance)continue; //keep only shortest way to child
-						lookAt.put(child, new AStarNodes(distance, resistance, path));
+						//keep only shortest way to child
+						if(lookAt.containsKey(child)){
+							if(lookAt.get(child).getLength()>distance){
+								lookAt.put(child, new AStarNodes(distance, resistance, path));
+							}
+						}else{
+							lookAt.put(child, new AStarNodes(distance, resistance, path));
+						}
+					}else{
+						System.out.println("visited: "+child+" -->"+path.get(0)+" :"+child.getValOfEdge(path.get(0)));
 					}
 				}
 //			if(path.contains(target))return new Route((int) lookAt.get(target).getLength(), path);
@@ -225,7 +318,7 @@ public class Ai extends UntypedActor {
 				path.addAll(pathMin);
 			}
 			if(min!=null){
-				System.out.println("Pathmin size "+pathMin.size()+" "+pathMin);
+				System.out.println("Pathmin size:"+pathMin.size()+" min:"+min+" path:"+pathMin);
 				double len=lookAt.get(min).getLength()-pathMin.get(pathMin.size()-1).getValOfEdge(pathMin.get(pathMin.size()-2));
 				pathMin.remove(pathMin.size()-1);
 				return new Route(len, pathMin);
@@ -535,9 +628,9 @@ public class Ai extends UntypedActor {
 	private LevelNode getNearestNodeinLevel(Node object){
 		LevelNode nearestVec = null;
 		if(object instanceof Shape){
-			nearestVec = level.getNearestinLevel(((Shape)object).getCenter());
+			nearestVec = level.getNearestinLevel(((Shape)object).getCenter(), false);
 		}else{
-			nearestVec = level.getNearestinLevel(object.getWorldTransform().getPosition());
+			nearestVec = level.getNearestinLevel(object.getWorldTransform().getPosition(), false);
 		}
 		//Tagetposition.sub(startPosition)
 //		Vector translate=(nearestVec.sub(object.getWorldTransform().getPosition()));

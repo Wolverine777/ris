@@ -51,11 +51,28 @@ public class LevelNode implements Comparable<LevelNode> {
 	
 	public void addEdge(LevelNode toNode, double value) {
 		edges.put(toNode, value);
+		calcOwnVal();
 	}
 
 	public void multEdgesVal(double val) {
-		for(LevelNode node:edges.keySet())edges.put(node, edges.get(node)*val);
-		this.val=this.val*val;
+		for(LevelNode node:edges.keySet()){
+			if(val<0)System.out.println("mult val:"+this+"-->"+node+" val:"+edges.get(node).doubleValue()*val);
+			edges.put(node, edges.get(node).doubleValue()*val);
+		}
+		calcOwnVal();
+	}
+	
+	private void calcOwnVal(){
+		Double tmpVal=null;
+		for(LevelNode l:edges.keySet()){
+			if(tmpVal==null)tmpVal=getValOfEdge(l);
+			else{
+				if(tmpVal>0)tmpVal=tmpVal*getValOfEdge(l);
+				else tmpVal=tmpVal*Math.abs(getValOfEdge(l));
+			}
+		}
+		if(tmpVal==null)tmpVal=BASEVAL;
+		this.val=tmpVal;
 	}
 	
 	public Set<LevelNode> getChilds(){
@@ -79,8 +96,15 @@ public class LevelNode implements Comparable<LevelNode> {
 	}
 	
 	public double getValOfEdge(LevelNode toNode){
-		System.out.println(" this: "+toString()+ " toNode: "+toNode+" edges: "+edges+" get "+edges.get(toNode));
-		return edges.get(toNode);
+		double ret=BASEVAL;
+		try{
+			ret=edges.get(toNode).doubleValue();
+		}catch(Exception e){
+			System.out.println("Fail to get Way of Edge: "+e.getMessage());
+			System.out.println(" this: "+toString()+ " toNode: "+toNode+" edges: "+edges+" get "+edges.get(toNode));
+			ret=edges.get(toNode).doubleValue();
+		}
+		return ret;
 	}
 	
 	public double lengthtoNode(LevelNode target){

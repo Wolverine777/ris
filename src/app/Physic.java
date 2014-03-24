@@ -406,7 +406,7 @@ public class Physic extends UntypedActor {
 		
 	}
 	
-	private VectorImp reduceVelocityGround(Node n, Float reduceBy){
+	private VectorImp reduceVelocityGround(Node n, float reduceBy){
 		
 		float x = n.getVelocity().x();
 		float y = n.getVelocity().y();

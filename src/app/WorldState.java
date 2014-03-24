@@ -5,12 +5,16 @@ import static org.lwjgl.openal.AL10.alSourcePlay;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.lwjgl.input.Keyboard;
 
@@ -96,7 +100,6 @@ public abstract class WorldState extends UntypedActor{
     
 
 	private void loop() {
-
 		System.out.println("\nStarting new loop");
 		
 		if(tapped &&amountOfSpheres>10){
@@ -163,6 +166,24 @@ public abstract class WorldState extends UntypedActor{
 				loop();
 			}
 		} else if (message == Message.INIT) {
+			//For logging
+			try {
+				String fName="log1.txt";
+				Pattern p = Pattern.compile("(.*?)(\\d+)?(\\..*)?");
+				do{
+				    Matcher m = p.matcher(fName);
+				    if(m.matches()){//group 1 is the prefix, group 2 is the number, group 3 is the suffix
+				        fName = m.group(1) + (m.group(2)==null?1:(Integer.parseInt(m.group(2)) + 1)) + (m.group(3)==null?"":m.group(3));
+				    }
+				}while(new File("log/"+fName).exists());//repeat until a new filename is generated
+				
+				PrintStream out=new PrintStream(new FileOutputStream("log/"+fName, true), true);
+				System.setOut(out);
+				System.setErr(out);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			System.out.println("Starting initialization");
 
 			System.out.println("Creating Entities");
@@ -563,6 +584,8 @@ public abstract class WorldState extends UntypedActor{
 			else input.tell(new RegisterKeys(keys, false), simulator);
 		}
 	}
+	
+	//TODO: integrate in Simulation Creation
 	protected void simulateOnGesture(Node object, GestureType gesture, SimulateType simulation, Vector vec){
 		SimulateGestureCreation sgc= new SimulateGestureCreation(object.getId(),object.getWorldTransform(), gesture, simulation, vec);
 		if(object instanceof Shape){

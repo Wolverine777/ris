@@ -51,7 +51,7 @@ public class Car extends ObjLoader {
 		if(wayToTarget!=null){
 			Vector dir=getWorldTransform().getPosition();
 			Vector toNext=getNextWaypoint().getPOS();
-			System.out.println("direction calc: "+dir+"-->"+toNext+"="+getNextWaypoint().getPOS().sub(getWorldTransform().getPosition()));
+			System.out.println("direction calc: "+dir+"-->"+toNext+"="+getNextWaypoint().getPOS().sub(getPosition()));
 			calcDirection();
 		}else{
 			directionToNextTarget=new VectorImp(0, 0, 0);
@@ -81,7 +81,7 @@ public class Car extends ObjLoader {
 	}
 	
 	private void calcDirection(){
-		Vector v=getNextWaypoint().getPOS().sub(getWorldTransform().getPosition());
+		Vector v=getNextWaypoint().getPOS().sub(getPosition());
 		this.timesToMove=1/this.speed*100;
 		this.elapsed=1;
 		int pos=1000000;

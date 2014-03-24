@@ -71,8 +71,9 @@ public class Simulator extends UntypedActor {
 				if(entry.getValue().getVector()!=null){
 					doSimulation(entry.getKey(), entry.getValue().getType(), entry.getValue().getVector());
 				}else{
-					if(entry.getKey() instanceof Car&&entry.getValue().getType()==SimulateType.DRIVE){
+					if(entry.getKey() instanceof Car&&entry.getValue().getType()==SimulateType.DRIVE&&entry.getValue().getWay()!=null){
 						Car car=(Car) entry.getKey();
+						//Double check if SimDef has way and then if the way was set to the car
 						if(car.getWayToTarget()!=null){
 							Vector vec=car.getVecToNextTarget(elapsed);
 							if(vec!=null){
@@ -241,7 +242,7 @@ public class Simulator extends UntypedActor {
 					throw new Exception("Please implement Type"+sc.getId()+" "+sc.getSimulation());
 				}
 			}
-			newNode = nodes.get(sc.id);
+			newNode = nodes.get(sc.getId());
 			if (sc.getSimulation() == SimulateType.NONE) {
 				//TODO: only remove one keyDef
 				for (SimDef kd : simulations.get(newNode)) {
@@ -252,11 +253,27 @@ public class Simulator extends UntypedActor {
 
 			} else if (sc.getSimulation() == SimulateType.DRIVE) {
 				if (newNode instanceof Car) {
-					simulations.removeAll(newNode);
-					simulations.put(newNode, new SimDef(sc.getSimulation(), sc.getWay()));
-//					System.out.println("simulator setway:"+sc.getWay());
-					((Car)newNode).setWayToTarget(sc.getWay());
-					((Car)newNode).setTarget(nodeFactory.coin(sc.getTargetId(), sc.shader, null, sc.getModelmatrix(), 1));
+					Car car=(Car)newNode;
+					//Delete all drives for Car
+					List<SimDef> rem=new LinkedList<SimDef>();
+					for(SimDef simD:simulations.get(newNode)){
+						if(simD.getType()==SimulateType.DRIVE)rem.add(simD);
+					}
+					for(SimDef r:rem){
+						simulations.remove(newNode, r);
+						car.setTarget(null);
+						car.setWayToTarget(null);
+					}
+					
+					//Simulate only if ther is a way to Drive
+					if(sc.getWay()!=null){
+						simulations.put(newNode, new SimDef(sc.getSimulation(), sc.getWay()));
+//						System.out.println("simulator setway:"+sc.getWay());
+						car.setWayToTarget(sc.getWay());
+						if(sc.getTargetId()!=null)if(nodes.containsKey(sc.getTargetId())){
+							if(nodes.get(sc.getTargetId()) instanceof Coin)car.setTarget((Coin)nodes.get(sc.getTargetId()));
+						}
+					}
 				}
 			} else if(sc.getSimulation() ==SimulateType.PHYSIC){
 				newNode.setForce(sc.getVector());
@@ -271,7 +288,7 @@ public class Simulator extends UntypedActor {
 				}
 			} else if(sc.getSimulation() ==SimulateType.PICKUP){
 				//TODO: kick from ai
-				System.out.println("got pickup");
+				System.out.println("simu got pickup");
 				Node ref=nodes.get(sc.getTargetId());
 				if(ref==null){
 					Node n=nodeFactory.groupNode(sc.getTargetId(), sc.getModelmatrix());
@@ -280,10 +297,20 @@ public class Simulator extends UntypedActor {
 				}
 				SimDef sd =new SimDef(sc.getTargetId(), sc.getTimes());
 				if(ref instanceof Car)sd.multScale((float) ((((Car) ref).getSpeed())));
-				doSimulation(newNode, SimulateType.FIXVALUE, sc.getVector().sub(newNode.getWorldTransform().getPosition()));
-				simulations.put(newNode, sd);
-			}
-			else if(sc.getSimulation()!=null) {
+
+				boolean hasPickup=false;
+				if(simulations.containsKey(newNode)){
+					for(SimDef simD:simulations.get(newNode)){
+						if(simD.getType()==SimulateType.PICKUP){
+							hasPickup=true;
+						}
+					}
+				}
+				if(!hasPickup){
+					doSimulation(newNode, SimulateType.FIXVALUE, sc.getVector().sub(newNode.getWorldTransform().getPosition()));
+					simulations.put(newNode, sd);
+				}
+			}else if(sc.getSimulation()!=null) {
 				simulations.put(newNode, new SimDef(sc.getSimulation(), sc.getKeys(), sc.getMode(), sc.getVector()));
 				newNode.setLocalTransform(sc.modelmatrix);
 				newNode.updateWorldTransform();
@@ -401,24 +428,13 @@ public class Simulator extends UntypedActor {
 			NodeDeletion delete = (NodeDeletion) message;
 			for (String id : delete.ids) {
 				Node modify = nodes.get(id);
-				ArrayList<Edge> removeEdges = new ArrayList<>();
+				ArrayList<Edge> removeEdges = new ArrayList<Edge>();
 				if (modify != null) {
-					for (Edge e : modify.getEdges()) {
-						removeEdges.add(e);
-						// nodes.get(e.getOtherNode(modify).id).removeEdge(e);
-					}
-					for (Edge e : removeEdges) {
-						modify.removeEdge(e);
-					}
 					Map<Node, SimDef> remove=new HashMap<Node, SimDef>();
 					for (Map.Entry<Node, SimDef> entry : simulations.entries()) {
 						if(entry.getValue().getReferenzId()!=null){
 							if(entry.getValue().getReferenzId().equals(id)){
-								if(entry.getKey()!=null){
-									if(entry instanceof Car){
-										((Car)entry.getKey()).setWayToTarget(null);
-									}
-								}
+								//IF Car is ref to Pickup animation remove Pickup and delete Coin
 								remove.put(entry.getKey(), entry.getValue());
 								NodeDeletion nd = new NodeDeletion();
 								nd.ids.add(entry.getKey().getId());
@@ -432,8 +448,16 @@ public class Simulator extends UntypedActor {
 					for(Map.Entry<Node, SimDef> rem:remove.entrySet()){
 						simulations.remove(rem.getKey(), rem.getValue());
 					}
-//					if(!(modify instanceof Coin))
-						nodes.remove(modify.getId());
+					nodes.remove(modify.getId());
+					for (Edge e : modify.getEdges()) {
+					System.out.println("Error on: "+id+" have Edges?:"+modify.getEdges()+" array null?:"+removeEdges);
+						System.out.println("Yep error:"+e.toString());
+						removeEdges.add(e);
+						// nodes.get(e.getOtherNode(modify).id).removeEdge(e);
+					}
+					for (Edge e : removeEdges) {
+						modify.removeEdge(e);
+					}
 				}
 			}
 		}
