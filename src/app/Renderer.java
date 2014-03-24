@@ -286,7 +286,7 @@ public class Renderer extends UntypedActor {
 			}else if (nc.type == ObjectTypes.CAR){
 				nodes.put(nc.getId(), nodeFactory.car(nc.getId(), nc.shader, nc.sourceFile, nc.getSourceTex(), nc.speed, nc.getModelmatrix(), nc.mass));
 			}else if (nc.type == ObjectTypes.COIN){
-				nodes.put(nc.getId(), nodeFactory.coin(nc.getId(), nc.shader, nc.sourceFile, nc.getModelmatrix(), nc.mass));
+				nodes.put(nc.getId(), nodeFactory.coin(nc.getId(), nc.shader, nc.sourceFile, nc.sourceTex, nc.getModelmatrix(), nc.mass));
 			}else if(((NodeCreation) message).type == ObjectTypes.CANON){
 				Node newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, nc.sourceTex, nc.getModelmatrix(), nc.mass);
 				nodes.put(newNode.getId(), newNode);

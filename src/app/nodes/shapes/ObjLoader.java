@@ -37,7 +37,7 @@ public class ObjLoader extends Shape {
 //			Vertex.col(1, 0, 0), Vertex.col(1, 1, 0), Vertex.col(0, 1, 0),
 //			Vertex.col(1, 0, 1), Vertex.col(0, 0, 1), Vertex.col(0, 1, 1),
 //			Vertex.col(1, 1, 1) };
-	private final Color[] defaultCol = {Vertex.col(0.7f, 0.7f, 0.7f)};
+	private final Color[] defaultCol = {Vertex.col(0.45f, 0.45f, 0.45f)};
 
 //	private Texture tex;
 
@@ -114,6 +114,8 @@ public class ObjLoader extends Shape {
 		findCenter();
 		if(MatrixImp.isTranslationMatrix(modelMatrix))setCenter(modelMatrix.mult(vecmath.translationMatrix(getCenter())).getPosition());
 		if(modelMatrix.get(0, 0) == modelMatrix.get(1, 1) && modelMatrix.get(1, 1) == modelMatrix.get(2, 2))radius = modelMatrix.get(0, 0)*radius;
+		//Only for Level design, change in setblocked in Ai 
+		radius=radius*0.85f;
 	}
 
 	private Vector[] getVecs(List<String> source, Vector[] points) {

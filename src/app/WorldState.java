@@ -535,11 +535,11 @@ public abstract class WorldState extends UntypedActor{
 	 * @param physicType can be null, for no Physic
 	 * @return
 	 */
-	protected Coin createCoin(String id, Shader shader, File sourceFile, Matrix modelMatrix, float mass, Vector impulse, PhysicType physicType){
+	protected Coin createCoin(String id, Shader shader, File sourceFile, File sourceTex, Matrix modelMatrix, float mass, Vector impulse, PhysicType physicType){
 		if(modelMatrix==null)modelMatrix=vecmath.identityMatrix();
-		Coin coin = nodeFactory.coin(id, shader, sourceFile, modelMatrix, mass);
+		Coin coin = nodeFactory.coin(id, shader, sourceFile, null, modelMatrix, mass);
 		nodes.put(id, coin);
-		SimulateCreation sc=new SimulateCreation(id, shader, sourceFile, null, modelMatrix, mass, ObjectTypes.COIN);
+		SimulateCreation sc=new SimulateCreation(id, shader, sourceFile, sourceTex, modelMatrix, mass, ObjectTypes.COIN);
 //		NodeCreation n=new NodeCreation(id, shader, sourceFile, mass, ObjectTypes.COIN);
 		sc.addPhysic(impulse, physicType);
         
@@ -635,7 +635,7 @@ public abstract class WorldState extends UntypedActor{
 		float scaleFactor=0.25f;
 		Canon canon = (Canon) nodes.get("Canon");
 		Matrix modelMatrix =vecmath.translationMatrix(canon.getSpawn()).mult(vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor)); 
-		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, modelMatrix, 1f, canon.getDirection().mult(0.07f+(0.001f*floor.getD())), PhysicType.Physic_complete);
+		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, modelMatrix, 0.72f, canon.getDirection().mult(0.07f+(0.001f*floor.getD())), PhysicType.Physic_complete);
 //		cs.setRadius(cs.getRadius()* scaleFactor);
 		append(cs, startNode);
 //		System.out.println("sphere speed: " + canon.getDirection().mult(0.03f));

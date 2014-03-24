@@ -235,7 +235,7 @@ public class Simulator extends UntypedActor {
 					nodes.put(nc.id, car);
 				} else if (nc.type == ObjectTypes.COIN) {
 					//TODO: because of pickup animation
-					nodes.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.getModelmatrix(), nc.mass));
+					nodes.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, null, nc.getModelmatrix(), nc.mass));
 				} else if(nc.type == ObjectTypes.TEXT){
 					nodes.put(nc.getId(),nodeFactory.text(nc.id, nc.getModelmatrix(), nc.getText(), nc.getFont()));
 				} else {
@@ -366,7 +366,7 @@ public class Simulator extends UntypedActor {
 					nodes.put(nc.id, car);
 				} else if (nc.type == ObjectTypes.COIN) {
 					//TODO: because of pickup animation
-					nodes.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.getModelmatrix(), nc.mass));
+					nodes.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, null, nc.getModelmatrix(), nc.mass));
 				} else if(nc.type == ObjectTypes.TEXT){
 					nodes.put(nc.getId(),nodeFactory.text(nc.id, nc.getModelmatrix(), nc.getText(), nc.getFont()));
 				} else {

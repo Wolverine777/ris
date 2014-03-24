@@ -351,7 +351,8 @@ public class Ai extends UntypedActor {
 	private void setBlocked(Shape object, boolean setBlock){
 		int inLevel=inLevel(object.getCenter(), object.getRadius());
 		if(inLevel>=0){
-			Vector max=object.getCenter().add(new VectorImp(object.getRadius()+this.radCar, 0, object.getRadius()+this.radCar));
+			//mult fix values only for level design
+			Vector max=object.getCenter().add(new VectorImp(object.getRadius()*1.15f+this.radCar*1.05f, 0, object.getRadius()*1.15f+this.radCar*1.05f));
 //			System.out.println(object.getId()+" block center:"+object.getCenter()+" rad:"+object.getRadius());
 			Vector min=object.getCenter().sub(new VectorImp(object.getRadius()+this.radCar, 0, object.getRadius()+this.radCar));
 			if(inLevel==0){
@@ -540,7 +541,7 @@ public class Ai extends UntypedActor {
 				cars.put(nc.id, car);
 				if(car.getRadius()>this.radCar)this.radCar=car.getRadius();
 			}else if(nc.type == ObjectTypes.COIN){
-				coins.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, nc.getModelmatrix(), nc.mass));
+				coins.put(nc.id, nodeFactory.coin(nc.id, nc.shader, nc.sourceFile, null, nc.getModelmatrix(), nc.mass));
 			}else if(((NodeCreation) message).type == ObjectTypes.CANON){
 				Node newNode = nodeFactory.canon(nc.id, nc.shader, nc.sourceFile, null, nc.getModelmatrix(), nc.mass);
 				nonAiNodes.put(newNode.getId(), newNode);

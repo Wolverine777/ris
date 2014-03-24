@@ -82,8 +82,8 @@ public class NodeFactory {
 		return new ObjLoader(id, shader, sourceFile, sourceTex, modelMatrix, mass);
 	}
 	
-	public Coin coin(String id, Shader shader, File sourceFile, Matrix modelMatrix, float mass){
-		return new Coin(id, shader, sourceFile, modelMatrix, mass);
+	public Coin coin(String id, Shader shader, File sourceFile, File sourceTex, Matrix modelMatrix, float mass){
+		return new Coin(id, shader, sourceFile, sourceTex, modelMatrix, mass);
 	}
 	
 	public Car car(String id, Shader shader, File sourceFile, File sourceTex, double speed, Matrix modelMatrix, float mass){

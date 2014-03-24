@@ -23,4 +23,9 @@ public class Coin extends ObjLoader {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Coin(String id, Shader shader, File sourceFile, File sourceTex, Matrix modelMatrix, float mass) {
+		super(id, shader, sourceFile, sourceTex, modelMatrix, mass);
+		// TODO Auto-generated constructor stub
+	}
+
 }
