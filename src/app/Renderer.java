@@ -111,7 +111,8 @@ public class Renderer extends UntypedActor {
 	}
 
 	private void display() {
-
+		//warum sehe ich das nicht? 
+		System.out.println("Renderer display");
 		
 		// Adjust the the viewport to the actual window size. This makes the
 		// rendered image fill the entire window.

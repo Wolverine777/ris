@@ -220,6 +220,7 @@ public class Physic extends UntypedActor {
 		}
 		List<Node> remCoin=new LinkedList<Node>();
 		for (Node n : nodesCollisionOnly.values()) {
+			System.out.println("Nodes physic: " + n.getId() + "Center: " + ((Shape)n).getCenter() + "Radius: " + ((Shape)n).getRadius());
 			ArrayList<Node> collision = new ArrayList<Node>(collisionObjects(n));
 			if(!collision.isEmpty() ){
 				delete.ids.add(n.getId());

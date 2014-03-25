@@ -72,10 +72,10 @@ public class App extends WorldState {
 	}
 	
 	private void obj(GroupNode head){
-		Matrix m=vecmath.translationMatrix(0, 0, 0);
-		Matrix tankApc=vecmath.scaleMatrix(0.3f, 0.3f, 0.3f).mult(vecmath.rotationMatrix(0, 1, 0, -60).mult((vecmath.rotationMatrix(1f, 0.0f, 0.0f, -90))));
-		ObjLoader obj=createObject("hamvee", shader, new File("obj/apc.obj"), null/*new File("obj/3.jpg")*/, m.mult(tankApc), 1f, null, null);
-//		ObjLoader obj=createObject("hamvee", texShader, new File("obj/HQ_Movie cycle.obj"), new File("obj/2.jpg"), 1f, null, null);
+		Matrix m=vecmath.scaleMatrix(0.007f, 0.007f, 0.007f);
+//		Matrix tankApc=vecmath.scaleMatrix(0.3f, 0.3f, 0.3f).mult(vecmath.rotationMatrix(0, 1, 0, -60).mult((vecmath.rotationMatrix(1f, 0.0f, 0.0f, -90))));
+//		ObjLoader obj=createObject("tank", shader, new File("obj/apc.obj"), null/*new File("obj/3.jpg")*/, m.mult(tankApc), 1f, null, null);
+		ObjLoader obj=createObject("fuelTruck", shader, new File("obj/airport_fuel_truck.obj"), null, vecmath.translationMatrix(-3.0f, floor.getGround(), 0.0f).mult(m), 1f, null, null);
 //		ObjLoader obj=createObject("hamvee", texShader, new File("obj/apc.obj"), new File("obj/2.jpg"), 1f, null, null);
 //		ObjLoader obj=createObject("hamvee", shader, new File("obj/ATV.obj"), null, 1f, null, null);
 		simulateOnKey(obj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_RIGHT)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 1f, 0f));
@@ -84,7 +84,26 @@ public class App extends WorldState {
 		simulateOnKey(obj, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_DOWN)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-1f, 0f, 0f));
 //		transform(obj, vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f));
 //		transform(obj, vecmath.translationMatrix(0, -2, 0));
-		append(obj, head);
+//		append(obj, head);
+		
+		Matrix scaleVan=vecmath.scaleMatrix(0.008f, 0.008f, 0.008f).mult(vecmath.rotationMatrix(0, 1.0f, 0, 135));
+		ObjLoader obj1=createObject("van", shader, new File("obj/Van.obj"), null, vecmath.translationMatrix(0.0f, floor.getGround(), 0.0f).mult(scaleVan), 1f, null, null);
+		simulateOnKey(obj1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_D)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 1f, 0f));
+		simulateOnKey(obj1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_A)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, -1f, 0f));
+		simulateOnKey(obj1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0f, 0f));
+		simulateOnKey(obj1, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_S)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-1f, 0f, 0f));
+//		append(obj1, head);
+		
+		Matrix scale=vecmath.scaleMatrix(8.0f, 8.0f, 8.0f);
+		ObjLoader cycle=createObject("cycle", shader, new File("obj/cb750f.obj"), null, vecmath.translationMatrix(0.0f, floor.getGround()+0.2f, 0.0f).mult(scale), 1f, null, null);
+		simulateOnKey(cycle, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_D)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, 1f, 0f));
+		simulateOnKey(cycle, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_A)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(0f, -1f, 0f));
+		simulateOnKey(cycle, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_W)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(1f, 0f, 0f));
+		simulateOnKey(cycle, new HashSet<Integer>(Arrays.asList(Keyboard.KEY_S)), SimulateType.ROTATE, KeyMode.DOWN, new VectorImp(-1f, 0f, 0f));
+		append(cycle, head);
+		
+		Cube c=createCube("ref", shader, 1);
+		append(c, head);
 		
 		float tree = 0.0009f;
 		Matrix scaleHouse=vecmath.scaleMatrix(tree, tree, tree);
@@ -102,13 +121,18 @@ public class App extends WorldState {
 	private void finalLevel(GroupNode head){
 //		Matrix m=vecmath.translationMatrix(-1, -2, 0);
 		Matrix carScale=vecmath.scaleMatrix(0.0006f, 0.0006f, 0.0006f);
-		Car car1=createCar("Car1", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 2.7*leap, vecmath.translationMatrix(-3.5f, floor.getGround(), 8.5f).mult(carScale), 1f, null, PhysicType.Collision_only);
+		Matrix scale=vecmath.scaleMatrix(8.0f, 8.0f, 8.0f);
+		double leap=1;
+		if(LEAP)leap=0.4f;
+		Car car1=createCar("Car1", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 3.9*leap, vecmath.translationMatrix(4.0f, floor.getGround(), 1.5f).mult(carScale), 1f, null, PhysicType.Collision_only);
 		append(car1, head);
 		
-		Car car2=createCar("Car2", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 2.0*leap, vecmath.translationMatrix(5.0f, floor.getGround(), 2.0f).mult(carScale), 1f, null, PhysicType.Collision_only);
-		append(car2, head);
+//		Car car2=createCar("Car2", shader, new File("obj/cb750f.obj"), null, 1.1*leap, /*vecmath.translationMatrix(5.0f, floor.getGround(), 2.0f).mult(scaleVan)*/vecmath.identityMatrix(), 1f, null, PhysicType.Collision_only);
+//		transform(car2, scale);
+//		transform(car2, vecmath.translationMatrix(5.0f, floor.getGround()+0.2f, 2.0f));
+//		append(car2, head);
 		
-		Car car3=createCar("Car3", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 1.1*leap, vecmath.translationMatrix(-3.0f, floor.getGround(), -6.0f).mult(carScale), 1f, null, PhysicType.Collision_only);
+		Car car3=createCar("Car3", texShader, new File("obj/ATV.obj"), new File("obj/3.jpg"), 2.7*leap, vecmath.translationMatrix(-3.0f, floor.getGround(), -6.0f).mult(carScale), 1f, null, PhysicType.Collision_only);
 		append(car3, head);
 		
 		Canon canon = createCanon("Canon", shader, new File("obj/Cannon2.obj"), null, vecmath.translationMatrix(0.0f, floor.getHight(), ((floor.getD()/2)*0.90f)).mult(vecmath.rotationMatrix(-1.0f, 0f, 0f, 45f)), 1.0f);

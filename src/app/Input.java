@@ -52,9 +52,11 @@ public class Input extends UntypedActor {
 //			System.out.println(e.getMessage());
 //			e.printStackTrace();
 //		}
-		controller = new Controller();
-		
-    	onConnect(controller);
+    	if(App.LEAP){
+    		controller = new Controller();
+    		
+    		onConnect(controller);
+    	}
         getSender().tell(Message.INITIALIZED, self());
     }
 
@@ -93,8 +95,7 @@ public class Input extends UntypedActor {
 	
 		for(Entry<ActorRef, KeyState> out:outcome.entrySet())out.getKey().tell(out.getValue(), self());
 
-		
-		onFrame(controller);
+		if(App.LEAP)onFrame(controller);
 		
 		
         getSender().tell(Message.DONE, self());

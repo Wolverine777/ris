@@ -50,10 +50,8 @@
 	<classpathentry kind="lib" path="lib/lwjgl-2.9.0/jar/slick.jar"/>
 	<classpathentry kind="lib" path="lib/LeapSDK/lib/LeapJava.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="ris-duo/lib/LeapSDK/lib/x64"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="ris-duo/lib/LeapSDK/lib/x86"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/LeapSDK/lib/x64/Leap.dll"/>
-	<classpathentry kind="lib" path="lib/LeapSDK/lib/x64/LeapJava.dll"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -93,16 +93,20 @@ public abstract class WorldState extends UntypedActor{
     private float canonballnumber = 0;
     private float amountOfSpheres=0;
     private boolean tapped=false;
-    protected double leap=0.5; //1Tastatur 0.5Leap
+    public static final boolean LEAP=false;
+//    protected double leap=0.5; //1Tastatur 0.5Leap
+    private boolean done;
     
 
 	private void loop() {
 		System.out.println("\nStarting new loop");
 		
-		if(tapped &&amountOfSpheres>15){
-			generateCanonBall();
-			tapped=false;
-			amountOfSpheres=0;
+		if(LEAP){
+			if(tapped &&amountOfSpheres>15){
+				generateCanonBall();
+				tapped=false;
+				amountOfSpheres=0;
+			}
 		}
 		
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
@@ -120,7 +124,7 @@ public abstract class WorldState extends UntypedActor{
 		input.tell(Message.LOOP, self());
 		simulator.tell(Message.LOOP, self());
 		renderer.tell(Message.DISPLAY, self());
-		
+		done=true;
 	}
 
 	@Override
@@ -128,7 +132,8 @@ public abstract class WorldState extends UntypedActor{
 		if (message == Message.DONE) {
 			unitState.put(getSender(), true);
 			System.out.println("Done: "+getSender());
-			if (!unitState.containsValue(false)) {
+			if (!unitState.containsValue(false)&&done) {
+				done=false;
 				for (Map.Entry<ActorRef, Boolean> entry : unitState.entrySet()) {
 					entry.setValue(false);
 				}
@@ -162,7 +167,6 @@ public abstract class WorldState extends UntypedActor{
 				loop();
 			}
 		} else if (message == Message.INIT) {
-			
 				//For logging
 				try {
 					String fName="log1.txt";
@@ -181,6 +185,7 @@ public abstract class WorldState extends UntypedActor{
 					e.printStackTrace();
 				}
 			
+			System.out.println("Leap: "+LEAP);
 			
 			System.out.println("Starting initialization");
 
@@ -630,7 +635,8 @@ public abstract class WorldState extends UntypedActor{
 	}
 	
 	protected void generateCanonBall(){
-		float scaleFactor=0.25f/(float)leap;
+		float scaleFactor=0.25f;
+		if(LEAP) scaleFactor=scaleFactor/0.5f; 
 		Canon canon = (Canon) nodes.get("Canon");
 		Matrix modelMatrix =vecmath.translationMatrix(canon.getSpawn()).mult(vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor)); 
 		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, modelMatrix, 0.72f, canon.getDirection().mult(0.07f+(0.001f*floor.getD())), PhysicType.Physic_complete);

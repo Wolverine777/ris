@@ -147,6 +147,7 @@ public class ObjLoader extends Shape {
 	private Vector[] getTex(List<String> source, Vector[] text) {
 		LinkedList<Vector> targetP = new LinkedList<Vector>(Arrays.asList(text));
 		for (String s : source) {
+			//TODO: Make Regex for mult spaces bevor nummber
 			if (s.startsWith("vt ")) {
 				String[] num = s.split("\\s+");
 				// -1* f¸r rechtsh‰ndiges koordinatensystem
@@ -361,7 +362,7 @@ public class ObjLoader extends Shape {
 		yGroﬂ = max(yGroﬂ, yGroﬂ2);
 		zKlein = min(zKlein, zKlein2);
 		zGroﬂ = max(zGroﬂ, zGroﬂ2);
-//		System.out.println(getId()+" xkl:"+xKlein+" xGr:"+xGroﬂ+" yKl:"+yKlein+" yGr:"+yGroﬂ+" zKl:"+zKlein+" zGr:"+zGroﬂ);
+		System.out.println(getId()+" xkl:"+xKlein+" xGr:"+xGroﬂ+" yKl:"+yKlein+" yGr:"+yGroﬂ+" zKl:"+zKlein+" zGr:"+zGroﬂ);
 		
 		setCenter(new VectorImp((xGroﬂ + xKlein)/2, (yGroﬂ + yKlein)/2, (zGroﬂ + zKlein)/2));
 		
