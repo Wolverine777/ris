@@ -6,6 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 
+/**
+ * @author Benjamin Reemts
+ *
+ */
 public class Route {
 	private double totalway = 0;
 	private List<LevelNode> waypoints = new ArrayList<LevelNode>();

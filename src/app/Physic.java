@@ -36,6 +36,10 @@ import app.nodes.shapes.Shape;
 import app.nodes.shapes.Sphere;
 import app.toolkit.StopWatch;
 
+/**
+ * @author Fabian Unruh
+ *
+ */
 public class Physic extends UntypedActor {
 
 	private Map<String, Node> nodes = new HashMap<String, Node>();
@@ -84,7 +88,7 @@ public class Physic extends UntypedActor {
 				
 				if(((Shape)n).getLifetimeCounter() > 0) {
 					
-					System.out.println("lifetimecounter: " + ((Shape)n).getLifetimeCounter());
+//					System.out.println("lifetimecounter: " + ((Shape)n).getLifetimeCounter());
 					((Shape)n).setLifetimeCounter(((Shape)n).getLifetimeCounter()-1);
 					VectorImp opposite = oppositeDirectionGround(n);
 					n.setVelocity(opposite);
@@ -118,7 +122,7 @@ public class Physic extends UntypedActor {
 					simulator.tell(sc, self());	
 				}
 				else{
-					System.out.println("lifetimecounter unten: " + ((Shape)n).getLifetimeCounter());
+//					System.out.println("lifetimecounter unten: " + ((Shape)n).getLifetimeCounter());
 					delete.ids.add(n.getId());
 				}
 				
@@ -142,7 +146,6 @@ public class Physic extends UntypedActor {
 					for (Node colwith : collision){
 						if(colwith instanceof Coin){
 							delete.ids.remove(n.getId());
-							System.out.println("klappt das? ");				
 							n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
 					
 							n.setVelocity(n.getForce());
@@ -188,7 +191,6 @@ public class Physic extends UntypedActor {
 						for (Node colwith : collision){
 							if(colwith instanceof Coin){
 								delete.ids.remove(n.getId());
-								System.out.println("klappt das? ");				
 								n.setForce((n.getVelocity().add(new VectorImp(0, ground.y()* n.getMass()* elapsed, 0))));
 						
 								n.setVelocity(n.getForce());
@@ -246,13 +248,12 @@ public class Physic extends UntypedActor {
 				}
 			
 				if(n instanceof Coin){
-					System.out.println("colli with coin");
 					for(Node col:collision){
 						if(col instanceof Car){
 							delete.ids.remove(n.getId());
 							remCoin.add(n);
 							Vector carhight=new VectorImp(((Car) col).getPosition().x(), ((Car) col).getPosition().y()+((Car) col).getRadius(), ((Car) col).getPosition().z());
-							System.out.println("tell pickup simulation");
+							//Tell Pickup animation
 							simulator.tell(new SimulateCreation(n.getId(), col.getId(), col.getWorldTransform(), 1, carhight), getSelf());
 						} else{
 							delete.ids.remove(n.getId());
@@ -341,7 +342,7 @@ public class Physic extends UntypedActor {
 		}
 		VectorImp impact = new VectorImp(n.getWorldTransform().getPosition().x(), floor.y(), n.getWorldTransform().getPosition().z());
 		
-		System.out.println("Aufprallort: " + n.getId() + impact + "Elapsed: " + elapsedaverage);
+//		System.out.println("Aufprallort: " + n.getId() + impact + "Elapsed: " + elapsedaverage);
 		impacts.put(id, impact);
 		
 		PhysicModification tellAi = new PhysicModification(id, impact);

@@ -2,6 +2,10 @@ package app.messages;
 
 import java.util.Set;
 
+/**
+ * @author Benjamin Reemts
+ *
+ */
 public class RegisterKeys {
 	 private Set<Integer> keys;
 	 private boolean add;

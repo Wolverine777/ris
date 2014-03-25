@@ -760,13 +760,23 @@ public final class MatrixImp implements Matrix {
     return true;
   }
   
-  public static boolean isTranslationMatrix(Matrix m){
+  /**
+   * @author Benjamin Reemts
+ * @param m
+ * @return
+ */
+public static boolean isTranslationMatrix(Matrix m){
 	  Vector pos=m.getPosition();
 	  if(pos.x()!=0||pos.y()!=0||pos.z()!=0)return true;
 	  return false;
   }
   
-  public static boolean isScaleMatrix(Matrix m){
+  /**
+   * @author Benjamin Reemts
+ * @param m
+ * @return
+ */
+public static boolean isScaleMatrix(Matrix m){
 	  for(int x=0;x<4;x++){
 		  for(int y=0;y<4;y++){
 			  if(x!=y) if(m.get(x, y)!=0)return false;
@@ -775,7 +785,12 @@ public final class MatrixImp implements Matrix {
 	  return true;
   }
   
-  public static boolean isRotationMatrix(Matrix m){
+  /**
+   * @author Benjamin Reemts
+ * @param m
+ * @return
+ */
+public static boolean isRotationMatrix(Matrix m){
 	  if(m.get(0, 0)!=0.0f&&m.get(0, 1)!=0.0f&&m.get(1, 0)!=0.0f&&m.get(1, 1)!=0.0f)return true;
 	  if(m.get(0, 0)!=0.0f&&m.get(0, 2)!=0.0f&&m.get(2, 0)!=0.0f&&m.get(2, 2)!=0.0f)return true;
 	  if(m.get(1, 1)!=0.0f&&m.get(1, 2)!=0.0f&&m.get(2, 1)!=0.0f&&m.get(2, 2)!=0.0f)return true;

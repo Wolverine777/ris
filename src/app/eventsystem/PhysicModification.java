@@ -2,6 +2,10 @@ package app.eventsystem;
 
 import vecmath.Vector;
 
+/**
+ * @author Fabian Unruh
+ *
+ */
 public class PhysicModification {
 	private final String id;
 	private final Vector force;

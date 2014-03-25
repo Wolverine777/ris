@@ -25,7 +25,7 @@ import vecmath.Vector;
 import vecmath.vecmathimp.MatrixImp;
 
 /**
- * @author Benjamin Reemts
+ * @author Benjamin Reemts, Fabian Unruh
  * 
  */
 

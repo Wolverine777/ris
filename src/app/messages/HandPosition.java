@@ -1,8 +1,11 @@
 package app.messages;
 
 import vecmath.Vector;
-import vecmath.vecmathimp.VectorImp;
 
+/**
+ * @author Fabian Unruh
+ *
+ */
 public class HandPosition {
 	
 	public Vector handPosition;

@@ -11,6 +11,10 @@ import app.shader.Shader;
 import vecmath.Matrix;
 import vecmath.vecmathimp.VectorImp;
 
+/**
+ * @author Benjamin Reemts
+ *
+ */
 public class Sun extends Node {
 
 	// Sinnvolle SWerte; position könnte 0, 0, 1, 0 sein

@@ -21,7 +21,6 @@ import com.leapmotion.leap.Gesture;
 import com.leapmotion.leap.GestureList;
 import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.KeyTapGesture;
-import com.leapmotion.leap.ScreenTapGesture;
 import com.leapmotion.leap.SwipeGesture;
 import com.leapmotion.leap.Vector;
 import com.leapmotion.leap.Gesture.State;
@@ -37,7 +36,7 @@ import app.messages.RegisterKeys;
 import app.messages.TapDetected;
 
 /**
- * @author Benjamin Reemts
+ * @author Benjamin Reemts, Leap -> Fabian Unruh
  *
  */
 public class Input extends UntypedActor {
@@ -68,18 +67,15 @@ public class Input extends UntypedActor {
     	pressedKeystmp.addAll(pressedKeys);
 		while(Keyboard.next()) {
 			int k = Keyboard.getEventKey();
-			System.out.println("Key: " + k + "Pressed");
 			if (Keyboard.getEventKeyState()) {
 				pressedKeys.add(k);
 				pressedKeystmp.add(k);
 				if(toggled.contains(k))toggled.remove(k);
 				else toggled.add(k);
 			}else {
-				System.out.println("Ich möchte diesen key releasen: " + k);
 				pressedKeys.remove(k);
 			}
 		}
-//		System.out.println("pressed keys: " + pressedKeys + "tmp keys: " + pressedKeystmp);
 		
 		Map<ActorRef, KeyState> outcome = new HashMap<ActorRef, KeyState>();
 		for(Integer obsKey:keyObservers.keySet()){
@@ -169,7 +165,7 @@ public class Input extends UntypedActor {
             Map<ActorRef, HandPosition> sendHP = new HashMap<ActorRef, HandPosition>();            	
             	for(ActorRef actor:gestureObservers.get(GestureType.HAND_POSITION)){
             		HandPosition hp = new HandPosition();
-            		System.out.println("normal Vector leap: " + position.getX() + " " + position.getY() + " " + position.getZ());
+//            		System.out.println("normal Vector leap: " + position.getX() + " " + position.getY() + " " + position.getZ());
            			hp.handPosition = new VectorImp(position.getX(), position.getY(), position.getZ());
            			hp.fingerAmount = fingers.count();
            			            			
@@ -262,7 +258,7 @@ public class Input extends UntypedActor {
         }
 
         if (!frame.hands().isEmpty() || !gestures.isEmpty()) {
-            System.out.println();
+//            System.out.println();
         }
     }
 

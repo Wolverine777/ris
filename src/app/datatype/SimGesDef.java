@@ -1,12 +1,13 @@
 package app.datatype;
 
-import java.util.Set;
-
 import vecmath.Vector;
 import app.Types.GestureType;
-import app.Types.KeyMode;
 import app.Types.SimulateType;
 
+/**
+ * @author Benjamin Reemts
+ *
+ */
 public class SimGesDef {
 	private SimulateType type;
 	private GestureType gesture;

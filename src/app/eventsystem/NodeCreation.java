@@ -10,6 +10,10 @@ import app.Types.PhysicType;
 import app.datatype.FontInfo;
 import app.shader.Shader;
 
+/**
+ * @author Benjamin Reemts, Fabian Unruh
+ *
+ */
 public class NodeCreation {
 	public FontInfo font;
 	public String id, text;
@@ -50,7 +54,7 @@ public class NodeCreation {
 	public NodeCreation(String id, Matrix modelMatrix, ObjectTypes type) {
 		this.id = id;
 		this.modelmatrix=modelMatrix;
-		type=type;
+		this.type=type;
 	}
 	
 	/**

@@ -1,7 +1,6 @@
 package app;
 
 import static app.nodes.NodeFactory.nodeFactory;
-import static org.lwjgl.openal.AL10.alSourcePlay;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
 
 import java.io.File;
@@ -11,7 +10,6 @@ import java.util.LinkedList;
 
 import org.lwjgl.input.Keyboard;
 
-import com.leapmotion.leap.Controller;
 import vecmath.Matrix;
 import vecmath.vecmathimp.FactoryDefault;
 import vecmath.vecmathimp.VectorImp;
@@ -20,7 +18,6 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import app.Types.GestureType;
 import app.Types.KeyMode;
-import app.Types.ObjectTypes;
 import app.Types.PhysicType;
 import app.Types.SimulateType;
 import app.datatype.FontInfo;
@@ -34,7 +31,7 @@ import app.shader.Shader;
 /**
  * Put your stuff here
  * 
- * @author Constantin, Benjamin, Fabian
+ * @author Benjamin, Fabian
  * 
  */
 public class App extends WorldState {

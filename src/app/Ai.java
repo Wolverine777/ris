@@ -40,6 +40,11 @@ import app.nodes.shapes.ObjLoader;
 import app.nodes.shapes.Shape;
 import app.nodes.shapes.Sphere;
 
+
+/**
+ * @author Benjamin Reemts
+ *
+ */
 public class Ai extends UntypedActor {
 
 	Level level;
@@ -67,7 +72,7 @@ public class Ai extends UntypedActor {
 		firstPath.add(startNode);
 		lookAt.put(startNode, new AStarNodes(0, 0, firstPath));
 		AStarNodes bestFree=null;
-		System.out.println("find out");
+//		System.out.println("find out");
 		while(bestFree==null){
 			visited.addAll(toCheck);
 //			System.out.println("find way visited:"+visited);
@@ -124,7 +129,7 @@ public class Ai extends UntypedActor {
 			
 		}
 		//if nullpointer here check why return in while is not reached
-		System.out.println("WayOut: "+bestFree.getPath());
+//		System.out.println("WayOut: "+bestFree.getPath());
 		List<LevelNode> out=bestFree.getPath();
 		out.remove(out.size()-1);
 		return out;
@@ -187,7 +192,7 @@ public class Ai extends UntypedActor {
 //					Route way=aStar(path, lookAt, visit, target);
 					car.setTarget(nextCoin);
 //					System.out.println("Level: "+level.toString());
-					System.out.println("ai setway: "+way);
+//					System.out.println("ai setway: "+way);
 					car.setWayToTarget(way);
 					simulator.tell(new SimulateCreation(car.getId(), car.getShader(), car.getSourceFile(), car.getSourceTex(), car.getSpeed(), car.getWorldTransform(), car.getMass(), way, nextCoin.getId()), getSelf());
 					lookAt.clear();
@@ -235,8 +240,10 @@ public class Ai extends UntypedActor {
 					double resistance = lookAt.get(path.get(0)).getResistance()+child.getValOfEdge(path.get(0)); //resistance till parent + resistance child to parent
 					double distance=child.lengthtoNode(target)+resistance; //pytagoras lenght + resistance
 //					System.out.print(" distance: "+distance);
+					List<LevelNode> pathClone=new LinkedList<LevelNode>();
+					pathClone.addAll(path);
 					if(lookAt.containsKey(child))if(lookAt.get(child).getLength()<=distance)continue; //keep only shortest way to child
-					lookAt.put(child, new AStarNodes(distance, resistance, path));
+					lookAt.put(child, new AStarNodes(distance, resistance, pathClone));
 				}
 			}
 //			if(path.contains(target))return new Route((int) lookAt.get(target).getLength(), path);
@@ -315,7 +322,7 @@ public class Ai extends UntypedActor {
 //			if(path.contains(target))return new Route((int) lookAt.get(target).getLength(), path);
 				lookAt.remove(path.get(0));
 				if(lookAt.isEmpty()){
-					System.out.println("lookatempty");
+//					System.out.println("lookatempty");
 					return null;
 				}
 				visited.add(path.get(0));
@@ -379,7 +386,7 @@ public class Ai extends UntypedActor {
 //				System.out.println("part end "+object.getId()+" min:"+min.toString()+" max:"+max.toString());
 			}
 			
-			System.out.println("min:"+min.toString()+" max:"+max.toString()+" ID:"+object.getId());
+//			System.out.println("min:"+min.toString()+" max:"+max.toString()+" ID:"+object.getId());
 			if(setBlock)level.setBlocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
 			else level.setUnblocked(level.getBiggerPosInLevel(min,false), level.getBiggerPosInLevel(max,true));
 			calcNewRouts();
@@ -512,7 +519,6 @@ public class Ai extends UntypedActor {
 				nonAiNodes.put(nc.id, nodeFactory.groupNode(nc.id, nc.getModelmatrix()));
 			} else if (nc.type == ObjectTypes.CUBE) {
 				nonAiNodes.put(nc.id, nodeFactory.cube(nc.id, nc.shader, nc.w, nc.h, nc.d, nc.mass));
-				System.out.println("block cube");
 				setBlocked((Shape)nonAiNodes.get(nc.getId()), true);
 			} else if (nc.type == ObjectTypes.PIPE) {
 				nonAiNodes.put(nc.id, nodeFactory.pipe(nc.id, nc.shader, nc.r, nc.lats, nc.longs,nc.mass));

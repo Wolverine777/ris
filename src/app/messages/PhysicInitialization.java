@@ -2,6 +2,10 @@ package app.messages;
 
 import akka.actor.ActorRef;
 
+/**
+ * @author Fabian Unruh
+ *
+ */
 public class PhysicInitialization {
 
 	public ActorRef simulator;

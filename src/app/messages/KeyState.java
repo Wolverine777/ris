@@ -7,10 +7,10 @@ import java.util.Set;
  * State passed from target to observer containing all relevant released and
  * pressed keys.
  * 
- * @author Constantin, Benjamin Reemts
+ * @author Benjamin Reemts
  * 
  */
-public class KeyState implements State {
+public class KeyState{
 	private Set<Integer> pressedKeys;
 	private Set<Integer> toggled;
 

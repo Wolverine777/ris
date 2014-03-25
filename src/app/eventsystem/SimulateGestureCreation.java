@@ -1,7 +1,5 @@
 package app.eventsystem;
 
-import java.util.Set;
-
 import vecmath.Matrix;
 import vecmath.Vector;
 import app.Types.GestureType;

@@ -19,7 +19,7 @@ import app.shader.Shader;
 /**
  * Creates and keeps track of created nodes for easy modification
  * 
- * @author Constantin
+ * @author Constantin, Benjamin Reemts
  *
  */
 public class NodeFactory {

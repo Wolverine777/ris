@@ -8,6 +8,10 @@ import vecmath.vecmathimp.MatrixImp;
 import vecmath.vecmathimp.VectorImp;
 import app.shader.Shader;
 
+/**
+ * @author Fabian Unruh
+ *
+ */
 public class Canon extends ObjLoader {
 	
 	private Vector direction = new VectorImp(0, 1, 0);

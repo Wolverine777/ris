@@ -2,6 +2,10 @@ package app.messages;
 
 import app.Types.GestureType;
 
+/**
+ * @author Fabian Unruh
+ *
+ */
 public class RegisterGesture {
 	
 	private GestureType gestureType;

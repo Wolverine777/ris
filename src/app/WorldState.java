@@ -20,12 +20,9 @@ import org.lwjgl.input.Keyboard;
 
 import vecmath.Matrix;
 import vecmath.Vector;
-import vecmath.vecmathimp.VectorImp;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
-import com.leapmotion.leap.Controller;
-import com.vividsolutions.jts.operation.overlay.snap.SnapIfNeededOverlayOp;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -47,7 +44,6 @@ import app.eventsystem.SimulateCreation;
 import app.eventsystem.SimulateGestureCreation;
 import app.eventsystem.StartNodeModification;
 import app.messages.AiInitialization;
-import app.messages.HandPosition;
 import app.messages.KeyState;
 import app.messages.Message;
 import app.messages.RegisterGesture;
@@ -68,7 +64,7 @@ import app.toolkit.StopWatch;
 /**
  * Technical base
  * 
- * @author Constantin, Benjamin, Fabian
+ * @author Benjamin Reemts, Fabian Unruh
  * 
  */
 public abstract class WorldState extends UntypedActor{
@@ -103,8 +99,7 @@ public abstract class WorldState extends UntypedActor{
 	private void loop() {
 		System.out.println("\nStarting new loop");
 		
-		if(tapped &&amountOfSpheres>10){
-			System.out.println("bam");
+		if(tapped &&amountOfSpheres>15){
 			generateCanonBall();
 			tapped=false;
 			amountOfSpheres=0;
@@ -112,7 +107,7 @@ public abstract class WorldState extends UntypedActor{
 		
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
 			
-			if(amountOfSpheres>20){
+			if(amountOfSpheres>30){
 //				alSourcePlay(Renderer.source2);
 				generateCanonBall();
 				amountOfSpheres=0;
@@ -132,7 +127,7 @@ public abstract class WorldState extends UntypedActor{
 	public void onReceive(Object message) throws Exception {
 		if (message == Message.DONE) {
 			unitState.put(getSender(), true);
-//			System.out.println("Done: "+getSender());
+			System.out.println("Done: "+getSender());
 			if (!unitState.containsValue(false)) {
 				for (Map.Entry<ActorRef, Boolean> entry : unitState.entrySet()) {
 					entry.setValue(false);
@@ -167,23 +162,25 @@ public abstract class WorldState extends UntypedActor{
 				loop();
 			}
 		} else if (message == Message.INIT) {
-			//For logging
-			try {
-				String fName="log1.txt";
-				Pattern p = Pattern.compile("(.*?)(\\d+)?(\\..*)?");
-				do{
-				    Matcher m = p.matcher(fName);
-				    if(m.matches()){//group 1 is the prefix, group 2 is the number, group 3 is the suffix
-				        fName = m.group(1) + (m.group(2)==null?1:(Integer.parseInt(m.group(2)) + 1)) + (m.group(3)==null?"":m.group(3));
-				    }
-				}while(new File("log/"+fName).exists());//repeat until a new filename is generated
-				
-				PrintStream out=new PrintStream(new FileOutputStream("log/"+fName, true), true);
-				System.setOut(out);
-				System.setErr(out);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			
+				//For logging
+				try {
+					String fName="log1.txt";
+					Pattern p = Pattern.compile("(.*?)(\\d+)?(\\..*)?");
+					do{
+						Matcher m = p.matcher(fName);
+						if(m.matches()){//group 1 is the prefix, group 2 is the number, group 3 is the suffix
+							fName = m.group(1) + (m.group(2)==null?1:(Integer.parseInt(m.group(2)) + 1)) + (m.group(3)==null?"":m.group(3));
+						}
+					}while(new File("log/"+fName).exists());//repeat until a new filename is generated
+					
+					PrintStream out=new PrintStream(new FileOutputStream("log/"+fName, true), true);
+					System.setOut(out);
+					System.setErr(out);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			
 			
 			System.out.println("Starting initialization");
 

@@ -3,10 +3,7 @@ package app;
 import static app.nodes.NodeFactory.nodeFactory;
 import static org.lwjgl.opengl.GL11.*;
 import static vecmath.vecmathimp.FactoryDefault.vecmath;
-import static org.lwjgl.opengl.GL20.glUseProgram;
 
-import org.lwjgl.*;
-import org.lwjgl.opengl.*;
 import org.lwjgl.openal.AL;
 
 import static org.lwjgl.openal.AL10.*;
@@ -15,7 +12,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +23,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.openal.WaveData;
 
 import vecmath.Matrix;

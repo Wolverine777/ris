@@ -28,7 +28,6 @@ import app.Types.SimulateType;
 import app.datatype.SimDef;
 import app.datatype.SimGesDef;
 import app.edges.Edge;
-import app.eventsystem.CameraCreation;
 import app.eventsystem.NodeCreation;
 import app.eventsystem.NodeDeletion;
 import app.eventsystem.NodeModification;
@@ -44,6 +43,10 @@ import app.nodes.shapes.Coin;
 import app.nodes.shapes.Shape;
 import app.toolkit.StopWatch;
 
+/**
+ * @author Benjamin Reemts
+ *
+ */
 public class Simulator extends UntypedActor {
 
 	private Map<String, Node> nodes = new HashMap<String, Node>();
@@ -77,10 +80,10 @@ public class Simulator extends UntypedActor {
 						if(car.getWayToTarget()!=null){
 							Vector vec=car.getVecToNextTarget(elapsed);
 							if(vec!=null){
-								System.out.println("move direction car: "+vec);
+//								System.out.println("move direction car: "+vec);
 								doSimulation(car, SimulateType.DRIVE, vec);
 							}
-							System.out.println("simu waytoTarget:"+car.getWayToTarget());
+//							System.out.println("simu waytoTarget:"+car.getWayToTarget());
 						}
 					}
 					if(entry.getValue().getType()==SimulateType.PICKUP&&entry.getKey() instanceof Shape){
@@ -91,25 +94,25 @@ public class Simulator extends UntypedActor {
 							Vector posCoin=s.getWorldTransform().getPosition();
 							Vector posRef=ref.getWorldTransform().getPosition();
 							//If coinY == (car+up)y --> down
-							System.out.println("Time ai "+entry.getValue().getTimes());
-							System.out.println("pos coin: "+posCoin+ " pos car: "+posRef);
+//							System.out.println("Time ai "+entry.getValue().getTimes());
+//							System.out.println("pos coin: "+posCoin+ " pos car: "+posRef);
 							//If coinY == carY && isdown --> up
 							if(entry.getValue().timesDown()){
 								entry.getValue().multScale(-1);
-								System.out.println("Time down "+entry.getValue().getTimes());
+//								System.out.println("Time down "+entry.getValue().getTimes());
 							}
 							posCoin=new VectorImp(posCoin.x(), 0, posCoin.z());
 							posRef=new VectorImp(posRef.x(), 0, posRef.z());
 							//verschiebungsvector= zielpunkt- startpunkt
 							//up only a part(scale) + trans over actual car pos 
 //							Vector trans=up.mult(entry.getValue().scale).add((posCoin.sub(posRef)));
-							System.out.println("up: "+up + " mult: "+up.mult(entry.getValue().getScale()));
-							System.out.println("zu ueber car: "+posRef.sub(posCoin));
+//							System.out.println("up: "+up + " mult: "+up.mult(entry.getValue().getScale()));
+//							System.out.println("zu ueber car: "+posRef.sub(posCoin));
 							
 							Vector trans=posRef.sub(posCoin).add(up.mult(entry.getValue().getScale()));
 							doSimulation(entry.getKey(), entry.getValue().getType(), trans);
 							if(entry.getValue().getTimes()==0){
-								System.out.println("rem coin"+s.getId());
+//								System.out.println("rem coin"+s.getId());
 								List<String> ids=new LinkedList<String>();
 								ids.add(entry.getKey().getId());
 								worldState.tell(new NodeDeletion(ids), getSelf());
@@ -177,7 +180,6 @@ public class Simulator extends UntypedActor {
 			worldState.tell(new NodeModification(node.getId(),modify), self());
 		}else if (type ==SimulateType.PICKUP){
 			float angle = elapsed *  90 * vec.length()*100;
-			System.out.println("vec len"+vec.length());
 			Vector v = node.getWorldTransform().getPosition();
 			Matrix rot=vecmath.rotationMatrix(0, 1, 0, angle);
 			Matrix modify =vecmath.identityMatrix();
@@ -288,7 +290,6 @@ public class Simulator extends UntypedActor {
 				}
 			} else if(sc.getSimulation() ==SimulateType.PICKUP){
 				//TODO: kick from ai
-				System.out.println("simu got pickup");
 				Node ref=nodes.get(sc.getTargetId());
 				if(ref==null){
 					Node n=nodeFactory.groupNode(sc.getTargetId(), sc.getModelmatrix());
@@ -345,7 +346,6 @@ public class Simulator extends UntypedActor {
 			SimulateGestureCreation sgc = (SimulateGestureCreation) message;
 			Node newNode = null;
 			if (!nodes.containsKey(sgc.id)) {
-				System.out.println("not in "+sgc.id);
 				// TODO: ein Type reicht nur ein Shape, von den objekten wird
 				// nur id und woldtrafo benoetigt.
 				// TODO: Generics?
@@ -394,7 +394,7 @@ public class Simulator extends UntypedActor {
 				for(Node n: simulationsgestures.keySet()){
 					for(SimGesDef sgf: simulationsgestures.get(n)){
 						if(sgf.getGesture() == GestureType.HAND_POSITION){
-							System.out.println("Hand position: " +  hp.getHandPosition().x() + " " + hp.getHandPosition().y() + " " + hp.getHandPosition().z());
+//							System.out.println("Hand position: " +  hp.getHandPosition().x() + " " + hp.getHandPosition().y() + " " + hp.getHandPosition().z());
 							if(hp.getHandPosition().y() > 190f && hp.handPosition.x()< 25f && hp.getHandPosition().x() > -25){
 								doSimulation(n, sgf.getType(), new VectorImp(0.7f, 0f, 0f));
 							}
@@ -450,8 +450,6 @@ public class Simulator extends UntypedActor {
 					}
 					nodes.remove(modify.getId());
 					for (Edge e : modify.getEdges()) {
-					System.out.println("Error on: "+id+" have Edges?:"+modify.getEdges()+" array null?:"+removeEdges);
-						System.out.println("Yep error:"+e.toString());
 						removeEdges.add(e);
 						// nodes.get(e.getOtherNode(modify).id).removeEdge(e);
 					}
