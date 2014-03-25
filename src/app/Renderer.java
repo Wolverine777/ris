@@ -44,8 +44,8 @@ import app.nodes.Text;
 import app.shader.Shader;
 
 public class Renderer extends UntypedActor {
-	public static final int width = 1280;
-	public static final int height = 700;
+	public static final int width = 1180;
+	public static final int height = 600;
 
 	private static UnicodeFont font;
 	

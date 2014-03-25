@@ -96,6 +96,7 @@ public abstract class WorldState extends UntypedActor{
     public static final boolean LEAP=false;
 //    protected double leap=0.5; //1Tastatur 0.5Leap
     private boolean done;
+    private final boolean LOOGING=false;
     
 
 	private void loop() {
@@ -111,7 +112,7 @@ public abstract class WorldState extends UntypedActor{
 		
 		if(pressedKeys.contains(Keyboard.KEY_SPACE)){
 			
-			if(amountOfSpheres>30){
+			if(amountOfSpheres>8){
 //				alSourcePlay(Renderer.source2);
 				generateCanonBall();
 				amountOfSpheres=0;
@@ -167,6 +168,8 @@ public abstract class WorldState extends UntypedActor{
 				loop();
 			}
 		} else if (message == Message.INIT) {
+			
+			if(LOOGING){
 				//For logging
 				try {
 					String fName="log1.txt";
@@ -184,7 +187,7 @@ public abstract class WorldState extends UntypedActor{
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			
+			}
 			System.out.println("Leap: "+LEAP);
 			
 			System.out.println("Starting initialization");

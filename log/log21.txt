@@ -1,0 +1,131 @@
+Leap: false
+Starting initialization
+Creating Entities
+Initializing Entities
+Physic initialised
+Init Ai
+Initialized Actor[akka://default/user/App/Simulator#983474281]
+level center vec: (0.0, -2.0, 0.0)
+Initialized Actor[akka://default/user/App/Physic#1975407257]
+Initialized Actor[akka://default/user/App/Input#-1002404453]
+Initialized Actor[akka://default/user/App/Ai#1885486078]
+fontnull
+Initialized Actor[akka://default/user/App/Renderer#79088374]
+Initializing App
+sun added
+__ Appending head to start
+__ Appending Sun to start
+__ Appending Floor to head
+Car1 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+__ Appending Car1 to head
+TextureID1
+Car1 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+Car3 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+__ Appending Car3 to head
+Canon xkl:-0.400827 xGr:0.400827 yKl:-0.00582023 yGr:1.6121 zKl:-0.400827 zGr:0.400827
+input receive: [32]Actor[akka://default/user/App/Simulator#983474281]
+input receive: [30]Actor[akka://default/user/App/Simulator#983474281]
+input receive: [17]Actor[akka://default/user/App/Simulator#983474281]
+input receive: [31]Actor[akka://default/user/App/Simulator#983474281]
+__ Appending Canon to head
+input receive: [57]Actor[akka://default/user/App#259986173]
+Car1 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+Car1 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+Car1 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+TextureID2
+apple1 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+__ Appending apple1 to head
+apple2 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+__ Appending apple2 to head
+apple3 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+__ Appending apple3 to head
+apple4 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+__ Appending apple4 to head
+apple5 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+__ Appending apple5 to head
+House xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+__ Appending House to head
+apple0 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+__ Appending apple0 to head
+House1 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+__ Appending House1 to head
+House2 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+__ Appending House2 to head
+House3 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+__ Appending House3 to head
+__ Appending Coins to head
+__ Appending Cars to head
+__ Appending Balls to head
+App initialized
+Initialization finished in 14,645s
+Starting new loop
+input loop
+Done: Actor[akka://default/user/App/Input#-1002404453]
+Car3 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+Canon xkl:-0.400827 xGr:0.400827 yKl:-0.00582023 yGr:1.6121 zKl:-0.400827 zGr:0.400827
+Car3 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+apple1 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+Canon xkl:-0.400827 xGr:0.400827 yKl:-0.00582023 yGr:1.6121 zKl:-0.400827 zGr:0.400827
+TextureID3
+Car3 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+Canon xkl:-0.5 xGr:0.5 yKl:-0.3 yGr:0.3 zKl:-0.5 zGr:0.5
+Car3 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+apple1 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple2 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+TextureID4
+apple1 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple3 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple1 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple2 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+TextureID5
+apple2 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple2 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple4 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple3 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+TextureID6
+apple3 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple3 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple5 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple4 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple4 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+TextureID7
+House xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+apple4 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple5 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple5 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple5 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+apple0 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+House1 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+House xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+House xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+apple0 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+TextureID8
+simulation loop
+Done: Actor[akka://default/user/App/Simulator#983474281]
+House2 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+apple0 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+House3 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+House1 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+Ai Loop
+Done: Actor[akka://default/user/App/Ai#1885486078]
+apple0 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+House2 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+House1 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+House3 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+physic loop
+Nodes physic: Car3Center: (-2.992896, -1.730859, -5.9926124)Radius: 0.47654617
+Nodes physic: House1Center: (3.104497, -1.0641396, -7.8069425)Radius: 1.5297928
+Nodes physic: Car1Center: (4.007104, -1.730859, 1.5073876)Radius: 0.47654617
+Nodes physic: apple0Center: (-3.0781577, -1.7038355, -3.5165763)Radius: 0.2785971
+Nodes physic: House2Center: (-4.395503, -1.0641396, 4.1930575)Radius: 1.5297928
+Nodes physic: apple1Center: (6.4218426, -1.7038355, -8.516577)Radius: 0.2785971
+Nodes physic: House3Center: (6.604497, -1.0641396, 6.1930575)Radius: 1.5297928
+Nodes physic: HouseCenter: (-2.895503, -1.0641396, -3.8069425)Radius: 1.5297928
+Nodes physic: apple2Center: (9.421843, -1.7038355, 6.4834237)Radius: 0.2785971
+Nodes physic: apple3Center: (-8.078157, -1.7038355, 1.9834237)Radius: 0.2785971
+Nodes physic: apple4Center: (-9.078157, -1.7038355, -7.0165763)Radius: 0.2785971
+Nodes physic: apple5Center: (1.4218423, -1.7038355, 0.48342368)Radius: 0.2785971
+Done: Actor[akka://default/user/App/Physic#1975407257]
+House2 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+House3 xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+Renderer display

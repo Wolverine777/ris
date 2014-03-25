@@ -35,7 +35,7 @@ public abstract class Shape extends Node {
 	protected int mode = GL11.GL_QUADS;
 	protected Vector center = new VectorImp(0,0,0);
 	protected float radius;
-	protected float lifetimeCounter = 1;
+	protected float lifetimeCounter = 3;
 
 	public Shape(String id, Shader shader, float mass) {
 		this(id, shader, mass, FactoryDefault.vecmath.identityMatrix());

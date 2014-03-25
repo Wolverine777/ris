@@ -1,0 +1,21 @@
+Leap: false
+Starting initialization
+Creating Entities
+Initializing Entities
+Physic initialised
+Init Ai
+level center vec: (0.0, -2.0, 0.0)
+Initialized Actor[akka://default/user/App/Simulator#-308196414]
+Initialized Actor[akka://default/user/App/Physic#1335620221]
+Initialized Actor[akka://default/user/App/Input#1604368391]
+Initialized Actor[akka://default/user/App/Ai#-443435614]
+fontnull
+Initialized Actor[akka://default/user/App/Renderer#-5241920]
+Initializing App
+sun added
+__ Appending head to start
+__ Appending Sun to start
+__ Appending Floor to head
+Car1 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+__ Appending Car1 to head
+TextureID1

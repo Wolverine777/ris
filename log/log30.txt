@@ -1,0 +1,12 @@
+Leap: true
+Starting initialization
+Creating Entities
+Initializing Entities
+Physic initialised
+Init Ai
+level center vec: (0.0, -2.0, 0.0)
+Initialized Actor[akka://default/user/App/Simulator#1900603337]
+Initialized Actor[akka://default/user/App/Physic#1159965095]
+Initialized Actor[akka://default/user/App/Ai#-1704489728]
+Native code library failed to load. 
+java.lang.UnsatisfiedLinkError: no LeapJava in java.library.path

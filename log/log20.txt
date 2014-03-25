@@ -1,0 +1,47 @@
+Leap: false
+Starting initialization
+Creating Entities
+Initializing Entities
+Physic initialised
+Init Ai
+level center vec: (0.0, -2.0, 0.0)
+Initialized Actor[akka://default/user/App/Simulator#386256381]
+Initialized Actor[akka://default/user/App/Input#1239865846]
+Initialized Actor[akka://default/user/App/Physic#2029185742]
+Initialized Actor[akka://default/user/App/Ai#-2022310086]
+fontnull
+Initialized Actor[akka://default/user/App/Renderer#1742891622]
+Initializing App
+sun added
+__ Appending head to start
+__ Appending Sun to start
+__ Appending Floor to head
+Car1 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+__ Appending Car1 to head
+TextureID1
+Car1 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+Car1 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+Car1 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+Car3 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+__ Appending Car3 to head
+Canon xkl:-0.400827 xGr:0.400827 yKl:-0.00582023 yGr:1.6121 zKl:-0.400827 zGr:0.400827
+input receive: [32]Actor[akka://default/user/App/Simulator#386256381]
+input receive: [30]Actor[akka://default/user/App/Simulator#386256381]
+input receive: [17]Actor[akka://default/user/App/Simulator#386256381]
+input receive: [31]Actor[akka://default/user/App/Simulator#386256381]
+__ Appending Canon to head
+input receive: [57]Actor[akka://default/user/App#-1214580604]
+apple1 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+__ Appending apple1 to head
+Car1 xkl:-515.0628 xGr:538.7424 yKl:-7.816179 yGr:904.95276 zKl:-741.0343 zGr:765.6597
+TextureID2
+apple2 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+__ Appending apple2 to head
+apple3 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+__ Appending apple3 to head
+apple4 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+__ Appending apple4 to head
+apple5 xkl:23.554512 xGr:88.9368 yKl:0.709068 yGr:78.26812 zKl:-36.685173 zGr:32.264824
+__ Appending apple5 to head
+House xkl:-691.7463 xGr:822.3676 yKl:-4.91437 yGr:1174.74 zKl:-1660.2383 zGr:26.560272
+__ Appending House to head
