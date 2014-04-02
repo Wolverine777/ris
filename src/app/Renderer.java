@@ -93,8 +93,9 @@ public class Renderer extends UntypedActor {
 //		createSound(source2, "sounds\\test.wav");
 		System.out.println("font"+font);
 		setUpCamera();
-		shader = new Shader();
-		texShader = new Shader(new File("src/app/shadercode/texturesVertex"), new File("src/app/shadercode/texturesFragment"));
+//		shader = new Shader();
+		shader= new Shader(new File("src/app/shadercode/phongVertShader.txt"), new File("src/app/shadercode/phongFragShader.txt"));
+		texShader = new Shader(new File("src/app/shadercode/texturesVertex.txt"), new File("src/app/shadercode/texturesFragment.txt"));
 		setUpLighting();
 		
 		// Set background color to black.

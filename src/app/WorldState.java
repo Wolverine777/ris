@@ -642,7 +642,7 @@ public abstract class WorldState extends UntypedActor{
 		if(LEAP) scaleFactor=scaleFactor/0.5f; 
 		Canon canon = (Canon) nodes.get("Canon");
 		Matrix modelMatrix =vecmath.translationMatrix(canon.getSpawn()).mult(vecmath.scaleMatrix(scaleFactor, scaleFactor, scaleFactor)); 
-		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, modelMatrix, 0.72f, canon.getDirection().mult(0.07f+(0.001f*floor.getD())), PhysicType.Physic_complete);
+		Sphere cs = createSphere("CanonBall" + canonballnumber, shader, modelMatrix, 0.7f, canon.getDirection().mult(0.07f+(0.001f*floor.getD())), PhysicType.Physic_complete);
 //		cs.setRadius(cs.getRadius()* scaleFactor);
 		append(cs, startNode);
 //		System.out.println("sphere speed: " + canon.getDirection().mult(0.03f));

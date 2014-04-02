@@ -25,7 +25,7 @@ import app.shader.Shader;
 public class Sphere extends Shape {
 
 	//higher makes more Triangels
-	private final int DIVISIONS = 2;
+	private final int DIVISIONS = 1;
 
 	float w2 = 0.5f;
 	float h2 = 0.5f;
@@ -44,6 +44,26 @@ public class Sphere extends Shape {
 			vec(w2, 0, -d2),
 			// Links vorne 5
 			vec(-w2, 0, d2)};
+			
+	
+	//TargetVec-StartVec.cros(TragetVec-StartVec)
+//	private Vector[] n={
+//			//for front top
+//			p[5].sub(p[0]).cross(p[2].sub(p[0])),
+//			//for bottom front
+//			p[2].sub(p[1]).cross(p[5].sub(p[1])),
+//			//left top
+//			p[3].sub(p[0]).cross(p[5].sub(p[0])),
+//			//left bottom
+//			p[5].sub(p[1]).cross(p[3].sub(p[1])),
+//			// back top
+//			p[3].sub(p[0]).cross(p[4].sub(p[0])),
+//			// back bottom
+//			p[3].sub(p[1].cross(p[4].sub(p[1]))),
+//			// right top
+//			p[2].sub(p[0]).cross(p[4].sub(p[0])),
+//			// right bottom
+//			p[4].sub(p[1]).cross(p[2].sub(p[1]))};
 	
 	private List<Triangle> triangles = new ArrayList<Triangle>();
 
@@ -82,24 +102,33 @@ public class Sphere extends Shape {
 		Color[] c = {col(1, 0.5f, 1),col(1, 0.5f, 1),col(1, 0.5f, 1),col(1, 0.5f, 1),col(1, 0.5f, 1),col(1, 0.5f, 1)};
 
 		Vector[] normals = setNull();
+		//TODO:suck find better
 		calculateSurfaceNormal(normals);
-		// front top
-		triangles.add(new Triangle(v(p[0], c[0]), v(p[2], c[2]), v(p[5], c[5])));
-		// front bottom
-		triangles.add(new Triangle(v(p[1], c[1]), v(p[2], c[2]), v(p[5], c[5])));
-		// left top
-		triangles.add(new Triangle(v(p[0], c[0]), v(p[5], c[5]), v(p[3], c[3])));
-		// left bottom
-		triangles.add(new Triangle(v(p[1], c[1]), v(p[5], c[5]), v(p[3], c[3])));
-		// back top
-		triangles.add(new Triangle(v(p[0], c[0]), v(p[4], c[4]), v(p[3], c[3])));
-		// back bottom
-		triangles.add(new Triangle(v(p[1], c[1]), v(p[4], c[4]), v(p[3], c[3])));
-		// right top
-		triangles.add(new Triangle(v(p[0], c[0]), v(p[4], c[4]), v(p[2], c[2])));
-		// right bottom
-		triangles.add(new Triangle(v(p[1], c[1]), v(p[4], c[4]), v(p[2], c[2])));
+//		// front top
+//		triangles.add(new Triangle(v(p[0], c[0], n[0]), v(p[2], c[2], n[0]), v(p[5], c[5], n[0])));
+//		// front bottom
+//		triangles.add(new Triangle(v(p[1], c[1], n[1]), v(p[2], c[2], n[1]), v(p[5], c[5], n[1])));
+//		// left top
+//		triangles.add(new Triangle(v(p[0], c[0], n[2]), v(p[5], c[5], n[2]), v(p[3], c[3], n[2])));
+//		// left bottom
+//		triangles.add(new Triangle(v(p[1], c[1], n[3]), v(p[5], c[5], n[3]), v(p[3], c[3], n[3])));
+//		// back top
+//		triangles.add(new Triangle(v(p[0], c[0], n[4]), v(p[4], c[4], n[4]), v(p[3], c[3], n[4])));
+//		// back bottom
+//		triangles.add(new Triangle(v(p[1], c[1], n[5]), v(p[4], c[4], n[5]), v(p[3], c[3], n[5])));
+//		// right top
+//		triangles.add(new Triangle(v(p[0], c[0], n[6]), v(p[4], c[4], n[6]), v(p[2], c[2], n[6])));
+//		// right bottom
+//		triangles.add(new Triangle(v(p[1], c[1], n[7]), v(p[4], c[4], n[7]), v(p[2], c[2], n[7])));
 
+		triangles.add(new Triangle(v(p[0], c[0], n(p[0], p[5], p[2])), v(p[2], c[2], n(p[2], p[0], p[5])), v(p[5], c[5], n(p[5], p[2], p[0]))));
+		triangles.add(new Triangle(v(p[1], c[1], n(p[1], p[2], p[5])), v(p[2], c[2], n(p[2], p[5], p[1])), v(p[5], c[5], n(p[5], p[1], p[2]))));
+		triangles.add(new Triangle(v(p[0], c[0], n(p[0], p[3], p[5])), v(p[5], c[5], n(p[5], p[0], p[3])), v(p[3], c[3], n(p[3], p[5], p[0]))));
+		triangles.add(new Triangle(v(p[1], c[1], n(p[1], p[5], p[3])), v(p[5], c[5], n(p[5], p[3], p[1])), v(p[3], c[3], n(p[3], p[1], p[5]))));
+		triangles.add(new Triangle(v(p[0], c[0], n(p[0], p[4], p[3])), v(p[4], c[4], n(p[4], p[3], p[0])), v(p[3], c[3], n(p[3], p[0], p[4]))));
+		triangles.add(new Triangle(v(p[1], c[1], n(p[1], p[3], p[4])), v(p[4], c[4], n(p[4], p[1], p[3])), v(p[3], c[3], n(p[3], p[4], p[1]))));
+		triangles.add(new Triangle(v(p[0], c[0], n(p[0], p[2], p[4])), v(p[4], c[4], n(p[4], p[0], p[2])), v(p[2], c[2], n(p[2], p[4], p[0]))));
+		triangles.add(new Triangle(v(p[1], c[1], n(p[1], p[4], p[2])), v(p[4], c[4], n(p[4], p[2], p[1])), v(p[2], c[2], n(p[2], p[1], p[4]))));
 		// Subdivision
 		for (int i = 0; i < DIVISIONS; i++) {
 			List<Triangle> newTris = new ArrayList<Triangle>();
@@ -109,6 +138,11 @@ public class Sphere extends Shape {
 			triangles = newTris;
 		}
 
+//		for(Triangle t:triangles){
+//			t.a.setNormal(n(t.a.position, t.b.position, t.c.position));
+//			t.b.setNormal(n(t.b.position, t.c.position, t.a.position));
+//			t.c.setNormal(n(t.c.position, t.a.position, t.b.position));
+//		}
 		// Normalization
 		for (Triangle t : triangles) {
 			normalize(t);
@@ -127,6 +161,7 @@ public class Sphere extends Shape {
 		for (Vertex v : vertices) {
 			positionData.put(v.position.asArray());
 			colorData.put(v.color.asArray());
+//			normalData.put(v.normal.asArray());
 		}
 		for (int i = 0; i < p.length; i++) {
 			normalData.put(normals[i].asArray());
@@ -137,6 +172,13 @@ public class Sphere extends Shape {
 		findCenter();
 		if(MatrixImp.isTranslationMatrix(modelMatrix))setCenter(modelMatrix.mult(vecmath.translationMatrix(getCenter())).getPosition());
 		if(modelMatrix.get(0, 0) == modelMatrix.get(1, 1) && modelMatrix.get(1, 1) == modelMatrix.get(2, 2))radius = modelMatrix.get(0, 0)*radius;
+	}
+	
+	private Vector n(Vector start, Vector targetR, Vector targetL){
+		Vector a=targetL.sub(start);
+		Vector b=targetR.sub(start);
+//		return targetR.sub(start).cross(targetL.sub(start));
+		return a.cross(b).mult((float)(1/(Math.sqrt(Math.pow(a.length(),2) * Math.pow(b.length(), 2) - Math.pow(a.mult(b).length(),2) ))));
 	}
 
 	// Make construction of normals easy on the eyes.
@@ -181,27 +223,45 @@ public class Sphere extends Shape {
 		d2 = (a.position.y() + b.position.y()) / 2;
 		d3 = (a.position.z() + b.position.z()) / 2;
 //		d = v(vec(d1, d2, d3), col((float) Math.random(), (float) Math.random(), (float) Math.random()));
-		d = v(vec(d1, d2, d3), col((float) Math.random(), 0.6f, 1));
-
+		Vector dPos=vec(d1, d2, d3);
 
 		e1 = (a.position.x() + c.position.x()) / 2;
 		e2 = (a.position.y() + c.position.y()) / 2;
 		e3 = (a.position.z() + c.position.z()) / 2;
 //		e = v(vec(e1, e2, e3), col((float) Math.random(), (float) Math.random(), (float) Math.random()));
-		e = v(vec(e1, e2, e3), col((float) Math.random(), 0.6f, 1));
-
+		Vector ePos=vec(e1, e2, e3);
 
 		f1 = (b.position.x() + c.position.x()) / 2;
 		f2 = (b.position.y() + c.position.y()) / 2;
 		f3 = (b.position.z() + c.position.z()) / 2;
 //		f = v(vec(f1, f2, f3), col((float) Math.random(), (float) Math.random(), (float) Math.random()));
-		f = v(vec(f1, f2, f3), col((float) Math.random(), 0.6f, 1));
+		Vector fPos=vec(f1, f2, f3);
+		
+		d = v(dPos, col((float) Math.random(), 0.6f, 1));
+		e = v(ePos, col((float) Math.random(), 0.6f, 1));
+		f = v(fPos, col((float) Math.random(), 0.6f, 1));
 
 
-		outTris.add(new Triangle(a, d, e));
-		outTris.add(new Triangle(d, b, f));
-		outTris.add(new Triangle(d, e, f));
-		outTris.add(new Triangle(e, f, c));
+		//TargetVec-StartVec.cros(TragetVec-StartVec)
+//		Vector norm[]={
+//				ePos.sub(a.position).cross(dPos.sub(a.position)),
+//				dPos.sub(a.position).cross(ePos.sub(a.position)),
+//				b.position.sub(dPos).cross(fPos.sub(dPos)),
+//				fPos.sub(dPos).cross(b.position.sub(dPos)),
+//				fPos.sub(dPos).cross(ePos.sub(dPos)),
+//				ePos.sub(dPos).cross(fPos.sub(dPos)),
+//				fPos.sub(ePos).cross(c.position.sub(ePos))
+//				c.position.sub(ePos).cross(fPos.sub(ePos))
+//		};
+		
+//		outTris.add(new Triangle(a, d, e));
+//		outTris.add(new Triangle(d, b, f));
+//		outTris.add(new Triangle(d, e, f));
+//		outTris.add(new Triangle(e, f, c));
+		outTris.add(new Triangle(v(a.position, a.color, n(a.position, dPos, ePos)), v(d.position, d.color, n(dPos, ePos, a.position)), v(e.position, e.color, n(ePos, a.position, dPos))));
+		outTris.add(new Triangle(v(d.position, d.color, n(dPos, b.position, fPos)), v(b.position, b.color, n(b.position, fPos, dPos)), v(f.position, f.color, n(fPos, dPos, b.position))));
+		outTris.add(new Triangle(v(d.position, d.color, n(dPos, fPos, ePos)), v(e.position, e.color, n(ePos, dPos, fPos)), v(f.position, f.color, n(fPos, ePos, dPos))));
+		outTris.add(new Triangle(v(e.position, e.color, n(ePos, fPos, c.position)), v(f.position, f.color, n(fPos, c.position, ePos)), v(c.position, c.color, n(c.position, ePos, fPos))));
 
 		return outTris;
 	}
@@ -220,7 +280,7 @@ public class Sphere extends Shape {
 		return ntemp;
 	}
 
-
+	//this totally suck, who does this?
 	private void calculateSurfaceNormal(Vector[] nL) {
 		Vector finalNormal = norm(0, 0, 0);
 		for (int i = 0; i < p.length - 3; i += 3) {
@@ -253,6 +313,7 @@ public class Sphere extends Shape {
 			}
 			for (int k = 0; k < temp.size(); k++) {
 				finalNormal = finalNormal.add(temp.get(k));
+				
 			}
 			finalNormal = finalNormal.normalize();
 			for (int in : index) {

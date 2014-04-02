@@ -362,7 +362,7 @@ public class ObjLoader extends Shape {
 		yGroﬂ = max(yGroﬂ, yGroﬂ2);
 		zKlein = min(zKlein, zKlein2);
 		zGroﬂ = max(zGroﬂ, zGroﬂ2);
-		System.out.println(getId()+" xkl:"+xKlein+" xGr:"+xGroﬂ+" yKl:"+yKlein+" yGr:"+yGroﬂ+" zKl:"+zKlein+" zGr:"+zGroﬂ);
+//		System.out.println(getId()+" xkl:"+xKlein+" xGr:"+xGroﬂ+" yKl:"+yKlein+" yGr:"+yGroﬂ+" zKl:"+zKlein+" zGr:"+zGroﬂ);
 		
 		setCenter(new VectorImp((xGroﬂ + xKlein)/2, (yGroﬂ + yKlein)/2, (zGroﬂ + zKlein)/2));
 		

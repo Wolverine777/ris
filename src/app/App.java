@@ -56,10 +56,12 @@ public class App extends WorldState {
 
 		GroupNode start = createGroup("start");
 		setStart(start);
-		Sun sun=createSun("Sun", camera.getWorldTransform(), texShader);
+		Sun sun2=createSun("Sun2", vecmath.translationMatrix(7.0f, floor.getGround()+32.0f, 7.0f), shader);
+//		Sun sun=createSun("Sun", camera.getWorldTransform(), texShader);
 		GroupNode head = createGroup("head");
 		append(head, start);
-		append(sun, start);
+//		append(sun, start);
+		append(sun2, start);
 		
 		
 		announceFloor(floor);
@@ -263,6 +265,7 @@ public class App extends WorldState {
 	}
 
 	public static void main(String[] args) {
+		System.setProperty("org.lwjgl.librarypath", new File("lib/lwjgl-2.9.1/native").getAbsolutePath());
 		system = ActorSystem.create();
 		system.actorOf(Props.create(App.class), "App").tell(Message.INIT,
 				ActorRef.noSender());
